@@ -14,7 +14,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How much does a portal build cost?",
-    a: "Helm builds are high-ticket, white-glove engagements. Pricing depends on the features you need, number of product SKUs, integrations, and customization level. We scope everything on the consultation call and provide a clear investment estimate before you commit.",
+    a: "Wholesail builds are high-ticket, white-glove engagements. Pricing depends on the features you need, number of product SKUs, integrations, and customization level. We scope everything on the consultation call and provide a clear investment estimate before you commit.",
   },
   {
     q: "Do I own the code?",

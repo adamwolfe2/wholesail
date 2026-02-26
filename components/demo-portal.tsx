@@ -645,7 +645,7 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
         </div>
         <div className="border-t border-[#F9F7F4]/10 pt-6 flex justify-between items-center">
           <p className="text-[#F9F7F4]/30 text-xs">&copy; {new Date().getFullYear()} {brand.company}. All rights reserved.</p>
-          <p className="text-[#F9F7F4]/20 text-[10px] font-mono">Powered by Helm</p>
+          <p className="text-[#F9F7F4]/20 text-[10px] font-mono">Powered by Wholesail</p>
         </div>
       </footer>
     </div>

@@ -27,6 +27,39 @@ import { DemoLauncher } from "@/components/demo-launcher";
 import { FAQ } from "@/components/faq";
 import { TechMarquee } from "@/components/tech-marquee";
 
+/* ── Wholesail Sail Logo ─────────────────────────────────────────────── */
+function SailLogo({ className = "w-6 h-6" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
+      {/* Main sail — tall, angular triangle */}
+      <path
+        d="M16 2L16 28L6 28C6 28 14 16 16 2Z"
+        fill="var(--blue)"
+        opacity="0.9"
+      />
+      {/* Secondary sail — shorter, overlapping */}
+      <path
+        d="M18 8L18 28L26 28C26 28 20 18 18 8Z"
+        fill="var(--blue)"
+        opacity="0.55"
+      />
+      {/* Waterline */}
+      <path
+        d="M4 29L28 29"
+        stroke="var(--blue)"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        opacity="0.3"
+      />
+    </svg>
+  );
+}
+
 /* ── Stats Strip ──────────────────────────────────────────────────────── */
 const STATS = [
   {
@@ -182,7 +215,7 @@ const STEPS = [
   },
 ];
 
-export default function HelmPage() {
+export default function WholesailPage() {
   return (
     <main className="flex-grow w-full max-w-6xl mx-auto px-4 sm:px-6">
       {/* ── Navigation ───────────────────────────────────────────── */}
@@ -193,11 +226,14 @@ export default function HelmPage() {
           borderBottom: "1px solid var(--border)",
         }}
       >
-        <span
-          className="font-serif text-lg tracking-[0.05em] font-bold"
-          style={{ color: "var(--text-headline)" }}
-        >
-          HELM
+        <span className="flex items-center gap-2">
+          <SailLogo className="w-5 h-5" />
+          <span
+            className="font-serif text-lg tracking-[0.05em] font-bold"
+            style={{ color: "var(--text-headline)" }}
+          >
+            WHOLESAIL
+          </span>
         </span>
         <div className="flex items-center gap-4">
           <a
@@ -228,7 +264,7 @@ export default function HelmPage() {
             padding: "4px 14px",
           }}
         >
-          Helm for Distributors
+          Wholesail for Distributors
         </span>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div>
@@ -770,11 +806,12 @@ export default function HelmPage() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
+              <SailLogo className="w-5 h-5" />
               <span
                 className="font-serif text-lg font-bold tracking-[0.05em]"
                 style={{ color: "var(--text-headline)" }}
               >
-                HELM
+                WHOLESAIL
               </span>
             </div>
             <p
@@ -841,7 +878,7 @@ export default function HelmPage() {
           style={{ borderTop: "1px solid var(--border)" }}
         >
           <span className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>
-            &copy; {new Date().getFullYear()} Helm. All rights reserved.
+            &copy; {new Date().getFullYear()} Wholesail. All rights reserved.
           </span>
           <div className="flex gap-4">
             <a
