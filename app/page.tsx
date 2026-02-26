@@ -1234,7 +1234,7 @@ export default function WholesailPage() {
                   Build Status
                 </a>
                 <a
-                  href="#"
+                  href="mailto:adam@wholesailhub.com"
                   className="block font-mono text-xs transition-colors"
                   style={{ color: "var(--text-body)" }}
                 >
@@ -1253,14 +1253,14 @@ export default function WholesailPage() {
           </span>
           <div className="flex gap-4">
             <a
-              href="#"
+              href="mailto:adam@wholesailhub.com"
               className="font-mono text-[10px] transition-colors"
               style={{ color: "var(--text-muted)" }}
             >
               Privacy
             </a>
             <a
-              href="#"
+              href="mailto:adam@wholesailhub.com"
               className="font-mono text-[10px] transition-colors"
               style={{ color: "var(--text-muted)" }}
             >

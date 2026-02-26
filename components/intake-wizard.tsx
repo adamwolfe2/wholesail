@@ -762,9 +762,9 @@ function CalEmbed() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ((window as any).__calPortalInitialized) return;
+    if ((window as any).__calWholesailInitialized) return;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).__calPortalInitialized = true;
+    (window as any).__calWholesailInitialized = true;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (!(window as any).Cal) {
@@ -806,18 +806,19 @@ function CalEmbed() {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const Cal = (window as any).Cal;
-    Cal("init", "portal", { origin: "https://app.cal.com" });
-    Cal.ns.portal("inline", {
-      elementOrSelector: "#my-cal-inline-portal",
+    Cal("init", "wholesail", { origin: "https://app.cal.com" });
+    Cal.ns.wholesail("inline", {
+      elementOrSelector: "#my-cal-inline-wholesail",
       config: {
         layout: "month_view",
         useSlotsViewOnSmallScreen: "true",
         theme: "light",
       },
-      calLink: "adamwolfe/trackr",
+      calLink: "adamwolfe/wholesail",
     });
-    Cal.ns.portal("ui", {
+    Cal.ns.wholesail("ui", {
       theme: "light",
+      cssVarsPerTheme: { light: { "cal-brand": "#5194ca" } },
       hideEventTypeDetails: true,
       layout: "month_view",
     });
@@ -825,7 +826,7 @@ function CalEmbed() {
 
   return (
     <div
-      id="my-cal-inline-portal"
+      id="my-cal-inline-wholesail"
       style={{ width: "100%", minHeight: "660px", overflow: "scroll" }}
     />
   );
@@ -1006,15 +1007,20 @@ export function IntakeWizard() {
           hasBrandGuidelines: step3.hasBrandGuidelines || undefined,
           additionalNotes: step3.additionalNotes || undefined,
         };
-        await fetch("/api/intake", {
+        const res = await fetch("/api/intake", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        setSubmitted(true);
-      } catch (err) {
-        console.error("Intake submission error:", err);
-        // Still let them proceed to booking even if submission fails
+        if (res.ok) {
+          setSubmitted(true);
+        } else {
+          // API may not be configured yet — still proceed to booking
+          console.warn("Intake API returned", res.status, "— proceeding to booking");
+        }
+      } catch {
+        // API endpoint may not be available — still let them book a call
+        console.warn("Intake API unavailable — proceeding to booking");
       } finally {
         setSubmitting(false);
       }

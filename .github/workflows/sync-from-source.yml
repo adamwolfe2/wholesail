@@ -162,7 +162,7 @@ jobs:
           cd template
           BRANCH="enrichment/sync-$(date -u +%Y%m%d-%H%M)"
           git config user.name "Wholesail Bot"
-          git config user.email "bot@wholesail.io"
+          git config user.email "bot@wholesailhub.com"
           git checkout -b "$BRANCH"
 
           # Copy the sync report

@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Wholesail — Custom B2B Wholesale Ordering Portals",
   description:
     "Wholesail builds fully custom wholesale ordering portals for distribution companies. Client portal, admin panel, SMS ordering, Stripe billing. Live in under 2 weeks.",
-  metadataBase: new URL("https://wholesail.vercel.app"),
+  metadataBase: new URL("https://wholesailhub.com"),
   icons: {
     icon: "/og-image.png",
     apple: "/og-image.png",
