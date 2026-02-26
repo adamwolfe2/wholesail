@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowRight,
@@ -61,12 +61,26 @@ type ScrapeResult = {
 type Phase = "input" | "scanning" | "result";
 
 const SCAN_STEPS = [
-  { label: "Crawling your website", icon: Globe, delay: 0 },
-  { label: "Extracting brand identity", icon: Palette, delay: 600 },
-  { label: "Finding your logo & assets", icon: Image, delay: 1200 },
-  { label: "Discovering your products", icon: ShoppingBag, delay: 1800 },
-  { label: "Analyzing business signals", icon: Building2, delay: 2400 },
-  { label: "Building your custom portal", icon: Layers, delay: 3000 },
+  { label: "Crawling your website", icon: Globe },
+  { label: "Extracting brand identity", icon: Palette },
+  { label: "Finding your logo & assets", icon: Image },
+  { label: "Discovering your products", icon: ShoppingBag },
+  { label: "Analyzing business signals", icon: Building2 },
+  { label: "Building your custom portal", icon: Layers },
+];
+
+// Slow interval = one step every 4s. Fast interval (after API returns) = 400ms
+const SLOW_INTERVAL = 4000;
+const FAST_INTERVAL = 400;
+
+const WAITING_MESSAGES = [
+  "Go grab a coffee",
+  "Take a stretch break",
+  "Go grab some fresh air",
+  "Email your co-worker back!",
+  "Go grab a quick snack",
+  "Quality takes time...",
+  "Almost there...",
 ];
 
 export function DemoLauncher() {
@@ -75,20 +89,90 @@ export function DemoLauncher() {
   const [scanStep, setScanStep] = useState(0);
   const [result, setResult] = useState<ScrapeResult | null>(null);
   const [error, setError] = useState("");
+  const [waitingMsg, setWaitingMsg] = useState(0);
+  const apiDone = useRef(false);
+  const resultRef = useRef<ScrapeResult | null>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
+  // Advance scan steps — slow until API returns, then fast
   useEffect(() => {
     if (phase !== "scanning") return;
-    const timers = SCAN_STEPS.map((_, i) =>
-      setTimeout(() => setScanStep(i + 1), SCAN_STEPS[i].delay)
-    );
-    return () => timers.forEach(clearTimeout);
+
+    const advance = () => {
+      setScanStep((prev) => {
+        const next = prev + 1;
+        if (next > SCAN_STEPS.length) {
+          // All steps done — if API is also done, show result
+          if (apiDone.current && resultRef.current) {
+            setTimeout(() => setPhase("result"), 600);
+            if (timerRef.current) clearInterval(timerRef.current);
+            return prev;
+          }
+          return prev; // Stay at max, waiting messages will show
+        }
+        return next;
+      });
+    };
+
+    // Start with slow interval
+    timerRef.current = setInterval(advance, SLOW_INTERVAL);
+    // Advance the first step immediately
+    advance();
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
   }, [phase]);
+
+  // When API finishes, speed up remaining steps
+  const onApiComplete = useCallback((data: ScrapeResult) => {
+    apiDone.current = true;
+    resultRef.current = data;
+    setResult(data);
+
+    // Clear slow timer, use fast timer for remaining steps
+    if (timerRef.current) clearInterval(timerRef.current);
+
+    setScanStep((current) => {
+      if (current >= SCAN_STEPS.length) {
+        // Steps already done, go to result
+        setTimeout(() => setPhase("result"), 600);
+        return current;
+      }
+
+      // Speed through remaining steps
+      let stepCount = current;
+      const fastTimer = setInterval(() => {
+        stepCount++;
+        setScanStep(stepCount);
+        if (stepCount >= SCAN_STEPS.length) {
+          clearInterval(fastTimer);
+          setTimeout(() => setPhase("result"), 600);
+        }
+      }, FAST_INTERVAL);
+      timerRef.current = fastTimer;
+
+      return current;
+    });
+  }, []);
+
+  // Rotate waiting messages when all steps are done but API isn't
+  useEffect(() => {
+    if (phase !== "scanning" || scanStep < SCAN_STEPS.length || apiDone.current) return;
+    const msgTimer = setInterval(() => {
+      setWaitingMsg((prev) => (prev + 1) % WAITING_MESSAGES.length);
+    }, 3000);
+    return () => clearInterval(msgTimer);
+  }, [phase, scanStep]);
 
   const handleSubmit = async () => {
     if (!url.trim()) return;
     setPhase("scanning");
     setScanStep(0);
     setError("");
+    setWaitingMsg(0);
+    apiDone.current = false;
+    resultRef.current = null;
 
     try {
       const res = await fetch("/api/scrape", {
@@ -100,11 +184,9 @@ export function DemoLauncher() {
       if (!res.ok) throw new Error("Scrape failed");
 
       const data: ScrapeResult = await res.json();
-      setResult(data);
-
-      // Wait for scan animation to finish, then show result
-      setTimeout(() => setPhase("result"), 3800);
+      onApiComplete(data);
     } catch {
+      if (timerRef.current) clearInterval(timerRef.current);
       setError("Could not analyze that website. Please check the URL and try again.");
       setPhase("input");
     }
@@ -112,7 +194,6 @@ export function DemoLauncher() {
 
   const launchDemo = () => {
     if (!result) return;
-    // Store the full scrape result in sessionStorage for the demo page
     sessionStorage.setItem("portal-demo-data", JSON.stringify(result));
     const params = new URLSearchParams({
       company: result.companyName,
@@ -128,7 +209,13 @@ export function DemoLauncher() {
     setResult(null);
     setScanStep(0);
     setUrl("");
+    apiDone.current = false;
+    resultRef.current = null;
+    if (timerRef.current) clearInterval(timerRef.current);
   };
+
+  const allStepsDone = scanStep >= SCAN_STEPS.length;
+  const showWaiting = allStepsDone && !apiDone.current;
 
   return (
     <div
@@ -218,7 +305,7 @@ export function DemoLauncher() {
                   Analyzing {url}
                 </div>
                 <div className="font-mono text-[9px]" style={{ color: "var(--text-muted)" }}>
-                  This takes about 10 seconds
+                  Extracting your brand DNA — this takes a moment
                 </div>
               </div>
             </div>
@@ -226,15 +313,16 @@ export function DemoLauncher() {
             <div className="space-y-2">
               {SCAN_STEPS.map((step, i) => {
                 const done = i < scanStep;
-                const active = i === scanStep;
+                const active = i === scanStep - 1 && !done && scanStep <= SCAN_STEPS.length;
+                const pending = i >= scanStep;
                 const Icon = step.icon;
                 return (
                   <motion.div
                     key={step.label}
-                    animate={{ opacity: done ? 1 : active ? 0.6 : 0.2 }}
-                    transition={{ duration: 0.3 }}
+                    animate={{ opacity: done ? 1 : active ? 0.7 : pending ? 0.25 : 0.25 }}
+                    transition={{ duration: 0.4 }}
                     className="flex items-center justify-between px-4 py-3 border bg-white"
-                    style={{ borderColor: "var(--border)", borderRadius: "4px" }}
+                    style={{ borderColor: done ? "var(--blue-light, #E8EDFA)" : "var(--border)", borderRadius: "4px" }}
                   >
                     <div className="flex items-center gap-3">
                       {done ? (
@@ -249,19 +337,19 @@ export function DemoLauncher() {
                         >
                           <CheckCircle2 className="w-4 h-4" style={{ color: "var(--blue)" }} />
                         </motion.div>
-                      ) : active ? (
+                      ) : i === scanStep ? (
                         <Loader2 className="w-4 h-4 animate-spin" style={{ color: "var(--text-muted)" }} />
                       ) : (
                         <Icon className="w-4 h-4" style={{ color: "var(--border-strong)" }} />
                       )}
-                      <span className="font-mono text-xs" style={{ color: "var(--text-headline)" }}>{step.label}</span>
+                      <span className="font-mono text-xs" style={{ color: done ? "var(--text-headline)" : "var(--text-muted)" }}>{step.label}</span>
                     </div>
                     {done && (
                       <motion.span
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="font-mono text-[9px]"
-                        style={{ color: "var(--text-muted)" }}
+                        initial={{ opacity: 0, x: -4 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="font-mono text-[9px] font-semibold"
+                        style={{ color: "var(--blue)" }}
                       >
                         Done
                       </motion.span>
@@ -274,13 +362,34 @@ export function DemoLauncher() {
             {/* Progress bar */}
             <div className="mt-4 h-[3px]" style={{ backgroundColor: "var(--border)" }}>
               <div
-                className="h-full transition-all duration-500 ease-out"
+                className="h-full transition-all duration-700 ease-out"
                 style={{
                   backgroundColor: "var(--blue)",
-                  width: `${(scanStep / SCAN_STEPS.length) * 100}%`,
+                  width: `${Math.min((scanStep / SCAN_STEPS.length) * 100, 100)}%`,
                 }}
               />
             </div>
+
+            {/* Waiting message — shows when all steps done but API still running */}
+            <AnimatePresence mode="wait">
+              {showWaiting && (
+                <motion.div
+                  key={waitingMsg}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.3 }}
+                  className="mt-5 text-center"
+                >
+                  <p className="font-mono text-xs" style={{ color: "var(--text-body)" }}>
+                    {WAITING_MESSAGES[waitingMsg]}
+                  </p>
+                  <p className="font-mono text-[9px] mt-1" style={{ color: "var(--text-muted)" }}>
+                    We&apos;re scanning multiple pages to get the best results
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
 

@@ -48,6 +48,7 @@ import {
   Target,
   Calendar,
   Receipt,
+  Loader2,
 } from "lucide-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────
@@ -349,13 +350,13 @@ function statusStyle(status: string, brandColor: string): React.CSSProperties {
     case "Paid":
     case "Champion":
     case "VIP":
-      return { backgroundColor: "#0A0A0A", color: "#F9F7F4", borderColor: "#0A0A0A" };
+      return { backgroundColor: brandColor, color: "#F9F7F4", borderColor: brandColor };
     case "Shipped":
     case "Healthy":
     case "REPEAT":
-      return { backgroundColor: "#C8C0B4", color: "#0A0A0A", borderColor: "#C8C0B4" };
+      return { backgroundColor: `${brandColor}18`, color: brandColor, borderColor: `${brandColor}30` };
     case "Processing":
-      return { backgroundColor: `${brandColor}20`, color: brandColor, borderColor: `${brandColor}40` };
+      return { backgroundColor: `${brandColor}12`, color: brandColor, borderColor: `${brandColor}25` };
     case "Pending":
     case "New":
     case "NEW":
@@ -391,28 +392,44 @@ function ProductImage({
   size?: "sm" | "md" | "lg";
 }) {
   const sizeClass = size === "sm" ? "w-12 h-12" : size === "lg" ? "w-full h-40" : "w-16 h-16";
-  const textSize = size === "sm" ? "text-base" : size === "lg" ? "text-4xl" : "text-xl";
+  const textSize = size === "sm" ? "text-lg" : size === "lg" ? "text-5xl" : "text-2xl";
   const hasImage = product.imageUrl && product.imageUrl.trim() !== "";
 
   return (
     <div
       className={`${sizeClass} flex items-center justify-center font-serif ${textSize} flex-shrink-0 relative overflow-hidden`}
-      style={{ backgroundColor: `${brandColor}12` }}
+      style={{
+        background: `linear-gradient(135deg, ${brandColor}08 0%, ${brandColor}15 100%)`,
+        borderBottom: size === "lg" ? `1px solid ${brandColor}12` : undefined,
+      }}
     >
       {hasImage ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={product.imageUrl}
           alt={product.name}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover relative z-10"
           onError={(e) => {
             (e.target as HTMLImageElement).style.display = "none";
           }}
         />
       ) : null}
-      <span className="absolute inset-0 flex items-center justify-center" style={{ color: `${brandColor}40` }}>
+      {/* Clean monogram fallback — always rendered behind image */}
+      <span
+        className="absolute inset-0 flex items-center justify-center font-bold select-none"
+        style={{ color: `${brandColor}25`, letterSpacing: "0.05em" }}
+      >
         {product.name.charAt(0).toUpperCase()}
       </span>
+      {/* Subtle category label for larger sizes */}
+      {size === "lg" && product.category && (
+        <span
+          className="absolute bottom-2 right-2 font-mono text-[8px] uppercase tracking-widest px-1.5 py-0.5"
+          style={{ color: `${brandColor}50`, backgroundColor: `${brandColor}06` }}
+        >
+          {product.category}
+        </span>
+      )}
     </div>
   );
 }
@@ -449,11 +466,17 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={() => onNavigate?.("catalog")}
-              className="h-12 px-8 text-sm font-medium tracking-wide bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 transition-colors"
+              className="h-12 px-8 text-sm font-medium tracking-wide text-[#F9F7F4] transition-opacity hover:opacity-85"
+              style={{ backgroundColor: brand.color }}
             >
               Browse the Catalog
             </button>
-            <button className="h-12 px-8 text-sm font-medium tracking-wide border border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors">
+            <button
+              className="h-12 px-8 text-sm font-medium tracking-wide border transition-colors"
+              style={{ borderColor: brand.color, color: brand.color }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = brand.color; e.currentTarget.style.color = "#F9F7F4"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = brand.color; }}
+            >
               Apply for Wholesale
             </button>
           </div>
@@ -464,7 +487,7 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
       </section>
 
       {/* ── Trust Bar / Scrolling Marquee ── */}
-      <div className="bg-[#1A1614] text-[#F9F7F4] py-3 overflow-hidden select-none">
+      <div className="text-[#F9F7F4] py-3 overflow-hidden select-none" style={{ backgroundColor: brand.color }}>
         <div className="flex whitespace-nowrap" style={{ animation: "ticker 22s linear infinite" }}>
           {[...trustItems, ...trustItems, ...trustItems].map((item, i) => (
             <span key={i} className="mx-6 sm:mx-10 text-[10px] sm:text-xs tracking-[0.18em] uppercase font-medium">
@@ -511,7 +534,10 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
               <div className="px-4 sm:px-5 pb-4 sm:pb-5 mt-auto">
                 <button
                   onClick={() => onNavigate?.("catalog")}
-                  className="w-full h-9 text-xs font-medium border border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] flex items-center justify-center gap-1.5 transition-all"
+                  className="w-full h-9 text-xs font-medium border flex items-center justify-center gap-1.5 transition-all"
+                  style={{ borderColor: brand.color, color: brand.color }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = brand.color; e.currentTarget.style.color = "#F9F7F4"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = brand.color; }}
                 >
                   <ShoppingCart className="h-3 w-3" /> Add to Order
                 </button>
@@ -582,7 +608,7 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
               placeholder="your@email.com"
               className="flex-1 h-12 px-4 bg-white border border-[#E5E1DB] text-[#0A0A0A] placeholder:text-[#C8C0B4] text-sm focus:outline-none focus:border-[#0A0A0A]"
             />
-            <button className="h-12 px-6 bg-[#0A0A0A] text-[#F9F7F4] text-sm font-medium hover:bg-[#0A0A0A]/80 transition-colors">
+            <button className="h-12 px-6 text-[#F9F7F4] text-sm font-medium transition-opacity hover:opacity-85" style={{ backgroundColor: brand.color }}>
               Subscribe
             </button>
           </div>
@@ -722,7 +748,8 @@ function CatalogView({ brand, data, cart, onAddToCart, onOpenCart }: ViewProps) 
           {cartCount > 0 && (
             <button
               onClick={() => onOpenCart?.()}
-              className="relative h-9 px-4 text-xs font-medium bg-[#0A0A0A] text-[#F9F7F4] flex items-center gap-2"
+              className="relative h-9 px-4 text-xs font-medium text-[#F9F7F4] flex items-center gap-2"
+              style={{ backgroundColor: brand.color }}
             >
               <ShoppingCart className="w-3.5 h-3.5" />
               Cart ({cartCount})
@@ -769,11 +796,14 @@ function CatalogView({ brand, data, cart, onAddToCart, onOpenCart }: ViewProps) 
               <div className="px-4 sm:px-5 pb-4 sm:pb-5 mt-auto">
                 <button
                   onClick={() => handleAdd(p)}
-                  className={`w-full h-9 text-xs font-medium flex items-center justify-center gap-1.5 transition-all ${
+                  className="w-full h-9 text-xs font-medium flex items-center justify-center gap-1.5 transition-all"
+                  style={
                     isAdded
-                      ? "bg-[#0A0A0A] text-[#F9F7F4]"
-                      : "border border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4]"
-                  }`}
+                      ? { backgroundColor: brand.color, color: "#F9F7F4" }
+                      : { border: `1px solid ${brand.color}`, color: brand.color }
+                  }
+                  onMouseEnter={(e) => { if (!isAdded) { e.currentTarget.style.backgroundColor = brand.color; e.currentTarget.style.color = "#F9F7F4"; } }}
+                  onMouseLeave={(e) => { if (!isAdded) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = brand.color; } }}
                 >
                   {isAdded ? (
                     <><CheckCircle2 className="h-3 w-3" /> Added</>
@@ -946,7 +976,7 @@ function ClientDashboardView({ brand, data, seed }: ViewProps) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <div className="px-3 py-1.5 text-[10px] uppercase tracking-wide text-[#F9F7F4] flex items-center gap-1 bg-[#0A0A0A]">
+          <div className="px-3 py-1.5 text-[10px] uppercase tracking-wide text-[#F9F7F4] flex items-center gap-1" style={{ backgroundColor: brand.color }}>
             <Star className="w-3 h-3" /> 4,280 Points
           </div>
         </div>
@@ -977,7 +1007,7 @@ function ClientDashboardView({ brand, data, seed }: ViewProps) {
           <span className="font-mono text-xs text-[#0A0A0A]">${creditUsed.toLocaleString()} / ${creditLimit.toLocaleString()}</span>
         </div>
         <div className="h-1.5 bg-[#E5E1DB] overflow-hidden">
-          <div className={`h-full transition-all ${creditPct > 80 ? "bg-red-500" : creditPct > 60 ? "bg-amber-400" : "bg-[#0A0A0A]"}`} style={{ width: `${creditPct}%` }} />
+          <div className="h-full transition-all" style={{ width: `${creditPct}%`, backgroundColor: creditPct > 80 ? "#EF4444" : creditPct > 60 ? "#F59E0B" : brand.color }} />
         </div>
         <p className="text-[10px] text-[#C8C0B4] mt-1">{creditPct}% utilized · Net 30 terms</p>
       </div>
@@ -1005,7 +1035,7 @@ function ClientDashboardView({ brand, data, seed }: ViewProps) {
                     <Plus className="w-3 h-3" />
                   </button>
                 </div>
-                <button className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 text-xs min-h-[36px] font-medium transition-colors">
+                <button className="text-[#F9F7F4] text-xs min-h-[36px] font-medium transition-opacity hover:opacity-85" style={{ backgroundColor: brand.color }}>
                   Add to Order
                 </button>
               </div>
@@ -1044,8 +1074,8 @@ function ClientDashboardView({ brand, data, seed }: ViewProps) {
                 <div className="w-8 text-xs font-medium text-[#0A0A0A]/50">{m}</div>
                 <div className="flex-1 h-7 bg-[#C8C0B4]/20 overflow-hidden">
                   <div
-                    className="h-full bg-[#0A0A0A] transition-all"
-                    style={{ width: `${(spending[i] / maxSpend) * 100}%` }}
+                    className="h-full transition-all"
+                    style={{ width: `${(spending[i] / maxSpend) * 100}%`, backgroundColor: brand.color }}
                   />
                 </div>
                 <div className="w-14 text-xs font-semibold text-right text-[#0A0A0A]">
@@ -1485,7 +1515,7 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
                   className="w-full transition-all"
                   style={{
                     height: `${(monthlyRev[i] / maxRev) * 110}px`,
-                    backgroundColor: i === months.length - 1 ? "#0A0A0A" : i >= months.length - 3 ? "#0A0A0A" : "#C8C0B4",
+                    backgroundColor: i >= months.length - 3 ? brand.color : "#C8C0B4",
                     opacity: i === months.length - 1 ? 1 : i >= months.length - 3 ? 0.6 : 0.3,
                   }}
                 />
@@ -1507,7 +1537,8 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
                     className="h-full transition-all"
                     style={{
                       width: `${(catRevenues[i] / maxCatRev) * 100}%`,
-                      backgroundColor: ["#0A0A0A", "#2C2C2C", "#4E4E4E", "#706E6B", "#928E8A", "#C8C0B4"][i],
+                      backgroundColor: brand.color,
+                      opacity: [1, 0.8, 0.65, 0.5, 0.4, 0.3][i],
                     }}
                   />
                 </div>
@@ -1833,7 +1864,7 @@ function AdminAnalyticsView({ brand, data, seed }: ViewProps) {
                 className="w-full transition-all"
                 style={{
                   height: `${(revenues[i] / maxRev) * 120}px`,
-                  backgroundColor: i >= months.length - 3 ? "#0A0A0A" : "#C8C0B4",
+                  backgroundColor: i >= months.length - 3 ? brand.color : "#C8C0B4",
                   opacity: i === months.length - 1 ? 1 : i >= months.length - 3 ? 0.6 : 0.3,
                 }}
               />
@@ -2075,7 +2106,7 @@ function CartSidebar({ cart, brand, onRemove, onUpdateQty, onClose, onCheckout }
               <span className="text-xl font-bold text-[#0A0A0A]">Total</span>
               <span className="text-2xl font-bold text-[#0A0A0A]">${totalPrice.toFixed(2)}</span>
             </div>
-            <button onClick={onCheckout} className="w-full h-12 text-base font-medium bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 transition-colors">
+            <button onClick={onCheckout} className="w-full h-12 text-base font-medium text-[#F9F7F4] transition-opacity hover:opacity-85" style={{ backgroundColor: brand.color }}>
               Proceed to Checkout
             </button>
           </div>
@@ -2085,11 +2116,118 @@ function CartSidebar({ cart, brand, onRemove, onUpdateQty, onClose, onCheckout }
   );
 }
 
-function CheckoutView({ brand, data, cart }: ViewProps) {
+function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
+  const [orderPlaced, setOrderPlaced] = useState(false);
+  const [processing, setProcessing] = useState(false);
   const items = (cart && cart.length > 0) ? cart : data.products.slice(0, 3).map((p) => ({ product: p, quantity: 2 }));
   const subtotal = items.reduce((s, c) => s + c.quantity * parsePrice(c.product.price), 0);
   const tax = Math.round(subtotal * 0.0875 * 100) / 100;
   const total = subtotal + tax;
+  const orderNum = `ORD-2026-${String(Math.floor(Math.random() * 9000) + 1000)}`;
+  const invoiceNum = `INV-2026-${String(Math.floor(Math.random() * 9000) + 1000)}`;
+
+  const handlePlaceOrder = () => {
+    setProcessing(true);
+    setTimeout(() => {
+      setProcessing(false);
+      setOrderPlaced(true);
+    }, 1500);
+  };
+
+  if (orderPlaced) {
+    return (
+      <div className="p-6 bg-[#F9F7F4]">
+        <div className="max-w-lg mx-auto py-10 text-center">
+          <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center" style={{ backgroundColor: `${brand.color}12` }}>
+            <CheckCircle2 className="w-8 h-8" style={{ color: brand.color }} />
+          </div>
+          <h2 className="font-serif text-3xl font-bold text-[#0A0A0A] mb-2">Order Confirmed!</h2>
+          <p className="text-sm text-[#0A0A0A]/50 mb-8">
+            Your order has been placed successfully. A confirmation email has been sent.
+          </p>
+
+          {/* Order & Invoice details */}
+          <div className="border border-[#E5E1DB] bg-white text-left mb-6">
+            <div className="grid grid-cols-2 border-b border-[#E5E1DB]">
+              <div className="p-5 border-r border-[#E5E1DB]">
+                <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Order Number</p>
+                <p className="font-mono text-sm font-bold text-[#0A0A0A]">{orderNum}</p>
+              </div>
+              <div className="p-5">
+                <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Invoice Created</p>
+                <p className="font-mono text-sm font-bold text-[#0A0A0A]">{invoiceNum}</p>
+              </div>
+            </div>
+            <div className="grid grid-cols-3 border-b border-[#E5E1DB]">
+              <div className="p-5 border-r border-[#E5E1DB]">
+                <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Payment</p>
+                <p className="text-xs font-medium text-[#0A0A0A]">Net 30 Invoice</p>
+              </div>
+              <div className="p-5 border-r border-[#E5E1DB]">
+                <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Items</p>
+                <p className="text-xs font-medium text-[#0A0A0A]">{items.length} products</p>
+              </div>
+              <div className="p-5">
+                <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Total</p>
+                <p className="font-serif text-lg font-bold text-[#0A0A0A]">${total.toFixed(2)}</p>
+              </div>
+            </div>
+            <div className="p-5">
+              <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-2">Items Ordered</p>
+              <div className="space-y-2">
+                {items.map((item) => (
+                  <div key={item.product.name} className="flex justify-between text-xs">
+                    <span className="text-[#0A0A0A]">{item.quantity}x {item.product.name}</span>
+                    <span className="font-mono text-[#0A0A0A]/70">${(item.quantity * parsePrice(item.product.price)).toFixed(2)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Status timeline */}
+          <div className="border border-[#E5E1DB] bg-white text-left p-5 mb-6">
+            <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-3">Order Status</p>
+            <div className="space-y-3">
+              {[
+                { label: "Order Placed", time: "Just now", done: true },
+                { label: "Invoice Created", time: "Just now", done: true },
+                { label: "Confirmation Sent", time: "Just now", done: true },
+                { label: "Processing & Fulfillment", time: "Next", done: false },
+                { label: "Shipped", time: "Upcoming", done: false },
+              ].map((step) => (
+                <div key={step.label} className="flex items-center gap-3">
+                  {step.done ? (
+                    <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: brand.color }} />
+                  ) : (
+                    <Clock className="w-4 h-4 flex-shrink-0 text-[#E5E1DB]" />
+                  )}
+                  <span className={`text-xs flex-1 ${step.done ? "text-[#0A0A0A] font-medium" : "text-[#C8C0B4]"}`}>{step.label}</span>
+                  <span className="text-[9px] font-mono text-[#C8C0B4]">{step.time}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              onClick={() => onNavigate?.("client-orders")}
+              className="flex-1 h-12 text-sm font-medium text-white transition-opacity hover:opacity-85"
+              style={{ backgroundColor: brand.color }}
+            >
+              View My Orders
+            </button>
+            <button
+              onClick={() => onNavigate?.("catalog")}
+              className="flex-1 h-12 text-sm font-medium border border-[#E5E1DB] text-[#0A0A0A] hover:border-[#C8C0B4] transition-colors"
+            >
+              Continue Shopping
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 bg-[#F9F7F4]">
@@ -2111,16 +2249,16 @@ function CheckoutView({ brand, data, cart }: ViewProps) {
               ].map((f) => (
                 <div key={f.label}>
                   <label className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4] mb-1.5 block">{f.label}</label>
-                  <input placeholder={f.placeholder} className="w-full h-10 px-3 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none focus:border-[#0A0A0A]" />
+                  <input placeholder={f.placeholder} className="w-full h-10 px-3 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none" style={{ borderColor: undefined }} onFocus={(e) => e.currentTarget.style.borderColor = brand.color} onBlur={(e) => e.currentTarget.style.borderColor = "#E5E1DB"} />
                 </div>
               ))}
               <div className="col-span-2">
                 <label className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4] mb-1.5 block">Delivery Address</label>
-                <input placeholder="Street address, city, state, zip" className="w-full h-10 px-3 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none focus:border-[#0A0A0A]" />
+                <input placeholder="Street address, city, state, zip" className="w-full h-10 px-3 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none" onFocus={(e) => e.currentTarget.style.borderColor = brand.color} onBlur={(e) => e.currentTarget.style.borderColor = "#E5E1DB"} />
               </div>
               <div className="col-span-2">
                 <label className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4] mb-1.5 block">Order Notes</label>
-                <textarea rows={3} placeholder="Special instructions, delivery preferences..." className="w-full px-3 py-2 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none focus:border-[#0A0A0A] resize-none" />
+                <textarea rows={3} placeholder="Special instructions, delivery preferences..." className="w-full px-3 py-2 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none resize-none" onFocus={(e) => e.currentTarget.style.borderColor = brand.color} onBlur={(e) => e.currentTarget.style.borderColor = "#E5E1DB"} />
               </div>
             </div>
           </div>
@@ -2129,8 +2267,8 @@ function CheckoutView({ brand, data, cart }: ViewProps) {
             <div className="space-y-3">
               {["Net 30 Invoice", "Credit Card (Stripe)", "ACH Bank Transfer"].map((method, i) => (
                 <label key={method} className="flex items-center gap-3 p-3 border border-[#E5E1DB] cursor-pointer hover:border-[#C8C0B4] transition-colors">
-                  <div className={`w-4 h-4 border-2 flex items-center justify-center ${i === 0 ? "border-[#0A0A0A]" : "border-[#E5E1DB]"}`}>
-                    {i === 0 && <div className="w-2 h-2 bg-[#0A0A0A]" />}
+                  <div className="w-4 h-4 border-2 flex items-center justify-center" style={{ borderColor: i === 0 ? brand.color : "#E5E1DB" }}>
+                    {i === 0 && <div className="w-2 h-2" style={{ backgroundColor: brand.color }} />}
                   </div>
                   <span className="text-sm text-[#0A0A0A]">{method}</span>
                 </label>
@@ -2161,8 +2299,17 @@ function CheckoutView({ brand, data, cart }: ViewProps) {
               <div className="flex justify-between text-base font-bold pt-2 border-t border-[#E5E1DB]"><span className="text-[#0A0A0A]">Total</span><span className="font-serif text-xl text-[#0A0A0A]">${total.toFixed(2)}</span></div>
             </div>
             <div className="px-5 pb-5">
-              <button className="w-full h-12 bg-[#0A0A0A] text-[#F9F7F4] text-sm font-medium hover:bg-[#0A0A0A]/80 transition-colors">
-                Place Order
+              <button
+                onClick={handlePlaceOrder}
+                disabled={processing}
+                className="w-full h-12 text-[#F9F7F4] text-sm font-medium transition-opacity hover:opacity-85 disabled:opacity-60 flex items-center justify-center gap-2"
+                style={{ backgroundColor: brand.color }}
+              >
+                {processing ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" /> Processing...</>
+                ) : (
+                  <>Place Order</>
+                )}
               </button>
             </div>
           </div>
@@ -2204,6 +2351,7 @@ function TourOverlay({
   description,
   onNext,
   onSkip,
+  brandColor,
 }: {
   step: number;
   total: number;
@@ -2211,10 +2359,11 @@ function TourOverlay({
   description: string;
   onNext: () => void;
   onSkip: () => void;
+  brandColor: string;
 }) {
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[420px] max-w-[calc(100vw-2rem)]">
-      <div className="bg-[#0A0A0A] text-[#F9F7F4] p-5 shadow-2xl" style={{ border: "1px solid rgba(249,247,244,0.1)" }}>
+      <div className="text-[#F9F7F4] p-5 shadow-2xl" style={{ backgroundColor: brandColor, border: "1px solid rgba(255,255,255,0.15)" }}>
         <div className="flex items-center justify-between mb-2">
           <span className="font-mono text-[9px] uppercase tracking-widest text-[#F9F7F4]/40">
             Tour · {step + 1} of {total}
@@ -2295,7 +2444,7 @@ function DemoPortalInner() {
   return (
     <div className="min-h-screen bg-[#F9F7F4] flex flex-col">
       {/* Demo banner */}
-      <div className="border-b border-[#0A0A0A] px-4 py-2.5 flex items-center justify-between bg-[#0A0A0A]">
+      <div className="px-4 py-2.5 flex items-center justify-between" style={{ backgroundColor: brand.color, borderBottom: `1px solid ${brand.color}` }}>
         <div className="flex items-center gap-3">
           {brand.logo && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -2306,13 +2455,13 @@ function DemoPortalInner() {
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           )}
-          <span className="text-xs text-[#F9F7F4]/70">
-            Demo preview of <strong className="text-[#F9F7F4]">{brand.company}</strong>&apos;s wholesale portal
+          <span className="text-xs text-white/70">
+            Demo preview of <strong className="text-white">{brand.company}</strong>&apos;s wholesale portal
           </span>
         </div>
         <a
           href="/#intake-form"
-          className="text-[10px] uppercase tracking-wide text-[#F9F7F4]/60 hover:text-[#F9F7F4] border border-[#F9F7F4]/20 px-3 py-1 hover:border-[#F9F7F4]/60 transition-colors flex items-center gap-1"
+          className="text-[10px] uppercase tracking-wide text-white/60 hover:text-white border border-white/20 px-3 py-1 hover:border-white/60 transition-colors flex items-center gap-1"
         >
           Start Your Build <ArrowUpRight className="w-3 h-3" />
         </a>
@@ -2348,16 +2497,22 @@ function DemoPortalInner() {
                       <button
                         key={item.id}
                         onClick={() => setView(item.id)}
-                        className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors ${
+                        className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors"
+                        style={
                           active
-                            ? "bg-[#0A0A0A] text-[#F9F7F4]"
-                            : "text-[#0A0A0A]/60 hover:bg-[#0A0A0A]/[0.06] hover:text-[#0A0A0A]"
-                        }`}
+                            ? { backgroundColor: brand.color, color: "#F9F7F4" }
+                            : { color: "rgba(10,10,10,0.6)" }
+                        }
+                        onMouseEnter={(e) => { if (!active) { e.currentTarget.style.backgroundColor = `${brand.color}0A`; e.currentTarget.style.color = "#0A0A0A"; } }}
+                        onMouseLeave={(e) => { if (!active) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(10,10,10,0.6)"; } }}
                       >
                         <Icon className="w-4 h-4 flex-shrink-0" />
                         <span className="truncate">{item.label}</span>
                         {item.badge && (
-                          <span className="ml-auto text-[10px] font-bold bg-[#0A0A0A] text-[#F9F7F4] px-1.5 py-0.5 min-w-[18px] text-center leading-tight" style={active ? { backgroundColor: "#F9F7F4", color: "#0A0A0A" } : {}}>
+                          <span
+                            className="ml-auto text-[10px] font-bold px-1.5 py-0.5 min-w-[18px] text-center leading-tight"
+                            style={active ? { backgroundColor: "#F9F7F4", color: brand.color } : { backgroundColor: brand.color, color: "#F9F7F4" }}
+                          >
                             {item.badge}
                           </span>
                         )}
@@ -2384,16 +2539,16 @@ function DemoPortalInner() {
               {cartCount > 0 && (
                 <button onClick={() => setCartOpen(true)} className="relative p-1">
                   <ShoppingCart className="w-4 h-4 text-[#0A0A0A]/60 hover:text-[#0A0A0A]" />
-                  <span className="absolute -top-1 -right-1 h-4 w-4 bg-[#0A0A0A] text-[#F9F7F4] text-[9px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 h-4 w-4 text-[#F9F7F4] text-[9px] font-bold flex items-center justify-center" style={{ backgroundColor: brand.color }}>
                     {cartCount}
                   </span>
                 </button>
               )}
               <div className="relative">
                 <Bell className="w-4 h-4 text-[#C8C0B4] cursor-pointer hover:text-[#0A0A0A]" />
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-[#0A0A0A]" />
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2" style={{ backgroundColor: brand.color }} />
               </div>
-              <div className="w-7 h-7 flex items-center justify-center font-mono text-[10px] text-[#F9F7F4] bg-[#0A0A0A]">
+              <div className="w-7 h-7 flex items-center justify-center font-mono text-[10px] text-[#F9F7F4]" style={{ backgroundColor: brand.color }}>
                 A
               </div>
             </div>
@@ -2443,6 +2598,7 @@ function DemoPortalInner() {
           total={TOUR_STEPS.length}
           title={TOUR_STEPS[tourStep].title}
           description={TOUR_STEPS[tourStep].description}
+          brandColor={brand.color}
           onNext={() => {
             if (tourStep < TOUR_STEPS.length - 1) {
               setTourStep(tourStep + 1);
@@ -2469,7 +2625,7 @@ export function DemoPortal() {
       fallback={
         <div className="min-h-screen bg-[#F9F7F4] flex items-center justify-center">
           <div className="text-center">
-            <div className="w-6 h-6 border border-[#E5E1DB] border-t-[#0A0A0A] animate-spin mx-auto mb-3" />
+            <div className="w-6 h-6 border border-[#E5E1DB] border-t-[#2A52BE] animate-spin mx-auto mb-3" />
             <div className="font-mono text-sm text-[#C8C0B4]">Loading your demo...</div>
           </div>
         </div>

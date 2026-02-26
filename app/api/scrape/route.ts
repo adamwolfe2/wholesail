@@ -1166,7 +1166,7 @@ function extractLogo(
   const domain = extractDomain(url);
   const base = `https://${domain}`;
 
-  // Try structured data first (JSON-LD logo)
+  // 1. JSON-LD structured data logo (highest quality, explicitly declared)
   const jsonLdLogo = html.match(
     /"logo"\s*:\s*(?:"([^"]+)"|{"url"\s*:\s*"([^"]+)"})/i
   );
@@ -1175,37 +1175,46 @@ function extractLogo(
     if (logoSrc) return resolveUrl(logoSrc, base);
   }
 
-  // Apple touch icon (usually high quality)
-  const appleIcon = html.match(
-    /<link[^>]*rel=["']apple-touch-icon["'][^>]*href=["']([^"']+)["']/i
-  );
-  if (appleIcon) return resolveUrl(appleIcon[1], base);
-
-  // og:image
-  if (metadata.ogImage) return metadata.ogImage;
-  const ogMatch = html.match(
-    /<meta[^>]*property=["']og:image["'][^>]*content=["']([^"']+)["']/i
-  );
-  if (ogMatch) return resolveUrl(ogMatch[1], base);
-
-  // Image with "logo" in class, id, or alt
+  // 2. Image with "logo" in class, id, or alt (usually the actual site logo)
   const logoImg = html.match(
     /<img[^>]*(?:class|id|alt)=["'][^"']*logo[^"']*["'][^>]*src=["']([^"']+)["']/i
   );
   if (logoImg) return resolveUrl(logoImg[1], base);
 
-  // Image with "logo" in src
+  // 3. Image with src containing "logo" in the path
   const logoSrc = html.match(
     /<img[^>]*src=["']([^"']*logo[^"']*)["']/i
   );
   if (logoSrc) return resolveUrl(logoSrc[1], base);
 
-  // Favicon
+  // 4. SVG with "logo" in class or id (many modern sites use inline SVG logos)
+  const svgLogo = html.match(
+    /<svg[^>]*(?:class|id)=["'][^"']*logo[^"']*["'][^>]*>/i
+  );
+  if (svgLogo) {
+    // Can't extract inline SVG as URL, fall through to favicon
+  }
+
+  // 5. Apple touch icon (good quality, 180x180 typically)
+  const appleIcon = html.match(
+    /<link[^>]*rel=["']apple-touch-icon["'][^>]*href=["']([^"']+)["']/i
+  );
+  if (appleIcon) return resolveUrl(appleIcon[1], base);
+
+  // 6. Favicon link tags (various rel values)
   const iconMatch = html.match(
     /<link[^>]*rel=["'](?:shortcut )?icon["'][^>]*href=["']([^"']+)["']/i
   );
   if (iconMatch) return resolveUrl(iconMatch[1], base);
 
+  // 7. Larger favicon variants (icon with sizes)
+  const icon32 = html.match(
+    /<link[^>]*rel=["']icon["'][^>]*sizes=["']32x32["'][^>]*href=["']([^"']+)["']/i
+  );
+  if (icon32) return resolveUrl(icon32[1], base);
+
+  // 8. Google favicon service — reliable fallback, always returns something usable
+  // DELIBERATELY skip og:image — it's a social share image, not a logo
   return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
 }
 
