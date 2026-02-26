@@ -6,19 +6,32 @@ export const metadata: Metadata = {
   title: "Wholesail — Custom B2B Wholesale Ordering Portals",
   description:
     "Wholesail builds fully custom wholesale ordering portals for distribution companies. Client portal, admin panel, SMS ordering, Stripe billing. Live in under 2 weeks.",
-  metadataBase: new URL("https://wholesail.co"),
+  metadataBase: new URL("https://wholesail.vercel.app"),
+  icons: {
+    icon: "/og-image.png",
+    apple: "/og-image.png",
+  },
   openGraph: {
     title: "Wholesail — Custom B2B Wholesale Ordering Portals",
     description:
-      "Wholesail builds fully custom wholesale ordering portals for distribution companies. Client portal, admin panel, SMS ordering, Stripe billing. Live in under 2 weeks.",
+      "We build fully custom B2B ordering portals for distribution companies. Client portal, admin panel, SMS ordering, Stripe billing. Deployed in under 2 weeks.",
     type: "website",
     siteName: "Wholesail",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Wholesail — Your wholesale business, fully automated",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Wholesail — Custom B2B Wholesale Ordering Portals",
     description:
       "Custom wholesale ordering portals for distribution companies. 34+ features, live in under 2 weeks.",
+    images: ["/og-image.png"],
   },
 };
 
