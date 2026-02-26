@@ -11,10 +11,9 @@ on:
         description: "Source platform repo (e.g. adamwolfe2/TBGC)"
         required: true
         default: "adamwolfe2/TBGC"
-  # Twice daily — 8am and 12am (midnight) UTC
+  # Once daily at 8am UTC (midnight Pacific)
   schedule:
     - cron: "0 8 * * *"
-    - cron: "0 0 * * *"
 
 env:
   SOURCE_REPO: ${{ github.event.inputs.source_repo || 'adamwolfe2/TBGC' }}
