@@ -79,6 +79,19 @@
   animation: marquee-reverse 30s linear infinite;
 }
 
+/* Ticker for demo portal trust bar */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-ticker {
+  animation: ticker 22s linear infinite;
+  will-change: transform;
+}
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+
 /* ── Loading pulse ──────────────────────────────────────────────────────── */
 @keyframes loading-bar {
   0% {

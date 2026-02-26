@@ -30,6 +30,7 @@ import {
   MapPin,
   ExternalLink,
   ChevronRight,
+  ChevronDown,
   Minus,
   Download,
   Edit,
@@ -37,6 +38,16 @@ import {
   Quote,
   Send,
   Shield,
+  Snowflake,
+  CreditCard,
+  Truck,
+  ClipboardList,
+  X,
+  Trash2,
+  Zap,
+  Target,
+  Calendar,
+  Receipt,
 } from "lucide-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────
@@ -126,10 +137,16 @@ type SeedData = {
   invoices: SeedInvoice[];
 };
 
+type CartItem = {
+  product: ScrapeData["products"][0];
+  quantity: number;
+};
+
 type View =
   | "marketing"
   | "catalog"
   | "about"
+  | "checkout"
   | "client-dashboard"
   | "client-orders"
   | "client-invoices"
@@ -138,17 +155,29 @@ type View =
   | "client-settings"
   | "admin-dashboard"
   | "admin-orders"
+  | "admin-fulfillment"
   | "admin-clients"
   | "admin-invoices"
   | "admin-products"
+  | "admin-leads"
   | "admin-analytics"
   | "sms-demo";
 
-type ViewProps = { brand: Brand; data: ScrapeData; seed: SeedData };
+type ViewProps = {
+  brand: Brand;
+  data: ScrapeData;
+  seed: SeedData;
+  cart?: CartItem[];
+  onAddToCart?: (product: ScrapeData["products"][0]) => void;
+  onRemoveFromCart?: (productName: string) => void;
+  onUpdateQuantity?: (productName: string, qty: number) => void;
+  onOpenCart?: () => void;
+  onNavigate?: (view: View) => void;
+};
 
 // ── Nav Items ─────────────────────────────────────────────────────────────
 
-const NAV_ITEMS: { id: View; label: string; icon: typeof Home; group: string }[] = [
+const NAV_ITEMS: { id: View; label: string; icon: typeof Home; group: string; badge?: number }[] = [
   { id: "marketing", label: "Marketing Site", icon: Home, group: "Public" },
   { id: "catalog", label: "Product Catalog", icon: Package, group: "Public" },
   { id: "about", label: "About", icon: Building2, group: "Public" },
@@ -156,13 +185,15 @@ const NAV_ITEMS: { id: View; label: string; icon: typeof Home; group: string }[]
   { id: "client-orders", label: "Orders", icon: ShoppingCart, group: "Client Portal" },
   { id: "client-invoices", label: "Invoices", icon: FileText, group: "Client Portal" },
   { id: "client-analytics", label: "Analytics", icon: BarChart3, group: "Client Portal" },
-  { id: "client-referrals", label: "Referrals", icon: Heart, group: "Client Portal" },
+  { id: "client-referrals", label: "Refer & Earn", icon: Heart, group: "Client Portal" },
   { id: "client-settings", label: "Settings", icon: Settings, group: "Client Portal" },
-  { id: "admin-dashboard", label: "Dashboard", icon: LayoutDashboard, group: "Admin Panel" },
-  { id: "admin-orders", label: "Orders", icon: ShoppingCart, group: "Admin Panel" },
+  { id: "admin-dashboard", label: "CEO Dashboard", icon: LayoutDashboard, group: "Admin Panel" },
+  { id: "admin-orders", label: "Orders", icon: ShoppingCart, group: "Admin Panel", badge: 4 },
+  { id: "admin-fulfillment", label: "Fulfillment", icon: Truck, group: "Admin Panel", badge: 3 },
   { id: "admin-clients", label: "Clients", icon: Users, group: "Admin Panel" },
-  { id: "admin-invoices", label: "Invoices", icon: FileText, group: "Admin Panel" },
+  { id: "admin-invoices", label: "Invoices", icon: FileText, group: "Admin Panel", badge: 2 },
   { id: "admin-products", label: "Products", icon: Package, group: "Admin Panel" },
+  { id: "admin-leads", label: "Leads", icon: Zap, group: "Admin Panel", badge: 5 },
   { id: "admin-analytics", label: "Analytics", icon: BarChart3, group: "Admin Panel" },
   { id: "sms-demo", label: "SMS Ordering", icon: MessageSquare, group: "Features" },
 ];
@@ -390,104 +421,192 @@ function ProductImage({
 // VIEW 1: Marketing Homepage
 // ═══════════════════════════════════════════════════════════════════════════
 
-function MarketingView({ brand, data }: ViewProps) {
-  const headline = data.heroHeadline || data.tagline || `Premium ${data.industry || "wholesale"} products, delivered to your door`;
+function MarketingView({ brand, data, onNavigate }: ViewProps) {
+  const headline = data.heroHeadline || data.tagline || `Premium ${data.industry || "Wholesale"} Products, Always Fresh.`;
   const featuredProducts = data.products.filter((p) => p.featured).slice(0, 4);
   const displayProducts = featuredProducts.length >= 4 ? featuredProducts : data.products.slice(0, 4);
-  const vps = data.valuePropositions.length > 0 ? data.valuePropositions : ["Premium Quality", "Fast Delivery", "500+ Partners", "Dedicated Support"];
+  const trustItems = data.valuePropositions.length > 0
+    ? data.valuePropositions
+    : ["Same-Week Delivery", "Premium Quality", "Net-30 Terms", "Cold Chain Certified", "Dedicated Support"];
+
   return (
     <div className="space-y-0">
-      {/* Hero */}
-      <div className="p-8 sm:p-12" style={{ backgroundColor: brand.color }}>
-        <div className="max-w-2xl">
-          <h1 className="text-3xl sm:text-4xl font-serif font-normal text-white mb-4 leading-tight">
+      {/* ── Hero ── */}
+      <section className="px-6 sm:px-10 py-12 sm:py-20 bg-[#F9F7F4] border-b border-[#E5E1DB]">
+        <div className="max-w-3xl">
+          <p className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-[#C8C0B4] mb-5">
+            Wholesale · Est. {data.location || "United States"}
+          </p>
+          <h1
+            className="font-serif font-bold leading-[1.02] tracking-tight text-[#0A0A0A] mb-6"
+            style={{ fontSize: "clamp(2.2rem, 5vw, 3.8rem)" }}
+          >
             {headline}
           </h1>
-          <p className="font-sans text-sm text-white/70 mb-6 max-w-lg leading-relaxed">
+          <p className="text-sm sm:text-base text-[#0A0A0A]/50 max-w-lg leading-relaxed mb-8">
             {data.companyDescription || `${brand.company} — your trusted wholesale partner. Browse our catalog, place orders online, and track deliveries in real time.`}
           </p>
-          <div className="flex gap-3">
-            <button className="bg-white px-6 py-3 font-mono text-xs uppercase tracking-wide border border-white" style={{ color: brand.color }}>
-              {data.ctaText || "Browse Catalog"} <ArrowRight className="w-3.5 h-3.5 inline ml-1" />
+          <div className="flex flex-col sm:flex-row gap-3">
+            <button
+              onClick={() => onNavigate?.("catalog")}
+              className="h-12 px-8 text-sm font-medium tracking-wide bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 transition-colors"
+            >
+              Browse the Catalog
             </button>
-            <button className="px-6 py-3 font-mono text-xs uppercase tracking-wide border border-white/40 text-white hover:bg-white/10">
+            <button className="h-12 px-8 text-sm font-medium tracking-wide border border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors">
               Apply for Wholesale
             </button>
           </div>
+          <div className="mt-10 opacity-40">
+            <ChevronDown className="h-5 w-5 text-[#0A0A0A] animate-bounce" />
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Trust Bar */}
-      <div className="bg-[#1A1614] py-3 overflow-hidden">
-        <div className="flex gap-8 animate-marquee whitespace-nowrap">
-          {[...vps, ...vps, ...vps].map((vp, i) => (
-            <span key={i} className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#C8C0B4] flex items-center gap-2">
-              <span className="w-1 h-1 bg-[#C8C0B4]" />
-              {vp}
+      {/* ── Trust Bar / Scrolling Marquee ── */}
+      <div className="bg-[#1A1614] text-[#F9F7F4] py-3 overflow-hidden select-none">
+        <div className="flex whitespace-nowrap" style={{ animation: "ticker 22s linear infinite" }}>
+          {[...trustItems, ...trustItems, ...trustItems].map((item, i) => (
+            <span key={i} className="mx-6 sm:mx-10 text-[10px] sm:text-xs tracking-[0.18em] uppercase font-medium">
+              {item}
+              <span className="mx-5 sm:mx-8 opacity-25">&middot;</span>
             </span>
           ))}
         </div>
       </div>
 
-      {/* Featured Products */}
-      <div className="p-6 sm:p-8 bg-[#F9F7F4]">
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Curated Selection</p>
-            <h2 className="font-serif text-2xl font-bold text-[#0A0A0A]">Featured Products</h2>
+      {/* ── This Week's Highlights (gap-px grid) ── */}
+      <section className="py-10 sm:py-16 border-b border-[#E5E1DB] bg-[#F9F7F4]/50">
+        <div className="px-6 sm:px-10 mb-8">
+          <p className="text-xs tracking-[0.2em] uppercase text-[#C8C0B4] mb-3">Curated Selection</p>
+          <div className="flex items-end justify-between">
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A0A0A]">This Week&apos;s Highlights</h2>
+            <button
+              onClick={() => onNavigate?.("catalog")}
+              className="hidden sm:flex items-center gap-1 text-xs tracking-wide text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors"
+            >
+              View Full Catalog <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
-          <button className="font-mono text-[10px] uppercase tracking-wide text-[#0A0A0A]/60 hover:text-[#0A0A0A] flex items-center gap-1">
-            View All <ChevronRight className="w-3 h-3" />
-          </button>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="mx-6 sm:mx-10 grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#E5E1DB]">
           {displayProducts.map((p, i) => (
-            <div key={`${p.name}-${i}`} className="border border-[#E5E1DB] bg-[#F9F7F4] hover:border-[#C8C0B4] transition-colors cursor-pointer">
+            <div key={`${p.name}-${i}`} className="bg-[#F9F7F4] flex flex-col group hover:bg-[#F0EDE8] transition-colors">
               <ProductImage product={p} brandColor={brand.color} size="lg" />
-              <div className="p-4">
-                <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">{p.category}</div>
-                <div className="font-serif text-sm mt-1 text-[#0A0A0A]">{p.name}</div>
-                <div className="font-mono text-xs font-semibold mt-1 text-[#0A0A0A]">{p.price}{p.unit ? `/${p.unit}` : ""}</div>
+              <div className="p-4 sm:p-5 flex flex-col flex-1">
+                <p className="text-[9px] tracking-[0.18em] uppercase text-[#C8C0B4] mb-1.5">{p.category}</p>
+                <h3 className="font-serif font-bold leading-tight text-sm sm:text-base text-[#0A0A0A] mb-2">{p.name}</h3>
+                <p className="text-xs text-[#0A0A0A]/50 leading-relaxed line-clamp-2 mb-3">{p.description}</p>
+                <p className="text-base font-bold text-[#0A0A0A] mt-auto">
+                  {p.price}<span className="text-xs font-normal text-[#C8C0B4]">{p.unit ? `/${p.unit}` : ""}</span>
+                </p>
+                {data.certifications.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    <span className="text-[9px] tracking-wide uppercase border border-[#E5E1DB] px-1.5 py-0.5 text-[#C8C0B4] inline-flex items-center gap-0.5">
+                      <Snowflake className="h-2 w-2" /> Cold Chain
+                    </span>
+                  </div>
+                )}
+              </div>
+              <div className="px-4 sm:px-5 pb-4 sm:pb-5 mt-auto">
+                <button
+                  onClick={() => onNavigate?.("catalog")}
+                  className="w-full h-9 text-xs font-medium border border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] flex items-center justify-center gap-1.5 transition-all"
+                >
+                  <ShoppingCart className="h-3 w-3" /> Add to Order
+                </button>
               </div>
             </div>
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Testimonials */}
+      {/* ── How It Works ── */}
+      <section className="border-b border-[#E5E1DB]">
+        <div className="px-6 sm:px-10 pt-10 sm:pt-16 mb-8">
+          <p className="text-xs tracking-[0.2em] uppercase text-[#C8C0B4] mb-3">Simple Process</p>
+          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A0A0A]">How It Works</h2>
+        </div>
+        <div className="mx-6 sm:mx-10 mb-10 sm:mb-16 grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#E5E1DB]">
+          {[
+            { step: "01", title: "Apply", desc: `Submit a quick wholesale application. We review and approve qualified ${data.industry?.toLowerCase() || "business"} partners within 24 hours.` },
+            { step: "02", title: "Order", desc: "Browse the full catalog, build your order online or text it via SMS. We handle the rest — same-week fulfillment." },
+            { step: "03", title: "Grow", desc: "Track orders, manage invoices, earn loyalty rewards, and unlock volume pricing as your account grows." },
+          ].map((s) => (
+            <div key={s.step} className="bg-[#F9F7F4] p-8 sm:p-10">
+              <p className="font-mono text-4xl sm:text-5xl font-bold text-[#E5E1DB] mb-6 leading-none">{s.step}</p>
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#0A0A0A] mb-3">{s.title}</h3>
+              <p className="text-sm text-[#0A0A0A]/50 leading-relaxed">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Testimonials ── */}
       {data.testimonials.length > 0 && (
-        <div className="p-6 sm:p-8 bg-white border-t border-[#E5E1DB]">
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Testimonials</p>
-          <h2 className="font-serif text-2xl font-bold text-[#0A0A0A] mb-6">What Our Clients Say</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {data.testimonials.slice(0, 4).map((t, i) => (
-              <div key={i} className="border border-[#E5E1DB] bg-[#F9F7F4] p-5">
-                <Quote className="w-4 h-4 text-[#C8C0B4] mb-3" />
-                <p className="font-sans text-sm text-[#0A0A0A]/80 mb-4 leading-relaxed">{t.quote}</p>
+        <section className="py-10 sm:py-16 border-b border-[#E5E1DB]">
+          <div className="px-6 sm:px-10 mb-8">
+            <p className="text-xs tracking-[0.2em] uppercase text-[#C8C0B4] mb-3">Trusted By</p>
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A0A0A]">What Our Partners Say</h2>
+          </div>
+          <div className="mx-6 sm:mx-10 grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#E5E1DB]">
+            {data.testimonials.slice(0, 3).map((t, i) => (
+              <div key={i} className="bg-[#F9F7F4] p-8 sm:p-10 flex flex-col justify-between min-h-[200px]">
                 <div>
-                  <div className="font-mono text-xs font-semibold text-[#0A0A0A]">{t.author}</div>
-                  {t.company && <div className="font-mono text-[10px] text-[#C8C0B4]">{t.company}</div>}
+                  <p className="font-serif text-5xl text-[#E5E1DB] leading-none mb-4 select-none">&ldquo;</p>
+                  <p className="text-[15px] leading-relaxed text-[#0A0A0A]/80 italic font-serif">{t.quote}</p>
+                </div>
+                <div className="mt-6 pt-4 border-t border-[#E5E1DB]">
+                  <p className="font-medium text-sm text-[#0A0A0A]">{t.author}</p>
+                  {t.company && <p className="text-[#C8C0B4] text-xs mt-0.5">{t.company}</p>}
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </section>
       )}
 
-      {/* About Snippet */}
-      {data.aboutSnippet && (
-        <div className="p-6 sm:p-8 bg-[#F9F7F4] border-t border-[#E5E1DB]">
-          <div className="max-w-2xl">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">About</p>
-            <h2 className="font-serif text-xl font-bold text-[#0A0A0A] mb-3">{data.companyName}</h2>
-            <p className="font-sans text-sm text-[#0A0A0A]/70 leading-relaxed">{data.aboutSnippet}</p>
+      {/* ── Newsletter / CTA Section ── */}
+      <section className="border-b border-[#E5E1DB] bg-[#F9F7F4] overflow-hidden">
+        <div className="px-6 sm:px-10 py-16 sm:py-24 max-w-lg">
+          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-5">Stay Connected</p>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold italic text-[#0A0A0A] leading-none mb-4">
+            Get the Latest.
+          </h2>
+          <p className="text-sm text-[#0A0A0A]/50 leading-relaxed mb-6">
+            New products, seasonal drops, and exclusive wholesale pricing — delivered to your inbox weekly.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 max-w-md">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              className="flex-1 h-12 px-4 bg-white border border-[#E5E1DB] text-[#0A0A0A] placeholder:text-[#C8C0B4] text-sm focus:outline-none focus:border-[#0A0A0A]"
+            />
+            <button className="h-12 px-6 bg-[#0A0A0A] text-[#F9F7F4] text-sm font-medium hover:bg-[#0A0A0A]/80 transition-colors">
+              Subscribe
+            </button>
           </div>
         </div>
-      )}
+      </section>
 
-      {/* Certifications */}
+      {/* ── Stats Bar ── */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-[#E5E1DB] bg-[#F9F7F4]">
+        {[
+          { stat: `${Math.max(data.products.length, 20)}+`, label: "Products" },
+          { stat: "500+", label: "Partners Served" },
+          { stat: data.deliveryInfo || "Same Week", label: "Delivery" },
+          { stat: data.paymentInfo || "Net 30", label: "Payment Terms" },
+        ].map((s) => (
+          <div key={s.label} className="p-6 sm:p-8 text-center border-r border-[#E5E1DB] last:border-r-0">
+            <div className="text-2xl sm:text-3xl font-serif font-bold text-[#0A0A0A] mb-1">{s.stat}</div>
+            <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* ── Certifications ── */}
       {data.certifications.length > 0 && (
-        <div className="px-6 sm:px-8 py-4 border-t border-[#E5E1DB] bg-[#F9F7F4]">
+        <div className="px-6 sm:px-10 py-6 border-b border-[#E5E1DB] bg-[#F9F7F4]">
           <div className="flex flex-wrap gap-2">
             {data.certifications.map((cert, i) => (
               <span key={i} className="border border-[#E5E1DB] px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider text-[#C8C0B4] flex items-center gap-1.5">
@@ -498,19 +617,37 @@ function MarketingView({ brand, data }: ViewProps) {
         </div>
       )}
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 border-t border-[#E5E1DB] bg-[#F9F7F4]">
-        {[
-          { stat: `${data.products.length}+`, label: "Products" },
-          { stat: "500+", label: "Partners" },
-          { stat: data.deliveryInfo || "Same Day", label: "Delivery" },
-        ].map((s) => (
-          <div key={s.label} className="p-6 text-center border-r border-[#E5E1DB] last:border-r-0">
-            <div className="text-2xl font-serif font-bold text-[#0A0A0A] mb-1">{s.stat}</div>
-            <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">{s.label}</div>
+      {/* ── Footer ── */}
+      <footer className="bg-[#1A1614] text-[#F9F7F4] px-6 sm:px-10 py-10 sm:py-14">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10">
+          <div className="col-span-2">
+            <p className="font-serif text-xl font-bold mb-2">{brand.company}</p>
+            <p className="text-[#F9F7F4]/40 text-sm leading-relaxed max-w-xs">
+              {data.tagline || `Premium ${data.industry?.toLowerCase() || "wholesale"} products, delivered with care.`}
+            </p>
           </div>
-        ))}
-      </div>
+          <div>
+            <p className="text-[10px] tracking-[0.2em] uppercase text-[#F9F7F4]/30 mb-3 font-medium">Catalog</p>
+            <ul className="space-y-2 text-sm text-[#F9F7F4]/50">
+              {Array.from(new Set(data.products.map((p) => p.category).filter(Boolean))).slice(0, 4).map((cat) => (
+                <li key={cat} className="hover:text-[#F9F7F4] cursor-pointer transition-colors">{cat}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="text-[10px] tracking-[0.2em] uppercase text-[#F9F7F4]/30 mb-3 font-medium">Company</p>
+            <ul className="space-y-2 text-sm text-[#F9F7F4]/50">
+              <li className="hover:text-[#F9F7F4] cursor-pointer transition-colors">About</li>
+              <li className="hover:text-[#F9F7F4] cursor-pointer transition-colors">Wholesale</li>
+              <li className="hover:text-[#F9F7F4] cursor-pointer transition-colors">Contact</li>
+            </ul>
+          </div>
+        </div>
+        <div className="border-t border-[#F9F7F4]/10 pt-6 flex justify-between items-center">
+          <p className="text-[#F9F7F4]/30 text-xs">&copy; {new Date().getFullYear()} {brand.company}. All rights reserved.</p>
+          <p className="text-[#F9F7F4]/20 text-[10px] font-mono">Powered by Helm</p>
+        </div>
+      </footer>
     </div>
   );
 }
@@ -519,9 +656,10 @@ function MarketingView({ brand, data }: ViewProps) {
 // VIEW 2: Product Catalog
 // ═══════════════════════════════════════════════════════════════════════════
 
-function CatalogView({ brand, data }: ViewProps) {
+function CatalogView({ brand, data, cart, onAddToCart, onOpenCart }: ViewProps) {
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
+  const [addedItems, setAddedItems] = useState<Set<string>>(new Set());
 
   const categories = ["All", ...Array.from(new Set(data.products.map((p) => p.category).filter(Boolean)))];
 
@@ -531,69 +669,128 @@ function CatalogView({ brand, data }: ViewProps) {
     return matchesSearch && matchesCat;
   });
 
+  const handleAdd = (p: ScrapeData["products"][0]) => {
+    onAddToCart?.(p);
+    setAddedItems((prev) => new Set(prev).add(p.name));
+    setTimeout(() => setAddedItems((prev) => { const n = new Set(prev); n.delete(p.name); return n; }), 1500);
+  };
+
+  const cartCount = cart?.reduce((s, c) => s + c.quantity, 0) || 0;
+  const stockLevels = [24, 8, 156, 89, 203, 67, 45, 3, 120, 15, 78, 92];
+
   return (
-    <div className="p-6 bg-[#F9F7F4]">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Browse</p>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Product Catalog</h2>
-        </div>
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#C8C0B4]" />
-          <input
-            placeholder="Search products..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="border border-[#E5E1DB] bg-[#F9F7F4] pl-9 pr-4 py-2 font-mono text-xs w-48 focus:outline-none focus:border-[#C8C0B4]"
-          />
-        </div>
+    <div className="bg-[#F9F7F4]">
+      {/* Catalog Hero */}
+      <div className="px-6 sm:px-10 pt-8 pb-6 border-b border-[#E5E1DB]">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-3">Wholesale Catalog</p>
+        <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.05] text-[#0A0A0A]">
+          The Full Catalog.
+        </h1>
       </div>
 
-      <div className="flex gap-2 mb-5 flex-wrap">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setActiveCategory(cat)}
-            className="px-3 py-1.5 font-mono text-[10px] uppercase tracking-wide border transition-colors"
-            style={
-              activeCategory === cat
-                ? { backgroundColor: brand.color, borderColor: brand.color, color: "#F9F7F4" }
-                : { backgroundColor: "transparent", borderColor: "#E5E1DB", color: "#C8C0B4" }
-            }
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {filtered.map((p, i) => (
-          <div key={`${p.name}-${i}`} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4 flex gap-4 hover:border-[#C8C0B4] transition-colors">
-            <ProductImage product={p} brandColor={brand.color} size="md" />
-            <div className="flex-1 min-w-0">
-              <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">{p.category}</div>
-              <div className="font-serif text-sm text-[#0A0A0A] mt-0.5">{p.name}</div>
-              <div className="font-sans text-xs text-[#0A0A0A]/50 line-clamp-2 mt-1">{p.description}</div>
-              <div className="flex items-center gap-3 mt-2">
-                <span className="font-mono text-xs font-semibold text-[#0A0A0A]">{p.price}{p.unit ? `/${p.unit}` : ""}</span>
-                <span className="font-mono text-[10px] text-[#C8C0B4] flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 bg-green-500" /> In Stock
-                </span>
-              </div>
-            </div>
+      {/* Filter bar */}
+      <div className="px-6 sm:px-10 py-4 border-b border-[#E5E1DB] flex flex-wrap items-center justify-between gap-3">
+        <div className="flex flex-nowrap overflow-x-auto gap-1.5 pb-1">
+          {categories.map((cat) => (
             <button
-              className="self-center px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-[#F9F7F4] border flex-shrink-0 hover:opacity-80"
-              style={{ backgroundColor: brand.color, borderColor: brand.color }}
+              key={cat}
+              onClick={() => setActiveCategory(cat)}
+              className="text-[11px] tracking-wide border px-4 py-2 transition-all whitespace-nowrap"
+              style={
+                activeCategory === cat
+                  ? { backgroundColor: "#0A0A0A", color: "#F9F7F4", borderColor: "#0A0A0A" }
+                  : { backgroundColor: "transparent", borderColor: "#E5E1DB", color: "#0A0A0A" }
+              }
             >
-              Add to Cart
+              {cat}
             </button>
+          ))}
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-xs text-[#0A0A0A]/40">
+            <span className="font-medium text-[#0A0A0A]/70">{filtered.length}</span> products
+          </span>
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#C8C0B4]" />
+            <input
+              placeholder="Search..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="border border-[#E5E1DB] bg-white pl-9 pr-4 py-2 text-xs w-40 focus:outline-none focus:border-[#0A0A0A]"
+            />
           </div>
-        ))}
+          {cartCount > 0 && (
+            <button
+              onClick={() => onOpenCart?.()}
+              className="relative h-9 px-4 text-xs font-medium bg-[#0A0A0A] text-[#F9F7F4] flex items-center gap-2"
+            >
+              <ShoppingCart className="w-3.5 h-3.5" />
+              Cart ({cartCount})
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Product Grid — gap-px technique */}
+      <div className="mx-6 sm:mx-10 my-6 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-[#E5E1DB]">
+        {filtered.map((p, i) => {
+          const stock = stockLevels[i % stockLevels.length];
+          const isAdded = addedItems.has(p.name);
+          return (
+            <article key={`${p.name}-${i}`} className="bg-[#F9F7F4] flex flex-col group hover:bg-[#F0EDE8] transition-colors">
+              <div className="flex flex-col flex-1 p-4 sm:p-5">
+                <p className="text-[9px] tracking-[0.18em] uppercase text-[#C8C0B4] mb-1.5">{p.category}</p>
+                <h3 className="font-serif font-bold leading-tight text-sm sm:text-base text-[#0A0A0A] mb-2">{p.name}</h3>
+                <p className="text-base font-bold text-[#0A0A0A] leading-none">
+                  {p.price}<span className="text-xs font-normal text-[#C8C0B4]">{p.unit ? `/${p.unit}` : ""}</span>
+                </p>
+                <p className="text-xs text-[#0A0A0A]/50 leading-relaxed line-clamp-2 mt-2 mb-auto">{p.description}</p>
+                <div className="flex flex-wrap gap-1 mt-3">
+                  {i % 3 === 0 && (
+                    <span className="text-[9px] tracking-wide uppercase border border-[#E5E1DB] px-1.5 py-0.5 text-[#C8C0B4] inline-flex items-center gap-0.5">
+                      <Snowflake className="h-2 w-2" /> Cold Chain
+                    </span>
+                  )}
+                  {i % 4 === 0 && (
+                    <span className="text-[9px] tracking-wide uppercase border border-[#E5E1DB] px-1.5 py-0.5 text-[#C8C0B4] inline-flex items-center gap-0.5">
+                      <CreditCard className="h-2 w-2" /> Prepay
+                    </span>
+                  )}
+                  {stock <= 8 && (
+                    <span className="text-[9px] tracking-wide uppercase border border-amber-300 bg-amber-50 text-amber-700 px-1.5 py-0.5 inline-flex items-center gap-0.5">
+                      <span className="h-1.5 w-1.5 bg-amber-500 inline-block" /> Only {stock} left
+                    </span>
+                  )}
+                </div>
+                {data.minimumOrder && (
+                  <p className="text-[10px] text-[#C8C0B4] mt-2 pt-2 border-t border-[#E5E1DB]">Min. order: {data.minimumOrder}</p>
+                )}
+              </div>
+              <div className="px-4 sm:px-5 pb-4 sm:pb-5 mt-auto">
+                <button
+                  onClick={() => handleAdd(p)}
+                  className={`w-full h-9 text-xs font-medium flex items-center justify-center gap-1.5 transition-all ${
+                    isAdded
+                      ? "bg-[#0A0A0A] text-[#F9F7F4]"
+                      : "border border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4]"
+                  }`}
+                >
+                  {isAdded ? (
+                    <><CheckCircle2 className="h-3 w-3" /> Added</>
+                  ) : (
+                    <><ShoppingCart className="h-3 w-3" /> Add to Order</>
+                  )}
+                </button>
+              </div>
+            </article>
+          );
+        })}
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center py-12">
-          <p className="font-mono text-sm text-[#C8C0B4]">No products found matching your criteria.</p>
+        <div className="text-center py-16">
+          <Package className="w-8 h-8 text-[#E5E1DB] mx-auto mb-3" />
+          <p className="text-sm text-[#C8C0B4]">No products found matching your criteria.</p>
         </div>
       )}
     </div>
@@ -728,107 +925,132 @@ function AboutView({ brand, data }: ViewProps) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 function ClientDashboardView({ brand, data, seed }: ViewProps) {
-  const top3Products = data.products.slice(0, 3);
-  const recentOrders = seed.orders.slice(0, 3);
+  const top4Products = data.products.slice(0, 4);
+  const recentOrders = seed.orders.slice(0, 4);
   const months = ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb"];
   const spending = [2800, 4100, 3200, 5600, 4800, 6200];
   const maxSpend = Math.max(...spending);
+  const creditUsed = 4200;
+  const creditLimit = 10000;
+  const creditPct = Math.round((creditUsed / creditLimit) * 100);
 
   return (
     <div className="p-6 bg-[#F9F7F4]">
+      {/* Welcome header */}
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Welcome back, Chef Thomas</h2>
-          <div className="font-mono text-xs text-[#C8C0B4]">{data.companyName} · VIP Partner</div>
+          <div className="flex items-center gap-2 mt-1">
+            <span className="text-xs text-[#0A0A0A]/50">{seed.clients[0]?.name || "Restaurant"}</span>
+            <span className="border border-amber-300 bg-amber-100 text-amber-800 px-2 py-0.5 text-[9px] uppercase tracking-wider font-medium">Bronze</span>
+          </div>
         </div>
-        <div className="px-3 py-1.5 font-mono text-[10px] uppercase tracking-wide text-[#F9F7F4] flex items-center gap-1" style={{ backgroundColor: brand.color }}>
-          <Star className="w-3 h-3" /> 4,280 Points
+        <div className="flex items-center gap-2">
+          <div className="px-3 py-1.5 text-[10px] uppercase tracking-wide text-[#F9F7F4] flex items-center gap-1 bg-[#0A0A0A]">
+            <Star className="w-3 h-3" /> 4,280 Points
+          </div>
         </div>
       </div>
 
-      {/* KPI Cards */}
+      {/* KPI Cards — font-serif values */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         {[
-          { label: "Active Orders", value: "3", icon: ShoppingCart },
-          { label: "Pending Invoices", value: `$${seed.invoices.filter((i) => i.status === "Pending").reduce((s, i) => s + i.amount, 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}`, icon: FileText },
-          { label: "This Month", value: "$6,200", icon: DollarSign },
+          { label: "Total Spend", value: "$26.8K", icon: DollarSign },
+          { label: "Total Orders", value: "42", icon: ShoppingCart },
+          { label: "Avg Order Value", value: "$638", icon: TrendingUp },
           { label: "Loyalty Points", value: "4,280", icon: Heart },
         ].map((kpi) => (
-          <div key={kpi.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
-            <kpi.icon className="w-4 h-4 text-[#C8C0B4] mb-2" strokeWidth={1.5} />
-            <div className="font-mono text-lg font-bold text-[#0A0A0A]">{kpi.value}</div>
-            <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">{kpi.label}</div>
+          <div key={kpi.label} className="border border-[#C8C0B4] bg-[#F9F7F4] p-4">
+            <div className="flex items-center justify-between pb-2">
+              <kpi.icon className="w-4 h-4 text-[#C8C0B4]" strokeWidth={1.5} />
+            </div>
+            <div className="text-2xl font-bold font-serif text-[#0A0A0A]">{kpi.value}</div>
+            <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mt-0.5">{kpi.label}</div>
           </div>
         ))}
       </div>
 
-      {/* Quick Reorder */}
-      {top3Products.length > 0 && (
+      {/* Credit Utilization */}
+      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-4 mb-6">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Credit Utilization</span>
+          <span className="font-mono text-xs text-[#0A0A0A]">${creditUsed.toLocaleString()} / ${creditLimit.toLocaleString()}</span>
+        </div>
+        <div className="h-1.5 bg-[#E5E1DB] overflow-hidden">
+          <div className={`h-full transition-all ${creditPct > 80 ? "bg-red-500" : creditPct > 60 ? "bg-amber-400" : "bg-[#0A0A0A]"}`} style={{ width: `${creditPct}%` }} />
+        </div>
+        <p className="text-[10px] text-[#C8C0B4] mt-1">{creditPct}% utilized · Net 30 terms</p>
+      </div>
+
+      {/* Quick Reorder — TBGC style */}
+      {top4Products.length > 0 && (
         <div className="border border-[#E5E1DB] bg-[#F9F7F4] mb-6">
           <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center justify-between">
-            <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#0A0A0A]">Quick Reorder</span>
-            <span className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">Your Favorites</span>
+            <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Quick Reorder</span>
+            <span className="text-[10px] text-[#C8C0B4]">Your Favorites</span>
           </div>
-          <div className="p-4 flex gap-3 overflow-x-auto">
-            {top3Products.map((p, i) => (
-              <div key={`${p.name}-${i}`} className="border border-[#E5E1DB] bg-white p-3 min-w-[180px] flex-shrink-0">
-                <ProductImage product={p} brandColor={brand.color} size="sm" />
-                <div className="font-serif text-xs text-[#0A0A0A] mt-2">{p.name}</div>
-                <div className="font-mono text-[10px] text-[#C8C0B4] mt-0.5">{p.price}{p.unit ? `/${p.unit}` : ""}</div>
-                <div className="flex items-center gap-1 mt-2">
-                  <button className="w-6 h-6 border border-[#E5E1DB] flex items-center justify-center text-[#C8C0B4] hover:border-[#0A0A0A]">
+          <div className="p-4 flex gap-3 overflow-x-auto pb-1">
+            {top4Products.map((p, i) => (
+              <div key={`${p.name}-${i}`} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4 min-w-[180px] flex-shrink-0 flex flex-col gap-3">
+                <div>
+                  <p className="font-medium text-sm text-[#0A0A0A] leading-snug">{p.name}</p>
+                  <p className="text-xs text-[#0A0A0A]/40 mt-0.5">Last ordered {3 + i}d ago</p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <button className="h-7 w-7 border border-[#C8C0B4] text-[#0A0A0A] flex items-center justify-center hover:bg-[#C8C0B4]/20 transition-colors">
                     <Minus className="w-3 h-3" />
                   </button>
-                  <span className="w-8 text-center font-mono text-xs text-[#0A0A0A]">2</span>
-                  <button className="w-6 h-6 border border-[#E5E1DB] flex items-center justify-center text-[#C8C0B4] hover:border-[#0A0A0A]">
+                  <span className="text-sm font-semibold text-[#0A0A0A] w-6 text-center">{2 + i}</span>
+                  <button className="h-7 w-7 border border-[#C8C0B4] text-[#0A0A0A] flex items-center justify-center hover:bg-[#C8C0B4]/20 transition-colors">
                     <Plus className="w-3 h-3" />
                   </button>
-                  <button className="ml-auto px-2 py-1 font-mono text-[9px] uppercase text-[#F9F7F4]" style={{ backgroundColor: brand.color }}>
-                    Add
-                  </button>
                 </div>
+                <button className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 text-xs min-h-[36px] font-medium transition-colors">
+                  Add to Order
+                </button>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Recent Orders */}
         <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
           <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center justify-between">
-            <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#0A0A0A]">Recent Orders</span>
+            <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Recent Orders</span>
             <button className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono hover:text-[#0A0A0A]">View All</button>
           </div>
           {recentOrders.map((order) => (
-            <div key={order.number} className="px-4 py-3 border-b border-[#E5E1DB]/50 flex items-center justify-between">
+            <div key={order.number} className="px-4 py-3 border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02] transition-colors flex items-center justify-between">
               <div>
                 <div className="font-mono text-xs font-semibold text-[#0A0A0A]">{order.number}</div>
-                <div className="font-mono text-[10px] text-[#C8C0B4]">{order.date} · {order.itemCount} items</div>
+                <div className="text-[10px] text-[#C8C0B4]">{order.date} · {order.itemCount} items</div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="font-mono text-xs font-semibold text-[#0A0A0A]">${order.total.toLocaleString()}</span>
+                <span className="font-mono text-xs font-bold text-[#0A0A0A]">${order.total.toLocaleString()}</span>
                 <StatusBadge status={order.status} brandColor={brand.color} />
               </div>
             </div>
           ))}
         </div>
 
-        {/* Monthly Spending */}
+        {/* Monthly Spending — horizontal bars (TBGC style) */}
         <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
-          <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#0A0A0A] block mb-4">Monthly Spending</span>
-          <div className="flex items-end gap-2 h-32">
+          <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider block mb-4">Monthly Spending</span>
+          <div className="space-y-2">
             {months.map((m, i) => (
-              <div key={m} className="flex-1 flex flex-col items-center gap-1">
-                <div className="font-mono text-[9px] text-[#0A0A0A] font-semibold">${(spending[i] / 1000).toFixed(1)}K</div>
-                <div
-                  className="w-full transition-all"
-                  style={{
-                    height: `${(spending[i] / maxSpend) * 90}px`,
-                    backgroundColor: i === months.length - 1 ? brand.color : `${brand.color}30`,
-                  }}
-                />
-                <div className="font-mono text-[9px] text-[#C8C0B4]">{m}</div>
+              <div key={m} className="flex items-center gap-3">
+                <div className="w-8 text-xs font-medium text-[#0A0A0A]/50">{m}</div>
+                <div className="flex-1 h-7 bg-[#C8C0B4]/20 overflow-hidden">
+                  <div
+                    className="h-full bg-[#0A0A0A] transition-all"
+                    style={{ width: `${(spending[i] / maxSpend) * 100}%` }}
+                  />
+                </div>
+                <div className="w-14 text-xs font-semibold text-right text-[#0A0A0A]">
+                  ${(spending[i] / 1000).toFixed(1)}k
+                </div>
               </div>
             ))}
           </div>
@@ -1190,87 +1412,148 @@ function ClientSettingsView({ brand, data, seed }: ViewProps) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 function AdminDashboardView({ brand, data, seed }: ViewProps) {
-  const pendingOrders = seed.orders.filter((o) => o.status === "Processing" || o.status === "Pending").length;
-  const overdueInvoices = seed.invoices.filter((i) => i.status === "Overdue").length;
-  const newClients = seed.clients.filter((c) => c.health === "New").length;
+  const totalRevenue = seed.clients.reduce((s, c) => s + parseInt(c.spend.replace(/[^0-9]/g, ""), 10), 0);
+  const months = ["Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", "Jan", "Feb"];
+  const monthlyRev = [28, 34, 41, 38, 52, 47, 42, 58, 51, 73, 68, 84];
+  const maxRev = Math.max(...monthlyRev);
+  const categories = Array.from(new Set(data.products.map((p) => p.category).filter(Boolean)));
+  const catRevenues = categories.slice(0, 6).map((_, i) => [42, 28, 18, 12, 8, 5][i] || 5);
+  const maxCatRev = Math.max(...catRevenues);
 
   return (
     <div className="p-6 bg-[#F9F7F4]">
-      <div className="mb-6">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Admin Overview</p>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Dashboard</h2>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Executive Overview</p>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">CEO Command Center</h2>
+        </div>
+        <button className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-[#E5E1DB] bg-[#F9F7F4] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors">
+          <Download className="w-3.5 h-3.5" /> Export Summary
+        </button>
       </div>
 
-      {/* Action Items */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+      {/* 7 KPI Cards */}
+      <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 mb-6">
         {[
-          { label: "Pending Orders", value: pendingOrders.toString(), bg: brand.color, fg: "#F9F7F4" },
-          { label: "Overdue Invoices", value: overdueInvoices.toString(), bg: "#92400E", fg: "#F9F7F4" },
-          { label: "New Clients", value: newClients.toString(), bg: "#0A0A0A", fg: "#F9F7F4" },
-          { label: "Low Stock Items", value: "3", bg: "#C8C0B4", fg: "#0A0A0A" },
-        ].map((item) => (
-          <div key={item.label} className="border p-4 cursor-pointer hover:opacity-90 transition-opacity" style={{ backgroundColor: item.bg, borderColor: item.bg }}>
-            <div className="font-mono text-2xl font-bold" style={{ color: item.fg }}>{item.value}</div>
-            <div className="font-mono text-[10px] uppercase tracking-wider" style={{ color: `${item.fg}99` }}>{item.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* KPI Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
-        {[
-          { label: "Revenue (Feb)", value: "$84,230", change: "+23%", icon: DollarSign },
-          { label: "Orders (Feb)", value: "127", change: "+15%", icon: ShoppingCart },
-          { label: "Active Clients", value: "89", change: "+8", icon: Users },
-          { label: "Products", value: data.products.length.toString(), change: "Live", icon: Package },
+          { label: "Total Revenue", value: `$${(totalRevenue / 1000).toFixed(0)}K`, sub: "Cumulative all-time", icon: DollarSign },
+          { label: "YTD Revenue", value: "$61.2K", sub: "+18% vs last year", icon: TrendingUp, change: "+18%" },
+          { label: "Revenue (Feb)", value: "$17.4K", sub: "+23% vs Jan", icon: DollarSign, change: "+23%" },
+          { label: "Outstanding AR", value: `$${seed.invoices.filter((i) => i.status !== "Paid").reduce((s, i) => s + i.amount, 0).toLocaleString()}`, sub: `${seed.invoices.filter((i) => i.status === "Overdue").length} overdue`, icon: FileText },
+          { label: "Active Clients", value: seed.clients.length.toString(), sub: "+3 this month", icon: Users, change: "+3" },
+          { label: "Orders (Feb)", value: "37", sub: "+15% vs Jan", icon: ShoppingCart, change: "+15%" },
+          { label: "30-Day Forecast", value: "$19.8K", sub: "Based on pipeline", icon: Target },
         ].map((kpi) => (
           <div key={kpi.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
-            <div className="flex items-center justify-between mb-2">
-              <kpi.icon className="w-4 h-4 text-[#C8C0B4]" strokeWidth={1.5} />
-              <span className="font-mono text-[10px] font-semibold" style={{ color: brand.color }}>{kpi.change}</span>
+            <div className="flex items-center justify-between pb-2">
+              <span className="text-[9px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider leading-tight">{kpi.label}</span>
+              <kpi.icon className="h-3.5 w-3.5 text-[#C8C0B4] flex-shrink-0" />
             </div>
-            <div className="font-mono text-lg font-bold text-[#0A0A0A]">{kpi.value}</div>
-            <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">{kpi.label}</div>
+            <div className="text-2xl sm:text-3xl font-bold font-serif text-[#0A0A0A] leading-tight">{kpi.value}</div>
+            <p className="text-[10px] text-[#0A0A0A]/40 mt-1 leading-tight">
+              {kpi.change && <span className="text-emerald-600 font-medium">{kpi.change} </span>}
+              {kpi.sub}
+            </p>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* NRR Card */}
+      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-5 mb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="text-[9px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Net Revenue Retention</span>
+            <div className="text-3xl font-bold font-serif text-emerald-600 mt-1">108%</div>
+            <p className="text-[10px] text-[#0A0A0A]/40 mt-0.5">Expansion outpacing churn — healthy growth</p>
+          </div>
+          <div className="text-right">
+            <div className="text-xs text-[#0A0A0A]/50">Expansion: <span className="font-semibold text-emerald-600">+$8.2K</span></div>
+            <div className="text-xs text-[#0A0A0A]/50">Contraction: <span className="font-semibold text-red-500">-$1.4K</span></div>
+            <div className="text-xs text-[#0A0A0A]/50">Churned: <span className="font-semibold text-red-500">-$0.6K</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+        {/* Revenue Trend */}
+        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-5">
+          <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Revenue Trend (12 Months)</span>
+          <div className="flex items-end gap-1.5 h-36 mt-4">
+            {months.map((m, i) => (
+              <div key={m} className="flex-1 flex flex-col items-center gap-1">
+                <div className="font-mono text-[8px] font-semibold text-[#0A0A0A]">${monthlyRev[i]}K</div>
+                <div
+                  className="w-full transition-all"
+                  style={{
+                    height: `${(monthlyRev[i] / maxRev) * 110}px`,
+                    backgroundColor: i === months.length - 1 ? "#0A0A0A" : i >= months.length - 3 ? "#0A0A0A" : "#C8C0B4",
+                    opacity: i === months.length - 1 ? 1 : i >= months.length - 3 ? 0.6 : 0.3,
+                  }}
+                />
+                <div className="font-mono text-[8px] text-[#C8C0B4]">{m}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Revenue by Category */}
+        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-5">
+          <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Revenue by Category</span>
+          <div className="space-y-3 mt-4">
+            {categories.slice(0, 6).map((cat, i) => (
+              <div key={cat} className="flex items-center gap-3">
+                <span className="text-xs text-[#0A0A0A] w-28 truncate font-medium">{cat}</span>
+                <div className="flex-1 h-6 bg-[#E5E1DB]/40 overflow-hidden">
+                  <div
+                    className="h-full transition-all"
+                    style={{
+                      width: `${(catRevenues[i] / maxCatRev) * 100}%`,
+                      backgroundColor: ["#0A0A0A", "#2C2C2C", "#4E4E4E", "#706E6B", "#928E8A", "#C8C0B4"][i],
+                    }}
+                  />
+                </div>
+                <span className="font-mono text-xs font-bold text-[#0A0A0A] w-12 text-right">${catRevenues[i]}K</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Top Clients */}
+        <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
+          <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center justify-between">
+            <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Top Clients by Revenue</span>
+            <button className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono hover:text-[#0A0A0A]">View All</button>
+          </div>
+          <table className="w-full text-sm">
+            <tbody>
+              {seed.clients.slice(0, 5).map((client, i) => (
+                <tr key={client.name} className="border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02] transition-colors">
+                  <td className="px-4 py-3 font-mono text-[#C8C0B4] w-6">{i + 1}</td>
+                  <td className="py-3 font-medium text-[#0A0A0A]">{client.name}</td>
+                  <td className="py-3"><StatusBadge status={client.tier} brandColor={brand.color} /></td>
+                  <td className="px-4 py-3 text-right font-mono font-bold text-[#0A0A0A]">{client.spend}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
         {/* Recent Orders */}
         <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
           <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center justify-between">
-            <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#0A0A0A]">Recent Orders</span>
+            <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Recent Orders</span>
             <button className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono hover:text-[#0A0A0A]">View All</button>
           </div>
-          {seed.orders.slice(0, 4).map((order) => (
-            <div key={order.number} className="px-4 py-3 border-b border-[#E5E1DB]/50 flex items-center justify-between">
+          {seed.orders.slice(0, 5).map((order) => (
+            <div key={order.number} className="px-4 py-3 border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02] transition-colors flex items-center justify-between">
               <div>
                 <div className="font-mono text-xs font-semibold text-[#0A0A0A]">{order.number}</div>
-                <div className="font-mono text-[10px] text-[#C8C0B4]">{order.client}</div>
+                <div className="font-mono text-[10px] text-[#C8C0B4]">{order.client} · {order.date}</div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="font-mono text-xs font-semibold text-[#0A0A0A]">${order.total.toLocaleString()}</span>
+                <span className="font-mono text-xs font-bold text-[#0A0A0A]">${order.total.toLocaleString()}</span>
                 <StatusBadge status={order.status} brandColor={brand.color} />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* New Clients */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
-          <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center justify-between">
-            <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#0A0A0A]">New Clients</span>
-            <button className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono hover:text-[#0A0A0A]">View All</button>
-          </div>
-          {seed.clients.filter((c) => c.tier === "NEW").map((client) => (
-            <div key={client.name} className="px-4 py-3 border-b border-[#E5E1DB]/50 flex items-center justify-between">
-              <div>
-                <div className="font-mono text-xs font-semibold text-[#0A0A0A]">{client.name}</div>
-                <div className="font-mono text-[10px] text-[#C8C0B4]">Joined {client.lastOrder}</div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="font-mono text-xs text-[#0A0A0A]">{client.spend}</span>
-                <StatusBadge status={client.health} brandColor={brand.color} />
               </div>
             </div>
           ))}
@@ -1529,31 +1812,32 @@ function AdminAnalyticsView({ brand, data, seed }: ViewProps) {
           { label: "Avg Order Value", value: "$663", change: "+12%", icon: TrendingUp },
         ].map((kpi) => (
           <div key={kpi.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
-            <div className="flex items-center justify-between mb-2">
-              <kpi.icon className="w-4 h-4 text-[#C8C0B4]" strokeWidth={1.5} />
-              <span className="font-mono text-[10px] font-semibold" style={{ color: brand.color }}>{kpi.change}</span>
+            <div className="flex items-center justify-between pb-2">
+              <span className="text-[9px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">{kpi.label}</span>
+              <kpi.icon className="h-3.5 w-3.5 text-[#C8C0B4]" strokeWidth={1.5} />
             </div>
-            <div className="font-mono text-lg font-bold text-[#0A0A0A]">{kpi.value}</div>
-            <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">{kpi.label}</div>
+            <div className="text-2xl font-bold font-serif text-[#0A0A0A]">{kpi.value}</div>
+            <p className="text-[10px] text-emerald-600 font-medium mt-1">{kpi.change} vs last month</p>
           </div>
         ))}
       </div>
 
       {/* Revenue chart */}
       <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6 mb-6">
-        <div className="font-mono text-xs uppercase tracking-wider font-semibold text-[#0A0A0A] mb-4">Monthly Revenue</div>
-        <div className="flex items-end gap-3 h-40">
+        <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Monthly Revenue</span>
+        <div className="flex items-end gap-1.5 h-40 mt-4">
           {months.map((m, i) => (
             <div key={m} className="flex-1 flex flex-col items-center gap-1">
-              <div className="font-mono text-[9px] font-semibold text-[#0A0A0A]">${revenues[i]}K</div>
+              <div className="font-mono text-[8px] font-semibold text-[#0A0A0A]">${revenues[i]}K</div>
               <div
                 className="w-full transition-all"
                 style={{
                   height: `${(revenues[i] / maxRev) * 120}px`,
-                  backgroundColor: i === months.length - 1 ? brand.color : `${brand.color}30`,
+                  backgroundColor: i >= months.length - 3 ? "#0A0A0A" : "#C8C0B4",
+                  opacity: i === months.length - 1 ? 1 : i >= months.length - 3 ? 0.6 : 0.3,
                 }}
               />
-              <div className="font-mono text-[9px] text-[#C8C0B4]">{m}</div>
+              <div className="font-mono text-[8px] text-[#C8C0B4]">{m}</div>
             </div>
           ))}
         </div>
@@ -1727,19 +2011,216 @@ function SmsDemoView({ brand, data }: ViewProps) {
 // Main Demo Portal Component
 // ═══════════════════════════════════════════════════════════════════════════
 
+function CartSidebar({ cart, brand, onRemove, onUpdateQty, onClose, onCheckout }: {
+  cart: CartItem[];
+  brand: Brand;
+  onRemove: (name: string) => void;
+  onUpdateQty: (name: string, qty: number) => void;
+  onClose: () => void;
+  onCheckout: () => void;
+}) {
+  const totalItems = cart.reduce((s, c) => s + c.quantity, 0);
+  const totalPrice = cart.reduce((s, c) => s + c.quantity * parsePrice(c.product.price), 0);
+
+  return (
+    <div className="fixed inset-0 z-50 flex justify-end">
+      <div className="absolute inset-0 bg-black/20" onClick={onClose} />
+      <div className="relative w-full sm:max-w-lg bg-[#F9F7F4] border-l border-[#E5E1DB] flex flex-col h-full">
+        <div className="px-5 pt-5 pb-4 border-b border-[#E5E1DB] flex items-center justify-between">
+          <h3 className="text-xl font-bold text-[#0A0A0A]">Your Order ({totalItems} items)</h3>
+          <button onClick={onClose} className="p-1 text-[#C8C0B4] hover:text-[#0A0A0A]"><X className="w-5 h-5" /></button>
+        </div>
+        <div className="flex-1 overflow-y-auto py-4">
+          <div className="space-y-6 px-5">
+            {cart.map((item) => {
+              const lineTotal = item.quantity * parsePrice(item.product.price);
+              return (
+                <div key={item.product.name} className="space-y-3 pb-6 border-b border-[#E5E1DB] last:border-0">
+                  <div className="flex gap-3">
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-semibold text-base leading-tight mb-1 text-[#0A0A0A]">{item.product.name}</h4>
+                      <p className="text-sm text-[#C8C0B4]">{item.product.category}</p>
+                      <p className="text-sm font-medium mt-1 text-[#0A0A0A]">{item.product.price}{item.product.unit ? `/${item.product.unit}` : ""}</p>
+                    </div>
+                    <button onClick={() => onRemove(item.product.name)} className="h-8 w-8 flex items-center justify-center text-[#C8C0B4] hover:text-[#0A0A0A]">
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <button onClick={() => onUpdateQty(item.product.name, Math.max(1, item.quantity - 1))} className="h-10 w-10 border border-[#E5E1DB] flex items-center justify-center hover:border-[#0A0A0A] transition-colors">
+                        <Minus className="h-4 w-4" />
+                      </button>
+                      <span className="text-base font-semibold w-10 text-center text-[#0A0A0A]">{item.quantity}</span>
+                      <button onClick={() => onUpdateQty(item.product.name, item.quantity + 1)} className="h-10 w-10 border border-[#E5E1DB] flex items-center justify-center hover:border-[#0A0A0A] transition-colors">
+                        <Plus className="h-4 w-4" />
+                      </button>
+                    </div>
+                    <p className="text-lg font-bold text-[#0A0A0A]">${lineTotal.toFixed(2)}</p>
+                  </div>
+                </div>
+              );
+            })}
+            {cart.length === 0 && (
+              <div className="text-center py-12">
+                <ShoppingCart className="w-8 h-8 text-[#E5E1DB] mx-auto mb-3" />
+                <p className="text-sm text-[#C8C0B4]">Your cart is empty</p>
+              </div>
+            )}
+          </div>
+        </div>
+        {cart.length > 0 && (
+          <div className="border-t border-[#E5E1DB] px-5 py-5 space-y-4 mt-auto">
+            <div className="flex items-center justify-between">
+              <span className="text-xl font-bold text-[#0A0A0A]">Total</span>
+              <span className="text-2xl font-bold text-[#0A0A0A]">${totalPrice.toFixed(2)}</span>
+            </div>
+            <button onClick={onCheckout} className="w-full h-12 text-base font-medium bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 transition-colors">
+              Proceed to Checkout
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function CheckoutView({ brand, data, cart }: ViewProps) {
+  const items = (cart && cart.length > 0) ? cart : data.products.slice(0, 3).map((p) => ({ product: p, quantity: 2 }));
+  const subtotal = items.reduce((s, c) => s + c.quantity * parsePrice(c.product.price), 0);
+  const tax = Math.round(subtotal * 0.0875 * 100) / 100;
+  const total = subtotal + tax;
+
+  return (
+    <div className="p-6 bg-[#F9F7F4]">
+      <div className="mb-6">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Checkout</p>
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Complete Your Order</h2>
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        {/* Order Form */}
+        <div className="lg:col-span-3 space-y-4">
+          <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6">
+            <p className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider mb-4">Order Information</p>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { label: "Business Name", placeholder: "Restaurant name" },
+                { label: "Contact Name", placeholder: "Full name" },
+                { label: "Email", placeholder: "email@company.com" },
+                { label: "Phone", placeholder: "(555) 000-0000" },
+              ].map((f) => (
+                <div key={f.label}>
+                  <label className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4] mb-1.5 block">{f.label}</label>
+                  <input placeholder={f.placeholder} className="w-full h-10 px-3 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none focus:border-[#0A0A0A]" />
+                </div>
+              ))}
+              <div className="col-span-2">
+                <label className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4] mb-1.5 block">Delivery Address</label>
+                <input placeholder="Street address, city, state, zip" className="w-full h-10 px-3 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none focus:border-[#0A0A0A]" />
+              </div>
+              <div className="col-span-2">
+                <label className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4] mb-1.5 block">Order Notes</label>
+                <textarea rows={3} placeholder="Special instructions, delivery preferences..." className="w-full px-3 py-2 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none focus:border-[#0A0A0A] resize-none" />
+              </div>
+            </div>
+          </div>
+          <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6">
+            <p className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider mb-4">Payment Method</p>
+            <div className="space-y-3">
+              {["Net 30 Invoice", "Credit Card (Stripe)", "ACH Bank Transfer"].map((method, i) => (
+                <label key={method} className="flex items-center gap-3 p-3 border border-[#E5E1DB] cursor-pointer hover:border-[#C8C0B4] transition-colors">
+                  <div className={`w-4 h-4 border-2 flex items-center justify-center ${i === 0 ? "border-[#0A0A0A]" : "border-[#E5E1DB]"}`}>
+                    {i === 0 && <div className="w-2 h-2 bg-[#0A0A0A]" />}
+                  </div>
+                  <span className="text-sm text-[#0A0A0A]">{method}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+        {/* Order Summary */}
+        <div className="lg:col-span-2">
+          <div className="border border-[#E5E1DB] bg-[#F9F7F4] sticky top-16">
+            <div className="px-5 py-4 border-b border-[#E5E1DB]">
+              <p className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Order Summary</p>
+            </div>
+            <div className="px-5 py-4 space-y-3">
+              {items.map((item) => (
+                <div key={item.product.name} className="flex items-center justify-between py-2 border-b border-[#E5E1DB]/50 last:border-0">
+                  <div>
+                    <p className="text-sm font-medium text-[#0A0A0A]">{item.product.name}</p>
+                    <p className="text-xs text-[#C8C0B4]">{item.quantity} x {item.product.price}</p>
+                  </div>
+                  <p className="font-mono text-sm font-bold text-[#0A0A0A]">${(item.quantity * parsePrice(item.product.price)).toFixed(2)}</p>
+                </div>
+              ))}
+            </div>
+            <div className="px-5 py-4 border-t border-[#E5E1DB] space-y-2">
+              <div className="flex justify-between text-sm"><span className="text-[#C8C0B4]">Subtotal</span><span className="font-mono text-[#0A0A0A]">${subtotal.toFixed(2)}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-[#C8C0B4]">Tax (8.75%)</span><span className="font-mono text-[#0A0A0A]">${tax.toFixed(2)}</span></div>
+              <div className="flex justify-between text-base font-bold pt-2 border-t border-[#E5E1DB]"><span className="text-[#0A0A0A]">Total</span><span className="font-serif text-xl text-[#0A0A0A]">${total.toFixed(2)}</span></div>
+            </div>
+            <div className="px-5 pb-5">
+              <button className="w-full h-12 bg-[#0A0A0A] text-[#F9F7F4] text-sm font-medium hover:bg-[#0A0A0A]/80 transition-colors">
+                Place Order
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function PlaceholderView({ brand, title, description }: { brand: Brand; title: string; description: string }) {
+  return (
+    <div className="p-6 bg-[#F9F7F4]">
+      <div className="mb-6">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Included Module</p>
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">{title}</h2>
+      </div>
+      <div className="border border-dashed border-[#E5E1DB] bg-[#F9F7F4] p-10 text-center">
+        <Package className="w-10 h-10 text-[#E5E1DB] mx-auto mb-4" />
+        <p className="text-sm text-[#0A0A0A]/60 mb-2">{description}</p>
+        <p className="text-xs text-[#C8C0B4]">This module is fully built during your portal deployment.</p>
+      </div>
+    </div>
+  );
+}
+
 function DemoPortalInner() {
   const { brand, data } = useDemoData();
   const seed = generateSeedData(data);
   const [view, setView] = useState<View>("marketing");
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const addToCart = (product: ScrapeData["products"][0]) => {
+    setCart((prev) => {
+      const existing = prev.find((c) => c.product.name === product.name);
+      if (existing) return prev.map((c) => c.product.name === product.name ? { ...c, quantity: c.quantity + 1 } : c);
+      return [...prev, { product, quantity: 1 }];
+    });
+  };
+  const removeFromCart = (name: string) => setCart((prev) => prev.filter((c) => c.product.name !== name));
+  const updateQuantity = (name: string, qty: number) => setCart((prev) => prev.map((c) => c.product.name === name ? { ...c, quantity: qty } : c));
+  const cartCount = cart.reduce((s, c) => s + c.quantity, 0);
 
   const groups = [...new Set(NAV_ITEMS.map((n) => n.group))];
-  const viewProps: ViewProps = { brand, data, seed };
+  const viewProps: ViewProps = {
+    brand, data, seed, cart,
+    onAddToCart: addToCart,
+    onRemoveFromCart: removeFromCart,
+    onUpdateQuantity: updateQuantity,
+    onOpenCart: () => setCartOpen(true),
+    onNavigate: setView,
+  };
 
   return (
     <div className="min-h-screen bg-[#F9F7F4] flex flex-col">
       {/* Demo banner */}
-      <div className="border-b border-[#0A0A0A] px-4 py-2.5 flex items-center justify-between" style={{ backgroundColor: brand.color }}>
+      <div className="border-b border-[#0A0A0A] px-4 py-2.5 flex items-center justify-between bg-[#0A0A0A]">
         <div className="flex items-center gap-3">
           {brand.logo && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -1747,59 +2228,68 @@ function DemoPortalInner() {
               src={brand.logo}
               alt=""
               className="w-5 h-5 object-contain bg-white/20 p-0.5"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = "none";
-              }}
+              onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           )}
-          <span className="font-mono text-xs text-white">
-            You&apos;re exploring a demo of <strong>{brand.company}</strong>&apos;s wholesale portal
+          <span className="text-xs text-[#F9F7F4]/70">
+            Demo preview of <strong className="text-[#F9F7F4]">{brand.company}</strong>&apos;s wholesale portal
           </span>
         </div>
         <a
           href="/#intake-form"
-          className="font-mono text-[10px] uppercase tracking-wide text-white/80 hover:text-white border border-white/30 px-3 py-1 hover:border-white transition-colors flex items-center gap-1"
+          className="text-[10px] uppercase tracking-wide text-[#F9F7F4]/60 hover:text-[#F9F7F4] border border-[#F9F7F4]/20 px-3 py-1 hover:border-[#F9F7F4]/60 transition-colors flex items-center gap-1"
         >
           Start Your Build <ArrowUpRight className="w-3 h-3" />
         </a>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <aside className={`${sidebarOpen ? "w-56" : "w-0"} flex-shrink-0 border-r border-[#E5E1DB] bg-white overflow-y-auto overflow-x-hidden transition-all`}>
-          <div className="p-4 border-b border-[#E5E1DB] flex items-center gap-2 min-w-[224px]">
+        {/* Sidebar — TBGC-style */}
+        <aside className={`${sidebarOpen ? "w-60" : "w-0"} flex-shrink-0 border-r border-[#E5E1DB] bg-[#F9F7F4] overflow-y-auto overflow-x-hidden transition-all`}>
+          <div className="h-16 px-5 border-b border-[#E5E1DB] flex items-center gap-3 min-w-[240px]">
             {brand.logo && (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={brand.logo}
                 alt=""
-                className="w-6 h-6 object-contain flex-shrink-0"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = "none";
-                }}
+                className="w-8 h-8 object-contain flex-shrink-0"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
               />
             )}
-            <span className="font-serif text-sm truncate text-[#0A0A0A]">{brand.company}</span>
+            <div className="min-w-0">
+              <span className="font-serif font-bold text-lg text-[#0A0A0A] leading-tight block truncate">{brand.company}</span>
+              <span className="font-serif italic text-sm text-[#C8C0B4] leading-tight">Wholesale</span>
+            </div>
           </div>
-          <nav className="p-2 min-w-[224px]">
+          <nav className="py-5 px-3 min-w-[240px]">
             {groups.map((group) => (
-              <div key={group} className="mb-3">
-                <div className="text-[8px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono px-3 mb-1">{group}</div>
-                {NAV_ITEMS.filter((n) => n.group === group).map((item) => {
-                  const Icon = item.icon;
-                  const active = view === item.id;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => setView(item.id)}
-                      className={`w-full flex items-center gap-2 px-3 py-2 font-mono text-[11px] transition-colors ${active ? "text-white" : "text-[#0A0A0A]/60 hover:bg-[#0A0A0A]/[0.06]"}`}
-                      style={active ? { backgroundColor: brand.color } : {}}
-                    >
-                      <Icon className="w-3.5 h-3.5 flex-shrink-0" />
-                      {item.label}
-                    </button>
-                  );
-                })}
+              <div key={group} className="mb-4">
+                <div className="text-[8px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono px-3 mb-1.5">{group}</div>
+                <div className="space-y-0.5">
+                  {NAV_ITEMS.filter((n) => n.group === group).map((item) => {
+                    const Icon = item.icon;
+                    const active = view === item.id;
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => setView(item.id)}
+                        className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors ${
+                          active
+                            ? "bg-[#0A0A0A] text-[#F9F7F4]"
+                            : "text-[#0A0A0A]/60 hover:bg-[#0A0A0A]/[0.06] hover:text-[#0A0A0A]"
+                        }`}
+                      >
+                        <Icon className="w-4 h-4 flex-shrink-0" />
+                        <span className="truncate">{item.label}</span>
+                        {item.badge && (
+                          <span className="ml-auto text-[10px] font-bold bg-[#0A0A0A] text-[#F9F7F4] px-1.5 py-0.5 min-w-[18px] text-center leading-tight" style={active ? { backgroundColor: "#F9F7F4", color: "#0A0A0A" } : {}}>
+                            {item.badge}
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             ))}
           </nav>
@@ -1808,22 +2298,27 @@ function DemoPortalInner() {
         {/* Main content */}
         <main className="flex-1 overflow-auto">
           {/* Top bar */}
-          <div className="px-4 py-2.5 border-b border-[#E5E1DB] bg-white flex items-center justify-between sticky top-0 z-10">
+          <div className="px-4 py-2.5 border-b border-[#E5E1DB] bg-[#F9F7F4]/95 backdrop-blur-sm flex items-center justify-between sticky top-0 z-10">
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="font-mono text-xs text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors"
+              className="text-xs text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors"
             >
               {sidebarOpen ? "← Hide" : "→ Menu"}
             </button>
             <div className="flex items-center gap-3">
+              {cartCount > 0 && (
+                <button onClick={() => setCartOpen(true)} className="relative p-1">
+                  <ShoppingCart className="w-4 h-4 text-[#0A0A0A]/60 hover:text-[#0A0A0A]" />
+                  <span className="absolute -top-1 -right-1 h-4 w-4 bg-[#0A0A0A] text-[#F9F7F4] text-[9px] font-bold flex items-center justify-center">
+                    {cartCount}
+                  </span>
+                </button>
+              )}
               <div className="relative">
                 <Bell className="w-4 h-4 text-[#C8C0B4] cursor-pointer hover:text-[#0A0A0A]" />
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2" style={{ backgroundColor: brand.color }} />
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-[#0A0A0A]" />
               </div>
-              <div
-                className="w-7 h-7 flex items-center justify-center font-mono text-[10px] text-white"
-                style={{ backgroundColor: brand.color }}
-              >
+              <div className="w-7 h-7 flex items-center justify-center font-mono text-[10px] text-[#F9F7F4] bg-[#0A0A0A]">
                 A
               </div>
             </div>
@@ -1834,6 +2329,7 @@ function DemoPortalInner() {
             {view === "marketing" && <MarketingView {...viewProps} />}
             {view === "catalog" && <CatalogView {...viewProps} />}
             {view === "about" && <AboutView {...viewProps} />}
+            {view === "checkout" && <CheckoutView {...viewProps} />}
             {view === "client-dashboard" && <ClientDashboardView {...viewProps} />}
             {view === "client-orders" && <ClientOrdersView {...viewProps} />}
             {view === "client-invoices" && <ClientInvoicesView {...viewProps} />}
@@ -1842,14 +2338,28 @@ function DemoPortalInner() {
             {view === "client-settings" && <ClientSettingsView {...viewProps} />}
             {view === "admin-dashboard" && <AdminDashboardView {...viewProps} />}
             {view === "admin-orders" && <AdminOrdersView {...viewProps} />}
+            {view === "admin-fulfillment" && <PlaceholderView brand={brand} title="Fulfillment Board" description="Kanban-style board for picking, packing, and shipping orders. Includes pick lists, batch processing, and carrier label generation." />}
             {view === "admin-clients" && <AdminClientsView {...viewProps} />}
             {view === "admin-invoices" && <AdminInvoicesView {...viewProps} />}
             {view === "admin-products" && <AdminProductsView {...viewProps} />}
+            {view === "admin-leads" && <PlaceholderView brand={brand} title="Lead Management" description="Full CRM for wholesale leads — from giveaway signup to qualification to conversion. Includes health scoring, follow-up automation, and rep assignment." />}
             {view === "admin-analytics" && <AdminAnalyticsView {...viewProps} />}
             {view === "sms-demo" && <SmsDemoView {...viewProps} />}
           </div>
         </main>
       </div>
+
+      {/* Cart Sidebar Overlay */}
+      {cartOpen && (
+        <CartSidebar
+          cart={cart}
+          brand={brand}
+          onRemove={removeFromCart}
+          onUpdateQty={updateQuantity}
+          onClose={() => setCartOpen(false)}
+          onCheckout={() => { setCartOpen(false); setView("checkout"); }}
+        />
+      )}
     </div>
   );
 }
