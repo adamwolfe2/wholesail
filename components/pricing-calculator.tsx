@@ -92,9 +92,9 @@ export function PricingCalculator() {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center justify-between gap-1.5">
                           <span
-                            className="font-mono text-xs font-semibold"
+                            className="font-mono text-[11px] sm:text-xs font-semibold truncate"
                             style={{
                               color: isSelected
                                 ? "var(--blue)"
@@ -103,15 +103,15 @@ export function PricingCalculator() {
                           >
                             {feature.label}
                           </span>
-                          <div className="flex items-center gap-2 flex-shrink-0">
+                          <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
                             <span
-                              className="font-mono text-[10px] line-through"
+                              className="font-mono text-[9px] sm:text-[10px] line-through"
                               style={{ color: "var(--text-muted)" }}
                             >
                               {fmt(feature.marketValue)}
                             </span>
                             <span
-                              className="font-mono text-xs font-bold"
+                              className="font-mono text-[11px] sm:text-xs font-bold"
                               style={{
                                 color: isSelected
                                   ? "var(--blue)"
@@ -176,7 +176,7 @@ export function PricingCalculator() {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
           <div>
             <div
               className="font-mono text-[9px] uppercase tracking-widest mb-0.5"
@@ -185,7 +185,7 @@ export function PricingCalculator() {
               Features
             </div>
             <div
-              className="font-serif text-2xl"
+              className="font-serif text-xl sm:text-2xl"
               style={{ color: "var(--text-headline)" }}
             >
               {selected.size}
@@ -205,7 +205,7 @@ export function PricingCalculator() {
               Agency Rate
             </div>
             <div
-              className="font-serif text-2xl line-through"
+              className="font-serif text-xl sm:text-2xl line-through"
               style={{ color: "var(--text-muted)" }}
             >
               {fmt(selectedMarket)}
@@ -219,7 +219,7 @@ export function PricingCalculator() {
               Wholesail Price
             </div>
             <div
-              className="font-serif text-2xl"
+              className="font-serif text-xl sm:text-2xl"
               style={{ color: "var(--blue)" }}
             >
               {fmt(selectedWholesail)}
@@ -233,12 +233,12 @@ export function PricingCalculator() {
               You Save
             </div>
             <div
-              className="font-serif text-2xl"
+              className="font-serif text-xl sm:text-2xl"
               style={{ color: "#059669" }}
             >
               {savingsPct}%
               <span
-                className="font-mono text-xs ml-1"
+                className="font-mono text-[10px] sm:text-xs ml-1"
                 style={{ color: "#059669" }}
               >
                 ({fmt(selectedMarket - selectedWholesail)})

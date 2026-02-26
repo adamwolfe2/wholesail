@@ -49,6 +49,8 @@ import {
   Calendar,
   Receipt,
   Loader2,
+  Menu,
+  PanelLeftClose,
 } from "lucide-react";
 
 // ── Types ─────────────────────────────────────────────────────────────────
@@ -1475,19 +1477,19 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
   const maxCatRev = Math.max(...catRevenues);
 
   return (
-    <div className="p-6 bg-[#F9F7F4]">
-      <div className="flex items-center justify-between mb-6">
-        <div>
+    <div className="p-3 sm:p-6 bg-[#F9F7F4]">
+      <div className="flex items-center justify-between mb-4 sm:mb-6 gap-2">
+        <div className="min-w-0">
           <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Executive Overview</p>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">CEO Command Center</h2>
+          <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-[#0A0A0A]">CEO Command Center</h2>
         </div>
-        <button className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-[#E5E1DB] bg-[#F9F7F4] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors">
+        <button className="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-[#E5E1DB] bg-[#F9F7F4] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors flex-shrink-0">
           <Download className="w-3.5 h-3.5" /> Export Summary
         </button>
       </div>
 
       {/* 7 KPI Cards */}
-      <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 mb-6">
+      <div className="grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 mb-4 sm:mb-6">
         {[
           { label: "Total Revenue", value: `$${(totalRevenue / 1000).toFixed(0)}K`, sub: "Cumulative all-time", icon: DollarSign },
           { label: "YTD Revenue", value: "$61.2K", sub: "+18% vs last year", icon: TrendingUp, change: "+18%" },
@@ -1497,13 +1499,13 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
           { label: "Orders (Feb)", value: "37", sub: "+15% vs Jan", icon: ShoppingCart, change: "+15%" },
           { label: "30-Day Forecast", value: "$19.8K", sub: "Based on pipeline", icon: Target },
         ].map((kpi) => (
-          <div key={kpi.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
-            <div className="flex items-center justify-between pb-2">
-              <span className="text-[9px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider leading-tight">{kpi.label}</span>
-              <kpi.icon className="h-3.5 w-3.5 flex-shrink-0" style={{ color: `${brand.color}60` }} />
+          <div key={kpi.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-2.5 sm:p-4">
+            <div className="flex items-center justify-between pb-1.5 sm:pb-2">
+              <span className="text-[8px] sm:text-[9px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider leading-tight">{kpi.label}</span>
+              <kpi.icon className="h-3 w-3 sm:h-3.5 sm:w-3.5 flex-shrink-0" style={{ color: `${brand.color}60` }} />
             </div>
-            <div className="text-2xl sm:text-3xl font-bold font-serif leading-tight" style={{ color: brand.color }}>{kpi.value}</div>
-            <p className="text-[10px] text-[#0A0A0A]/40 mt-1 leading-tight">
+            <div className="text-lg sm:text-2xl md:text-3xl font-bold font-serif leading-tight" style={{ color: brand.color }}>{kpi.value}</div>
+            <p className="text-[9px] sm:text-[10px] text-[#0A0A0A]/40 mt-1 leading-tight">
               {kpi.change && <span className="text-emerald-600 font-medium">{kpi.change} </span>}
               {kpi.sub}
             </p>
@@ -2425,11 +2427,32 @@ function DemoPortalInner() {
   const { brand, data } = useDemoData();
   const seed = generateSeedData(data);
   const [view, setView] = useState<View>("admin-dashboard");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  // Sidebar: "expanded" = full 240px, "collapsed" = icons only ~52px, "hidden" = 0px
+  const [sidebarMode, setSidebarMode] = useState<"expanded" | "collapsed" | "hidden">("expanded");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [tourStep, setTourStep] = useState<number | null>(null);
   const [tourDismissed, setTourDismissed] = useState(false);
+
+  // Collapse sidebar on mobile by default
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    if (mq.matches) setSidebarMode("collapsed");
+    const handler = (e: MediaQueryListEvent) => setSidebarMode(e.matches ? "collapsed" : "expanded");
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  const sidebarOpen = sidebarMode !== "hidden";
+  const sidebarCollapsed = sidebarMode === "collapsed";
+
+  const toggleSidebar = () => {
+    setSidebarMode((prev) => {
+      if (prev === "expanded") return "collapsed";
+      if (prev === "collapsed") return "expanded";
+      return "expanded";
+    });
+  };
 
   // Show tour prompt after a short delay
   useEffect(() => {
@@ -2469,51 +2492,75 @@ function DemoPortalInner() {
   return (
     <div className="min-h-screen bg-[#F9F7F4] flex flex-col">
       {/* Demo banner */}
-      <div className="px-4 py-2.5 flex items-center justify-between" style={{ backgroundColor: brand.color, borderBottom: `1px solid ${brand.color}` }}>
-        <div className="flex items-center gap-3">
+      <div className="px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2" style={{ backgroundColor: brand.color, borderBottom: `1px solid ${brand.color}` }}>
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           {brand.logo && (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={brand.logo}
               alt=""
-              className="w-5 h-5 object-contain bg-white/20 p-0.5"
+              className="w-4 h-4 sm:w-5 sm:h-5 object-contain bg-white/20 p-0.5 flex-shrink-0"
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           )}
-          <span className="text-xs text-white/70">
-            Demo preview of <strong className="text-white">{brand.company}</strong>&apos;s wholesale portal
+          <span className="text-[10px] sm:text-xs text-white/70 truncate">
+            Demo preview of <strong className="text-white">{brand.company}</strong>
+            <span className="hidden sm:inline">&apos;s wholesale portal</span>
           </span>
         </div>
         <a
           href="/#intake-form"
-          className="text-[10px] uppercase tracking-wide text-white/60 hover:text-white border border-white/20 px-3 py-1 hover:border-white/60 transition-colors flex items-center gap-1"
+          className="text-[9px] sm:text-[10px] uppercase tracking-wide text-white/60 hover:text-white border border-white/20 px-2 sm:px-3 py-1 hover:border-white/60 transition-colors flex items-center gap-1 flex-shrink-0"
         >
-          Start Your Build <ArrowUpRight className="w-3 h-3" />
+          <span className="hidden sm:inline">Start Your Build</span>
+          <span className="sm:hidden">Build</span>
+          <ArrowUpRight className="w-3 h-3" />
         </a>
       </div>
 
       <div className="flex flex-1 overflow-hidden">
-        {/* Sidebar — TBGC-style */}
-        <aside className={`${sidebarOpen ? "w-60" : "w-0"} flex-shrink-0 border-r border-[#E5E1DB] bg-[#F9F7F4] overflow-y-auto overflow-x-hidden transition-all`}>
-          <div className="h-16 px-5 border-b border-[#E5E1DB] flex items-center gap-3 min-w-[240px]">
-            {brand.logo && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={brand.logo}
-                alt=""
-                className="w-8 h-8 object-contain flex-shrink-0"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-              />
+        {/* Sidebar — collapsible: expanded (240px), collapsed (52px icons only), hidden (0px) */}
+        <aside
+          className="flex-shrink-0 border-r border-[#E5E1DB] bg-[#F9F7F4] overflow-y-auto overflow-x-hidden transition-all duration-200"
+          style={{ width: sidebarMode === "expanded" ? 240 : sidebarMode === "collapsed" ? 52 : 0 }}
+        >
+          {/* Header */}
+          <div
+            className="border-b border-[#E5E1DB] flex items-center flex-shrink-0"
+            style={{ height: 56, minWidth: sidebarCollapsed ? 52 : 240, padding: sidebarCollapsed ? "0 10px" : "0 16px", gap: sidebarCollapsed ? 0 : 12 }}
+          >
+            {sidebarCollapsed ? (
+              <button onClick={toggleSidebar} className="w-8 h-8 flex items-center justify-center mx-auto">
+                <Menu className="w-4 h-4 text-[#0A0A0A]/60" />
+              </button>
+            ) : (
+              <>
+                {brand.logo && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={brand.logo}
+                    alt=""
+                    className="w-7 h-7 object-contain flex-shrink-0"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                  />
+                )}
+                <div className="min-w-0 flex-1">
+                  <span className="font-serif font-bold text-[15px] text-[#0A0A0A] leading-tight block truncate">{brand.company}</span>
+                  <span className="font-serif italic text-xs text-[#C8C0B4] leading-tight">Wholesale</span>
+                </div>
+                <button onClick={toggleSidebar} className="flex-shrink-0 p-1 text-[#C8C0B4] hover:text-[#0A0A0A]">
+                  <PanelLeftClose className="w-3.5 h-3.5" />
+                </button>
+              </>
             )}
-            <div className="min-w-0">
-              <span className="font-serif font-bold text-lg text-[#0A0A0A] leading-tight block truncate">{brand.company}</span>
-              <span className="font-serif italic text-sm text-[#C8C0B4] leading-tight">Wholesale</span>
-            </div>
           </div>
-          <nav className="py-5 px-3 min-w-[240px]">
+          {/* Nav */}
+          <nav className="py-3" style={{ minWidth: sidebarCollapsed ? 52 : 240, padding: sidebarCollapsed ? "12px 6px" : "12px 8px" }}>
             {groups.map((group) => (
-              <div key={group} className="mb-4">
-                <div className="text-[8px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono px-3 mb-1.5">{group}</div>
+              <div key={group} className="mb-3">
+                {!sidebarCollapsed && (
+                  <div className="text-[8px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono px-3 mb-1.5">{group}</div>
+                )}
                 <div className="space-y-0.5">
                   {NAV_ITEMS.filter((n) => n.group === group).map((item) => {
                     const Icon = item.icon;
@@ -2522,7 +2569,8 @@ function DemoPortalInner() {
                       <button
                         key={item.id}
                         onClick={() => setView(item.id)}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors"
+                        title={sidebarCollapsed ? item.label : undefined}
+                        className={`w-full flex items-center text-sm font-medium transition-colors relative ${sidebarCollapsed ? "justify-center px-0 py-2" : "gap-3 px-3 py-2"}`}
                         style={
                           active
                             ? { backgroundColor: brand.color, color: "#F9F7F4" }
@@ -2532,11 +2580,19 @@ function DemoPortalInner() {
                         onMouseLeave={(e) => { if (!active) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(10,10,10,0.6)"; } }}
                       >
                         <Icon className="w-4 h-4 flex-shrink-0" />
-                        <span className="truncate">{item.label}</span>
-                        {item.badge && (
+                        {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
+                        {item.badge && !sidebarCollapsed && (
                           <span
                             className="ml-auto text-[10px] font-bold px-1.5 py-0.5 min-w-[18px] text-center leading-tight"
                             style={active ? { backgroundColor: "#F9F7F4", color: brand.color } : { backgroundColor: brand.color, color: "#F9F7F4" }}
+                          >
+                            {item.badge}
+                          </span>
+                        )}
+                        {item.badge && sidebarCollapsed && (
+                          <span
+                            className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 text-[7px] font-bold flex items-center justify-center text-[#F9F7F4]"
+                            style={{ backgroundColor: brand.color, borderRadius: "50%" }}
                           >
                             {item.badge}
                           </span>
@@ -2553,12 +2609,12 @@ function DemoPortalInner() {
         {/* Main content */}
         <main className="flex-1 overflow-auto">
           {/* Top bar */}
-          <div className="px-4 py-2.5 border-b border-[#E5E1DB] bg-[#F9F7F4]/95 backdrop-blur-sm flex items-center justify-between sticky top-0 z-10">
+          <div className="px-3 py-2 border-b border-[#E5E1DB] bg-[#F9F7F4]/95 backdrop-blur-sm flex items-center justify-between sticky top-0 z-10">
             <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="text-xs text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors"
+              onClick={toggleSidebar}
+              className="text-xs text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors flex items-center gap-1.5"
             >
-              {sidebarOpen ? "← Hide" : "→ Menu"}
+              {sidebarCollapsed ? <><Menu className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Expand</span></> : <><PanelLeftClose className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Collapse</span></>}
             </button>
             <div className="flex items-center gap-3">
               {cartCount > 0 && (

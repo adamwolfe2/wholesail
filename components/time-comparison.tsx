@@ -1,6 +1,5 @@
 "use client";
 
-import { Clock, ArrowRight } from "lucide-react";
 import {
   MANUAL_PROCESSES,
   TOTAL_HOURS_SAVED,
@@ -22,9 +21,9 @@ export function TimeComparison() {
         className="border"
         style={{ borderColor: "var(--border-strong)" }}
       >
-        {/* Header */}
+        {/* Header — desktop: 3 cols, mobile: hidden (labels inline) */}
         <div
-          className="grid grid-cols-[1fr_auto_1fr] gap-0 px-4 sm:px-6 py-3 border-b"
+          className="hidden sm:grid grid-cols-[1fr_auto_1fr] gap-0 px-4 sm:px-6 py-3 border-b"
           style={{
             borderColor: "var(--border-strong)",
             backgroundColor: "var(--bg-white)",
@@ -50,11 +49,26 @@ export function TimeComparison() {
           </span>
         </div>
 
+        {/* Mobile header */}
+        <div
+          className="sm:hidden px-4 py-3 border-b"
+          style={{
+            borderColor: "var(--border-strong)",
+            backgroundColor: "var(--bg-white)",
+          }}
+        >
+          <span
+            className="font-mono text-[9px] uppercase tracking-widest"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Manual Work → Automated
+          </span>
+        </div>
+
         {/* Rows */}
         {MANUAL_PROCESSES.map((process, i) => (
           <div
             key={process.task}
-            className="grid grid-cols-[1fr_auto_1fr] gap-0 items-center px-4 sm:px-6 py-3"
             style={{
               borderBottom:
                 i < MANUAL_PROCESSES.length - 1
@@ -64,33 +78,55 @@ export function TimeComparison() {
                 i % 2 === 0 ? "var(--bg-white)" : "var(--bg-primary)",
             }}
           >
-            {/* Manual task */}
-            <div className="pr-3">
-              <span
-                className="font-mono text-xs"
-                style={{ color: "var(--text-headline)" }}
-              >
-                {process.task}
-              </span>
+            {/* Desktop row: 3 columns */}
+            <div className="hidden sm:grid grid-cols-[1fr_auto_1fr] gap-0 items-center px-4 sm:px-6 py-3">
+              <div className="pr-3">
+                <span
+                  className="font-mono text-xs"
+                  style={{ color: "var(--text-headline)" }}
+                >
+                  {process.task}
+                </span>
+              </div>
+              <div className="flex items-center justify-center w-16">
+                <span
+                  className="font-mono text-sm font-bold"
+                  style={{ color: "#DC2626" }}
+                >
+                  {process.hoursPerWeek}
+                </span>
+              </div>
+              <div className="pl-3 text-right">
+                <span
+                  className="font-mono text-xs"
+                  style={{ color: "var(--blue)" }}
+                >
+                  {process.plainEnglish}
+                </span>
+              </div>
             </div>
 
-            {/* Hours */}
-            <div className="flex items-center justify-center w-16">
+            {/* Mobile row: stacked */}
+            <div className="sm:hidden px-4 py-3">
+              <div className="flex items-start justify-between gap-2 mb-1">
+                <span
+                  className="font-mono text-[11px] leading-snug"
+                  style={{ color: "var(--text-headline)" }}
+                >
+                  {process.task}
+                </span>
+                <span
+                  className="font-mono text-xs font-bold flex-shrink-0"
+                  style={{ color: "#DC2626" }}
+                >
+                  {process.hoursPerWeek}h
+                </span>
+              </div>
               <span
-                className="font-mono text-sm font-bold"
-                style={{ color: "#DC2626" }}
-              >
-                {process.hoursPerWeek}
-              </span>
-            </div>
-
-            {/* Automated */}
-            <div className="pl-3 text-right">
-              <span
-                className="font-mono text-xs"
+                className="font-mono text-[10px]"
                 style={{ color: "var(--blue)" }}
               >
-                {process.plainEnglish}
+                → {process.plainEnglish}
               </span>
             </div>
           </div>
@@ -98,34 +134,52 @@ export function TimeComparison() {
 
         {/* ── Total Row ──────────────────────────────────────── */}
         <div
-          className="grid grid-cols-[1fr_auto_1fr] gap-0 items-center px-4 sm:px-6 py-4 border-t-2"
+          className="border-t-2"
           style={{
             borderColor: "var(--border-strong)",
             backgroundColor: "var(--bg-white)",
           }}
         >
-          <div>
+          {/* Desktop */}
+          <div className="hidden sm:grid grid-cols-[1fr_auto_1fr] gap-0 items-center px-4 sm:px-6 py-4">
+            <div>
+              <span
+                className="font-mono text-xs"
+                style={{ color: "var(--text-muted)" }}
+              >
+                Total per week:
+              </span>
+            </div>
+            <div className="flex items-center justify-center w-16">
+              <span
+                className="font-mono text-lg font-bold"
+                style={{ color: "#DC2626" }}
+              >
+                {TOTAL_HOURS_SAVED}
+              </span>
+            </div>
+            <div className="text-right">
+              <span
+                className="font-mono text-xs font-semibold"
+                style={{ color: "var(--blue)" }}
+              >
+                0 hrs — fully automated
+              </span>
+            </div>
+          </div>
+          {/* Mobile */}
+          <div className="sm:hidden px-4 py-3 flex items-center justify-between">
             <span
               className="font-mono text-xs"
               style={{ color: "var(--text-muted)" }}
             >
-              Total per week:
+              Total wasted per week:
             </span>
-          </div>
-          <div className="flex items-center justify-center w-16">
             <span
               className="font-mono text-lg font-bold"
               style={{ color: "#DC2626" }}
             >
-              {TOTAL_HOURS_SAVED}
-            </span>
-          </div>
-          <div className="text-right">
-            <span
-              className="font-mono text-xs font-semibold"
-              style={{ color: "var(--blue)" }}
-            >
-              0 hrs — fully automated
+              {TOTAL_HOURS_SAVED} hrs
             </span>
           </div>
         </div>
@@ -133,16 +187,16 @@ export function TimeComparison() {
 
       {/* ── Impact Callout ────────────────────────────────────── */}
       <div
-        className="border border-t-0 p-5"
+        className="border border-t-0 p-4 sm:p-5"
         style={{
           borderColor: "var(--border-strong)",
           backgroundColor: "var(--blue-light)",
         }}
       >
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6">
           <div>
             <div
-              className="font-serif text-3xl mb-1"
+              className="font-serif text-2xl sm:text-3xl mb-1"
               style={{ color: "var(--text-headline)" }}
             >
               {TOTAL_HOURS_SAVED} hrs
@@ -162,7 +216,7 @@ export function TimeComparison() {
           </div>
           <div>
             <div
-              className="font-serif text-3xl mb-1"
+              className="font-serif text-2xl sm:text-3xl mb-1"
               style={{ color: "#DC2626" }}
             >
               {fmt(weeklyCost)}
@@ -183,7 +237,7 @@ export function TimeComparison() {
           </div>
           <div>
             <div
-              className="font-serif text-3xl mb-1"
+              className="font-serif text-2xl sm:text-3xl mb-1"
               style={{ color: "#DC2626" }}
             >
               {fmt(ANNUAL_TIME_COST)}
