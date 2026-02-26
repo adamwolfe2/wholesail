@@ -2,16 +2,18 @@
 
 import { useState } from "react";
 import { Check } from "lucide-react";
-import { FEATURES, TOTAL_PLATFORM_VALUE } from "@/lib/client-data";
+import { FEATURES, TOTAL_MARKET_VALUE, TOTAL_WHOLESAIL_VALUE } from "@/lib/client-data";
 
 const CATEGORIES = [
   { key: "core", label: "Core Platform" },
-  { key: "automation", label: "Automation" },
+  { key: "commerce", label: "Commerce & Billing" },
+  { key: "automation", label: "AI & Automation" },
   { key: "growth", label: "Growth & Retention" },
-  { key: "content", label: "Content" },
+  { key: "analytics", label: "Analytics & Reporting" },
+  { key: "infrastructure", label: "Infrastructure" },
 ] as const;
 
-function formatValue(n: number) {
+function fmt(n: number) {
   return "$" + n.toLocaleString();
 }
 
@@ -29,11 +31,11 @@ export function PricingCalculator() {
     });
   };
 
-  const selectedValue = FEATURES.filter((f) => selected.has(f.id)).reduce(
-    (sum, f) => sum + f.value,
-    0
-  );
-  const pct = Math.round((selectedValue / TOTAL_PLATFORM_VALUE) * 100);
+  const selectedFeatures = FEATURES.filter((f) => selected.has(f.id));
+  const selectedMarket = selectedFeatures.reduce((sum, f) => sum + f.marketValue, 0);
+  const selectedWholesail = selectedFeatures.reduce((sum, f) => sum + f.value, 0);
+  const savingsPct = selectedMarket > 0 ? Math.round(((selectedMarket - selectedWholesail) / selectedMarket) * 100) : 0;
+  const pct = Math.round((selectedMarket / TOTAL_MARKET_VALUE) * 100);
 
   return (
     <div>
@@ -41,6 +43,7 @@ export function PricingCalculator() {
       <div className="space-y-6 mb-8">
         {CATEGORIES.map((cat) => {
           const catFeatures = FEATURES.filter((f) => f.category === cat.key);
+          if (catFeatures.length === 0) return null;
           return (
             <div key={cat.key}>
               <div
@@ -100,16 +103,24 @@ export function PricingCalculator() {
                           >
                             {feature.label}
                           </span>
-                          <span
-                            className="font-mono text-xs font-bold flex-shrink-0"
-                            style={{
-                              color: isSelected
-                                ? "var(--blue)"
-                                : "var(--text-headline)",
-                            }}
-                          >
-                            {formatValue(feature.value)}
-                          </span>
+                          <div className="flex items-center gap-2 flex-shrink-0">
+                            <span
+                              className="font-mono text-[10px] line-through"
+                              style={{ color: "var(--text-muted)" }}
+                            >
+                              {fmt(feature.marketValue)}
+                            </span>
+                            <span
+                              className="font-mono text-xs font-bold"
+                              style={{
+                                color: isSelected
+                                  ? "var(--blue)"
+                                  : "var(--text-headline)",
+                              }}
+                            >
+                              {fmt(feature.value)}
+                            </span>
+                          </div>
                         </div>
                         <p
                           className="font-mono text-[10px] leading-snug mt-0.5"
@@ -136,13 +147,13 @@ export function PricingCalculator() {
         }}
       >
         {/* Progress bar */}
-        <div className="mb-4">
+        <div className="mb-5">
           <div className="flex items-center justify-between mb-1.5">
             <span
               className="font-mono text-[9px] uppercase tracking-widest"
               style={{ color: "var(--text-muted)" }}
             >
-              Platform Value
+              Platform Coverage
             </span>
             <span
               className="font-mono text-[9px]"
@@ -165,13 +176,13 @@ export function PricingCalculator() {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <div>
             <div
               className="font-mono text-[9px] uppercase tracking-widest mb-0.5"
               style={{ color: "var(--text-muted)" }}
             >
-              Features Selected
+              Features
             </div>
             <div
               className="font-serif text-2xl"
@@ -191,13 +202,27 @@ export function PricingCalculator() {
               className="font-mono text-[9px] uppercase tracking-widest mb-0.5"
               style={{ color: "var(--text-muted)" }}
             >
-              Market Rate
+              Agency Rate
+            </div>
+            <div
+              className="font-serif text-2xl line-through"
+              style={{ color: "var(--text-muted)" }}
+            >
+              {fmt(selectedMarket)}
+            </div>
+          </div>
+          <div>
+            <div
+              className="font-mono text-[9px] uppercase tracking-widest mb-0.5"
+              style={{ color: "var(--blue)" }}
+            >
+              Wholesail Price
             </div>
             <div
               className="font-serif text-2xl"
-              style={{ color: "var(--text-headline)" }}
+              style={{ color: "var(--blue)" }}
             >
-              {formatValue(selectedValue)}
+              {fmt(selectedWholesail)}
             </div>
           </div>
           <div>
@@ -205,24 +230,67 @@ export function PricingCalculator() {
               className="font-mono text-[9px] uppercase tracking-widest mb-0.5"
               style={{ color: "var(--text-muted)" }}
             >
-              Full Platform Value
+              You Save
             </div>
             <div
               className="font-serif text-2xl"
-              style={{ color: "var(--text-muted)" }}
+              style={{ color: "#059669" }}
             >
-              {formatValue(TOTAL_PLATFORM_VALUE)}
+              {savingsPct}%
+              <span
+                className="font-mono text-xs ml-1"
+                style={{ color: "#059669" }}
+              >
+                ({fmt(selectedMarket - selectedWholesail)})
+              </span>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Full platform value callout */}
+      <div
+        className="border border-t-0 p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3"
+        style={{
+          borderColor: "var(--border-strong)",
+          backgroundColor: "var(--blue-light)",
+        }}
+      >
+        <div>
+          <span
+            className="font-mono text-xs font-semibold"
+            style={{ color: "var(--blue)" }}
+          >
+            Full platform: {fmt(TOTAL_MARKET_VALUE)} in custom development value
+          </span>
+          <span
+            className="font-mono text-[10px] block"
+            style={{ color: "var(--text-body)" }}
+          >
+            Wholesail builds it for {fmt(TOTAL_WHOLESAIL_VALUE)} — that&apos;s{" "}
+            {Math.round(
+              ((TOTAL_MARKET_VALUE - TOTAL_WHOLESAIL_VALUE) /
+                TOTAL_MARKET_VALUE) *
+                100
+            )}
+            % less than hiring an agency.
+          </span>
+        </div>
+        <a
+          href="#intake-form"
+          className="inline-flex items-center justify-center font-mono text-xs font-semibold btn-blue flex-shrink-0"
+          style={{ padding: "10px 20px", borderRadius: "6px" }}
+        >
+          Start Your Build
+        </a>
       </div>
 
       <p
         className="font-mono text-[10px] mt-3 text-center"
         style={{ color: "var(--text-muted)" }}
       >
-        Market rates based on agency quotes for equivalent custom-built
-        features. Your investment is discussed on our consultation call.
+        Agency rates based on market research of custom B2B portal development
+        quotes. Your actual investment is finalized on our consultation call.
       </p>
     </div>
   );

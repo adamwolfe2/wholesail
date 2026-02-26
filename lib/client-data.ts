@@ -10,28 +10,130 @@ export type FeatureDefinition = {
   label: string;
   description: string;
   value: number;
-  category: "core" | "automation" | "growth" | "content";
+  marketValue: number;
+  category: "core" | "commerce" | "automation" | "growth" | "analytics" | "infrastructure";
 };
 
 export const FEATURES: FeatureDefinition[] = [
-  { id: "client-portal", label: "Client Portal", description: "Self-service ordering, order history, invoice payments, saved carts, standing orders", value: 18000, category: "core" },
-  { id: "admin-panel", label: "Admin Panel", description: "25+ pages: orders, fulfillment, CRM, inventory, pricing, quotes, leads, analytics, CEO dashboard", value: 30000, category: "core" },
-  { id: "stripe-billing", label: "Stripe Billing", description: "Online checkout, Net-30/60/90 invoicing, payment reminders, aging reports, webhook handling", value: 15000, category: "core" },
-  { id: "marketing-site", label: "Marketing Website", description: "17 SEO-optimized pages: catalog, about, journal, wholesale application, referral landing", value: 10000, category: "core" },
-  { id: "sms-ordering", label: "SMS / iMessage Ordering", description: "Natural language order parsing via AI — clients text orders, system creates them automatically", value: 20000, category: "automation" },
-  { id: "loyalty-program", label: "Loyalty Program", description: "Points per dollar, tier upgrades (NEW → REPEAT → VIP), redemption at checkout", value: 8000, category: "growth" },
-  { id: "referral-program", label: "Referral Program", description: "Auto-generated codes, credit on conversion, referral tracking dashboard", value: 6000, category: "growth" },
-  { id: "supplier-portal", label: "Supplier Portal", description: "Supplier login, product submission form, submission status tracking", value: 10000, category: "core" },
-  { id: "ai-order-parsing", label: "AI Order Parsing", description: "Gemini-powered natural language → structured order with fuzzy matching fallback", value: 18000, category: "automation" },
-  { id: "shipment-tracking", label: "Shipment Tracking", description: "Real-time tracking, cold-chain monitoring, client-facing tracking pages", value: 12000, category: "core" },
-  { id: "standing-orders", label: "Standing / Recurring Orders", description: "Weekly, biweekly, or monthly auto-orders with smart scheduling", value: 8000, category: "automation" },
-  { id: "product-drops", label: "Product Drops", description: "Limited-time releases with alert signups and blast notifications", value: 6000, category: "growth" },
-  { id: "smart-reorder", label: "Smart Reorder Suggestions", description: "AI detects overdue clients and suggests products based on purchase history", value: 10000, category: "automation" },
-  { id: "blog-journal", label: "Blog / Journal", description: "Content marketing pages for SEO and client engagement", value: 5000, category: "content" },
-  { id: "sales-rep-tools", label: "Sales Rep Tools", description: "Rep assignment, cart building for clients, task management, commission tracking", value: 12000, category: "core" },
+  // ── Core Platform ────────────────────────────────────────────────────
+  { id: "client-portal", label: "Client Portal", description: "14 authenticated pages: self-service ordering, order history, invoice payments, saved carts, account settings", value: 12000, marketValue: 38000, category: "core" },
+  { id: "admin-panel", label: "Admin Panel", description: "25+ pages: orders, fulfillment board, client CRM, inventory, pricing rules, quotes, leads, analytics, CEO dashboard", value: 22000, marketValue: 65000, category: "core" },
+  { id: "supplier-portal", label: "Supplier Portal", description: "Supplier login, product submission form, submission status tracking, approval workflow", value: 6000, marketValue: 18000, category: "core" },
+  { id: "marketing-site", label: "Marketing Website", description: "17 SEO-optimized pages: product catalog, about, journal, wholesale application, referral landing pages", value: 6000, marketValue: 18000, category: "core" },
+  { id: "multi-role-auth", label: "Multi-Role Authentication", description: "5 role types (admin, rep, client, supplier, viewer), Clerk webhooks, auto-linking, RBAC middleware", value: 4000, marketValue: 12000, category: "core" },
+  { id: "database-architecture", label: "Database Architecture", description: "32 Prisma models, migrations, seed scripts, repository pattern, connection pooling", value: 8000, marketValue: 25000, category: "core" },
+
+  // ── Commerce & Billing ───────────────────────────────────────────────
+  { id: "stripe-billing", label: "Stripe Billing & Checkout", description: "Online checkout, payment processing, webhook handling, refunds, payment method management", value: 7000, marketValue: 22000, category: "commerce" },
+  { id: "invoice-engine", label: "Net-30/60/90 Invoice Engine", description: "Automated invoice generation, payment reminders, aging reports, overdue escalation", value: 7000, marketValue: 20000, category: "commerce" },
+  { id: "standing-orders", label: "Standing / Recurring Orders", description: "Weekly, biweekly, or monthly auto-orders with smart scheduling and modification", value: 4000, marketValue: 12000, category: "commerce" },
+  { id: "tiered-pricing", label: "Tiered Wholesale Pricing", description: "Tier-based pricing rules, volume discounts, category overrides, client-specific pricing", value: 5000, marketValue: 15000, category: "commerce" },
+  { id: "quote-management", label: "Quote Management", description: "Quote creation, approval workflows, expiration tracking, conversion to order", value: 5000, marketValue: 15000, category: "commerce" },
+  { id: "saved-carts", label: "Saved Carts & Quick Reorder", description: "Save cart for later, one-click reorder from history, favorite products list", value: 3000, marketValue: 8000, category: "commerce" },
+
+  // ── AI & Automation ──────────────────────────────────────────────────
+  { id: "sms-ordering", label: "SMS / iMessage Ordering", description: "Two-way SMS with AI order parsing — clients text orders, system creates them, confirms on reply", value: 10000, marketValue: 35000, category: "automation" },
+  { id: "ai-order-parsing", label: "AI Order Parsing", description: "Gemini-powered NLP with fuzzy product matching, quantity detection, unit normalization", value: 9000, marketValue: 28000, category: "automation" },
+  { id: "ai-chatbot", label: "AI Chatbot", description: "Trained on your products, pricing, and policies. Contextual responses, product suggestions, team escalation", value: 10000, marketValue: 30000, category: "automation" },
+  { id: "smart-reorder", label: "Smart Reorder Suggestions", description: "AI detects overdue clients and suggests products based on purchase history and seasonality", value: 5000, marketValue: 15000, category: "automation" },
+  { id: "email-automation", label: "Email Automation Suite", description: "Transactional emails, partner nurture sequences (Day 3, 7, 14), weekly digest reports", value: 6000, marketValue: 18000, category: "automation" },
+  { id: "abandoned-cart", label: "Abandoned Cart Recovery", description: "Auto-detection, timed reminder emails, conversion tracking, admin notification", value: 4000, marketValue: 10000, category: "automation" },
+  { id: "billing-reminders", label: "Automated Billing Reminders", description: "Overdue payment alerts, escalation sequences, aging report auto-send to admin", value: 3000, marketValue: 8000, category: "automation" },
+
+  // ── Growth & Retention ───────────────────────────────────────────────
+  { id: "loyalty-program", label: "Loyalty Program", description: "Points per dollar spent, tier upgrades (NEW → REPEAT → VIP), redemption at checkout", value: 4000, marketValue: 12000, category: "growth" },
+  { id: "referral-program", label: "Referral Program", description: "Auto-generated referral codes, credit on conversion, referral tracking dashboard", value: 4000, marketValue: 10000, category: "growth" },
+  { id: "product-drops", label: "Product Drops & Alerts", description: "Limited-time releases with blast notifications, scarcity mechanics, alert signups", value: 4000, marketValue: 10000, category: "growth" },
+  { id: "sales-rep-tools", label: "Sales Rep Tools", description: "Rep assignment, cart building for clients, task management, commission tracking, performance reports", value: 7000, marketValue: 20000, category: "growth" },
+  { id: "client-health", label: "Client Health Scoring", description: "RFM analysis, auto tier upgrades, churn risk detection, lapsed client re-engagement alerts", value: 4000, marketValue: 12000, category: "growth" },
+  { id: "wholesale-application", label: "Wholesale Application Flow", description: "Public application form, admin review queue, auto-account creation on approval", value: 3000, marketValue: 8000, category: "growth" },
+
+  // ── Analytics & Reporting ────────────────────────────────────────────
+  { id: "ceo-dashboard", label: "CEO Dashboard & KPIs", description: "Revenue trends, order volume, client growth, top products, at-a-glance business health", value: 4000, marketValue: 12000, category: "analytics" },
+  { id: "revenue-analytics", label: "Revenue & Client Analytics", description: "Spending reports, product performance, client cohort analysis, MoM trends", value: 4000, marketValue: 10000, category: "analytics" },
+  { id: "pdf-generation", label: "PDF Generation", description: "Branded invoice PDFs, tiered price list exports, order confirmations, packing slips", value: 4000, marketValue: 10000, category: "analytics" },
+  { id: "inventory-reports", label: "Inventory Reports & Alerts", description: "Stock level dashboards, low-stock alerts, reorder point triggers, usage trends", value: 3000, marketValue: 8000, category: "analytics" },
+
+  // ── Infrastructure ───────────────────────────────────────────────────
+  { id: "shipment-tracking", label: "Shipment Tracking", description: "Real-time tracking, status events, cold-chain monitoring, client-facing tracking pages", value: 6000, marketValue: 18000, category: "infrastructure" },
+  { id: "inventory-management", label: "Inventory Management", description: "Stock levels, product variants, batch tracking, auto-sync across orders and fulfillment", value: 6000, marketValue: 18000, category: "infrastructure" },
+  { id: "blog-journal", label: "Blog / Journal CMS", description: "Content marketing pages for SEO, sourcing stories, client engagement", value: 3000, marketValue: 6000, category: "infrastructure" },
+  { id: "cron-automation", label: "Cron Job Automation", description: "8+ scheduled tasks: abandoned carts, billing reminders, lapsed clients, weekly digests, standing orders", value: 4000, marketValue: 10000, category: "infrastructure" },
+  { id: "security", label: "Security & Rate Limiting", description: "API rate limiting, input validation with Zod, audit logging, OWASP compliance", value: 3000, marketValue: 8000, category: "infrastructure" },
 ];
 
-export const TOTAL_PLATFORM_VALUE = FEATURES.reduce((sum, f) => sum + f.value, 0);
+export const TOTAL_MARKET_VALUE = FEATURES.reduce((sum, f) => sum + f.marketValue, 0);
+export const TOTAL_WHOLESAIL_VALUE = FEATURES.reduce((sum, f) => sum + f.value, 0);
+/** @deprecated Use TOTAL_MARKET_VALUE */
+export const TOTAL_PLATFORM_VALUE = TOTAL_MARKET_VALUE;
+
+// ── Tool Replacement Comparison ─────────────────────────────────────────────
+// What companies pay monthly to duct-tape together what Wholesail replaces
+// baseCost = fixed monthly, perSeat = per team member (scales with slider)
+export type ToolReplacement = {
+  tool: string;
+  domain: string; // Clearbit logo: https://logo.clearbit.com/{domain}
+  replaces: string;
+  baseCost: number;
+  perSeat: number;
+};
+
+export const TOOL_REPLACEMENTS: ToolReplacement[] = [
+  { tool: "Shopify Plus", domain: "shopify.com", replaces: "B2B ordering & e-commerce", baseCost: 2300, perSeat: 0 },
+  { tool: "Salesforce", domain: "salesforce.com", replaces: "CRM & client management", baseCost: 0, perSeat: 150 },
+  { tool: "HubSpot", domain: "hubspot.com", replaces: "Lead management & pipeline", baseCost: 0, perSeat: 89 },
+  { tool: "Pipedrive", domain: "pipedrive.com", replaces: "Sales pipeline & rep tracking", baseCost: 0, perSeat: 49 },
+  { tool: "Twilio", domain: "twilio.com", replaces: "SMS & messaging platform", baseCost: 500, perSeat: 0 },
+  { tool: "OpenAI", domain: "openai.com", replaces: "AI features & NLP order parsing", baseCost: 300, perSeat: 0 },
+  { tool: "Klaviyo", domain: "klaviyo.com", replaces: "Email marketing & automation", baseCost: 500, perSeat: 0 },
+  { tool: "Intercom", domain: "intercom.com", replaces: "Live chat & AI chatbot", baseCost: 0, perSeat: 74 },
+  { tool: "QuickBooks", domain: "intuit.com", replaces: "Invoicing & accounts receivable", baseCost: 200, perSeat: 20 },
+  { tool: "Cin7", domain: "cin7.com", replaces: "Inventory management", baseCost: 350, perSeat: 0 },
+  { tool: "ShipStation", domain: "shipstation.com", replaces: "Fulfillment & shipment tracking", baseCost: 200, perSeat: 0 },
+  { tool: "Webflow", domain: "webflow.com", replaces: "Marketing website & CMS", baseCost: 200, perSeat: 0 },
+  { tool: "Smile.io", domain: "smile.io", replaces: "Loyalty & referral programs", baseCost: 200, perSeat: 0 },
+  { tool: "Zapier", domain: "zapier.com", replaces: "Workflow automation & integrations", baseCost: 250, perSeat: 0 },
+  { tool: "Typeform", domain: "typeform.com", replaces: "Wholesale applications & forms", baseCost: 100, perSeat: 0 },
+  { tool: "Metabase", domain: "metabase.com", replaces: "Analytics & BI dashboards", baseCost: 85, perSeat: 8 },
+  { tool: "Monday.com", domain: "monday.com", replaces: "Task & project management", baseCost: 0, perSeat: 20 },
+  { tool: "SendGrid", domain: "sendgrid.com", replaces: "Transactional email delivery", baseCost: 100, perSeat: 0 },
+];
+
+export function getToolCost(tool: ToolReplacement, teamSize: number): number {
+  return tool.baseCost + tool.perSeat * teamSize;
+}
+
+export function getTotalMonthlyCost(teamSize: number): number {
+  return TOOL_REPLACEMENTS.reduce((sum, t) => sum + getToolCost(t, teamSize), 0);
+}
+
+// ── Manual Processes / Time Savings ──────────────────────────────────────────
+// What teams spend their week doing manually that Wholesail automates
+export type ManualProcess = {
+  task: string;
+  hoursPerWeek: number;
+  automatedBy: string;
+  plainEnglish: string; // outcome in plain english
+};
+
+export const MANUAL_PROCESSES: ManualProcess[] = [
+  { task: "Taking orders by phone, email, and text", hoursPerWeek: 10, automatedBy: "Self-service ordering portal + SMS ordering", plainEnglish: "Clients order themselves, 24/7" },
+  { task: "Creating and sending invoices", hoursPerWeek: 6, automatedBy: "Automated billing engine", plainEnglish: "Invoices generate and send themselves" },
+  { task: "Chasing overdue payments", hoursPerWeek: 3, automatedBy: "Automated payment reminders", plainEnglish: "Payment reminders go out automatically" },
+  { task: "Updating inventory in spreadsheets", hoursPerWeek: 4, automatedBy: "Real-time inventory management", plainEnglish: "Inventory updates when orders ship" },
+  { task: "Managing client info in spreadsheets or CRM", hoursPerWeek: 4, automatedBy: "Built-in CRM with auto-updates", plainEnglish: "Client data stays current automatically" },
+  { task: "Tracking deliveries and shipments", hoursPerWeek: 3, automatedBy: "Automated shipment tracking", plainEnglish: "Clients track their own deliveries" },
+  { task: "Processing new wholesale applications", hoursPerWeek: 2, automatedBy: "Online application + auto-onboarding", plainEnglish: "New clients onboard themselves" },
+  { task: "Building price lists and catalogs", hoursPerWeek: 2, automatedBy: "Dynamic catalog + PDF export", plainEnglish: "Price lists update in real-time" },
+  { task: "Sending marketing emails and follow-ups", hoursPerWeek: 3, automatedBy: "Automated email sequences", plainEnglish: "Emails send based on client behavior" },
+  { task: "Pulling reports for the team", hoursPerWeek: 2, automatedBy: "Real-time analytics dashboard", plainEnglish: "Reports are always live and up-to-date" },
+  { task: "Coordinating sales reps and tasks", hoursPerWeek: 2, automatedBy: "Built-in task + rep management", plainEnglish: "Reps see their tasks and clients in one place" },
+  { task: "Answering the same client questions over and over", hoursPerWeek: 4, automatedBy: "AI chatbot trained on your business", plainEnglish: "AI answers instantly, escalates when needed" },
+];
+
+export const TOTAL_HOURS_SAVED = MANUAL_PROCESSES.reduce((sum, p) => sum + p.hoursPerWeek, 0);
+export const DEFAULT_HOURLY_RATE = 30; // conservative $/hr for employee time
+export const ANNUAL_TIME_COST = TOTAL_HOURS_SAVED * DEFAULT_HOURLY_RATE * 52;
 
 export const BUILD_PHASES = [
   { phase: 1, label: "Project Initialization", description: "Dependencies installed, database connected, dev environment running" },

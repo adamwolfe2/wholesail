@@ -27,6 +27,8 @@ import { DemoLauncher } from "@/components/demo-launcher";
 import { FAQ } from "@/components/faq";
 import { TechMarquee } from "@/components/tech-marquee";
 import { PricingCalculator } from "@/components/pricing-calculator";
+import { ToolComparison } from "@/components/tool-comparison";
+import { TimeComparison } from "@/components/time-comparison";
 
 /* ── Wholesail Sail Logo ─────────────────────────────────────────────── */
 function SailLogo({ className = "w-6 h-6" }: { className?: string }) {
@@ -64,27 +66,27 @@ function SailLogo({ className = "w-6 h-6" }: { className?: string }) {
 /* ── Stats Strip ──────────────────────────────────────────────────────── */
 const STATS = [
   {
-    icon: DollarSign,
-    stat: "$12K+",
-    label: "average monthly revenue increase when wholesale ordering moves online",
-    source: "Industry benchmark",
+    icon: Clock,
+    stat: "45+ hrs",
+    label: "your team spends every week on manual work that should be automated",
+    source: "Process audit",
   },
   {
-    icon: Clock,
-    stat: "15 hrs",
-    label: "per week saved on manual order processing, invoicing, and client follow-ups",
-    source: "Client average",
+    icon: DollarSign,
+    stat: "$180K+",
+    label: "wasted every year on disconnected software and manual labor",
+    source: "Cost analysis",
   },
   {
     icon: TrendingUp,
     stat: "3.2x",
-    label: "reorder rate increase when clients have self-service portal access",
-    source: "Internal data",
+    label: "more reorders when clients can order themselves 24/7 through a portal",
+    source: "Client data",
   },
   {
     icon: Zap,
     stat: "< 2 wks",
-    label: "from intake call to fully deployed, branded wholesale portal",
+    label: "from intake call to a fully deployed, branded portal — replacing all your tools",
     source: "Build timeline",
   },
 ];
@@ -352,7 +354,7 @@ export default function WholesailPage() {
       <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-8">
           <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
-            Why distributors are moving online
+            The numbers don&apos;t lie
           </span>
         </div>
         <div
@@ -467,6 +469,35 @@ export default function WholesailPage() {
           </span>
         </div>
         <TechMarquee />
+      </section>
+
+      {/* ── Time Savings ──────────────────────────────────────────── */}
+      <section className="py-16" id="time" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="mb-10">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
+            The Real Cost of &ldquo;How We&apos;ve Always Done It&rdquo;
+          </span>
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal mb-3"
+            style={{ color: "var(--text-headline)" }}
+          >
+            Your team is spending 45+ hours a week
+            <br />
+            <span style={{ color: "#DC2626" }}>on work a machine should do.</span>
+          </h2>
+          <p
+            className="font-mono text-sm max-w-xl leading-relaxed"
+            style={{ color: "var(--text-body)" }}
+          >
+            Every hour your team spends taking orders by phone, updating
+            spreadsheets, and chasing invoices is an hour they&apos;re not
+            growing your business. Here&apos;s what that actually looks like.
+          </p>
+        </div>
+        <TimeComparison />
       </section>
 
       {/* ── Features Grid ────────────────────────────────────────── */}
@@ -605,6 +636,35 @@ export default function WholesailPage() {
         </div>
       </section>
 
+      {/* ── Tool Replacement Comparison ─────────────────────────── */}
+      <section className="py-16" id="compare" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="mb-10">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Software You&apos;re Paying For Right Now
+          </span>
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal mb-3"
+            style={{ color: "var(--text-headline)" }}
+          >
+            You&apos;re paying for 18 platforms
+            <br />
+            <span style={{ color: "#DC2626" }}>that don&apos;t talk to each other.</span>
+          </h2>
+          <p
+            className="font-mono text-sm max-w-xl leading-relaxed"
+            style={{ color: "var(--text-body)" }}
+          >
+            One platform for ordering, another for invoicing, another for
+            inventory, another for email, another for chat — none of them
+            connected. Use the slider to see what you&apos;re actually spending.
+          </p>
+        </div>
+        <ToolComparison />
+      </section>
+
       {/* ── Portal Value Calculator ──────────────────────────────── */}
       <section className="py-16" id="pricing" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-10">
@@ -618,19 +678,338 @@ export default function WholesailPage() {
             className="text-3xl md:text-4xl font-serif font-normal mb-3"
             style={{ color: "var(--text-headline)" }}
           >
-            $188K+ in platform value.
+            $500K+ in custom development value.
             <br />
-            <span style={{ color: "var(--text-muted)" }}>Fraction of the cost to build.</span>
+            <span style={{ color: "var(--text-muted)" }}>A fraction of the cost to build.</span>
           </h2>
           <p
             className="font-mono text-sm max-w-xl leading-relaxed"
             style={{ color: "var(--text-body)" }}
           >
             Select features to see what your portal would cost to build from
-            scratch. Agencies quote $150K–$200K for equivalent functionality.
+            scratch with a dev agency — then see the Wholesail price.
           </p>
         </div>
         <PricingCalculator />
+      </section>
+
+      {/* ── Your Investment ───────────────────────────────────────── */}
+      <section className="py-16" id="investment" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="mb-10">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Your Investment
+          </span>
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal mb-3"
+            style={{ color: "var(--text-headline)" }}
+          >
+            One build. One retainer.
+            <br />
+            <span style={{ color: "var(--text-muted)" }}>Every tool above — replaced.</span>
+          </h2>
+          <p
+            className="font-mono text-sm max-w-xl leading-relaxed"
+            style={{ color: "var(--text-body)" }}
+          >
+            No more juggling subscriptions. No more duct-taping platforms
+            together. We build your portal, migrate your data, train your
+            team, and keep everything running.
+          </p>
+        </div>
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 gap-0"
+          style={{ border: "1px solid var(--border-strong)" }}
+        >
+          {/* Build */}
+          <div
+            className="p-8 border-b md:border-b-0 md:border-r"
+            style={{
+              borderColor: "var(--border-strong)",
+              backgroundColor: "var(--bg-blue)",
+              color: "var(--text-on-blue)",
+            }}
+          >
+            <div
+              className="font-mono text-[9px] uppercase tracking-widest mb-2"
+              style={{ opacity: 0.5 }}
+            >
+              One-Time Build
+            </div>
+            <div className="font-serif text-4xl mb-1">Starting at $25K</div>
+            <p
+              className="font-mono text-[11px] leading-relaxed mb-6"
+              style={{ color: "rgba(255,255,255,0.6)" }}
+            >
+              Custom portal built to your exact business, branded to your
+              company, deployed in under 2 weeks.
+            </p>
+            <div className="space-y-2.5">
+              {[
+                "Every feature selected in your build",
+                "Your logo, colors, and custom domain",
+                "Data migration from existing tools",
+                "Team training and onboarding",
+                "All 18 software platforms — replaced",
+                "45+ hours/week of manual work — automated",
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-2">
+                  <CheckCircle2
+                    className="w-3.5 h-3.5 flex-shrink-0 mt-0.5"
+                    style={{ color: "rgba(255,255,255,0.5)" }}
+                  />
+                  <span className="font-mono text-xs" style={{ color: "rgba(255,255,255,0.85)" }}>
+                    {item}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Retainer */}
+          <div
+            className="p-8"
+            style={{ backgroundColor: "var(--bg-white)" }}
+          >
+            <div
+              className="font-mono text-[9px] uppercase tracking-widest mb-2"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Monthly Retainer
+            </div>
+            <div
+              className="font-serif text-4xl mb-1"
+              style={{ color: "var(--text-headline)" }}
+            >
+              Starting at $5K
+              <span
+                className="font-mono text-sm"
+                style={{ color: "var(--text-muted)" }}
+              >
+                /mo
+              </span>
+            </div>
+            <p
+              className="font-mono text-[11px] leading-relaxed mb-6"
+              style={{ color: "var(--text-body)" }}
+            >
+              Direct access to our team. We maintain your portal, make
+              changes when you need them, and keep everything running
+              smoothly.
+            </p>
+            <div className="space-y-2.5">
+              {[
+                "Unlimited change requests",
+                "Bug fixes and platform updates",
+                "Performance monitoring",
+                "Priority support — direct access to our team",
+                "New feature additions as your business grows",
+                "No more software subscriptions to manage",
+              ].map((item) => (
+                <div key={item} className="flex items-start gap-2">
+                  <CheckCircle2
+                    className="w-3.5 h-3.5 flex-shrink-0 mt-0.5"
+                    style={{ color: "var(--blue)" }}
+                  />
+                  <span
+                    className="font-mono text-xs"
+                    style={{ color: "var(--text-body)" }}
+                  >
+                    {item}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        {/* ROI callout */}
+        <div
+          className="border border-t-0 p-6"
+          style={{
+            borderColor: "var(--border-strong)",
+            backgroundColor: "var(--blue-light)",
+          }}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+            <div>
+              <div
+                className="font-serif text-2xl mb-0.5"
+                style={{ color: "#DC2626" }}
+              >
+                $180K+
+                <span
+                  className="font-mono text-[10px]"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  /yr
+                </span>
+              </div>
+              <span
+                className="font-mono text-[10px]"
+                style={{ color: "var(--text-body)" }}
+              >
+                What you&apos;re spending now on software + manual labor
+              </span>
+            </div>
+            <div>
+              <div
+                className="font-serif text-2xl mb-0.5"
+                style={{ color: "var(--blue)" }}
+              >
+                $60K–$85K
+                <span
+                  className="font-mono text-[10px]"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  /yr
+                </span>
+              </div>
+              <span
+                className="font-mono text-[10px]"
+                style={{ color: "var(--text-body)" }}
+              >
+                Wholesail retainer — everything included
+              </span>
+            </div>
+            <div>
+              <div
+                className="font-serif text-2xl mb-0.5"
+                style={{ color: "#059669" }}
+              >
+                Pays for itself
+              </div>
+              <span
+                className="font-mono text-[10px]"
+                style={{ color: "var(--text-body)" }}
+              >
+                Within 2–3 months of going live
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Growth Packages ────────────────────────────────────── */}
+      <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="mb-10">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Also Available
+          </span>
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal mb-3"
+            style={{ color: "var(--text-headline)" }}
+          >
+            Want more clients?
+            <br />
+            <span style={{ color: "var(--text-muted)" }}>We do that too.</span>
+          </h2>
+          <p
+            className="font-mono text-sm max-w-xl leading-relaxed"
+            style={{ color: "var(--text-body)" }}
+          >
+            Beyond your portal, we offer growth packages to help you find
+            and convert new wholesale clients — powered by our lead
+            intelligence platform.
+          </p>
+        </div>
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0"
+          style={{ border: "1px solid var(--border-strong)" }}
+        >
+          {[
+            {
+              icon: Users,
+              label: "Website Visitor ID",
+              title: "See who visits your site.",
+              body: "Identify anonymous website visitors by company. Know exactly which prospects are looking at your catalog — even if they never fill out a form.",
+            },
+            {
+              icon: BarChart3,
+              label: "Data Enrichment",
+              title: "Know everything about your leads.",
+              body: "Enrich contacts with company size, revenue, industry, and decision-maker info. Build targeted outreach lists from your ideal customer profile.",
+            },
+            {
+              icon: TrendingUp,
+              label: "Lookalike Audiences",
+              title: "Find more clients like your best ones.",
+              body: "We analyze your top wholesale accounts and find businesses that match — same size, same industry, same buying patterns.",
+            },
+            {
+              icon: Zap,
+              label: "Lead Capture",
+              title: "Turn visitors into wholesale clients.",
+              body: "Capture website visitors, score them automatically, and route qualified leads directly into your portal's CRM — ready for your sales team.",
+            },
+          ].map((item, i) => {
+            const Icon = item.icon;
+            return (
+              <div
+                key={item.label}
+                className={`p-6 ${
+                  i < 3 ? "border-b sm:border-b-0 sm:border-r" : ""
+                }`}
+                style={{
+                  borderColor: "var(--border-strong)",
+                  backgroundColor: "var(--bg-white)",
+                }}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <div
+                    className="w-8 h-8 flex items-center justify-center"
+                    style={{
+                      backgroundColor: "var(--blue-light)",
+                      borderRadius: "6px",
+                    }}
+                  >
+                    <Icon
+                      className="w-4 h-4"
+                      style={{ color: "var(--blue)" }}
+                      strokeWidth={1.5}
+                    />
+                  </div>
+                  <span
+                    className="font-mono text-[9px] uppercase tracking-widest"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    {item.label}
+                  </span>
+                </div>
+                <h3
+                  className="font-serif text-lg mb-2"
+                  style={{ color: "var(--text-headline)" }}
+                >
+                  {item.title}
+                </h3>
+                <p
+                  className="font-mono text-xs leading-relaxed"
+                  style={{ color: "var(--text-body)" }}
+                >
+                  {item.body}
+                </p>
+              </div>
+            );
+          })}
+        </div>
+        <div
+          className="border border-t-0 p-4 text-center"
+          style={{
+            borderColor: "var(--border-strong)",
+            backgroundColor: "var(--bg-white)",
+          }}
+        >
+          <span
+            className="font-mono text-[10px]"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Growth packages available as add-ons to any Wholesail retainer.
+            Powered by our lead intelligence platform.
+          </span>
+        </div>
       </section>
 
       {/* ── How It Works ─────────────────────────────────────────── */}
