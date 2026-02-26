@@ -33,10 +33,18 @@ jobs:
 
       - name: Checkout source platform
         uses: actions/checkout@v4
+        continue-on-error: true
+        id: checkout-source
         with:
           repository: ${{ env.SOURCE_REPO }}
           path: source
           token: ${{ secrets.SOURCE_REPO_TOKEN }}
+
+      - name: Check source checkout
+        if: steps.checkout-source.outcome == 'failure'
+        run: |
+          echo "::warning::Could not checkout source repo. Make sure SOURCE_REPO_TOKEN secret is configured with repo access to ${{ env.SOURCE_REPO }}"
+          mkdir -p source
 
       - name: Set up Node
         uses: actions/setup-node@v4

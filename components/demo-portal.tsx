@@ -179,15 +179,7 @@ type ViewProps = {
 // ── Nav Items ─────────────────────────────────────────────────────────────
 
 const NAV_ITEMS: { id: View; label: string; icon: typeof Home; group: string; badge?: number }[] = [
-  { id: "marketing", label: "Marketing Site", icon: Home, group: "Public" },
-  { id: "catalog", label: "Product Catalog", icon: Package, group: "Public" },
-  { id: "about", label: "About", icon: Building2, group: "Public" },
-  { id: "client-dashboard", label: "Dashboard", icon: LayoutDashboard, group: "Client Portal" },
-  { id: "client-orders", label: "Orders", icon: ShoppingCart, group: "Client Portal" },
-  { id: "client-invoices", label: "Invoices", icon: FileText, group: "Client Portal" },
-  { id: "client-analytics", label: "Analytics", icon: BarChart3, group: "Client Portal" },
-  { id: "client-referrals", label: "Refer & Earn", icon: Heart, group: "Client Portal" },
-  { id: "client-settings", label: "Settings", icon: Settings, group: "Client Portal" },
+  // Admin panel first — this is the selling point
   { id: "admin-dashboard", label: "CEO Dashboard", icon: LayoutDashboard, group: "Admin Panel" },
   { id: "admin-orders", label: "Orders", icon: ShoppingCart, group: "Admin Panel", badge: 4 },
   { id: "admin-fulfillment", label: "Fulfillment", icon: Truck, group: "Admin Panel", badge: 3 },
@@ -196,7 +188,17 @@ const NAV_ITEMS: { id: View; label: string; icon: typeof Home; group: string; ba
   { id: "admin-products", label: "Products", icon: Package, group: "Admin Panel" },
   { id: "admin-leads", label: "Leads", icon: Zap, group: "Admin Panel", badge: 5 },
   { id: "admin-analytics", label: "Analytics", icon: BarChart3, group: "Admin Panel" },
+  // Client portal — what their customers see
+  { id: "client-dashboard", label: "Dashboard", icon: LayoutDashboard, group: "Client Portal" },
+  { id: "client-orders", label: "Orders", icon: ShoppingCart, group: "Client Portal" },
+  { id: "client-invoices", label: "Invoices", icon: FileText, group: "Client Portal" },
+  { id: "catalog", label: "Product Catalog", icon: Package, group: "Client Portal" },
+  { id: "client-analytics", label: "Analytics", icon: BarChart3, group: "Client Portal" },
+  { id: "client-referrals", label: "Refer & Earn", icon: Heart, group: "Client Portal" },
+  { id: "client-settings", label: "Settings", icon: Settings, group: "Client Portal" },
+  // Features
   { id: "sms-demo", label: "SMS Ordering", icon: MessageSquare, group: "Features" },
+  { id: "marketing", label: "Marketing Site", icon: Home, group: "Features" },
 ];
 
 // ── useDemoData Hook ──────────────────────────────────────────────────────
@@ -266,6 +268,26 @@ function useDemoData(): { brand: Brand; data: ScrapeData } {
   };
 
   return { brand, data };
+}
+
+// ── Industry-Aware Content Helper ────────────────────────────────────────
+
+function getIndustryContext(industry: string) {
+  const ind = (industry || "").toLowerCase();
+  if (ind.includes("food") || ind.includes("truffle") || ind.includes("gourmet") || ind.includes("culinary") || ind.includes("restaurant") || ind.includes("catering")) {
+    return { greeting: "Chef", personName: "Thomas Keller", roleName: "Executive Chef", locationLabel: "Primary Kitchen", locationAddr: "123 Main St, New York, NY 10001", secondaryLabel: "Prep Facility", secondaryAddr: "456 Industrial Blvd, Brooklyn, NY 11201", businessPlaceholder: "Restaurant name" };
+  }
+  if (ind.includes("beauty") || ind.includes("salon") || ind.includes("cosmetic") || ind.includes("skincare")) {
+    return { greeting: "", personName: "Sarah Mitchell", roleName: "Salon Director", locationLabel: "Main Salon", locationAddr: "789 Beauty Blvd, Los Angeles, CA 90028", secondaryLabel: "Warehouse", secondaryAddr: "321 Commerce Way, Burbank, CA 91505", businessPlaceholder: "Salon or spa name" };
+  }
+  if (ind.includes("coffee") || ind.includes("tea") || ind.includes("beverage")) {
+    return { greeting: "", personName: "James Park", roleName: "Operations Lead", locationLabel: "Roastery", locationAddr: "456 Roast Ave, Portland, OR 97201", secondaryLabel: "Distribution Hub", secondaryAddr: "789 Warehouse Ln, Portland, OR 97203", businessPlaceholder: "Cafe or roastery name" };
+  }
+  if (ind.includes("wine") || ind.includes("spirit") || ind.includes("liquor") || ind.includes("brewery")) {
+    return { greeting: "", personName: "Marcus Chen", roleName: "Beverage Director", locationLabel: "Main Location", locationAddr: "321 Vine St, Napa, CA 94559", secondaryLabel: "Storage Facility", secondaryAddr: "654 Barrel Rd, Napa, CA 94558", businessPlaceholder: "Bar or restaurant name" };
+  }
+  // Generic B2B default
+  return { greeting: "", personName: "Alex Morgan", roleName: "Operations Manager", locationLabel: "Main Office", locationAddr: "100 Commerce Dr, Suite 200, Austin, TX 78701", secondaryLabel: "Warehouse", secondaryAddr: "450 Distribution Way, Austin, TX 78745", businessPlaceholder: "Business name" };
 }
 
 // ── generateSeedData ──────────────────────────────────────────────────────
@@ -954,7 +976,8 @@ function AboutView({ brand, data }: ViewProps) {
 // VIEW 4: Client Dashboard
 // ═══════════════════════════════════════════════════════════════════════════
 
-function ClientDashboardView({ brand, data, seed }: ViewProps) {
+function ClientDashboardView({ brand, data, seed, onNavigate }: ViewProps) {
+  const ctx = getIndustryContext(data.industry);
   const top4Products = data.products.slice(0, 4);
   const recentOrders = seed.orders.slice(0, 4);
   const months = ["Sep", "Oct", "Nov", "Dec", "Jan", "Feb"];
@@ -969,7 +992,7 @@ function ClientDashboardView({ brand, data, seed }: ViewProps) {
       {/* Welcome header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Welcome back, Chef Thomas</h2>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Welcome back{ctx.greeting ? `, ${ctx.greeting} ${ctx.personName.split(" ")[0]}` : `, ${ctx.personName.split(" ")[0]}`}</h2>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-xs text-[#0A0A0A]/50">{seed.clients[0]?.name || "Restaurant"}</span>
             <span className="border border-amber-300 bg-amber-100 text-amber-800 px-2 py-0.5 text-[9px] uppercase tracking-wider font-medium">Bronze</span>
@@ -990,11 +1013,11 @@ function ClientDashboardView({ brand, data, seed }: ViewProps) {
           { label: "Avg Order Value", value: "$638", icon: TrendingUp },
           { label: "Loyalty Points", value: "4,280", icon: Heart },
         ].map((kpi) => (
-          <div key={kpi.label} className="border border-[#C8C0B4] bg-[#F9F7F4] p-4">
+          <div key={kpi.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
             <div className="flex items-center justify-between pb-2">
-              <kpi.icon className="w-4 h-4 text-[#C8C0B4]" strokeWidth={1.5} />
+              <kpi.icon className="w-4 h-4" style={{ color: `${brand.color}60` }} strokeWidth={1.5} />
             </div>
-            <div className="text-2xl font-bold font-serif text-[#0A0A0A]">{kpi.value}</div>
+            <div className="text-2xl font-bold font-serif" style={{ color: brand.color }}>{kpi.value}</div>
             <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mt-0.5">{kpi.label}</div>
           </div>
         ))}
@@ -1345,6 +1368,7 @@ function ClientReferralsView({ brand, data }: ViewProps) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 function ClientSettingsView({ brand, data, seed }: ViewProps) {
+  const ctx = getIndustryContext(data.industry);
   return (
     <div className="p-6 bg-[#F9F7F4]">
       <div className="mb-6">
@@ -1363,8 +1387,8 @@ function ClientSettingsView({ brand, data, seed }: ViewProps) {
           </div>
           <div className="grid grid-cols-2 gap-4">
             {[
-              { label: "Name", value: "Thomas Anderson" },
-              { label: "Company", value: seed.clients[0]?.name || "Restaurant" },
+              { label: "Name", value: ctx.personName },
+              { label: "Company", value: seed.clients[0]?.name || "Business" },
               { label: "Email", value: `thomas@${data.domain}` },
               { label: "Phone", value: "(555) 234-5678" },
               { label: "Account Tier", value: "VIP Partner" },
@@ -1419,8 +1443,8 @@ function ClientSettingsView({ brand, data, seed }: ViewProps) {
           </div>
           <div className="space-y-2">
             {[
-              { label: "Primary Kitchen", address: "123 Main St, New York, NY 10001" },
-              { label: "Prep Facility", address: "456 Industrial Blvd, Brooklyn, NY 11201" },
+              { label: ctx.locationLabel, address: ctx.locationAddr },
+              { label: ctx.secondaryLabel, address: ctx.secondaryAddr },
             ].map((a) => (
               <div key={a.label} className="flex items-center justify-between py-2 border-b border-[#E5E1DB]/50 last:border-0">
                 <div>
@@ -1476,9 +1500,9 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
           <div key={kpi.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
             <div className="flex items-center justify-between pb-2">
               <span className="text-[9px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider leading-tight">{kpi.label}</span>
-              <kpi.icon className="h-3.5 w-3.5 text-[#C8C0B4] flex-shrink-0" />
+              <kpi.icon className="h-3.5 w-3.5 flex-shrink-0" style={{ color: `${brand.color}60` }} />
             </div>
-            <div className="text-2xl sm:text-3xl font-bold font-serif text-[#0A0A0A] leading-tight">{kpi.value}</div>
+            <div className="text-2xl sm:text-3xl font-bold font-serif leading-tight" style={{ color: brand.color }}>{kpi.value}</div>
             <p className="text-[10px] text-[#0A0A0A]/40 mt-1 leading-tight">
               {kpi.change && <span className="text-emerald-600 font-medium">{kpi.change} </span>}
               {kpi.sub}
@@ -1845,9 +1869,9 @@ function AdminAnalyticsView({ brand, data, seed }: ViewProps) {
           <div key={kpi.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
             <div className="flex items-center justify-between pb-2">
               <span className="text-[9px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">{kpi.label}</span>
-              <kpi.icon className="h-3.5 w-3.5 text-[#C8C0B4]" strokeWidth={1.5} />
+              <kpi.icon className="h-3.5 w-3.5" style={{ color: `${brand.color}60` }} strokeWidth={1.5} />
             </div>
-            <div className="text-2xl font-bold font-serif text-[#0A0A0A]">{kpi.value}</div>
+            <div className="text-2xl font-bold font-serif" style={{ color: brand.color }}>{kpi.value}</div>
             <p className="text-[10px] text-emerald-600 font-medium mt-1">{kpi.change} vs last month</p>
           </div>
         ))}
@@ -2117,6 +2141,7 @@ function CartSidebar({ cart, brand, onRemove, onUpdateQty, onClose, onCheckout }
 }
 
 function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
+  const ctx = getIndustryContext(data.industry);
   const [orderPlaced, setOrderPlaced] = useState(false);
   const [processing, setProcessing] = useState(false);
   const items = (cart && cart.length > 0) ? cart : data.products.slice(0, 3).map((p) => ({ product: p, quantity: 2 }));
@@ -2242,7 +2267,7 @@ function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
             <p className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider mb-4">Order Information</p>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { label: "Business Name", placeholder: "Restaurant name" },
+                { label: "Business Name", placeholder: ctx.businessPlaceholder },
                 { label: "Contact Name", placeholder: "Full name" },
                 { label: "Email", placeholder: "email@company.com" },
                 { label: "Phone", placeholder: "(555) 000-0000" },
@@ -2399,7 +2424,7 @@ function TourOverlay({
 function DemoPortalInner() {
   const { brand, data } = useDemoData();
   const seed = generateSeedData(data);
-  const [view, setView] = useState<View>("marketing");
+  const [view, setView] = useState<View>("admin-dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);

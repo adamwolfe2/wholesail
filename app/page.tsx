@@ -161,6 +161,20 @@ const FEATURES = [
     body: "White-label everything: custom domain, branded transactional emails, your logo on every page. Clients never see our name.",
     span: 1,
   },
+  {
+    icon: Brain,
+    label: "AI Chatbot",
+    title: "Your team's knowledge, always on.",
+    body: "Built-in AI chatbot trained on your products, pricing, and policies. Answers client questions, suggests products, and escalates to your team when needed.",
+    span: 2,
+  },
+  {
+    icon: Gift,
+    label: "Product Drops & Alerts",
+    title: "Create urgency. Drive reorders.",
+    body: "Limited-time product drops with automated blast notifications. Clients get alerted instantly — first come, first served. Built-in scarcity and demand generation.",
+    span: 1,
+  },
 ];
 
 /* ── What's Included Table ────────────────────────────────────────────── */
@@ -170,12 +184,14 @@ const INCLUDED = [
     items: [
       "Product catalog with search & filters",
       "Shopping cart with saved carts",
-      "Order history & tracking",
+      "Order history & shipment tracking",
       "Invoice payments via Stripe",
       "Standing / recurring orders",
       "Loyalty points & referrals",
-      "Support messaging",
-      "Personal analytics",
+      "AI chatbot & support messaging",
+      "Quote requests & approval",
+      "Personal spending analytics",
+      "Product drop notifications",
     ],
   },
   {
@@ -189,19 +205,23 @@ const INCLUDED = [
       "Lead CRM & wholesale applications",
       "Sales rep tools & task management",
       "Revenue analytics & CEO dashboard",
+      "Supplier portal & submissions",
+      "Distributor routing & multi-org",
     ],
   },
   {
     category: "Automation",
     items: [
       "SMS / iMessage ordering with AI parsing",
+      "AI chatbot with contextual responses",
       "Automated billing reminders",
       "Abandoned cart recovery emails",
       "Lapsed client re-engagement",
       "Partner nurture sequences (Day 3, Day 7)",
-      "Weekly digest emails to clients",
+      "Weekly digest & report emails",
       "Standing order auto-processing",
-      "Low stock alerts",
+      "Low stock alerts & reorder triggers",
+      "Product drop blasts & alerts",
     ],
   },
 ];
@@ -533,7 +553,7 @@ export default function WholesailPage() {
             className="text-3xl md:text-4xl font-serif font-normal"
             style={{ color: "var(--text-headline)" }}
           >
-            39 database models. 200+ API routes. 60+ pages.
+            32 database models. 133 API routes. 76 pages.
           </h2>
         </div>
         <div
