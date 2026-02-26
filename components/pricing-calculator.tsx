@@ -234,12 +234,12 @@ export function PricingCalculator() {
             </div>
             <div
               className="font-serif text-xl sm:text-2xl"
-              style={{ color: "#059669" }}
+              style={{ color: "var(--blue)" }}
             >
               {savingsPct}%
               <span
                 className="font-mono text-[10px] sm:text-xs ml-1"
-                style={{ color: "#059669" }}
+                style={{ color: "var(--blue)" }}
               >
                 ({fmt(selectedMarket - selectedWholesail)})
               </span>

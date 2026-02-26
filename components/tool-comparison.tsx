@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Check } from "lucide-react";
 import {
   TOOL_REPLACEMENTS,
   getToolCost,
@@ -19,32 +18,20 @@ export function ToolComparison() {
 
   return (
     <div>
-      {/* ── Team Size Slider ──────────────────────────────────── */}
+      {/* Team size slider — compact */}
       <div
-        className="p-6 border mb-0"
+        className="flex items-center gap-4 sm:gap-6 p-4 border"
         style={{
           borderColor: "var(--border-strong)",
           backgroundColor: "var(--bg-white)",
         }}
       >
-        <div className="flex items-center justify-between mb-3">
-          <span
-            className="font-mono text-[9px] uppercase tracking-widest"
-            style={{ color: "var(--text-muted)" }}
-          >
-            Team Size
-          </span>
-          <span
-            className="font-mono text-sm font-bold px-3 py-1"
-            style={{
-              backgroundColor: "var(--blue-light)",
-              color: "var(--blue)",
-              borderRadius: "100px",
-            }}
-          >
-            {teamSize} team members
-          </span>
-        </div>
+        <span
+          className="font-mono text-[9px] uppercase tracking-widest flex-shrink-0"
+          style={{ color: "var(--text-muted)" }}
+        >
+          Team Size
+        </span>
         <input
           type="range"
           min={5}
@@ -52,203 +39,92 @@ export function ToolComparison() {
           step={5}
           value={teamSize}
           onChange={(e) => setTeamSize(Number(e.target.value))}
-          className="w-full accent-[var(--blue)]"
+          className="flex-1"
           style={{ accentColor: "var(--blue)" }}
         />
-        <div className="flex justify-between mt-1">
-          <span
-            className="font-mono text-[9px]"
-            style={{ color: "var(--text-muted)" }}
-          >
-            5
-          </span>
-          <span
-            className="font-mono text-[9px]"
-            style={{ color: "var(--text-muted)" }}
-          >
-            50
-          </span>
-        </div>
-      </div>
-
-      {/* ── Tool Table ────────────────────────────────────────── */}
-      <div
-        className="border border-t-0"
-        style={{ borderColor: "var(--border-strong)" }}
-      >
-        {/* Header */}
-        <div
-          className="grid grid-cols-[1fr_auto_auto] gap-2 sm:gap-4 px-3 sm:px-6 py-3 border-b"
+        <span
+          className="font-mono text-xs font-bold px-3 py-1 flex-shrink-0"
           style={{
-            borderColor: "var(--border-strong)",
-            backgroundColor: "var(--bg-white)",
+            backgroundColor: "var(--blue-light)",
+            color: "var(--blue)",
+            borderRadius: "100px",
           }}
         >
-          <span
-            className="font-mono text-[9px] uppercase tracking-widest"
-            style={{ color: "var(--text-muted)" }}
-          >
-            Platform
-          </span>
-          <span
-            className="font-mono text-[9px] uppercase tracking-widest text-right w-16 sm:w-24"
-            style={{ color: "var(--text-muted)" }}
-          >
-            Cost
-          </span>
-          <span
-            className="font-mono text-[9px] uppercase tracking-widest text-center w-10 sm:w-20"
-            style={{ color: "var(--blue)" }}
-          >
-            <span className="hidden sm:inline">Wholesail</span>
-            <span className="sm:hidden">WS</span>
-          </span>
-        </div>
+          {teamSize}
+        </span>
+      </div>
 
-        {/* Rows */}
-        {TOOL_REPLACEMENTS.map((tool, i) => {
+      {/* Logo grid — compact */}
+      <div
+        className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 border border-t-0"
+        style={{
+          borderColor: "var(--border-strong)",
+          backgroundColor: "var(--border-strong)",
+          gap: "1px",
+        }}
+      >
+        {TOOL_REPLACEMENTS.map((tool) => {
           const cost = getToolCost(tool, teamSize);
           return (
             <div
               key={tool.tool}
-              className="grid grid-cols-[1fr_auto_auto] gap-2 sm:gap-4 items-center px-3 sm:px-6 py-2.5 sm:py-3"
-              style={{
-                borderBottom:
-                  i < TOOL_REPLACEMENTS.length - 1
-                    ? "1px solid var(--border)"
-                    : undefined,
-                backgroundColor:
-                  i % 2 === 0 ? "var(--bg-white)" : "var(--bg-primary)",
-              }}
+              className="flex flex-col items-center justify-center py-3 px-2 text-center"
+              style={{ backgroundColor: "var(--bg-white)" }}
             >
-              <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`https://logo.clearbit.com/${tool.domain}`}
-                  alt={tool.tool}
-                  width={20}
-                  height={20}
-                  className="w-5 h-5 rounded flex-shrink-0"
-                  style={{ objectFit: "contain" }}
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = "none";
-                  }}
-                />
-                <div className="min-w-0">
-                  <span
-                    className="font-mono text-[11px] sm:text-xs font-semibold block"
-                    style={{ color: "var(--text-headline)" }}
-                  >
-                    {tool.tool}
-                  </span>
-                  <span
-                    className="font-mono text-[10px] hidden sm:block truncate"
-                    style={{ color: "var(--text-muted)" }}
-                  >
-                    {tool.replaces}
-                  </span>
-                </div>
-              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`https://logo.clearbit.com/${tool.domain}`}
+                alt={tool.tool}
+                width={24}
+                height={24}
+                className="w-6 h-6 rounded mb-1.5"
+                style={{ objectFit: "contain" }}
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = "none";
+                }}
+              />
               <span
-                className="font-mono text-[11px] sm:text-xs font-semibold text-right w-16 sm:w-24"
+                className="font-mono text-[10px] font-semibold leading-tight mb-0.5"
                 style={{ color: "var(--text-headline)" }}
               >
-                {fmt(cost)}
-                <span
-                  className="font-normal text-[9px]"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  /mo
-                </span>
+                {tool.tool}
               </span>
-              <div className="flex justify-center w-10 sm:w-20">
-                <div
-                  className="w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center"
-                  style={{ backgroundColor: "var(--blue)" }}
-                >
-                  <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-white" strokeWidth={3} />
-                </div>
-              </div>
+              <span
+                className="font-mono text-[10px] font-bold"
+                style={{ color: "var(--text-muted)" }}
+              >
+                {fmt(cost)}
+                <span className="font-normal text-[8px]">/mo</span>
+              </span>
             </div>
           );
         })}
-
-        {/* ── Total Row ───────────────────────────────────────── */}
-        <div
-          className="grid grid-cols-[1fr_auto_auto] gap-2 sm:gap-4 items-center px-3 sm:px-6 py-3 sm:py-4 border-t-2"
-          style={{
-            borderColor: "var(--border-strong)",
-            backgroundColor: "var(--bg-white)",
-          }}
-        >
-          <div>
-            <span
-              className="font-mono text-xs"
-              style={{ color: "var(--text-muted)" }}
-            >
-              Total:
-            </span>
-          </div>
-          <div className="text-right w-16 sm:w-24">
-            <span
-              className="font-mono text-sm font-bold block"
-              style={{ color: "#DC2626" }}
-            >
-              {fmt(totalMonthly)}
-              <span className="font-normal text-[9px]">/mo</span>
-            </span>
-            <span
-              className="font-mono text-[9px] sm:text-[10px] hidden sm:block"
-              style={{ color: "var(--text-muted)" }}
-            >
-              {fmt(totalAnnual)}/yr
-            </span>
-          </div>
-          <div className="flex justify-center w-10 sm:w-20">
-            <span
-              className="font-mono text-[10px] sm:text-sm font-bold"
-              style={{ color: "var(--blue)" }}
-            >
-              <span className="hidden sm:inline">Included</span>
-              <span className="sm:hidden">✓</span>
-            </span>
-          </div>
-        </div>
       </div>
 
-      {/* ── Bottom callout ────────────────────────────────────── */}
+      {/* Total bar */}
       <div
-        className="mt-0 border border-t-0 p-4 sm:p-5"
+        className="border border-t-0 p-4 flex flex-col sm:flex-row items-center justify-between gap-3"
         style={{
           borderColor: "var(--border-strong)",
           backgroundColor: "var(--blue-light)",
         }}
       >
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <span
-              className="font-mono text-[11px] sm:text-xs font-semibold block mb-0.5"
-              style={{ color: "var(--blue)" }}
-            >
-              You&apos;re paying {fmt(totalAnnual)}/year before writing a single
-              line of custom code.
-            </span>
-            <span
-              className="font-mono text-[10px]"
-              style={{ color: "var(--text-body)" }}
-            >
-              Plus a dev agency retainer of $5K–10K/mo to integrate and maintain
-              all of it.
-            </span>
-          </div>
-          <a
-            href="#intake-form"
-            className="inline-flex items-center justify-center font-mono text-[11px] sm:text-xs font-semibold btn-blue flex-shrink-0"
-            style={{ padding: "10px 20px", borderRadius: "6px" }}
+        <div className="text-center sm:text-left">
+          <span
+            className="font-mono text-xs font-semibold"
+            style={{ color: "var(--blue)" }}
           >
-            Replace All 18 Tools
-          </a>
+            You&apos;re spending {fmt(totalMonthly)}/mo ({fmt(totalAnnual)}/yr) on
+            tools Wholesail replaces.
+          </span>
         </div>
+        <a
+          href="#intake-form"
+          className="inline-flex items-center justify-center font-mono text-xs font-semibold btn-blue flex-shrink-0"
+          style={{ padding: "10px 20px", borderRadius: "6px" }}
+        >
+          Replace Them All
+        </a>
       </div>
     </div>
   );

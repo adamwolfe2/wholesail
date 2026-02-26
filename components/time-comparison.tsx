@@ -1,262 +1,209 @@
 "use client";
 
-import {
-  MANUAL_PROCESSES,
-  TOTAL_HOURS_SAVED,
-  DEFAULT_HOURLY_RATE,
-  ANNUAL_TIME_COST,
-} from "@/lib/client-data";
+import { useState } from "react";
+import { TOTAL_HOURS_SAVED, MANUAL_PROCESSES } from "@/lib/client-data";
 
 function fmt(n: number) {
   return "$" + n.toLocaleString();
 }
 
 export function TimeComparison() {
-  const weeklyCost = TOTAL_HOURS_SAVED * DEFAULT_HOURLY_RATE;
+  const [hourlyRate, setHourlyRate] = useState(30);
+  const weeklyCost = TOTAL_HOURS_SAVED * hourlyRate;
+  const annualCost = weeklyCost * 52;
+
+  // Group tasks into summary buckets for compact display
+  const taskSummaries = [
+    { label: "Order Taking", hours: 10, desc: "Phone, email, text orders" },
+    { label: "Invoicing & Payments", hours: 9, desc: "Invoices, reminders, chasing" },
+    { label: "Inventory & Shipping", hours: 7, desc: "Spreadsheets, tracking, updates" },
+    { label: "CRM & Client Mgmt", hours: 6, desc: "Contacts, reps, applications" },
+    { label: "Marketing & Comms", hours: 7, desc: "Emails, follow-ups, reports" },
+    { label: "Support & Questions", hours: 6, desc: "Same questions, over and over" },
+  ];
 
   return (
     <div>
-      {/* ── Process Grid ─────────────────────────────────────── */}
+      {/* Hourly rate slider */}
       <div
-        className="border"
-        style={{ borderColor: "var(--border-strong)" }}
+        className="flex items-center gap-4 sm:gap-6 p-4 border"
+        style={{
+          borderColor: "var(--border-strong)",
+          backgroundColor: "var(--bg-white)",
+        }}
       >
-        {/* Header — desktop: 3 cols, mobile: hidden (labels inline) */}
-        <div
-          className="hidden sm:grid grid-cols-[1fr_auto_1fr] gap-0 px-4 sm:px-6 py-3 border-b"
+        <span
+          className="font-mono text-[9px] uppercase tracking-widest flex-shrink-0"
+          style={{ color: "var(--text-muted)" }}
+        >
+          Avg Hourly Rate
+        </span>
+        <input
+          type="range"
+          min={15}
+          max={75}
+          step={5}
+          value={hourlyRate}
+          onChange={(e) => setHourlyRate(Number(e.target.value))}
+          className="flex-1"
+          style={{ accentColor: "var(--blue)" }}
+        />
+        <span
+          className="font-mono text-xs font-bold px-3 py-1 flex-shrink-0"
           style={{
-            borderColor: "var(--border-strong)",
-            backgroundColor: "var(--bg-white)",
+            backgroundColor: "var(--blue-light)",
+            color: "var(--blue)",
+            borderRadius: "100px",
           }}
         >
-          <span
-            className="font-mono text-[9px] uppercase tracking-widest"
-            style={{ color: "#DC2626" }}
-          >
-            What your team does now
-          </span>
-          <span
-            className="font-mono text-[9px] uppercase tracking-widest text-center w-16"
-            style={{ color: "var(--text-muted)" }}
-          >
-            hrs/wk
-          </span>
-          <span
-            className="font-mono text-[9px] uppercase tracking-widest text-right"
-            style={{ color: "var(--blue)" }}
-          >
-            What Wholesail does instead
-          </span>
-        </div>
+          {fmt(hourlyRate)}/hr
+        </span>
+      </div>
 
-        {/* Mobile header */}
-        <div
-          className="sm:hidden px-4 py-3 border-b"
-          style={{
-            borderColor: "var(--border-strong)",
-            backgroundColor: "var(--bg-white)",
-          }}
-        >
-          <span
-            className="font-mono text-[9px] uppercase tracking-widest"
-            style={{ color: "var(--text-muted)" }}
-          >
-            Manual Work → Automated
-          </span>
-        </div>
-
-        {/* Rows */}
-        {MANUAL_PROCESSES.map((process, i) => (
+      {/* Task buckets — compact 2x3 grid */}
+      <div
+        className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border border-t-0"
+        style={{
+          borderColor: "var(--border-strong)",
+          backgroundColor: "var(--border-strong)",
+          gap: "1px",
+        }}
+      >
+        {taskSummaries.map((task) => (
           <div
-            key={process.task}
-            style={{
-              borderBottom:
-                i < MANUAL_PROCESSES.length - 1
-                  ? "1px solid var(--border)"
-                  : undefined,
-              backgroundColor:
-                i % 2 === 0 ? "var(--bg-white)" : "var(--bg-primary)",
-            }}
+            key={task.label}
+            className="p-3 text-center"
+            style={{ backgroundColor: "var(--bg-white)" }}
           >
-            {/* Desktop row: 3 columns */}
-            <div className="hidden sm:grid grid-cols-[1fr_auto_1fr] gap-0 items-center px-4 sm:px-6 py-3">
-              <div className="pr-3">
-                <span
-                  className="font-mono text-xs"
-                  style={{ color: "var(--text-headline)" }}
-                >
-                  {process.task}
-                </span>
-              </div>
-              <div className="flex items-center justify-center w-16">
-                <span
-                  className="font-mono text-sm font-bold"
-                  style={{ color: "#DC2626" }}
-                >
-                  {process.hoursPerWeek}
-                </span>
-              </div>
-              <div className="pl-3 text-right">
-                <span
-                  className="font-mono text-xs"
-                  style={{ color: "var(--blue)" }}
-                >
-                  {process.plainEnglish}
-                </span>
-              </div>
-            </div>
-
-            {/* Mobile row: stacked */}
-            <div className="sm:hidden px-4 py-3">
-              <div className="flex items-start justify-between gap-2 mb-1">
-                <span
-                  className="font-mono text-[11px] leading-snug"
-                  style={{ color: "var(--text-headline)" }}
-                >
-                  {process.task}
-                </span>
-                <span
-                  className="font-mono text-xs font-bold flex-shrink-0"
-                  style={{ color: "#DC2626" }}
-                >
-                  {process.hoursPerWeek}h
-                </span>
-              </div>
+            <div
+              className="font-serif text-xl sm:text-2xl mb-0.5"
+              style={{ color: "var(--text-headline)" }}
+            >
+              {task.hours}
               <span
-                className="font-mono text-[10px]"
-                style={{ color: "var(--blue)" }}
+                className="font-mono text-[9px]"
+                style={{ color: "var(--text-muted)" }}
               >
-                → {process.plainEnglish}
+                hrs
               </span>
+            </div>
+            <div
+              className="font-mono text-[10px] font-semibold leading-tight mb-0.5"
+              style={{ color: "var(--text-headline)" }}
+            >
+              {task.label}
+            </div>
+            <div
+              className="font-mono text-[9px] leading-tight"
+              style={{ color: "var(--text-muted)" }}
+            >
+              {task.desc}
             </div>
           </div>
         ))}
+      </div>
 
-        {/* ── Total Row ──────────────────────────────────────── */}
+      {/* Summary totals */}
+      <div
+        className="grid grid-cols-3 border border-t-0"
+        style={{
+          borderColor: "var(--border-strong)",
+          backgroundColor: "var(--border-strong)",
+          gap: "1px",
+        }}
+      >
         <div
-          className="border-t-2"
-          style={{
-            borderColor: "var(--border-strong)",
-            backgroundColor: "var(--bg-white)",
-          }}
+          className="p-4 text-center"
+          style={{ backgroundColor: "var(--bg-white)" }}
         >
-          {/* Desktop */}
-          <div className="hidden sm:grid grid-cols-[1fr_auto_1fr] gap-0 items-center px-4 sm:px-6 py-4">
-            <div>
-              <span
-                className="font-mono text-xs"
-                style={{ color: "var(--text-muted)" }}
-              >
-                Total per week:
-              </span>
-            </div>
-            <div className="flex items-center justify-center w-16">
-              <span
-                className="font-mono text-lg font-bold"
-                style={{ color: "#DC2626" }}
-              >
-                {TOTAL_HOURS_SAVED}
-              </span>
-            </div>
-            <div className="text-right">
-              <span
-                className="font-mono text-xs font-semibold"
-                style={{ color: "var(--blue)" }}
-              >
-                0 hrs — fully automated
-              </span>
-            </div>
-          </div>
-          {/* Mobile */}
-          <div className="sm:hidden px-4 py-3 flex items-center justify-between">
+          <div
+            className="font-serif text-2xl sm:text-3xl"
+            style={{ color: "var(--text-headline)" }}
+          >
+            {TOTAL_HOURS_SAVED}
             <span
-              className="font-mono text-xs"
+              className="font-mono text-[10px]"
               style={{ color: "var(--text-muted)" }}
             >
-              Total wasted per week:
-            </span>
-            <span
-              className="font-mono text-lg font-bold"
-              style={{ color: "#DC2626" }}
-            >
-              {TOTAL_HOURS_SAVED} hrs
+              {" "}hrs/wk
             </span>
           </div>
+          <span
+            className="font-mono text-[10px]"
+            style={{ color: "var(--text-body)" }}
+          >
+            Wasted on manual work
+          </span>
+        </div>
+        <div
+          className="p-4 text-center"
+          style={{ backgroundColor: "var(--bg-white)" }}
+        >
+          <div
+            className="font-serif text-2xl sm:text-3xl"
+            style={{ color: "var(--text-headline)" }}
+          >
+            {fmt(weeklyCost)}
+            <span
+              className="font-mono text-[10px]"
+              style={{ color: "var(--text-muted)" }}
+            >
+              {" "}/wk
+            </span>
+          </div>
+          <span
+            className="font-mono text-[10px]"
+            style={{ color: "var(--text-body)" }}
+          >
+            In labor costs at {fmt(hourlyRate)}/hr
+          </span>
+        </div>
+        <div
+          className="p-4 text-center"
+          style={{ backgroundColor: "var(--bg-white)" }}
+        >
+          <div
+            className="font-serif text-2xl sm:text-3xl"
+            style={{ color: "var(--text-headline)" }}
+          >
+            {fmt(annualCost)}
+            <span
+              className="font-mono text-[10px]"
+              style={{ color: "var(--text-muted)" }}
+            >
+              {" "}/yr
+            </span>
+          </div>
+          <span
+            className="font-mono text-[10px]"
+            style={{ color: "var(--text-body)" }}
+          >
+            Burned annually on tasks Wholesail automates
+          </span>
         </div>
       </div>
 
-      {/* ── Impact Callout ────────────────────────────────────── */}
+      {/* CTA */}
       <div
-        className="border border-t-0 p-4 sm:p-5"
+        className="border border-t-0 p-4 flex flex-col sm:flex-row items-center justify-between gap-3"
         style={{
           borderColor: "var(--border-strong)",
           backgroundColor: "var(--blue-light)",
         }}
       >
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6">
-          <div>
-            <div
-              className="font-serif text-2xl sm:text-3xl mb-1"
-              style={{ color: "var(--text-headline)" }}
-            >
-              {TOTAL_HOURS_SAVED} hrs
-              <span
-                className="font-mono text-xs"
-                style={{ color: "var(--text-muted)" }}
-              >
-                /week
-              </span>
-            </div>
-            <span
-              className="font-mono text-[10px]"
-              style={{ color: "var(--text-body)" }}
-            >
-              Given back to your team. That&apos;s a full-time employee.
-            </span>
-          </div>
-          <div>
-            <div
-              className="font-serif text-2xl sm:text-3xl mb-1"
-              style={{ color: "#DC2626" }}
-            >
-              {fmt(weeklyCost)}
-              <span
-                className="font-mono text-xs"
-                style={{ color: "var(--text-muted)" }}
-              >
-                /week
-              </span>
-            </div>
-            <span
-              className="font-mono text-[10px]"
-              style={{ color: "var(--text-body)" }}
-            >
-              In labor costs at {fmt(DEFAULT_HOURLY_RATE)}/hr — doing work a
-              machine should do.
-            </span>
-          </div>
-          <div>
-            <div
-              className="font-serif text-2xl sm:text-3xl mb-1"
-              style={{ color: "#DC2626" }}
-            >
-              {fmt(ANNUAL_TIME_COST)}
-              <span
-                className="font-mono text-xs"
-                style={{ color: "var(--text-muted)" }}
-              >
-                /year
-              </span>
-            </div>
-            <span
-              className="font-mono text-[10px]"
-              style={{ color: "var(--text-body)" }}
-            >
-              Burned annually on manual tasks that Wholesail automates
-              completely.
-            </span>
-          </div>
-        </div>
+        <span
+          className="font-mono text-xs font-semibold text-center sm:text-left"
+          style={{ color: "var(--blue)" }}
+        >
+          That&apos;s a full-time employee worth of wasted labor — every single week.
+        </span>
+        <a
+          href="#intake-form"
+          className="inline-flex items-center justify-center font-mono text-xs font-semibold btn-blue flex-shrink-0"
+          style={{ padding: "10px 20px", borderRadius: "6px" }}
+        >
+          Automate It All
+        </a>
       </div>
     </div>
   );

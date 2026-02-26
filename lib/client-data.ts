@@ -16,50 +16,50 @@ export type FeatureDefinition = {
 
 export const FEATURES: FeatureDefinition[] = [
   // ── Core Platform ────────────────────────────────────────────────────
-  { id: "client-portal", label: "Client Portal", description: "14 authenticated pages: self-service ordering, order history, invoice payments, saved carts, account settings", value: 12000, marketValue: 38000, category: "core" },
-  { id: "admin-panel", label: "Admin Panel", description: "25+ pages: orders, fulfillment board, client CRM, inventory, pricing rules, quotes, leads, analytics, CEO dashboard", value: 22000, marketValue: 65000, category: "core" },
-  { id: "supplier-portal", label: "Supplier Portal", description: "Supplier login, product submission form, submission status tracking, approval workflow", value: 6000, marketValue: 18000, category: "core" },
-  { id: "marketing-site", label: "Marketing Website", description: "17 SEO-optimized pages: product catalog, about, journal, wholesale application, referral landing pages", value: 6000, marketValue: 18000, category: "core" },
-  { id: "multi-role-auth", label: "Multi-Role Authentication", description: "5 role types (admin, rep, client, supplier, viewer), Clerk webhooks, auto-linking, RBAC middleware", value: 4000, marketValue: 12000, category: "core" },
-  { id: "database-architecture", label: "Database Architecture", description: "32 Prisma models, migrations, seed scripts, repository pattern, connection pooling", value: 8000, marketValue: 25000, category: "core" },
+  { id: "client-portal", label: "Client Portal", description: "Clients stop calling to place orders. They log in, browse, order, and pay — anytime, anywhere. No more phone tag.", value: 6000, marketValue: 38000, category: "core" },
+  { id: "admin-panel", label: "Admin Panel", description: "See every order, client, invoice, and product in one place. Stop switching between 5 apps to run your business.", value: 10000, marketValue: 65000, category: "core" },
+  { id: "supplier-portal", label: "Supplier Portal", description: "Suppliers submit products online instead of emailing you spreadsheets. You approve with one click.", value: 3000, marketValue: 18000, category: "core" },
+  { id: "marketing-site", label: "Marketing Website", description: "A professional site that brings in new wholesale leads while you sleep — not a generic marketplace listing.", value: 3000, marketValue: 18000, category: "core" },
+  { id: "multi-role-auth", label: "Multi-Role Authentication", description: "Your team, reps, clients, and suppliers each see only what they need. No shared logins or access confusion.", value: 2000, marketValue: 12000, category: "core" },
+  { id: "database-architecture", label: "Database Architecture", description: "Your data is structured, connected, and fast. No more scattered spreadsheets or broken formulas.", value: 4000, marketValue: 25000, category: "core" },
 
   // ── Commerce & Billing ───────────────────────────────────────────────
-  { id: "stripe-billing", label: "Stripe Billing & Checkout", description: "Online checkout, payment processing, webhook handling, refunds, payment method management", value: 7000, marketValue: 22000, category: "commerce" },
-  { id: "invoice-engine", label: "Net-30/60/90 Invoice Engine", description: "Automated invoice generation, payment reminders, aging reports, overdue escalation", value: 7000, marketValue: 20000, category: "commerce" },
-  { id: "standing-orders", label: "Standing / Recurring Orders", description: "Weekly, biweekly, or monthly auto-orders with smart scheduling and modification", value: 4000, marketValue: 12000, category: "commerce" },
-  { id: "tiered-pricing", label: "Tiered Wholesale Pricing", description: "Tier-based pricing rules, volume discounts, category overrides, client-specific pricing", value: 5000, marketValue: 15000, category: "commerce" },
-  { id: "quote-management", label: "Quote Management", description: "Quote creation, approval workflows, expiration tracking, conversion to order", value: 5000, marketValue: 15000, category: "commerce" },
-  { id: "saved-carts", label: "Saved Carts & Quick Reorder", description: "Save cart for later, one-click reorder from history, favorite products list", value: 3000, marketValue: 8000, category: "commerce" },
+  { id: "stripe-billing", label: "Stripe Billing & Checkout", description: "Clients pay online in seconds. No more chasing checks, lost invoices, or manual payment tracking.", value: 3000, marketValue: 22000, category: "commerce" },
+  { id: "invoice-engine", label: "Net-30/60/90 Invoice Engine", description: "Invoices generate and send themselves. Reminders go out automatically when they're late.", value: 3000, marketValue: 20000, category: "commerce" },
+  { id: "standing-orders", label: "Standing / Recurring Orders", description: "Repeat clients set it and forget it. Weekly or monthly orders process automatically — zero re-entry.", value: 2000, marketValue: 12000, category: "commerce" },
+  { id: "tiered-pricing", label: "Tiered Wholesale Pricing", description: "VIP clients see VIP prices. New clients see standard prices. No more custom spreadsheets per account.", value: 2000, marketValue: 15000, category: "commerce" },
+  { id: "quote-management", label: "Quote Management", description: "Create and send quotes in seconds. Clients approve with one click. Quotes convert to orders automatically.", value: 2000, marketValue: 15000, category: "commerce" },
+  { id: "saved-carts", label: "Saved Carts & Quick Reorder", description: "Clients save their usual order and reorder with one click. No rebuilding the same cart every week.", value: 1500, marketValue: 8000, category: "commerce" },
 
   // ── AI & Automation ──────────────────────────────────────────────────
-  { id: "sms-ordering", label: "SMS / iMessage Ordering", description: "Two-way SMS with AI order parsing — clients text orders, system creates them, confirms on reply", value: 10000, marketValue: 35000, category: "automation" },
-  { id: "ai-order-parsing", label: "AI Order Parsing", description: "Gemini-powered NLP with fuzzy product matching, quantity detection, unit normalization", value: 9000, marketValue: 28000, category: "automation" },
-  { id: "ai-chatbot", label: "AI Chatbot", description: "Trained on your products, pricing, and policies. Contextual responses, product suggestions, team escalation", value: 10000, marketValue: 30000, category: "automation" },
-  { id: "smart-reorder", label: "Smart Reorder Suggestions", description: "AI detects overdue clients and suggests products based on purchase history and seasonality", value: 5000, marketValue: 15000, category: "automation" },
-  { id: "email-automation", label: "Email Automation Suite", description: "Transactional emails, partner nurture sequences (Day 3, 7, 14), weekly digest reports", value: 6000, marketValue: 18000, category: "automation" },
-  { id: "abandoned-cart", label: "Abandoned Cart Recovery", description: "Auto-detection, timed reminder emails, conversion tracking, admin notification", value: 4000, marketValue: 10000, category: "automation" },
-  { id: "billing-reminders", label: "Automated Billing Reminders", description: "Overdue payment alerts, escalation sequences, aging report auto-send to admin", value: 3000, marketValue: 8000, category: "automation" },
+  { id: "sms-ordering", label: "SMS / iMessage Ordering", description: "Clients text '2 cases salmon, 5lb truffles' — the system creates the order and confirms. No app needed.", value: 5000, marketValue: 35000, category: "automation" },
+  { id: "ai-order-parsing", label: "AI Order Parsing", description: "AI reads natural language orders and turns them into real orders — even shorthand and product nicknames.", value: 4000, marketValue: 28000, category: "automation" },
+  { id: "ai-chatbot", label: "AI Chatbot", description: "Clients get instant answers about products and pricing 24/7 without your team picking up the phone.", value: 5000, marketValue: 30000, category: "automation" },
+  { id: "smart-reorder", label: "Smart Reorder Suggestions", description: "The system notices when regulars haven't ordered in a while and nudges them before they lapse.", value: 2000, marketValue: 15000, category: "automation" },
+  { id: "email-automation", label: "Email Automation Suite", description: "Welcome emails, order confirmations, shipping updates, follow-ups — all sent automatically, zero manual work.", value: 3000, marketValue: 18000, category: "automation" },
+  { id: "abandoned-cart", label: "Abandoned Cart Recovery", description: "When a client adds to cart but doesn't order, they get a reminder. Recovers revenue you'd otherwise lose.", value: 2000, marketValue: 10000, category: "automation" },
+  { id: "billing-reminders", label: "Automated Billing Reminders", description: "Overdue payments get automatic reminder sequences. Your team stops playing collections agent.", value: 1500, marketValue: 8000, category: "automation" },
 
   // ── Growth & Retention ───────────────────────────────────────────────
-  { id: "loyalty-program", label: "Loyalty Program", description: "Points per dollar spent, tier upgrades (NEW → REPEAT → VIP), redemption at checkout", value: 4000, marketValue: 12000, category: "growth" },
-  { id: "referral-program", label: "Referral Program", description: "Auto-generated referral codes, credit on conversion, referral tracking dashboard", value: 4000, marketValue: 10000, category: "growth" },
-  { id: "product-drops", label: "Product Drops & Alerts", description: "Limited-time releases with blast notifications, scarcity mechanics, alert signups", value: 4000, marketValue: 10000, category: "growth" },
-  { id: "sales-rep-tools", label: "Sales Rep Tools", description: "Rep assignment, cart building for clients, task management, commission tracking, performance reports", value: 7000, marketValue: 20000, category: "growth" },
-  { id: "client-health", label: "Client Health Scoring", description: "RFM analysis, auto tier upgrades, churn risk detection, lapsed client re-engagement alerts", value: 4000, marketValue: 12000, category: "growth" },
-  { id: "wholesale-application", label: "Wholesale Application Flow", description: "Public application form, admin review queue, auto-account creation on approval", value: 3000, marketValue: 8000, category: "growth" },
+  { id: "loyalty-program", label: "Loyalty Program", description: "Reward your best buyers automatically. Points accrue, tiers upgrade, clients redeem — all self-service.", value: 2000, marketValue: 12000, category: "growth" },
+  { id: "referral-program", label: "Referral Program", description: "Happy clients share a code, new clients sign up, both get credit. Word of mouth on autopilot.", value: 2000, marketValue: 10000, category: "growth" },
+  { id: "product-drops", label: "Product Drops & Alerts", description: "Launch limited products with instant notifications to your best clients. Create urgency and drive reorders.", value: 2000, marketValue: 10000, category: "growth" },
+  { id: "sales-rep-tools", label: "Sales Rep Tools", description: "Reps see their clients, build carts for them, track tasks, and close deals — all from one dashboard.", value: 3000, marketValue: 20000, category: "growth" },
+  { id: "client-health", label: "Client Health Scoring", description: "Know which clients are thriving, slipping, or about to churn — before it happens.", value: 2000, marketValue: 12000, category: "growth" },
+  { id: "wholesale-application", label: "Wholesale Application Flow", description: "New wholesale clients apply online, get reviewed, and onboard themselves. No back-and-forth emails.", value: 1500, marketValue: 8000, category: "growth" },
 
   // ── Analytics & Reporting ────────────────────────────────────────────
-  { id: "ceo-dashboard", label: "CEO Dashboard & KPIs", description: "Revenue trends, order volume, client growth, top products, at-a-glance business health", value: 4000, marketValue: 12000, category: "analytics" },
-  { id: "revenue-analytics", label: "Revenue & Client Analytics", description: "Spending reports, product performance, client cohort analysis, MoM trends", value: 4000, marketValue: 10000, category: "analytics" },
-  { id: "pdf-generation", label: "PDF Generation", description: "Branded invoice PDFs, tiered price list exports, order confirmations, packing slips", value: 4000, marketValue: 10000, category: "analytics" },
-  { id: "inventory-reports", label: "Inventory Reports & Alerts", description: "Stock level dashboards, low-stock alerts, reorder point triggers, usage trends", value: 3000, marketValue: 8000, category: "analytics" },
+  { id: "ceo-dashboard", label: "CEO Dashboard & KPIs", description: "Open one screen and see revenue, orders, client health, and trends. No more pulling reports manually.", value: 2000, marketValue: 12000, category: "analytics" },
+  { id: "revenue-analytics", label: "Revenue & Client Analytics", description: "Understand what's selling, who's buying, and where your revenue is growing — or shrinking.", value: 2000, marketValue: 10000, category: "analytics" },
+  { id: "pdf-generation", label: "PDF Generation", description: "Professional branded invoices and price lists generate automatically. No more Word docs or Excel exports.", value: 2000, marketValue: 10000, category: "analytics" },
+  { id: "inventory-reports", label: "Inventory Reports & Alerts", description: "Know exactly what's in stock and what's running low — in real time, not after you've already oversold.", value: 1500, marketValue: 8000, category: "analytics" },
 
   // ── Infrastructure ───────────────────────────────────────────────────
-  { id: "shipment-tracking", label: "Shipment Tracking", description: "Real-time tracking, status events, cold-chain monitoring, client-facing tracking pages", value: 6000, marketValue: 18000, category: "infrastructure" },
-  { id: "inventory-management", label: "Inventory Management", description: "Stock levels, product variants, batch tracking, auto-sync across orders and fulfillment", value: 6000, marketValue: 18000, category: "infrastructure" },
-  { id: "blog-journal", label: "Blog / Journal CMS", description: "Content marketing pages for SEO, sourcing stories, client engagement", value: 3000, marketValue: 6000, category: "infrastructure" },
-  { id: "cron-automation", label: "Cron Job Automation", description: "8+ scheduled tasks: abandoned carts, billing reminders, lapsed clients, weekly digests, standing orders", value: 4000, marketValue: 10000, category: "infrastructure" },
-  { id: "security", label: "Security & Rate Limiting", description: "API rate limiting, input validation with Zod, audit logging, OWASP compliance", value: 3000, marketValue: 8000, category: "infrastructure" },
+  { id: "shipment-tracking", label: "Shipment Tracking", description: "Clients track their own deliveries instead of calling you to ask 'where's my order?'", value: 3000, marketValue: 18000, category: "infrastructure" },
+  { id: "inventory-management", label: "Inventory Management", description: "Stock levels update automatically as orders come in. No more overselling or manual spreadsheet updates.", value: 3000, marketValue: 18000, category: "infrastructure" },
+  { id: "blog-journal", label: "Blog / Journal CMS", description: "Share sourcing stories and product spotlights to keep clients engaged and attract new ones.", value: 1500, marketValue: 6000, category: "infrastructure" },
+  { id: "cron-automation", label: "Cron Job Automation", description: "Abandoned cart emails, billing reminders, lapsed client alerts, weekly digests — all run on autopilot.", value: 2000, marketValue: 10000, category: "infrastructure" },
+  { id: "security", label: "Security & Rate Limiting", description: "Enterprise-grade security and audit logging. Your data and your clients' data stay safe.", value: 1500, marketValue: 8000, category: "infrastructure" },
 ];
 
 export const TOTAL_MARKET_VALUE = FEATURES.reduce((sum, f) => sum + f.marketValue, 0);

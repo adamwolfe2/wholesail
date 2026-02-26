@@ -26,9 +26,7 @@ import { BuildDemo } from "@/components/build-demo";
 import { DemoLauncher } from "@/components/demo-launcher";
 import { FAQ } from "@/components/faq";
 import { TechMarquee } from "@/components/tech-marquee";
-import { PricingCalculator } from "@/components/pricing-calculator";
-import { ToolComparison } from "@/components/tool-comparison";
-import { TimeComparison } from "@/components/time-comparison";
+import { PainPointExplorer } from "@/components/pain-point-explorer";
 
 /* ── Wholesail Sail Logo ─────────────────────────────────────────────── */
 function SailLogo({ className = "w-6 h-6" }: { className?: string }) {
@@ -97,85 +95,73 @@ const FEATURES = [
     icon: ShoppingCart,
     label: "Self-Service Ordering",
     title: "Your clients order when they want.",
-    body: "Full product catalog with search, filters, and add-to-cart. Saved carts, standing orders, and quick reorder from history. No more phone tag.",
-    span: 2,
+    body: "Full product catalog, saved carts, standing orders, and quick reorder. No more phone tag.",
   },
   {
     icon: LayoutDashboard,
     label: "Admin Panel",
     title: "Run your operation from one screen.",
-    body: "25+ admin pages: orders, fulfillment board, client CRM, inventory, quotes, leads, pricing rules, analytics, and CEO dashboard.",
-    span: 1,
+    body: "Orders, fulfillment, CRM, inventory, pricing, analytics — 25+ pages, one dashboard.",
   },
   {
     icon: CreditCard,
     label: "Stripe Billing",
     title: "Get paid faster. Automatically.",
-    body: "Online checkout, Net-30/60/90 invoicing, payment reminders, aging reports, and overdue escalation. Connected to Stripe with full webhook handling.",
-    span: 1,
+    body: "Online checkout, Net-30/60/90 invoicing, reminders, and overdue escalation.",
   },
   {
     icon: MessageSquare,
     label: "SMS Ordering",
     title: "Clients text. AI parses. Orders flow.",
-    body: "Natural language order parsing via AI. Client texts '2 cases salmon, 5 lb truffles' — system creates the order, sends confirmation, and fulfills on reply.",
-    span: 2,
+    body: "Clients text orders in plain English — AI creates them and confirms automatically.",
   },
   {
     icon: Globe,
     label: "Marketing Site",
     title: "Your brand, not a marketplace.",
-    body: "17-page marketing site: product catalog, about, journal, sourcing stories, wholesale application, referral landing pages — all SEO-optimized.",
-    span: 1,
+    body: "17 SEO pages: catalog, wholesale application, journal, referral landing pages.",
   },
   {
     icon: BarChart3,
     label: "Client Intelligence",
     title: "Know who to call before they lapse.",
-    body: "RFM health scoring, smart reorder suggestions, tier auto-upgrades (NEW → REPEAT → VIP), and lapsed client re-engagement — all automated.",
-    span: 1,
+    body: "Health scoring, smart reorder nudges, and churn detection — all automated.",
   },
   {
     icon: Heart,
-    label: "Loyalty Program",
+    label: "Loyalty & Referrals",
     title: "Reward your best clients.",
-    body: "Points per dollar spent, tiered loyalty levels, and redemption at checkout. Configurable thresholds and messaging.",
-    span: 1,
+    body: "Points, tiers, referral codes — clients earn and redeem at checkout automatically.",
   },
   {
     icon: Truck,
     label: "Shipment Tracking",
-    title: "Real-time delivery visibility.",
-    body: "Shipment creation with tracking numbers, status events, cold-chain monitoring, and client-facing tracking pages.",
-    span: 1,
+    title: "Clients track their own orders.",
+    body: "Real-time tracking pages so clients stop calling to ask 'where's my order?'",
   },
   {
     icon: Package,
     label: "Inventory Management",
     title: "Never oversell. Never run dry.",
-    body: "Real-time stock levels, low-stock alerts, product variants, and batch tracking. Syncs across orders and fulfillment automatically.",
-    span: 1,
+    body: "Stock updates automatically as orders come in. Low-stock alerts and batch tracking.",
   },
   {
     icon: Shield,
-    label: "Custom Domain & Branding",
-    title: "Your portal. Your domain. Zero watermarks.",
-    body: "White-label everything: custom domain, branded transactional emails, your logo on every page. Clients never see our name.",
-    span: 1,
+    label: "Custom Domain",
+    title: "Your portal. Your brand. Zero watermarks.",
+    body: "White-label everything: domain, emails, logo. Clients never see our name.",
   },
   {
     icon: Brain,
     label: "AI Chatbot",
     title: "Your team's knowledge, always on.",
-    body: "Built-in AI chatbot trained on your products, pricing, and policies. Answers client questions, suggests products, and escalates to your team when needed.",
-    span: 2,
+    body: "AI answers product and pricing questions 24/7. Escalates to your team when needed.",
   },
   {
     icon: Gift,
-    label: "Product Drops & Alerts",
+    label: "Product Drops",
     title: "Create urgency. Drive reorders.",
-    body: "Limited-time product drops with automated blast notifications. Clients get alerted instantly — first come, first served. Built-in scarcity and demand generation.",
-    span: 1,
+    body: "Limited-time releases with instant notifications. First come, first served.",
   },
 ];
 
@@ -471,33 +457,30 @@ export default function WholesailPage() {
         <TechMarquee />
       </section>
 
-      {/* ── Time Savings ──────────────────────────────────────────── */}
-      <section className="py-16" id="time" style={{ borderTop: "1px solid var(--border)" }}>
+      {/* ── Pain Point Explorer ──────────────────────────────────── */}
+      <section className="py-16" id="compare" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-10">
           <span
             className="font-mono text-xs uppercase tracking-widest mb-4 block"
             style={{ color: "var(--text-muted)" }}
           >
-            The Real Cost of &ldquo;How We&apos;ve Always Done It&rdquo;
+            See the Real Cost
           </span>
           <h2
             className="text-3xl md:text-4xl font-serif font-normal mb-3"
             style={{ color: "var(--text-headline)" }}
           >
-            Your team is spending 45+ hours a week
-            <br />
-            <span style={{ color: "#DC2626" }}>on work a machine should do.</span>
+            What&apos;s your biggest challenge right now?
           </h2>
           <p
             className="font-mono text-sm max-w-xl leading-relaxed"
             style={{ color: "var(--text-body)" }}
           >
-            Every hour your team spends taking orders by phone, updating
-            spreadsheets, and chasing invoices is an hour they&apos;re not
-            growing your business. Here&apos;s what that actually looks like.
+            Select a pain point below and see exactly what it&apos;s costing
+            your business — in hours, dollars, and disconnected tools.
           </p>
         </div>
-        <TimeComparison />
+        <PainPointExplorer />
       </section>
 
       {/* ── Features Grid ────────────────────────────────────────── */}
@@ -527,7 +510,7 @@ export default function WholesailPage() {
             return (
               <div
                 key={feature.label}
-                className={`p-6 ${feature.span === 2 ? "sm:col-span-2" : ""}`}
+                className="p-6"
                 style={{
                   backgroundColor: "var(--bg-white)",
                 }}
@@ -636,65 +619,8 @@ export default function WholesailPage() {
         </div>
       </section>
 
-      {/* ── Tool Replacement Comparison ─────────────────────────── */}
-      <section className="py-16" id="compare" style={{ borderTop: "1px solid var(--border)" }}>
-        <div className="mb-10">
-          <span
-            className="font-mono text-xs uppercase tracking-widest mb-4 block"
-            style={{ color: "var(--text-muted)" }}
-          >
-            Software You&apos;re Paying For Right Now
-          </span>
-          <h2
-            className="text-3xl md:text-4xl font-serif font-normal mb-3"
-            style={{ color: "var(--text-headline)" }}
-          >
-            You&apos;re paying for 18 platforms
-            <br />
-            <span style={{ color: "#DC2626" }}>that don&apos;t talk to each other.</span>
-          </h2>
-          <p
-            className="font-mono text-sm max-w-xl leading-relaxed"
-            style={{ color: "var(--text-body)" }}
-          >
-            One platform for ordering, another for invoicing, another for
-            inventory, another for email, another for chat — none of them
-            connected. Use the slider to see what you&apos;re actually spending.
-          </p>
-        </div>
-        <ToolComparison />
-      </section>
-
-      {/* ── Portal Value Calculator ──────────────────────────────── */}
-      <section className="py-16" id="pricing" style={{ borderTop: "1px solid var(--border)" }}>
-        <div className="mb-10">
-          <span
-            className="font-mono text-xs uppercase tracking-widest mb-4 block"
-            style={{ color: "var(--text-muted)" }}
-          >
-            Your Portal Value
-          </span>
-          <h2
-            className="text-3xl md:text-4xl font-serif font-normal mb-3"
-            style={{ color: "var(--text-headline)" }}
-          >
-            $500K+ in custom development value.
-            <br />
-            <span style={{ color: "var(--text-muted)" }}>A fraction of the cost to build.</span>
-          </h2>
-          <p
-            className="font-mono text-sm max-w-xl leading-relaxed"
-            style={{ color: "var(--text-body)" }}
-          >
-            Select features to see what your portal would cost to build from
-            scratch with a dev agency — then see the Wholesail price.
-          </p>
-        </div>
-        <PricingCalculator />
-      </section>
-
       {/* ── Your Investment ───────────────────────────────────────── */}
-      <section className="py-16" id="investment" style={{ borderTop: "1px solid var(--border)" }}>
+      <section className="py-16" id="pricing" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-10">
           <span
             className="font-mono text-xs uppercase tracking-widest mb-4 block"
@@ -835,7 +761,7 @@ export default function WholesailPage() {
             <div>
               <div
                 className="font-serif text-2xl mb-0.5"
-                style={{ color: "#DC2626" }}
+                style={{ color: "var(--text-headline)" }}
               >
                 $180K+
                 <span
@@ -875,7 +801,7 @@ export default function WholesailPage() {
             <div>
               <div
                 className="font-serif text-2xl mb-0.5"
-                style={{ color: "#059669" }}
+                style={{ color: "var(--blue)" }}
               >
                 Pays for itself
               </div>
