@@ -68,35 +68,79 @@ export const TOTAL_WHOLESAIL_VALUE = FEATURES.reduce((sum, f) => sum + f.value, 
 export const TOTAL_PLATFORM_VALUE = TOTAL_MARKET_VALUE;
 
 // ── Tool Replacement Comparison ─────────────────────────────────────────────
-// What companies pay monthly to duct-tape together what Wholesail replaces
+// The "Frankenstack" — what wholesale distributors actually duct-tape together
 // baseCost = fixed monthly, perSeat = per team member (scales with slider)
+export type ToolCategory =
+  | "erp"
+  | "billing"
+  | "crm"
+  | "shipping"
+  | "analytics"
+  | "marketing"
+  | "portal"
+  | "automation";
+
 export type ToolReplacement = {
   tool: string;
   domain: string; // Clearbit logo: https://logo.clearbit.com/{domain}
-  replaces: string;
+  category: ToolCategory;
+  painPoint: string;
   baseCost: number;
   perSeat: number;
 };
 
+export const TOOL_CATEGORY_META: { id: ToolCategory; label: string }[] = [
+  { id: "erp", label: "Order Management / ERP" },
+  { id: "billing", label: "Billing & Invoicing" },
+  { id: "crm", label: "CRM & Sales" },
+  { id: "shipping", label: "Shipping & Fulfillment" },
+  { id: "analytics", label: "Analytics & Reporting" },
+  { id: "marketing", label: "Marketing & Communication" },
+  { id: "portal", label: "Online Ordering / Portal" },
+  { id: "automation", label: "Automation & Integrations" },
+];
+
 export const TOOL_REPLACEMENTS: ToolReplacement[] = [
-  { tool: "Shopify Plus", domain: "shopify.com", replaces: "B2B ordering & e-commerce", baseCost: 2300, perSeat: 0 },
-  { tool: "Salesforce", domain: "salesforce.com", replaces: "CRM & client management", baseCost: 0, perSeat: 150 },
-  { tool: "HubSpot", domain: "hubspot.com", replaces: "Lead management & pipeline", baseCost: 0, perSeat: 89 },
-  { tool: "Pipedrive", domain: "pipedrive.com", replaces: "Sales pipeline & rep tracking", baseCost: 0, perSeat: 49 },
-  { tool: "Twilio", domain: "twilio.com", replaces: "SMS & messaging platform", baseCost: 500, perSeat: 0 },
-  { tool: "OpenAI", domain: "openai.com", replaces: "AI features & NLP order parsing", baseCost: 300, perSeat: 0 },
-  { tool: "Klaviyo", domain: "klaviyo.com", replaces: "Email marketing & automation", baseCost: 500, perSeat: 0 },
-  { tool: "Intercom", domain: "intercom.com", replaces: "Live chat & AI chatbot", baseCost: 0, perSeat: 74 },
-  { tool: "QuickBooks", domain: "intuit.com", replaces: "Invoicing & accounts receivable", baseCost: 200, perSeat: 20 },
-  { tool: "Cin7", domain: "cin7.com", replaces: "Inventory management", baseCost: 350, perSeat: 0 },
-  { tool: "ShipStation", domain: "shipstation.com", replaces: "Fulfillment & shipment tracking", baseCost: 200, perSeat: 0 },
-  { tool: "Webflow", domain: "webflow.com", replaces: "Marketing website & CMS", baseCost: 200, perSeat: 0 },
-  { tool: "Smile.io", domain: "smile.io", replaces: "Loyalty & referral programs", baseCost: 200, perSeat: 0 },
-  { tool: "Zapier", domain: "zapier.com", replaces: "Workflow automation & integrations", baseCost: 250, perSeat: 0 },
-  { tool: "Typeform", domain: "typeform.com", replaces: "Wholesale applications & forms", baseCost: 100, perSeat: 0 },
-  { tool: "Metabase", domain: "metabase.com", replaces: "Analytics & BI dashboards", baseCost: 85, perSeat: 8 },
-  { tool: "Monday.com", domain: "monday.com", replaces: "Task & project management", baseCost: 0, perSeat: 20 },
-  { tool: "SendGrid", domain: "sendgrid.com", replaces: "Transactional email delivery", baseCost: 100, perSeat: 0 },
+  // ── Order Management / ERP ─────────────────────────────────────────────
+  { tool: "QuickBooks", domain: "intuit.com", category: "erp", painPoint: "Half your team is still on Desktop 2012. Your data lives in a silo nobody can access remotely.", baseCost: 200, perSeat: 20 },
+  { tool: "SAP Business One", domain: "sap.com", category: "erp", painPoint: "$150K+ implementation built for manufacturing — not a 50-SKU distributor running Net-30 terms.", baseCost: 800, perSeat: 0 },
+  { tool: "NetSuite", domain: "netsuite.com", category: "erp", painPoint: "Enterprise pricing for features you'll never touch. Most distributors use 10% of what they pay for.", baseCost: 750, perSeat: 0 },
+  { tool: "Cin7", domain: "cin7.com", category: "erp", painPoint: "Inventory-first, client-last. No self-service portal. You're still taking every order by phone.", baseCost: 350, perSeat: 0 },
+  { tool: "Sage", domain: "sage.com", category: "erp", painPoint: "Legacy software from the '90s your team dreads opening every morning. Migration feels impossible.", baseCost: 500, perSeat: 0 },
+
+  // ── Billing & Invoicing ────────────────────────────────────────────────
+  { tool: "FreshBooks", domain: "freshbooks.com", category: "billing", painPoint: "Designed for freelancers — not 500-SKU distributors managing Net-60 terms and volume invoicing.", baseCost: 55, perSeat: 11 },
+  { tool: "Xero", domain: "xero.com", category: "billing", painPoint: "Another accounting tool that doesn't connect to your orders. Double-entry into two systems, every day.", baseCost: 80, perSeat: 5 },
+  { tool: "Wave", domain: "waveapps.com", category: "billing", painPoint: "Free until you actually need it to scale. Zero support for wholesale terms or automated AR follow-ups.", baseCost: 200, perSeat: 0 },
+
+  // ── CRM & Sales ────────────────────────────────────────────────────────
+  { tool: "Salesforce", domain: "salesforce.com", category: "crm", painPoint: "$150/seat for a CRM your sales reps refuse to update because it's completely disconnected from orders.", baseCost: 0, perSeat: 150 },
+  { tool: "HubSpot", domain: "hubspot.com", category: "crm", painPoint: "Powerful tool — if anyone on your team actually used it. Most distributor HubSpots sit empty for months.", baseCost: 890, perSeat: 0 },
+  { tool: "Pipedrive", domain: "pipedrive.com", category: "crm", painPoint: "Better UX, still completely disconnected from your orders, invoices, and delivery schedule.", baseCost: 0, perSeat: 49 },
+
+  // ── Shipping & Fulfillment ─────────────────────────────────────────────
+  { tool: "ShipStation", domain: "shipstation.com", category: "shipping", painPoint: "Built for DTC e-commerce — doesn't understand route-based delivery with your own drivers and manifests.", baseCost: 200, perSeat: 0 },
+  { tool: "Route4Me", domain: "route4me.com", category: "shipping", painPoint: "Optimizes delivery routes but doesn't connect to your orders. Another tab, another login, another silo.", baseCost: 200, perSeat: 0 },
+  { tool: "OptimoRoute", domain: "optimoroute.com", category: "shipping", painPoint: "Solves one problem well — but you still need 8 other tools duct-taped around it.", baseCost: 150, perSeat: 0 },
+
+  // ── Analytics & Reporting ──────────────────────────────────────────────
+  { tool: "Metabase", domain: "metabase.com", category: "analytics", painPoint: "Open source BI that requires a developer to set up and maintain. Who's writing your churn queries?", baseCost: 85, perSeat: 8 },
+  { tool: "Looker", domain: "looker.com", category: "analytics", painPoint: "Google-grade analytics at Google-grade prices. You just need reorder rates, not a data warehouse.", baseCost: 300, perSeat: 0 },
+
+  // ── Marketing & Communication ──────────────────────────────────────────
+  { tool: "Mailchimp", domain: "mailchimp.com", category: "marketing", painPoint: "Batch-and-blast newsletters. No segmentation by order history, purchase frequency, or reorder timing.", baseCost: 350, perSeat: 0 },
+  { tool: "Klaviyo", domain: "klaviyo.com", category: "marketing", painPoint: "40 automation flows to configure before sending your first reorder reminder. Who has the time?", baseCost: 500, perSeat: 0 },
+  { tool: "Twilio", domain: "twilio.com", category: "marketing", painPoint: "Raw SMS API with no order context. Your team still copies and pastes order confirmations by hand.", baseCost: 500, perSeat: 0 },
+
+  // ── Online Ordering / Portal ───────────────────────────────────────────
+  { tool: "Shopify Plus", domain: "shopify.com", category: "portal", painPoint: "Built for DTC retail — no Net-30 terms, no tiered wholesale pricing, no rep tools, no route delivery.", baseCost: 2300, perSeat: 0 },
+  { tool: "NuOrder", domain: "nuorder.com", category: "portal", painPoint: "Marketplace model — they own the client relationship. You're just another vendor in their catalog.", baseCost: 1000, perSeat: 0 },
+  { tool: "Faire", domain: "faire.com", category: "portal", painPoint: "They take 25% on first orders, 15% on reorders. Your brand disappears behind their marketplace.", baseCost: 500, perSeat: 0 },
+  { tool: "Squarespace", domain: "squarespace.com", category: "portal", painPoint: "A beautiful brochure that says 'call us to order.' Not a portal. Not even close.", baseCost: 50, perSeat: 0 },
+
+  // ── Automation & Integrations ──────────────────────────────────────────
+  { tool: "Zapier", domain: "zapier.com", category: "automation", painPoint: "The duct tape holding your Frankenstack together. When one zap breaks, the whole chain goes down.", baseCost: 250, perSeat: 0 },
+  { tool: "Typeform", domain: "typeform.com", category: "automation", painPoint: "Pretty forms that dump into a spreadsheet. No approval workflow, no auto-onboarding, no follow-up.", baseCost: 100, perSeat: 0 },
 ];
 
 export function getToolCost(tool: ToolReplacement, teamSize: number): number {
@@ -173,6 +217,49 @@ export const ENV_VARS = [
 
 export type EnvVarStatus = "configured" | "pending" | "missing";
 export type ClientNote = { date: string; text: string; type: "note" | "update" | "milestone" };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function mapProjectsForDashboard(projects: any[]): ClientProject[] {
+  return projects.map((p) => ({
+    id: p.id,
+    company: p.company,
+    shortName: p.shortName,
+    contact: {
+      name: p.contactName,
+      email: p.contactEmail,
+      phone: p.contactPhone || "",
+      role: p.contactRole || "",
+    },
+    domain: p.domain || "",
+    website: p.website || "",
+    industry: p.industry,
+    status: p.status.toLowerCase() as ClientStatus,
+    currentPhase: p.currentPhase,
+    startDate: p.startDate ? new Date(p.startDate).toISOString().split("T")[0] : "",
+    targetLaunchDate: p.targetLaunchDate ? new Date(p.targetLaunchDate).toISOString().split("T")[0] : "",
+    launchDate: p.launchDate ? new Date(p.launchDate).toISOString().split("T")[0] : undefined,
+    enabledFeatures: p.enabledFeatures || [],
+    githubRepo: p.githubRepo,
+    vercelProject: p.vercelProject,
+    vercelUrl: p.vercelUrl,
+    customDomain: p.customDomain,
+    envVars: (typeof p.envVars === "object" && p.envVars !== null ? p.envVars : {}) as Record<string, EnvVarStatus>,
+    contractValue: p.contractValue,
+    retainer: p.retainer,
+    monthlyRevenue: p.monthlyRevenue,
+    notes: (p.notes || []).map((n: { createdAt: Date | string; text: string; type: string }) => ({
+      date: typeof n.createdAt === "string" ? n.createdAt.split("T")[0] : new Date(n.createdAt).toISOString().split("T")[0],
+      text: n.text,
+      type: n.type.toLowerCase() as "note" | "update" | "milestone",
+    })),
+    tasks: (p.tasks || []).map((t: { id: string; label: string; completed: boolean; phase: number }) => ({
+      id: t.id,
+      label: t.label,
+      completed: t.completed,
+      phase: t.phase,
+    })),
+  }));
+}
 
 export type ClientProject = {
   id: string;

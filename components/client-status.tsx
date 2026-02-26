@@ -10,11 +10,11 @@ import {
   Loader2,
 } from "lucide-react";
 import {
-  MOCK_CLIENTS,
   BUILD_PHASES,
   FEATURES,
   STATUS_CONFIG,
   type ClientProject,
+  type ClientStatus as ClientStatusType,
 } from "@/lib/client-data";
 
 function SailLogo({ className = "w-6 h-6" }: { className?: string }) {
@@ -401,26 +401,52 @@ export function ClientStatusPage() {
   const [searching, setSearching] = useState(false);
   const [notFound, setNotFound] = useState(false);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (!email.trim()) return;
     setSearching(true);
     setNotFound(false);
 
-    // Simulate lookup delay
-    setTimeout(() => {
-      const found = MOCK_CLIENTS.find(
-        (c) =>
-          c.contact.email.toLowerCase() === email.trim().toLowerCase() ||
-          c.company.toLowerCase().includes(email.trim().toLowerCase()) ||
-          c.id === email.trim()
-      );
-      if (found) {
-        setClient(found);
-      } else {
+    try {
+      const res = await fetch(`/api/status?email=${encodeURIComponent(email.trim())}`);
+      if (!res.ok) {
         setNotFound(true);
+        return;
       }
+      const data = await res.json();
+      // Map API response to ClientProject shape for the ProjectStatus component
+      const mapped: ClientProject = {
+        id: data.id,
+        company: data.company,
+        shortName: data.shortName,
+        contact: { name: "", email: email.trim(), phone: "", role: "" },
+        domain: data.domain || "",
+        website: data.website || "",
+        industry: "",
+        status: data.status.toLowerCase() as ClientStatusType,
+        currentPhase: data.currentPhase,
+        startDate: data.startDate ? data.startDate.split("T")[0] : "",
+        targetLaunchDate: data.targetLaunchDate ? data.targetLaunchDate.split("T")[0] : "",
+        launchDate: data.launchDate ? data.launchDate.split("T")[0] : undefined,
+        enabledFeatures: data.enabledFeatures || [],
+        customDomain: data.customDomain,
+        vercelUrl: data.vercelUrl,
+        envVars: {},
+        contractValue: 0,
+        retainer: 0,
+        monthlyRevenue: 0,
+        notes: (data.notes || []).map((n: { date: string; text: string; type: string }) => ({
+          date: n.date,
+          text: n.text,
+          type: n.type.toLowerCase() as "note" | "update" | "milestone",
+        })),
+        tasks: [],
+      };
+      setClient(mapped);
+    } catch {
+      setNotFound(true);
+    } finally {
       setSearching(false);
-    }, 800);
+    }
   };
 
   if (client) {
@@ -496,10 +522,10 @@ export function ClientStatusPage() {
           {notFound && (
             <p
               className="font-mono text-xs mt-3"
-              style={{ color: "#DC2626" }}
+              style={{ color: "var(--text-body)" }}
             >
-              No project found. Check your email or contact us at
-              adam@wholesail.io
+              No project found for that email. Check your spelling or contact us
+              at adam@wholesail.io
             </p>
           )}
 
@@ -507,8 +533,7 @@ export function ClientStatusPage() {
             className="font-mono text-[9px] mt-3"
             style={{ color: "var(--text-muted)" }}
           >
-            Try: marcus@pacificseafood.com, sarah@brooklynwine.co, or
-            jake@mountainspirits.com
+            Enter the email address you used on your intake form.
           </p>
         </div>
       </div>

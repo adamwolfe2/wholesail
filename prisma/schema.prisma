@@ -1,0 +1,167 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Enums
+// ═══════════════════════════════════════════════════════════════════════════
+
+enum ProjectStatus {
+  INQUIRY
+  ONBOARDING
+  BUILDING
+  REVIEW
+  LIVE
+  CHURNED
+}
+
+enum NoteType {
+  NOTE
+  UPDATE
+  MILESTONE
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// Models
+// ═══════════════════════════════════════════════════════════════════════════
+
+/// Raw intake form submissions from the marketing site
+model IntakeSubmission {
+  id String @id @default(cuid())
+
+  // Step 1: Company & Contact
+  companyName  String
+  shortName    String?
+  website      String?
+  location     String?
+  contactName  String
+  contactEmail String
+  contactPhone String?
+  contactRole  String?
+  annualRevenue String?
+
+  // Step 2: Distribution Details
+  industry          String
+  productCategories String?
+  skuCount          String?
+  coldChain         String?
+  currentOrdering   String[]
+  activeClients     String?
+  avgOrderValue     String?
+  paymentTerms      String[]
+  deliveryCoverage  String?
+
+  // Step 3: Features & Branding
+  selectedFeatures   String[]
+  primaryColor       String?
+  hasBrandGuidelines String?
+  additionalNotes    String?
+
+  // Firecrawl scrape data (if website was scraped during demo)
+  scrapeData Json?
+
+  // Lifecycle
+  reviewedAt DateTime?
+  archivedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation to project (1:1 if converted)
+  project Project?
+
+  @@index([contactEmail])
+  @@index([createdAt])
+}
+
+/// A client portal build project managed by the admin
+model Project {
+  id       String  @id @default(cuid())
+  intakeId String? @unique
+  intake   IntakeSubmission? @relation(fields: [intakeId], references: [id])
+
+  // Company
+  company   String
+  shortName String
+  industry  String
+  website   String?
+
+  // Contact
+  contactName  String
+  contactEmail String
+  contactPhone String?
+  contactRole  String?
+
+  // Portal infrastructure
+  domain        String?
+  customDomain  String?
+  githubRepo    String?
+  vercelProject String?
+  vercelUrl     String?
+
+  // Build status
+  status          ProjectStatus @default(INQUIRY)
+  currentPhase    Int           @default(0)
+  enabledFeatures String[]
+
+  // Dates
+  startDate        DateTime?
+  targetLaunchDate DateTime?
+  launchDate       DateTime?
+
+  // Financials (whole dollars)
+  contractValue Int @default(0)
+  retainer      Int @default(0)
+  monthlyRevenue Int @default(0)
+
+  // Environment variables: JSON Record<string, "configured"|"pending"|"missing">
+  envVars Json @default("{}")
+
+  // Call notes from consultation (freeform text Adam drops in after the call)
+  callNotes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  notes ProjectNote[]
+  tasks ProjectTask[]
+
+  @@index([contactEmail])
+  @@index([status])
+}
+
+/// Activity log entries for a project
+model ProjectNote {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  text String
+  type NoteType @default(NOTE)
+
+  createdAt DateTime @default(now())
+
+  @@index([projectId])
+}
+
+/// Build tasks / SOP checklist items
+model ProjectTask {
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  label       String
+  phase       Int
+  completed   Boolean   @default(false)
+  completedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+  @@index([phase])
+}

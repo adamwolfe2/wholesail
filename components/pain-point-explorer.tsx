@@ -19,7 +19,7 @@ const PAIN_POINTS = [
     icon: Layers,
     question: "I'm paying for too many disconnected tools",
     label: "Software Costs",
-    subtext: "See what 18+ platforms actually cost your business",
+    subtext: "See what 24+ platforms actually cost your business",
   },
   {
     id: "value" as const,

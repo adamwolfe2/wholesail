@@ -1,24 +1,35 @@
 import type { Metadata } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Wholesail — Custom B2B Wholesale Ordering Portals",
   description:
     "Wholesail builds fully custom wholesale ordering portals for distribution companies. Client portal, admin panel, SMS ordering, Stripe billing. Live in under 2 weeks.",
+  metadataBase: new URL("https://wholesail.co"),
   openGraph: {
     title: "Wholesail — Custom B2B Wholesale Ordering Portals",
     description:
       "Wholesail builds fully custom wholesale ordering portals for distribution companies. Client portal, admin panel, SMS ordering, Stripe billing. Live in under 2 weeks.",
     type: "website",
+    siteName: "Wholesail",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Wholesail — Custom B2B Wholesale Ordering Portals",
+    description:
+      "Custom wholesale ordering portals for distribution companies. 34+ features, live in under 2 weeks.",
   },
 };
+
+const hasClerk = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
+  const content = (
     <html lang="en" className="scroll-smooth">
       <head>
         <link
@@ -38,4 +49,10 @@ export default function RootLayout({
       </body>
     </html>
   );
+
+  if (hasClerk) {
+    return <ClerkProvider>{content}</ClerkProvider>;
+  }
+
+  return content;
 }

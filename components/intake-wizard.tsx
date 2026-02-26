@@ -963,6 +963,9 @@ export function IntakeWizard() {
     additionalNotes: "",
   });
 
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
   const canProceed = () => {
     if (currentStep === 0)
       return (
@@ -972,6 +975,51 @@ export function IntakeWizard() {
       );
     if (currentStep === 1) return step2.industry.trim().length > 0;
     return true;
+  };
+
+  const handleNext = async () => {
+    // On the final data step (step 2 → step 3), submit to API
+    if (currentStep === 2 && !submitted) {
+      setSubmitting(true);
+      try {
+        const payload = {
+          companyName: step1.companyName,
+          shortName: step1.shortName || undefined,
+          website: step1.website || undefined,
+          location: step1.location || undefined,
+          contactName: step1.contactName,
+          contactEmail: step1.contactEmail,
+          contactPhone: step1.contactPhone || undefined,
+          contactRole: step1.role || undefined,
+          annualRevenue: step1.revenue || undefined,
+          industry: step2.industry,
+          productCategories: step2.productCategories || undefined,
+          skuCount: step2.skuCount || undefined,
+          coldChain: step2.coldChain || undefined,
+          currentOrdering: step2.currentOrdering,
+          activeClients: step2.activeClients || undefined,
+          avgOrderValue: step2.avgOrderValue || undefined,
+          paymentTerms: step2.paymentTerms,
+          deliveryCoverage: step2.deliveryCoverage || undefined,
+          selectedFeatures: step3.features,
+          primaryColor: step3.primaryColor || undefined,
+          hasBrandGuidelines: step3.hasBrandGuidelines || undefined,
+          additionalNotes: step3.additionalNotes || undefined,
+        };
+        await fetch("/api/intake", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+        setSubmitted(true);
+      } catch (err) {
+        console.error("Intake submission error:", err);
+        // Still let them proceed to booking even if submission fails
+      } finally {
+        setSubmitting(false);
+      }
+    }
+    setCurrentStep((p) => p + 1);
   };
 
   return (
@@ -1050,13 +1098,13 @@ export function IntakeWizard() {
           </button>
           <button
             type="button"
-            onClick={() => setCurrentStep((p) => p + 1)}
-            disabled={!canProceed()}
+            onClick={handleNext}
+            disabled={!canProceed() || submitting}
             className="flex items-center gap-2 text-white px-6 py-3 font-mono text-xs font-semibold tracking-wide disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             style={{ backgroundColor: "var(--blue)", borderRadius: "6px" }}
           >
-            {currentStep === 2 ? "Book My Call" : "Continue"}{" "}
-            <ArrowRight className="w-3.5 h-3.5" />
+            {submitting ? "Submitting..." : currentStep === 2 ? "Book My Call" : "Continue"}{" "}
+            {!submitting && <ArrowRight className="w-3.5 h-3.5" />}
           </button>
         </div>
       )}

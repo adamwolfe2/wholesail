@@ -1,0 +1,81 @@
+import { NextResponse } from "next/server";
+import { z } from "zod";
+import { createIntakeSubmission } from "@/lib/db/intake";
+import {
+  notifyAdminNewIntake,
+  sendIntakeConfirmation,
+} from "@/lib/email/notifications";
+
+const intakeSchema = z.object({
+  // Step 1
+  companyName: z.string().min(1),
+  shortName: z.string().optional(),
+  website: z.string().optional(),
+  location: z.string().optional(),
+  contactName: z.string().min(1),
+  contactEmail: z.string().email(),
+  contactPhone: z.string().optional(),
+  contactRole: z.string().optional(),
+  annualRevenue: z.string().optional(),
+
+  // Step 2
+  industry: z.string().min(1),
+  productCategories: z.string().optional(),
+  skuCount: z.string().optional(),
+  coldChain: z.string().optional(),
+  currentOrdering: z.array(z.string()).default([]),
+  activeClients: z.string().optional(),
+  avgOrderValue: z.string().optional(),
+  paymentTerms: z.array(z.string()).default([]),
+  deliveryCoverage: z.string().optional(),
+
+  // Step 3
+  selectedFeatures: z.array(z.string()).default([]),
+  primaryColor: z.string().optional(),
+  hasBrandGuidelines: z.string().optional(),
+  additionalNotes: z.string().optional(),
+
+  // Optional scrape data
+  scrapeData: z.any().optional(),
+});
+
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const data = intakeSchema.parse(body);
+
+    const submission = await createIntakeSubmission(data);
+
+    // Fire-and-forget email notifications
+    notifyAdminNewIntake({
+      companyName: data.companyName,
+      contactName: data.contactName,
+      contactEmail: data.contactEmail,
+      industry: data.industry,
+      featureCount: data.selectedFeatures.length,
+    });
+
+    sendIntakeConfirmation({
+      contactName: data.contactName,
+      contactEmail: data.contactEmail,
+      companyName: data.companyName,
+    });
+
+    return NextResponse.json(
+      { id: submission.id, message: "Submission received" },
+      { status: 201 }
+    );
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: "Validation failed", details: err.issues },
+        { status: 400 }
+      );
+    }
+    console.error("[intake] Error:", err);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}

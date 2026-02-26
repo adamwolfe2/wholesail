@@ -23,7 +23,6 @@ import {
   ClipboardList,
 } from "lucide-react";
 import {
-  MOCK_CLIENTS,
   BUILD_PHASES,
   FEATURES,
   ENV_VARS,
@@ -60,17 +59,17 @@ const NAV_ITEMS: { key: NavItem; label: string; icon: React.ElementType }[] = [
 // ═══════════════════════════════════════════════════════════════════════════
 // Stats Bar
 // ═══════════════════════════════════════════════════════════════════════════
-function StatsBar() {
-  const live = MOCK_CLIENTS.filter((c) => c.status === "live").length;
-  const building = MOCK_CLIENTS.filter((c) => c.status === "building" || c.status === "onboarding").length;
-  const mrr = MOCK_CLIENTS.reduce((sum, c) => sum + c.monthlyRevenue, 0);
-  const totalContract = MOCK_CLIENTS.reduce((sum, c) => sum + c.contractValue, 0);
-  const retainer = MOCK_CLIENTS.reduce((sum, c) => sum + c.retainer, 0);
+function StatsBar({ clients }: { clients: ClientProject[] }) {
+  const live = clients.filter((c) => c.status === "live").length;
+  const building = clients.filter((c) => c.status === "building" || c.status === "onboarding").length;
+  const mrr = clients.reduce((sum, c) => sum + c.monthlyRevenue, 0);
+  const totalContract = clients.reduce((sum, c) => sum + c.contractValue, 0);
+  const retainer = clients.reduce((sum, c) => sum + c.retainer, 0);
 
   const stats = [
     { label: "Portals Live", value: String(live), sub: `${building} building`, icon: Zap },
     { label: "MRR", value: formatCurrency(mrr), sub: `${formatCurrency(retainer)}/mo retainers`, icon: DollarSign },
-    { label: "Total Clients", value: String(MOCK_CLIENTS.length), sub: `${MOCK_CLIENTS.filter((c) => c.status === "inquiry").length} in pipeline`, icon: Users },
+    { label: "Total Clients", value: String(clients.length), sub: `${clients.filter((c) => c.status === "inquiry").length} in pipeline`, icon: Users },
     { label: "Total Contract Value", value: formatCurrency(totalContract), sub: "lifetime revenue", icon: Activity },
   ];
 
@@ -593,12 +592,19 @@ function ClientDetail({
 // ═══════════════════════════════════════════════════════════════════════════
 // Main Dashboard
 // ═══════════════════════════════════════════════════════════════════════════
-export function AdminDashboard() {
+export function AdminDashboard({
+  initialProjects,
+  intakeCount = 0,
+}: {
+  initialProjects: ClientProject[];
+  intakeCount?: number;
+}) {
+  const [clients] = useState<ClientProject[]>(initialProjects);
   const [selectedClient, setSelectedClient] = useState<ClientProject | null>(null);
   const [filter, setFilter] = useState<ClientStatus | "all">("all");
   const [navItem, setNavItem] = useState<NavItem>("dashboard");
 
-  const filteredClients = filter === "all" ? MOCK_CLIENTS : MOCK_CLIENTS.filter((c) => c.status === filter);
+  const filteredClients = filter === "all" ? clients : clients.filter((c) => c.status === filter);
   const statusFilters: (ClientStatus | "all")[] = ["all", "live", "building", "onboarding", "inquiry"];
 
   return (
@@ -655,7 +661,7 @@ export function AdminDashboard() {
             Clients
           </div>
           <div className="font-serif text-lg" style={{ color: "var(--text-headline)" }}>
-            {MOCK_CLIENTS.length}
+            {clients.length}
           </div>
         </div>
       </aside>
@@ -687,14 +693,14 @@ export function AdminDashboard() {
 
             {/* Stats */}
             <div className="mb-6">
-              <StatsBar />
+              <StatsBar clients={clients} />
             </div>
 
             {/* Status filters */}
             <div className="flex items-center gap-2 mb-4">
               {statusFilters.map((s) => {
                 const label = s === "all" ? "All" : STATUS_CONFIG[s].label;
-                const count = s === "all" ? MOCK_CLIENTS.length : MOCK_CLIENTS.filter((c) => c.status === s).length;
+                const count = s === "all" ? clients.length : clients.filter((c) => c.status === s).length;
                 return (
                   <button
                     key={s}
