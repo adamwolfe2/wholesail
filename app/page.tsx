@@ -147,6 +147,20 @@ const FEATURES = [
     body: "Shipment creation with tracking numbers, status events, cold-chain monitoring, and client-facing tracking pages.",
     span: 1,
   },
+  {
+    icon: Package,
+    label: "Inventory Management",
+    title: "Never oversell. Never run dry.",
+    body: "Real-time stock levels, low-stock alerts, product variants, and batch tracking. Syncs across orders and fulfillment automatically.",
+    span: 1,
+  },
+  {
+    icon: Shield,
+    label: "Custom Domain & Branding",
+    title: "Your portal. Your domain. Zero watermarks.",
+    body: "White-label everything: custom domain, branded transactional emails, your logo on every page. Clients never see our name.",
+    span: 1,
+  },
 ];
 
 /* ── What's Included Table ────────────────────────────────────────────── */
@@ -454,20 +468,16 @@ export default function WholesailPage() {
           </h2>
         </div>
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0"
-          style={{ border: "1px solid var(--border-strong)" }}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border"
+          style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--border-strong)", gap: "1px" }}
         >
-          {FEATURES.map((feature, i) => {
+          {FEATURES.map((feature) => {
             const Icon = feature.icon;
-            const isLast = i === FEATURES.length - 1;
             return (
               <div
                 key={feature.label}
-                className={`p-6 ${feature.span === 2 ? "sm:col-span-2" : ""} ${
-                  !isLast ? "border-b lg:border-r" : ""
-                }`}
+                className={`p-6 ${feature.span === 2 ? "sm:col-span-2" : ""}`}
                 style={{
-                  borderColor: "var(--border-strong)",
                   backgroundColor: "var(--bg-white)",
                 }}
               >
