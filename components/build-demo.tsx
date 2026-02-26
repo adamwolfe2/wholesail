@@ -54,8 +54,8 @@ function PhaseBar({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, duration]);
   return (
-    <div className="h-[3px] bg-neutral-200 w-full">
-      <div className="h-full bg-black" style={{ width: `${pct}%` }} />
+    <div className="h-[3px] w-full" style={{ backgroundColor: "var(--border)" }}>
+      <div className="h-full" style={{ backgroundColor: "var(--blue)", width: `${pct}%` }} />
     </div>
   );
 }
@@ -85,21 +85,22 @@ function ConfigurePhase() {
     <div className="h-full flex flex-col p-5">
       <div className="flex items-start justify-between mb-3">
         <div>
-          <div className="font-mono text-[9px] text-neutral-400 uppercase tracking-widest mb-0.5">
+          <div className="font-mono text-[9px] uppercase tracking-widest mb-0.5" style={{ color: "var(--text-muted)" }}>
             Step 01 · Configure
           </div>
-          <div className="font-serif text-lg">Setting up portal.config.ts</div>
+          <div className="font-serif text-lg" style={{ color: "var(--text-headline)" }}>Setting up portal.config.ts</div>
         </div>
         <div className="text-right flex-shrink-0">
           <motion.div
             key={revealed}
             initial={{ scale: 1.18 }}
             animate={{ scale: 1 }}
-            className="font-mono text-2xl font-bold text-black leading-none"
+            className="font-mono text-2xl font-bold leading-none"
+            style={{ color: "var(--text-headline)" }}
           >
             {revealed}/{CONFIG_FIELDS.length}
           </motion.div>
-          <div className="font-mono text-[9px] text-neutral-400 uppercase tracking-wide">
+          <div className="font-mono text-[9px] uppercase tracking-wide" style={{ color: "var(--text-muted)" }}>
             fields set
           </div>
         </div>
@@ -114,17 +115,18 @@ function ConfigurePhase() {
               key={cfg.label}
               animate={{ opacity: done ? 1 : active ? 0.5 : 0.2 }}
               transition={{ duration: 0.3 }}
-              className="flex items-center justify-between px-3 py-2 border border-black/15 bg-white"
+              className="flex items-center justify-between px-3 py-2 border bg-white"
+              style={{ borderColor: "var(--border)" }}
             >
               <div className="flex items-center gap-2">
                 {done ? (
-                  <CheckCircle2 className="w-3 h-3 text-black flex-shrink-0" />
+                  <CheckCircle2 className="w-3 h-3 flex-shrink-0" style={{ color: "var(--blue)" }} />
                 ) : active ? (
-                  <Loader2 className="w-3 h-3 text-neutral-400 animate-spin flex-shrink-0" />
+                  <Loader2 className="w-3 h-3 animate-spin flex-shrink-0" style={{ color: "var(--text-muted)" }} />
                 ) : (
-                  <div className="w-3 h-3 border border-neutral-300 flex-shrink-0" />
+                  <div className="w-3 h-3 border flex-shrink-0" style={{ borderColor: "var(--border)" }} />
                 )}
-                <span className="font-mono text-[10px]">{cfg.label}</span>
+                <span className="font-mono text-[10px]" style={{ color: "var(--text-headline)" }}>{cfg.label}</span>
               </div>
               <AnimatePresence>
                 {done && (
@@ -133,10 +135,10 @@ function ConfigurePhase() {
                     animate={{ opacity: 1 }}
                     className="flex items-center gap-2"
                   >
-                    <span className="font-mono text-[9px] text-neutral-500 truncate max-w-[120px]">
+                    <span className="font-mono text-[9px] truncate max-w-[120px]" style={{ color: "var(--text-body)" }}>
                       {cfg.value}
                     </span>
-                    <span className="font-mono text-[8px] text-neutral-300">
+                    <span className="font-mono text-[8px]" style={{ color: "var(--text-muted)" }}>
                       {cfg.field}
                     </span>
                   </motion.div>
@@ -153,7 +155,8 @@ function ConfigurePhase() {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.35 }}
-            className="mt-3 flex items-center gap-2 px-3 py-2.5 bg-black text-white font-mono text-[10px]"
+            className="mt-3 flex items-center gap-2 px-3 py-2.5 text-white font-mono text-[10px]"
+            style={{ backgroundColor: "var(--blue)" }}
           >
             <CheckCircle2 className="w-3 h-3 flex-shrink-0" />
             <span>
@@ -193,29 +196,31 @@ function BuildPhase() {
     <div className="h-full flex flex-col p-5">
       <div className="flex items-start justify-between mb-3">
         <div>
-          <div className="font-mono text-[9px] text-neutral-400 uppercase tracking-widest mb-0.5">
+          <div className="font-mono text-[9px] uppercase tracking-widest mb-0.5" style={{ color: "var(--text-muted)" }}>
             Step 02 · Build
           </div>
-          <div className="font-serif text-lg">Assembling your portal</div>
+          <div className="font-serif text-lg" style={{ color: "var(--text-headline)" }}>Assembling your portal</div>
         </div>
         <div className="text-right flex-shrink-0">
-          <div className="font-mono text-[9px] text-neutral-400 uppercase tracking-wide mb-0.5">
+          <div className="font-mono text-[9px] uppercase tracking-wide mb-0.5" style={{ color: "var(--text-muted)" }}>
             progress
           </div>
           <motion.div
             key={revealed}
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
-            className="font-mono text-xl font-bold text-black leading-none"
+            className="font-mono text-xl font-bold leading-none"
+            style={{ color: "var(--text-headline)" }}
           >
             {Math.round((revealed / BUILD_PHASES.length) * 100)}%
           </motion.div>
         </div>
       </div>
 
-      <div className="h-[3px] bg-neutral-200 mb-4">
+      <div className="h-[3px] mb-4" style={{ backgroundColor: "var(--border)" }}>
         <motion.div
-          className="h-full bg-black"
+          className="h-full"
+          style={{ backgroundColor: "var(--blue)" }}
           animate={{ width: `${(revealed / BUILD_PHASES.length) * 100}%` }}
           transition={{ duration: 0.45, ease: "easeOut" }}
         />
@@ -230,7 +235,8 @@ function BuildPhase() {
             <motion.div
               key={phase.name}
               animate={{ opacity: done ? 1 : active ? 0.6 : 0.2 }}
-              className="flex items-center justify-between px-3 py-2 border border-black/15 bg-white"
+              className="flex items-center justify-between px-3 py-2 border bg-white"
+              style={{ borderColor: "var(--border)" }}
             >
               <div className="flex items-center gap-2">
                 {done ? (
@@ -239,14 +245,14 @@ function BuildPhase() {
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 340, damping: 20 }}
                   >
-                    <CheckCircle2 className="w-3 h-3 text-black flex-shrink-0" />
+                    <CheckCircle2 className="w-3 h-3 flex-shrink-0" style={{ color: "var(--blue)" }} />
                   </motion.div>
                 ) : active ? (
-                  <Loader2 className="w-3 h-3 text-neutral-400 animate-spin flex-shrink-0" />
+                  <Loader2 className="w-3 h-3 animate-spin flex-shrink-0" style={{ color: "var(--text-muted)" }} />
                 ) : (
-                  <Icon className="w-3 h-3 text-neutral-300 flex-shrink-0" />
+                  <Icon className="w-3 h-3 flex-shrink-0" style={{ color: "var(--border-strong)" }} />
                 )}
-                <span className="font-mono text-[10px] font-semibold">
+                <span className="font-mono text-[10px] font-semibold" style={{ color: "var(--text-headline)" }}>
                   {phase.name}
                 </span>
               </div>
@@ -254,7 +260,8 @@ function BuildPhase() {
                 <motion.span
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="font-mono text-[9px] text-neutral-400"
+                  className="font-mono text-[9px]"
+                  style={{ color: "var(--text-muted)" }}
                 >
                   {phase.desc}
                 </motion.span>
@@ -270,7 +277,8 @@ function BuildPhase() {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mt-3 px-3 py-2.5 bg-black text-white font-mono text-[10px] flex items-center gap-2"
+            className="mt-3 px-3 py-2.5 text-white font-mono text-[10px] flex items-center gap-2"
+            style={{ backgroundColor: "var(--blue)" }}
           >
             <CheckCircle2 className="w-3 h-3 flex-shrink-0" />
             <span>
@@ -336,17 +344,18 @@ function IntegratePhase() {
     <div className="h-full flex flex-col p-5">
       <div className="flex items-start justify-between mb-3">
         <div>
-          <div className="font-mono text-[9px] text-neutral-400 uppercase tracking-widest mb-0.5">
+          <div className="font-mono text-[9px] uppercase tracking-widest mb-0.5" style={{ color: "var(--text-muted)" }}>
             Step 03 · Integrate
           </div>
-          <div className="font-serif text-lg">Connecting your services</div>
+          <div className="font-serif text-lg" style={{ color: "var(--text-headline)" }}>Connecting your services</div>
         </div>
         {revealed < INTEGRATIONS.length ? (
           <div className="flex gap-1">
             {[0, 1, 2].map((i) => (
               <motion.div
                 key={i}
-                className="w-1.5 h-1.5 bg-black"
+                className="w-1.5 h-1.5"
+                style={{ backgroundColor: "var(--blue)" }}
                 animate={{ opacity: [0.2, 1, 0.2] }}
                 transition={{
                   duration: 0.8,
@@ -362,8 +371,8 @@ function IntegratePhase() {
             animate={{ opacity: 1 }}
             className="flex items-center gap-1.5"
           >
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            <span className="font-mono text-[10px] uppercase tracking-wide">
+            <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "var(--blue)" }} />
+            <span className="font-mono text-[10px] uppercase tracking-wide" style={{ color: "var(--text-headline)" }}>
               All live
             </span>
           </motion.div>
@@ -378,7 +387,8 @@ function IntegratePhase() {
             <motion.div
               key={integration.name}
               animate={{ opacity: done ? 1 : active ? 0.5 : 0.2 }}
-              className="border border-black/20 bg-white"
+              className="border bg-white"
+              style={{ borderColor: "var(--border)" }}
             >
               <div className="flex items-center gap-2 px-3 py-2.5">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -392,7 +402,7 @@ function IntegratePhase() {
                     (e.target as HTMLImageElement).style.display = "none";
                   }}
                 />
-                <span className="font-mono text-[11px] font-semibold">
+                <span className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>
                   {integration.name}
                 </span>
                 <div className="ml-auto flex items-center gap-2">
@@ -402,15 +412,18 @@ function IntegratePhase() {
                       animate={{ opacity: 1, scale: 1 }}
                       className="flex items-center gap-1.5"
                     >
-                      <span className="font-mono text-[9px] text-neutral-500">
+                      <span className="font-mono text-[9px]" style={{ color: "var(--text-body)" }}>
                         {integration.detail}
                       </span>
-                      <span className="font-mono text-[9px] font-bold text-black bg-neutral-100 px-1.5 py-0.5">
+                      <span
+                        className="font-mono text-[9px] font-bold px-1.5 py-0.5"
+                        style={{ backgroundColor: "var(--blue-light)", color: "var(--blue)" }}
+                      >
                         {integration.status}
                       </span>
                     </motion.div>
                   ) : active ? (
-                    <Loader2 className="w-3 h-3 animate-spin" />
+                    <Loader2 className="w-3 h-3 animate-spin" style={{ color: "var(--text-muted)" }} />
                   ) : null}
                 </div>
               </div>
@@ -425,7 +438,8 @@ function IntegratePhase() {
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mt-3 px-3 py-2.5 bg-black text-white font-mono text-[10px] flex items-center gap-2"
+            className="mt-3 px-3 py-2.5 text-white font-mono text-[10px] flex items-center gap-2"
+            style={{ backgroundColor: "var(--blue)" }}
           >
             <CheckCircle2 className="w-3 h-3 flex-shrink-0" />
             <span>
@@ -483,10 +497,10 @@ function LaunchPhase() {
   return (
     <div className="h-full flex flex-col p-5">
       <div className="mb-3">
-        <div className="font-mono text-[9px] text-neutral-400 uppercase tracking-widest mb-0.5">
+        <div className="font-mono text-[9px] uppercase tracking-widest mb-0.5" style={{ color: "var(--text-muted)" }}>
           Step 04 · Launch
         </div>
-        <div className="font-serif text-lg">Your portal goes live</div>
+        <div className="font-serif text-lg" style={{ color: "var(--text-headline)" }}>Your portal goes live</div>
       </div>
 
       <div className="space-y-2 flex-1">
@@ -504,13 +518,17 @@ function LaunchPhase() {
             <motion.div
               key={block.period}
               animate={{ opacity: blockActive ? 1 : 0.25 }}
-              className="border border-black overflow-hidden"
+              className="border overflow-hidden"
+              style={{ borderColor: "var(--border-strong)" }}
             >
-              <div className="flex items-center gap-3 px-3 py-1.5 border-b border-black bg-white">
-                <span className="font-mono text-[9px] text-neutral-400 uppercase tracking-widest">
+              <div
+                className="flex items-center gap-3 px-3 py-1.5 border-b"
+                style={{ borderColor: "var(--border)", backgroundColor: "var(--bg-white)" }}
+              >
+                <span className="font-mono text-[9px] uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
                   {block.period}
                 </span>
-                <span className="font-mono text-[11px] font-bold text-black">
+                <span className="font-mono text-[11px] font-bold" style={{ color: "var(--text-headline)" }}>
                   {block.label}
                 </span>
                 {blockShown >= block.tasks.length && (
@@ -519,7 +537,7 @@ function LaunchPhase() {
                     animate={{ opacity: 1 }}
                     className="ml-auto"
                   >
-                    <CheckCircle2 className="w-3 h-3 text-black/50" />
+                    <CheckCircle2 className="w-3 h-3" style={{ color: "var(--blue)" }} />
                   </motion.div>
                 )}
               </div>
@@ -542,12 +560,12 @@ function LaunchPhase() {
                             damping: 20,
                           }}
                         >
-                          <CheckCircle2 className="w-3 h-3 text-black flex-shrink-0" />
+                          <CheckCircle2 className="w-3 h-3 flex-shrink-0" style={{ color: "var(--blue)" }} />
                         </motion.div>
                       ) : (
-                        <div className="w-3 h-3 border border-neutral-300 flex-shrink-0" />
+                        <div className="w-3 h-3 border flex-shrink-0" style={{ borderColor: "var(--border)" }} />
                       )}
-                      <span className="font-mono text-[10px] text-neutral-700 leading-snug">
+                      <span className="font-mono text-[10px] leading-snug" style={{ color: "var(--text-body)" }}>
                         {task}
                       </span>
                     </motion.div>
@@ -564,17 +582,18 @@ function LaunchPhase() {
           <motion.div
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-2 px-3 py-2.5 border border-black bg-white flex items-center justify-between"
+            className="mt-2 px-3 py-2.5 border bg-white flex items-center justify-between"
+            style={{ borderColor: "var(--border-strong)" }}
           >
             <div>
-              <div className="font-mono text-[9px] text-neutral-400 uppercase tracking-wider">
+              <div className="font-mono text-[9px] uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
                 Result
               </div>
-              <div className="font-serif text-base">
+              <div className="font-serif text-base" style={{ color: "var(--text-headline)" }}>
                 Fully operational B2B portal · your brand
               </div>
             </div>
-            <ArrowRight className="w-4 h-4 text-black flex-shrink-0" />
+            <ArrowRight className="w-4 h-4 flex-shrink-0" style={{ color: "var(--blue)" }} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -601,18 +620,19 @@ export function BuildDemo() {
   return (
     <div className="relative w-full">
       {/* Phase tabs */}
-      <div className="flex border border-black border-b-0 overflow-hidden">
+      <div className="flex overflow-hidden" style={{ border: "1px solid var(--border-strong)", borderBottom: "none" }}>
         {PHASES.map((p, i) => (
           <button
             key={p.id}
             onClick={() => jumpTo(i)}
-            className={`flex-1 px-2 py-2.5 font-mono text-[10px] uppercase tracking-wide border-r border-black last:border-r-0 transition-colors ${
-              phase === i
-                ? "bg-black text-white"
-                : "bg-[#F3F3EF] text-neutral-500 hover:bg-neutral-100"
-            }`}
+            className="flex-1 px-2 py-2.5 font-mono text-[10px] uppercase tracking-wide transition-colors"
+            style={{
+              borderRight: i < PHASES.length - 1 ? "1px solid var(--border-strong)" : "none",
+              backgroundColor: phase === i ? "var(--blue)" : "var(--bg-white)",
+              color: phase === i ? "white" : "var(--text-muted)",
+            }}
           >
-            <span className="block font-mono text-[8px] opacity-40 mb-0.5 tracking-widest">
+            <span className="block font-mono text-[8px] mb-0.5 tracking-widest" style={{ opacity: 0.4 }}>
               0{i + 1}
             </span>
             {p.label}
@@ -621,7 +641,16 @@ export function BuildDemo() {
       </div>
 
       {/* Content area */}
-      <div className="border border-black border-t-0 bg-[#F3F3EF] relative h-[480px] overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+      <div
+        className="relative h-[480px] overflow-hidden"
+        style={{
+          border: "1px solid var(--border-strong)",
+          borderTop: "none",
+          backgroundColor: "var(--bg-white)",
+          boxShadow: "0 4px 24px rgba(15, 21, 35, 0.08)",
+          borderRadius: "0 0 8px 8px",
+        }}
+      >
         <AnimatePresence mode="wait">
           <motion.div
             key={phase}
@@ -650,11 +679,12 @@ export function BuildDemo() {
       {/* Live indicator */}
       <div className="mt-2 flex items-center gap-1.5">
         <motion.div
-          className="w-1.5 h-1.5 bg-black flex-shrink-0"
+          className="w-1.5 h-1.5 flex-shrink-0"
+          style={{ backgroundColor: "var(--blue)" }}
           animate={{ opacity: [1, 0.2, 1] }}
           transition={{ duration: 1.4, repeat: Infinity }}
         />
-        <span className="font-mono text-[9px] text-neutral-400 uppercase tracking-wider">
+        <span className="font-mono text-[9px] uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>
           Live demo — auto-advances · click any tab to jump
         </span>
       </div>

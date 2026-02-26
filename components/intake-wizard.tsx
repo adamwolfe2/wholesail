@@ -245,11 +245,13 @@ function OptionButton({
     <button
       type="button"
       onClick={onClick}
-      className={`text-left px-4 py-3 border font-mono text-xs uppercase tracking-wide transition-all ${
-        selected
-          ? "bg-black text-white border-black"
-          : "bg-white text-neutral-700 border-neutral-300 hover:border-black"
-      }`}
+      className="text-left px-4 py-3 border font-mono text-xs uppercase tracking-wide transition-all"
+      style={{
+        backgroundColor: selected ? "var(--blue)" : "var(--bg-white)",
+        color: selected ? "white" : "var(--text-body)",
+        borderColor: selected ? "var(--blue)" : "var(--border)",
+        borderRadius: "4px",
+      }}
     >
       {children}
     </button>
@@ -268,7 +270,7 @@ function Step1({
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Company Name *
           </label>
           <input
@@ -276,11 +278,11 @@ function Step1({
             value={data.companyName}
             onChange={(e) => onChange({ companyName: e.target.value })}
             placeholder="Pacific Seafood Co."
-            className="w-full border border-black px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
           />
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Short Name / Abbreviation
           </label>
           <input
@@ -288,9 +290,9 @@ function Step1({
             value={data.shortName}
             onChange={(e) => onChange({ shortName: e.target.value })}
             placeholder="PSC"
-            className="w-full border border-black px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
           />
-          <span className="font-mono text-[9px] text-neutral-400 mt-1 block">
+          <span className="font-mono text-[9px] mt-1 block" style={{ color: "var(--text-muted)" }}>
             Used in SMS messages and notifications
           </span>
         </div>
@@ -298,7 +300,7 @@ function Step1({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Website
           </label>
           <input
@@ -306,11 +308,11 @@ function Step1({
             value={data.website}
             onChange={(e) => onChange({ website: e.target.value })}
             placeholder="pacificseafood.com"
-            className="w-full border border-black px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
           />
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Location
           </label>
           <input
@@ -318,14 +320,14 @@ function Step1({
             value={data.location}
             onChange={(e) => onChange({ location: e.target.value })}
             placeholder="Portland, OR"
-            className="w-full border border-black px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Your Name *
           </label>
           <input
@@ -333,11 +335,11 @@ function Step1({
             value={data.contactName}
             onChange={(e) => onChange({ contactName: e.target.value })}
             placeholder="John Smith"
-            className="w-full border border-black px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
           />
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Email *
           </label>
           <input
@@ -345,11 +347,11 @@ function Step1({
             value={data.contactEmail}
             onChange={(e) => onChange({ contactEmail: e.target.value })}
             placeholder="john@pacificseafood.com"
-            className="w-full border border-black px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
           />
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Phone
           </label>
           <input
@@ -357,14 +359,14 @@ function Step1({
             value={data.contactPhone}
             onChange={(e) => onChange({ contactPhone: e.target.value })}
             placeholder="(503) 555-0123"
-            className="w-full border border-black px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
           />
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Your Role
           </label>
           <div className="grid grid-cols-1 gap-2">
@@ -380,7 +382,7 @@ function Step1({
           </div>
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Annual Revenue
           </label>
           <div className="grid grid-cols-1 gap-2">
@@ -429,7 +431,7 @@ function Step2({
   return (
     <div className="space-y-7">
       <div>
-        <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+        <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
           What industry / category do you distribute in? *
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -446,7 +448,7 @@ function Step2({
       </div>
 
       <div>
-        <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+        <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
           Main product categories (comma-separated)
         </label>
         <input
@@ -454,13 +456,13 @@ function Step2({
           value={data.productCategories}
           onChange={(e) => onChange({ productCategories: e.target.value })}
           placeholder="e.g. Fresh Truffles, Oils & Vinegars, Specialty Cheese, Cured Meats"
-          className="w-full border border-black px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+          className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
         />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             How many SKUs / products?
           </label>
           <div className="grid grid-cols-1 gap-2">
@@ -476,7 +478,7 @@ function Step2({
           </div>
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Do your products require cold chain / temperature control?
           </label>
           <div className="grid grid-cols-1 gap-2">
@@ -496,7 +498,7 @@ function Step2({
       </div>
 
       <div>
-        <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+        <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
           How do clients currently place orders? (select all)
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -505,11 +507,13 @@ function Step2({
               key={m}
               type="button"
               onClick={() => toggleOrdering(m)}
-              className={`text-left px-3 py-2.5 border font-mono text-xs uppercase tracking-wide transition-all flex items-center gap-2 ${
-                data.currentOrdering.includes(m)
-                  ? "bg-black text-white border-black"
-                  : "bg-white text-neutral-700 border-neutral-300 hover:border-black"
-              }`}
+              className="text-left px-3 py-2.5 border font-mono text-xs uppercase tracking-wide transition-all flex items-center gap-2"
+              style={{
+                backgroundColor: data.currentOrdering.includes(m) ? "var(--blue)" : "var(--bg-white)",
+                color: data.currentOrdering.includes(m) ? "white" : "var(--text-body)",
+                borderColor: data.currentOrdering.includes(m) ? "var(--blue)" : "var(--border)",
+                borderRadius: "4px",
+              }}
             >
               {data.currentOrdering.includes(m) && (
                 <Check className="w-3 h-3 flex-shrink-0" />
@@ -522,7 +526,7 @@ function Step2({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Number of active wholesale clients
           </label>
           <div className="grid grid-cols-1 gap-2">
@@ -538,7 +542,7 @@ function Step2({
           </div>
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Average order value
           </label>
           <div className="grid grid-cols-1 gap-2">
@@ -556,7 +560,7 @@ function Step2({
       </div>
 
       <div>
-        <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+        <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
           Payment terms you offer (select all)
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -565,11 +569,13 @@ function Step2({
               key={t}
               type="button"
               onClick={() => togglePayment(t)}
-              className={`text-left px-3 py-2.5 border font-mono text-xs uppercase tracking-wide transition-all flex items-center gap-2 ${
-                data.paymentTerms.includes(t)
-                  ? "bg-black text-white border-black"
-                  : "bg-white text-neutral-700 border-neutral-300 hover:border-black"
-              }`}
+              className="text-left px-3 py-2.5 border font-mono text-xs uppercase tracking-wide transition-all flex items-center gap-2"
+              style={{
+                backgroundColor: data.paymentTerms.includes(t) ? "var(--blue)" : "var(--bg-white)",
+                color: data.paymentTerms.includes(t) ? "white" : "var(--text-body)",
+                borderColor: data.paymentTerms.includes(t) ? "var(--blue)" : "var(--border)",
+                borderRadius: "4px",
+              }}
             >
               {data.paymentTerms.includes(t) && (
                 <Check className="w-3 h-3 flex-shrink-0" />
@@ -581,7 +587,7 @@ function Step2({
       </div>
 
       <div>
-        <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+        <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
           Delivery coverage
         </label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
@@ -635,25 +641,25 @@ function Step3({
                 key={f.id}
                 type="button"
                 onClick={() => toggleFeature(f.id)}
-                className={`text-left px-4 py-3 border font-mono transition-all flex items-start gap-3 ${
-                  selected
-                    ? "bg-black text-white border-black"
-                    : "bg-white text-neutral-700 border-neutral-300 hover:border-black"
-                }`}
+                className="text-left px-4 py-3 border font-mono transition-all flex items-start gap-3"
+                style={{
+                  backgroundColor: selected ? "var(--blue)" : "var(--bg-white)",
+                  color: selected ? "white" : "var(--text-body)",
+                  borderColor: selected ? "var(--blue)" : "var(--border)",
+                  borderRadius: "4px",
+                }}
               >
                 <Icon
-                  className={`w-4 h-4 flex-shrink-0 mt-0.5 ${
-                    selected ? "text-white" : "text-neutral-400"
-                  }`}
+                  className="w-4 h-4 flex-shrink-0 mt-0.5"
+                  style={{ color: selected ? "white" : "var(--text-muted)" }}
                 />
                 <div className="min-w-0">
                   <div className="text-xs uppercase tracking-wide font-semibold">
                     {f.label}
                   </div>
                   <div
-                    className={`text-[10px] mt-0.5 leading-snug ${
-                      selected ? "text-neutral-300" : "text-neutral-400"
-                    }`}
+                    className="text-[10px] mt-0.5 leading-snug"
+                    style={{ color: selected ? "rgba(255,255,255,0.7)" : "var(--text-muted)" }}
                   >
                     {f.desc}
                   </div>
@@ -669,7 +675,7 @@ function Step3({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Primary Brand Color
           </label>
           <div className="flex items-center gap-3">
@@ -677,22 +683,24 @@ function Step3({
               type="color"
               value={data.primaryColor || "#000000"}
               onChange={(e) => onChange({ primaryColor: e.target.value })}
-              className="w-12 h-12 border border-black cursor-pointer p-0"
+              className="w-12 h-12 border cursor-pointer p-0"
+              style={{ borderColor: "var(--border-strong)", borderRadius: "4px" }}
             />
             <input
               type="text"
               value={data.primaryColor}
               onChange={(e) => onChange({ primaryColor: e.target.value })}
               placeholder="#1A1A1A"
-              className="flex-1 border border-black px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+              className="flex-1 border px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+              style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
             />
           </div>
-          <span className="font-mono text-[9px] text-neutral-400 mt-1 block">
+          <span className="font-mono text-[9px] mt-1 block" style={{ color: "var(--text-muted)" }}>
             Used for buttons, headers, and accents throughout your portal
           </span>
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Do you have brand guidelines / logo files?
           </label>
           <div className="grid grid-cols-1 gap-2">
@@ -714,7 +722,7 @@ function Step3({
       </div>
 
       <div>
-        <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-2">
+        <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
           Anything else we should know?
         </label>
         <textarea
@@ -722,7 +730,8 @@ function Step3({
           onChange={(e) => onChange({ additionalNotes: e.target.value })}
           placeholder="e.g. We need to migrate from an existing system. We have specific compliance requirements. We want to integrate with our ERP..."
           rows={4}
-          className="w-full border border-black px-4 py-3 font-mono text-sm bg-white focus:outline-none resize-none"
+          className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none resize-none"
+          style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
         />
       </div>
     </div>
@@ -812,8 +821,8 @@ function Step4({ step1, step2, step3 }: { step1: Step1Data; step2: Step2Data; st
   return (
     <div className="space-y-8">
       {/* Summary card */}
-      <div className="border border-black p-6 bg-[#F3F3EF]">
-        <div className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-4">
+      <div className="border p-6" style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-primary)", borderRadius: "8px" }}>
+        <div className="font-mono text-xs uppercase tracking-widest mb-4" style={{ color: "var(--text-muted)" }}>
           Your Portal Build Profile
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -831,25 +840,26 @@ function Step4({ step1, step2, step3 }: { step1: Step1Data; step2: Step2Data; st
             },
           ].map((item) => (
             <div key={item.label}>
-              <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mb-0.5">
+              <div className="font-mono text-[9px] uppercase tracking-widest mb-0.5" style={{ color: "var(--text-muted)" }}>
                 {item.label}
               </div>
-              <div className="font-mono text-xs font-medium text-black truncate">
+              <div className="font-mono text-xs font-medium truncate" style={{ color: "var(--text-headline)" }}>
                 {item.value}
               </div>
             </div>
           ))}
         </div>
         {featureLabels.length > 0 && (
-          <div className="mt-4 pt-4 border-t border-black/10">
-            <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mb-2">
+          <div className="mt-4 pt-4" style={{ borderTop: "1px solid var(--border)" }}>
+            <div className="font-mono text-[9px] uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
               Selected Features
             </div>
             <div className="flex flex-wrap gap-1.5">
               {featureLabels.map((label) => (
                 <span
                   key={label}
-                  className="font-mono text-[9px] bg-black text-white px-2 py-1"
+                  className="font-mono text-[9px] text-white px-2 py-1"
+                  style={{ backgroundColor: "var(--blue)", borderRadius: "4px" }}
                 >
                   {label}
                 </span>
@@ -860,8 +870,8 @@ function Step4({ step1, step2, step3 }: { step1: Step1Data; step2: Step2Data; st
       </div>
 
       {/* What happens next */}
-      <div className="border border-black p-6">
-        <div className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-4">
+      <div className="border p-6" style={{ borderColor: "var(--border-strong)", borderRadius: "8px" }}>
+        <div className="font-mono text-xs uppercase tracking-widest mb-4" style={{ color: "var(--text-muted)" }}>
           What happens on your call
         </div>
         <div className="space-y-3">
@@ -874,10 +884,11 @@ function Step4({ step1, step2, step3 }: { step1: Step1Data; step2: Step2Data; st
           ].map((item, i) => (
             <div key={i} className="flex items-start gap-3">
               <CheckCircle2
-                className="w-4 h-4 text-black flex-shrink-0 mt-0.5"
+                className="w-4 h-4 flex-shrink-0 mt-0.5"
+                style={{ color: "var(--blue)" }}
                 strokeWidth={2}
               />
-              <span className="font-mono text-xs text-neutral-700">
+              <span className="font-mono text-xs" style={{ color: "var(--text-body)" }}>
                 {item}
               </span>
             </div>
@@ -887,10 +898,10 @@ function Step4({ step1, step2, step3 }: { step1: Step1Data; step2: Step2Data; st
 
       {/* Cal.com embed */}
       <div>
-        <div className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-4">
+        <div className="font-mono text-xs uppercase tracking-widest mb-4" style={{ color: "var(--text-muted)" }}>
           Select a time to speak with our team
         </div>
-        <div className="border border-black bg-white overflow-hidden">
+        <div className="border bg-white overflow-hidden" style={{ borderColor: "var(--border-strong)", borderRadius: "8px" }}>
           <CalEmbed />
         </div>
       </div>
@@ -945,20 +956,19 @@ export function IntakeWizard() {
   };
 
   return (
-    <div className="border border-black bg-white">
+    <div className="border bg-white" style={{ borderColor: "var(--border-strong)", borderRadius: "8px", overflow: "hidden" }}>
       {/* Progress bar */}
-      <div className="border-b border-black">
+      <div className="border-b" style={{ borderColor: "var(--border-strong)" }}>
         <div className="flex">
           {STEPS.map((step, i) => (
             <div
               key={step}
-              className={`flex-1 px-4 py-3 text-center border-r border-black last:border-r-0 transition-colors ${
-                i === currentStep
-                  ? "bg-black text-white"
-                  : i < currentStep
-                  ? "bg-[#F3F3EF] text-black"
-                  : "bg-white text-neutral-400"
-              }`}
+              className="flex-1 px-4 py-3 text-center transition-colors"
+              style={{
+                borderRight: i < STEPS.length - 1 ? "1px solid var(--border-strong)" : "none",
+                backgroundColor: i === currentStep ? "var(--blue)" : i < currentStep ? "var(--blue-light)" : "var(--bg-white)",
+                color: i === currentStep ? "white" : i < currentStep ? "var(--blue)" : "var(--text-muted)",
+              }}
             >
               <div className="font-mono text-[9px] uppercase tracking-widest">{`0${
                 i + 1
@@ -972,14 +982,14 @@ export function IntakeWizard() {
       </div>
 
       {/* Step heading */}
-      <div className="border-b border-black px-6 py-5">
-        <h3 className="font-serif text-xl font-normal">
+      <div className="border-b px-6 py-5" style={{ borderColor: "var(--border)" }}>
+        <h3 className="font-serif text-xl font-normal" style={{ color: "var(--text-headline)" }}>
           {currentStep === 0 && "Tell us about your company"}
           {currentStep === 1 && "Tell us about your distribution business"}
           {currentStep === 2 && "What features does your portal need?"}
           {currentStep === 3 && "Book your consultation call"}
         </h3>
-        <p className="font-mono text-xs text-neutral-500 mt-1">
+        <p className="font-mono text-xs mt-1" style={{ color: "var(--text-body)" }}>
           {currentStep === 0 &&
             "Basic company info so we can scope your portal build."}
           {currentStep === 1 &&
@@ -1009,12 +1019,13 @@ export function IntakeWizard() {
 
       {/* Navigation */}
       {currentStep < 3 && (
-        <div className="px-6 py-4 border-t border-black flex items-center justify-between">
+        <div className="px-6 py-4 border-t flex items-center justify-between" style={{ borderColor: "var(--border)" }}>
           <button
             type="button"
             onClick={() => setCurrentStep((p) => p - 1)}
             disabled={currentStep === 0}
-            className="flex items-center gap-2 font-mono text-xs uppercase tracking-wide text-neutral-500 hover:text-black disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 font-mono text-xs uppercase tracking-wide disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+            style={{ color: "var(--text-body)" }}
           >
             <ArrowLeft className="w-3.5 h-3.5" /> Back
           </button>
@@ -1022,7 +1033,8 @@ export function IntakeWizard() {
             type="button"
             onClick={() => setCurrentStep((p) => p + 1)}
             disabled={!canProceed()}
-            className="flex items-center gap-2 bg-black text-white px-6 py-3 font-mono text-xs uppercase tracking-wide hover:bg-neutral-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors border border-black"
+            className="flex items-center gap-2 text-white px-6 py-3 font-mono text-xs font-semibold tracking-wide disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            style={{ backgroundColor: "var(--blue)", borderRadius: "6px" }}
           >
             {currentStep === 2 ? "Book My Call" : "Continue"}{" "}
             <ArrowRight className="w-3.5 h-3.5" />

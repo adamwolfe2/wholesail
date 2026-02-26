@@ -14,7 +14,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How much does a portal build cost?",
-    a: "Portal builds are high-ticket, white-glove engagements. Pricing depends on the features you need, number of product SKUs, integrations, and customization level. We scope everything on the consultation call and provide a clear investment estimate before you commit.",
+    a: "Helm builds are high-ticket, white-glove engagements. Pricing depends on the features you need, number of product SKUs, integrations, and customization level. We scope everything on the consultation call and provide a clear investment estimate before you commit.",
   },
   {
     q: "Do I own the code?",
@@ -42,23 +42,28 @@ export function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <div className="border border-black max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto" style={{ border: "1px solid var(--border-strong)" }}>
       {FAQ_ITEMS.map((item, i) => {
         const isOpen = open === i;
         return (
           <div
             key={i}
-            className={i < FAQ_ITEMS.length - 1 ? "border-b border-black" : ""}
+            className={i < FAQ_ITEMS.length - 1 ? "border-b" : ""}
+            style={{ borderColor: "var(--border-strong)" }}
           >
             <button
               onClick={() => setOpen(isOpen ? null : i)}
-              className="w-full flex items-center justify-between px-6 py-4 text-left hover:bg-white/50 transition-colors"
+              className="w-full flex items-center justify-between px-6 py-4 text-left transition-colors"
+              style={{ backgroundColor: isOpen ? "var(--bg-white)" : "transparent" }}
             >
-              <span className="font-serif text-base pr-4">{item.q}</span>
+              <span className="font-serif text-base pr-4" style={{ color: "var(--text-headline)" }}>
+                {item.q}
+              </span>
               <ChevronDown
-                className={`w-4 h-4 text-neutral-400 flex-shrink-0 transition-transform duration-200 ${
+                className={`w-4 h-4 flex-shrink-0 transition-transform duration-200 ${
                   isOpen ? "rotate-180" : ""
                 }`}
+                style={{ color: "var(--text-muted)" }}
               />
             </button>
             <div
@@ -66,7 +71,7 @@ export function FAQ() {
                 isOpen ? "max-h-96" : "max-h-0"
               }`}
             >
-              <p className="px-6 pb-4 font-mono text-xs text-neutral-500 leading-relaxed">
+              <p className="px-6 pb-4 font-mono text-xs leading-relaxed" style={{ color: "var(--text-body)" }}>
                 {item.a}
               </p>
             </div>

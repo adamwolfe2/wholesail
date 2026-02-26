@@ -18,8 +18,14 @@ const TECH_LOGOS = [
 export function TechMarquee() {
   return (
     <div className="relative">
-      <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-cream to-transparent z-10" />
-      <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-cream to-transparent z-10" />
+      <div
+        className="absolute left-0 top-0 bottom-0 w-16 z-10"
+        style={{ background: "linear-gradient(to right, var(--bg-primary), transparent)" }}
+      />
+      <div
+        className="absolute right-0 top-0 bottom-0 w-16 z-10"
+        style={{ background: "linear-gradient(to left, var(--bg-primary), transparent)" }}
+      />
       <div className="flex animate-marquee">
         {[...TECH_LOGOS, ...TECH_LOGOS].map((tech, i) => (
           <div
@@ -37,7 +43,7 @@ export function TechMarquee() {
                 (e.target as HTMLImageElement).style.display = "none";
               }}
             />
-            <span className="font-mono text-xs text-neutral-500 whitespace-nowrap">
+            <span className="font-mono text-xs whitespace-nowrap" style={{ color: "var(--text-body)" }}>
               {tech.name}
             </span>
           </div>

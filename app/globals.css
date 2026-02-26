@@ -4,12 +4,41 @@
   --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
     Consolas, monospace;
-  --color-cream: #f3f3ef;
+  --color-cream: #F5F3EE;
+}
+
+:root {
+  /* Backgrounds */
+  --bg-primary: #F5F3EE;
+  --bg-white: #FFFFFF;
+  --bg-blue: #1B3A6B;
+  --bg-blue-dark: #112649;
+
+  /* Text */
+  --text-headline: #0F1523;
+  --text-body: #3D4556;
+  --text-muted: #8B92A5;
+  --text-on-blue: #FFFFFF;
+  --text-on-cream: #0F1523;
+
+  /* Accent / Brand Blue */
+  --blue: #2A52BE;
+  --blue-hover: #1B3A6B;
+  --blue-light: #EEF2FB;
+  --blue-border: #C5D0E8;
+
+  /* Neutrals */
+  --border: #E2DDD6;
+  --border-strong: #C8C3BB;
+
+  /* Black */
+  --black: #0F1523;
+  --cream: #F5F3EE;
 }
 
 /* ── Selection ──────────────────────────────────────────────────────────── */
 ::selection {
-  background: black;
+  background: var(--blue);
   color: white;
 }
 
@@ -18,11 +47,11 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f3f3ef;
+  background: var(--bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: #000;
-  border: 2px solid #f3f3ef;
+  background: var(--border-strong);
+  border: 2px solid var(--bg-primary);
 }
 
 /* ── Marquee keyframes ──────────────────────────────────────────────────── */
@@ -64,4 +93,41 @@
 }
 .animate-loading-bar {
   animation: loading-bar 2.5s ease-in-out;
+}
+
+/* ── Brand utility classes ─────────────────────────────────────────────── */
+.btn-blue {
+  background-color: var(--blue);
+  color: white;
+  transition: background-color 0.15s ease;
+}
+.btn-blue:hover {
+  background-color: var(--blue-hover);
+}
+
+.link-body {
+  color: var(--text-body);
+  transition: color 0.15s ease;
+}
+.link-body:hover {
+  color: var(--blue);
+}
+
+.btn-outline {
+  border: 1px solid var(--border-strong);
+  color: var(--text-headline);
+  transition: border-color 0.15s ease;
+}
+.btn-outline:hover {
+  border-color: var(--text-headline);
+}
+
+.btn-outline-white {
+  border: 1px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.8);
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.btn-outline-white:hover {
+  border-color: white;
+  color: white;
 }

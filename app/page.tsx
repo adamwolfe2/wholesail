@@ -164,47 +164,52 @@ const STEPS = [
     step: "01",
     title: "Fill Out the Intake Form",
     desc: "Tell us about your company, products, clients, and feature needs. Takes 5 minutes and gives us everything we need to scope your build.",
-    bg: "bg-black text-white",
   },
   {
     step: "02",
     title: "Consultation Call",
     desc: "30-minute call to walk through features, discuss branding, review integrations, and get a timeline with investment estimate.",
-    bg: "bg-neutral-700 text-white",
   },
   {
     step: "03",
     title: "We Build Your Portal",
     desc: "Our team configures your portal — branding, products, pricing, integrations, email templates, and all features. Built on battle-tested infrastructure.",
-    bg: "bg-neutral-400 text-white",
   },
   {
     step: "04",
     title: "Launch & Onboard Clients",
     desc: "Deploy to production, train your team, invite your first wholesale clients, and activate SMS ordering. You're live.",
-    bg: "bg-white text-black",
   },
 ];
 
-export default function PortalPage() {
+export default function HelmPage() {
   return (
     <main className="flex-grow w-full max-w-6xl mx-auto px-4 sm:px-6">
       {/* ── Navigation ───────────────────────────────────────────── */}
-      <nav className="py-6 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 bg-black" />
-          <span className="font-serif text-xl tracking-tight">Portal</span>
-        </div>
-        <div className="flex items-center gap-3">
+      <nav
+        className="py-5 flex items-center justify-between sticky top-0 z-50"
+        style={{
+          backgroundColor: "var(--bg-primary)",
+          borderBottom: "1px solid var(--border)",
+        }}
+      >
+        <span
+          className="font-serif text-lg tracking-[0.05em] font-bold"
+          style={{ color: "var(--text-headline)" }}
+        >
+          HELM
+        </span>
+        <div className="flex items-center gap-4">
           <a
             href="#demo"
-            className="font-mono text-xs uppercase tracking-wide text-neutral-500 hover:text-black transition-colors hidden sm:block"
+            className="font-mono text-[13px] hidden sm:block link-body"
           >
             Explore Platform
           </a>
           <a
             href="#intake-form"
-            className="bg-black text-white px-4 py-2 font-mono text-xs uppercase tracking-wide border border-black hover:bg-neutral-800 transition-colors"
+            className="font-mono text-[13px] font-semibold btn-blue"
+            style={{ padding: "9px 20px", borderRadius: "6px" }}
           >
             Get Started
           </a>
@@ -212,22 +217,33 @@ export default function PortalPage() {
       </nav>
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section className="py-20 border-t border-black/10">
-        <span className="text-sm font-mono uppercase tracking-wider text-neutral-500 mb-5 block">
-          Custom B2B Wholesale Ordering Portals
+      <section className="py-20" style={{ borderTop: "1px solid var(--border)" }}>
+        {/* Eyebrow pill */}
+        <span
+          className="inline-block font-mono text-[12px] font-semibold tracking-[0.04em] mb-5"
+          style={{
+            backgroundColor: "var(--blue-light)",
+            color: "var(--blue)",
+            borderRadius: "100px",
+            padding: "4px 14px",
+          }}
+        >
+          Helm for Distributors
         </span>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div>
-            <h1 className="text-4xl md:text-5xl lg:text-[3.5rem] font-normal leading-[1.08] tracking-tight font-serif mb-7">
-              Your wholesale clients
+            <h1
+              className="text-4xl md:text-5xl lg:text-[3.5rem] font-normal leading-[1.08] tracking-tight font-serif mb-7"
+              style={{ color: "var(--text-headline)" }}
+            >
+              Your wholesale business,
               <br />
-              deserve better than
-              <br />
-              <span className="text-neutral-400">
-                phone calls and spreadsheets.
-              </span>
+              fully automated.
             </h1>
-            <p className="font-mono text-sm sm:text-base text-neutral-600 leading-relaxed mb-8 max-w-lg">
+            <p
+              className="font-mono text-sm sm:text-base leading-relaxed mb-8 max-w-lg"
+              style={{ color: "var(--text-body)" }}
+            >
               We build fully custom B2B ordering portals for distribution
               companies. Client portal, admin panel, SMS ordering, Stripe
               billing, automated invoicing — all white-labeled to your brand.
@@ -236,18 +252,20 @@ export default function PortalPage() {
             <div className="flex flex-col sm:flex-row gap-3 mb-3">
               <a
                 href="#demo"
-                className="inline-flex items-center justify-center gap-2 bg-black text-white px-8 py-4 font-mono text-sm uppercase tracking-wide hover:bg-neutral-800 transition-all border border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+                className="inline-flex items-center justify-center gap-2 font-mono text-sm font-semibold btn-blue"
+                style={{ padding: "14px 28px", borderRadius: "6px" }}
               >
                 Explore the Platform <ArrowRight className="w-4 h-4" />
               </a>
               <a
                 href="#intake-form"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 font-mono text-sm uppercase tracking-wide border border-black text-black hover:bg-white transition-all"
+                className="inline-flex items-center justify-center gap-2 font-mono text-sm font-semibold btn-outline"
+                style={{ padding: "14px 28px", borderRadius: "6px" }}
               >
                 Start Your Build
               </a>
             </div>
-            <div className="font-mono text-xs text-neutral-400 uppercase tracking-wider">
+            <div className="font-mono text-xs" style={{ color: "var(--text-muted)" }}>
               No signup required to explore
             </div>
           </div>
@@ -260,33 +278,50 @@ export default function PortalPage() {
       </section>
 
       {/* ── Stats Strip ──────────────────────────────────────────── */}
-      <section className="py-16 border-t border-black/10">
+      <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-8">
-          <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">
+          <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
             Why distributors are moving online
           </span>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 border border-black">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0"
+          style={{ border: "1px solid var(--border-strong)" }}
+        >
           {STATS.map((item, i) => (
             <div
               key={item.stat}
               className={`p-6 ${
                 i < STATS.length - 1
-                  ? "border-b sm:border-b lg:border-b-0 sm:border-r border-black"
+                  ? "border-b sm:border-b lg:border-b-0 sm:border-r"
                   : ""
               }`}
+              style={{
+                borderColor: "var(--border-strong)",
+                backgroundColor: "var(--bg-white)",
+              }}
             >
               <item.icon
-                className="w-4 h-4 text-black mb-3"
+                className="w-4 h-4 mb-3"
+                style={{ color: "var(--blue)" }}
                 strokeWidth={1.5}
               />
-              <div className="text-4xl font-serif font-normal mb-2">
+              <div
+                className="text-4xl font-serif font-normal mb-2"
+                style={{ color: "var(--text-headline)" }}
+              >
                 {item.stat}
               </div>
-              <p className="font-mono text-[11px] text-neutral-600 leading-relaxed mb-2">
+              <p
+                className="font-mono text-[11px] leading-relaxed mb-2"
+                style={{ color: "var(--text-body)" }}
+              >
                 {item.label}
               </p>
-              <div className="font-mono text-[9px] text-neutral-400 uppercase tracking-wider">
+              <div
+                className="font-mono text-[9px] uppercase tracking-wider"
+                style={{ color: "var(--text-muted)" }}
+              >
                 {item.source}
               </div>
             </div>
@@ -295,17 +330,26 @@ export default function PortalPage() {
       </section>
 
       {/* ── Explore Platform Demo ────────────────────────────────── */}
-      <section className="py-16 border-t border-black/10" id="demo">
+      <section className="py-16" id="demo" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div>
-            <span className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-4 block">
+            <span
+              className="font-mono text-xs uppercase tracking-widest mb-4 block"
+              style={{ color: "var(--text-muted)" }}
+            >
               Try Before You Buy
             </span>
-            <h2 className="text-3xl md:text-4xl font-serif font-normal mb-6">
+            <h2
+              className="text-3xl md:text-4xl font-serif font-normal mb-6"
+              style={{ color: "var(--text-headline)" }}
+            >
               See the platform with{" "}
               <span className="italic">your brand</span> in 30 seconds.
             </h2>
-            <p className="font-mono text-sm text-neutral-500 leading-relaxed mb-6">
+            <p
+              className="font-mono text-sm leading-relaxed mb-6"
+              style={{ color: "var(--text-body)" }}
+            >
               Enter your website URL. We&apos;ll scrape your logo and brand
               colors, apply them to a live demo portal loaded with sample
               data, and let you click through every feature — client portal,
@@ -321,8 +365,11 @@ export default function PortalPage() {
                 "Loyalty program, referrals, and standing orders",
               ].map((item) => (
                 <div key={item} className="flex items-center gap-2">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-black flex-shrink-0" />
-                  <span className="font-mono text-xs text-neutral-600">
+                  <CheckCircle2
+                    className="w-3.5 h-3.5 flex-shrink-0"
+                    style={{ color: "var(--blue)" }}
+                  />
+                  <span className="font-mono text-xs" style={{ color: "var(--text-body)" }}>
                     {item}
                   </span>
                 </div>
@@ -336,9 +383,15 @@ export default function PortalPage() {
       </section>
 
       {/* ── Tech Stack Marquee ────────────────────────────────────── */}
-      <section className="py-10 border-t border-black/10 overflow-hidden">
+      <section
+        className="py-10 overflow-hidden"
+        style={{ borderTop: "1px solid var(--border)" }}
+      >
         <div className="mb-4">
-          <span className="font-mono text-xs uppercase tracking-widest text-neutral-500">
+          <span
+            className="font-mono text-xs uppercase tracking-widest"
+            style={{ color: "var(--text-muted)" }}
+          >
             Built on
           </span>
         </div>
@@ -346,41 +399,72 @@ export default function PortalPage() {
       </section>
 
       {/* ── Features Grid ────────────────────────────────────────── */}
-      <section className="py-16 border-t border-black/10">
+      <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-10">
-          <span className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-4 block">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
             Platform Capabilities
           </span>
-          <h2 className="text-3xl md:text-4xl font-serif font-normal">
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal"
+            style={{ color: "var(--text-headline)" }}
+          >
             Everything your distribution business needs.
             <br />
-            <span className="text-neutral-400">Nothing it doesn&apos;t.</span>
+            <span style={{ color: "var(--text-muted)" }}>Nothing it doesn&apos;t.</span>
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0 border border-black">
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-0"
+          style={{ border: "1px solid var(--border-strong)" }}
+        >
           {FEATURES.map((feature, i) => {
             const Icon = feature.icon;
             const isLast = i === FEATURES.length - 1;
             return (
               <div
                 key={feature.label}
-                className={`p-6 ${
-                  feature.span === 2 ? "sm:col-span-2" : ""
-                } ${!isLast ? "border-b border-black lg:border-r" : ""}`}
+                className={`p-6 ${feature.span === 2 ? "sm:col-span-2" : ""} ${
+                  !isLast ? "border-b lg:border-r" : ""
+                }`}
+                style={{
+                  borderColor: "var(--border-strong)",
+                  backgroundColor: "var(--bg-white)",
+                }}
               >
                 <div className="flex items-center gap-2 mb-1">
-                  <div className="w-8 h-8 border border-black/20 flex items-center justify-center bg-white">
+                  <div
+                    className="w-8 h-8 flex items-center justify-center"
+                    style={{
+                      backgroundColor: "var(--blue-light)",
+                      borderRadius: "6px",
+                    }}
+                  >
                     <Icon
-                      className="w-4 h-4 text-neutral-600"
+                      className="w-4 h-4"
+                      style={{ color: "var(--blue)" }}
                       strokeWidth={1.5}
                     />
                   </div>
-                  <span className="font-mono text-[9px] uppercase tracking-widest text-neutral-400">
+                  <span
+                    className="font-mono text-[9px] uppercase tracking-widest"
+                    style={{ color: "var(--text-muted)" }}
+                  >
                     {feature.label}
                   </span>
                 </div>
-                <h3 className="font-serif text-lg mb-2">{feature.title}</h3>
-                <p className="font-mono text-xs text-neutral-500 leading-relaxed">
+                <h3
+                  className="font-serif text-lg mb-2"
+                  style={{ color: "var(--text-headline)" }}
+                >
+                  {feature.title}
+                </h3>
+                <p
+                  className="font-mono text-xs leading-relaxed"
+                  style={{ color: "var(--text-body)" }}
+                >
                   {feature.body}
                 </p>
               </div>
@@ -390,35 +474,60 @@ export default function PortalPage() {
       </section>
 
       {/* ── What's Included ──────────────────────────────────────── */}
-      <section className="py-16 border-t border-black/10">
+      <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-10">
-          <span className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-4 block">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
             Full Feature Breakdown
           </span>
-          <h2 className="text-3xl md:text-4xl font-serif font-normal">
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal"
+            style={{ color: "var(--text-headline)" }}
+          >
             39 database models. 200+ API routes. 60+ pages.
           </h2>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 border border-black">
+        <div
+          className="grid grid-cols-1 lg:grid-cols-3 gap-0"
+          style={{ border: "1px solid var(--border-strong)" }}
+        >
           {INCLUDED.map((col, ci) => (
             <div
               key={col.category}
               className={
                 ci < INCLUDED.length - 1
-                  ? "border-b lg:border-b-0 lg:border-r border-black"
+                  ? "border-b lg:border-b-0 lg:border-r"
                   : ""
               }
+              style={{ borderColor: "var(--border-strong)" }}
             >
-              <div className="px-6 py-4 border-b border-black bg-white">
-                <span className="font-mono text-xs uppercase tracking-wide font-semibold">
+              <div
+                className="px-6 py-4 border-b"
+                style={{
+                  borderColor: "var(--border-strong)",
+                  backgroundColor: "var(--bg-white)",
+                }}
+              >
+                <span
+                  className="font-mono text-xs uppercase tracking-wide font-semibold"
+                  style={{ color: "var(--text-headline)" }}
+                >
                   {col.category}
                 </span>
               </div>
               <div className="px-6 py-4 space-y-2.5">
                 {col.items.map((item) => (
                   <div key={item} className="flex items-start gap-2">
-                    <CheckCircle2 className="w-3 h-3 text-black flex-shrink-0 mt-0.5" />
-                    <span className="font-mono text-[11px] text-neutral-600 leading-snug">
+                    <CheckCircle2
+                      className="w-3 h-3 flex-shrink-0 mt-0.5"
+                      style={{ color: "var(--blue)" }}
+                    />
+                    <span
+                      className="font-mono text-[11px] leading-snug"
+                      style={{ color: "var(--text-body)" }}
+                    >
                       {item}
                     </span>
                   </div>
@@ -430,60 +539,87 @@ export default function PortalPage() {
       </section>
 
       {/* ── How It Works ─────────────────────────────────────────── */}
-      <section className="py-16 border-t border-black/10">
+      <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-10">
-          <span className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-4 block">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
             Process
           </span>
-          <h2 className="text-3xl md:text-4xl font-serif font-normal">
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal"
+            style={{ color: "var(--text-headline)" }}
+          >
             From intake to live portal in under 2 weeks.
           </h2>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 border border-black">
-          {STEPS.map((item, i) => (
-            <div
-              key={item.step}
-              className={`p-6 ${item.bg} ${
-                i < STEPS.length - 1
-                  ? "border-b sm:border-b-0 sm:border-r border-black"
-                  : ""
-              }`}
-            >
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0"
+          style={{ border: "1px solid var(--border-strong)" }}
+        >
+          {STEPS.map((item, i) => {
+            const isFirst = i === 0;
+            const isLast = i === STEPS.length - 1;
+            return (
               <div
-                className={`font-mono text-[9px] uppercase tracking-widest mb-3 ${
-                  item.bg.includes("white")
-                    ? "text-neutral-400"
-                    : "text-white/50"
+                key={item.step}
+                className={`p-6 ${
+                  i < STEPS.length - 1
+                    ? "border-b sm:border-b-0 sm:border-r"
+                    : ""
                 }`}
+                style={{
+                  borderColor: "var(--border-strong)",
+                  backgroundColor: isFirst
+                    ? "var(--bg-blue)"
+                    : i === 1
+                    ? "var(--bg-blue-dark)"
+                    : "var(--bg-white)",
+                  color: i < 2 ? "var(--text-on-blue)" : "var(--text-headline)",
+                }}
               >
-                Step {item.step}
+                <div
+                  className="font-mono text-[9px] uppercase tracking-widest mb-3"
+                  style={{ opacity: i < 2 ? 0.5 : undefined, color: i >= 2 ? "var(--text-muted)" : undefined }}
+                >
+                  Step {item.step}
+                </div>
+                <div className="font-serif text-lg mb-2">{item.title}</div>
+                <p
+                  className="font-mono text-[11px] leading-relaxed"
+                  style={{
+                    color: i < 2 ? "rgba(255,255,255,0.7)" : "var(--text-body)",
+                  }}
+                >
+                  {item.desc}
+                </p>
               </div>
-              <div className="font-serif text-lg mb-2">{item.title}</div>
-              <p
-                className={`font-mono text-[11px] leading-relaxed ${
-                  item.bg.includes("white")
-                    ? "text-neutral-500"
-                    : "text-white/70"
-                }`}
-              >
-                {item.desc}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
       {/* ── Additional Features Icons ────────────────────────────── */}
-      <section className="py-16 border-t border-black/10">
+      <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-10">
-          <span className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-4 block">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
             Also Included
           </span>
-          <h2 className="text-3xl md:text-4xl font-serif font-normal">
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal"
+            style={{ color: "var(--text-headline)" }}
+          >
             Every feature a modern distributor needs.
           </h2>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-0 border border-black">
+        <div
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-0"
+          style={{ border: "1px solid var(--border-strong)" }}
+        >
           {[
             { icon: Gift, label: "Referral Program" },
             { icon: Package, label: "Product Drops" },
@@ -501,14 +637,22 @@ export default function PortalPage() {
               <div
                 key={item.label}
                 className={`p-4 flex flex-col items-center text-center ${
-                  i < 9 ? "border-b border-r border-black" : "border-r border-black"
+                  i < 9 ? "border-b border-r" : "border-r"
                 }`}
+                style={{
+                  borderColor: "var(--border-strong)",
+                  backgroundColor: "var(--bg-white)",
+                }}
               >
                 <Icon
-                  className="w-5 h-5 text-neutral-400 mb-2"
+                  className="w-5 h-5 mb-2"
+                  style={{ color: "var(--blue)" }}
                   strokeWidth={1.5}
                 />
-                <span className="font-mono text-[9px] uppercase tracking-wide text-neutral-500">
+                <span
+                  className="font-mono text-[9px] uppercase tracking-wide"
+                  style={{ color: "var(--text-body)" }}
+                >
                   {item.label}
                 </span>
               </div>
@@ -518,30 +662,48 @@ export default function PortalPage() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────── */}
-      <section className="py-16 border-t border-black/10">
+      <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-10 text-center">
-          <span className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-4 block">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
             Questions
           </span>
-          <h2 className="text-3xl md:text-4xl font-serif font-normal">
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal"
+            style={{ color: "var(--text-headline)" }}
+          >
             Frequently asked questions.
           </h2>
         </div>
         <FAQ />
       </section>
 
-      {/* ── Black CTA Section ────────────────────────────────────── */}
-      <section className="py-20 -mx-4 sm:-mx-6 px-4 sm:px-6 bg-black text-white mb-0">
+      {/* ── Navy CTA Section ────────────────────────────────────── */}
+      <section
+        className="py-20 -mx-4 sm:-mx-6 px-4 sm:px-6 mb-0"
+        style={{ backgroundColor: "var(--bg-blue)", color: "var(--text-on-blue)" }}
+      >
         <div className="max-w-3xl mx-auto text-center">
-          <span className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-6 block">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-6 block"
+            style={{ color: "rgba(255,255,255,0.5)" }}
+          >
             Ready to modernize your wholesale ordering?
           </span>
-          <h2 className="text-3xl md:text-5xl font-serif font-normal mb-6 leading-tight">
+          <h2
+            className="text-3xl md:text-5xl font-serif font-normal mb-6 leading-tight"
+            style={{ color: "var(--text-on-blue)" }}
+          >
             Your clients get a portal.
             <br />
             Your team gets their time back.
           </h2>
-          <p className="font-mono text-sm text-neutral-400 leading-relaxed mb-10 max-w-xl mx-auto">
+          <p
+            className="font-mono text-sm leading-relaxed mb-10 max-w-xl mx-auto"
+            style={{ color: "rgba(255,255,255,0.6)" }}
+          >
             Stop losing orders to missed calls and buried emails. Stop chasing
             invoices manually. Stop wondering which clients are about to churn.
             Get a portal that handles all of it.
@@ -549,18 +711,28 @@ export default function PortalPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-4">
             <a
               href="#demo"
-              className="inline-flex items-center justify-center gap-2 bg-white text-black px-8 py-4 font-mono text-sm uppercase tracking-wide border border-white hover:bg-neutral-100 transition-all shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+              className="inline-flex items-center justify-center gap-2 font-mono text-sm font-semibold"
+              style={{
+                backgroundColor: "white",
+                color: "var(--bg-blue)",
+                padding: "14px 28px",
+                borderRadius: "6px",
+              }}
             >
               Explore the Platform <ArrowRight className="w-4 h-4" />
             </a>
             <a
               href="#intake-form"
-              className="inline-flex items-center justify-center gap-2 px-8 py-4 font-mono text-sm uppercase tracking-wide border border-neutral-600 text-neutral-300 hover:text-white hover:border-white transition-all"
+              className="inline-flex items-center justify-center gap-2 font-mono text-sm font-semibold btn-outline-white"
+              style={{ padding: "14px 28px", borderRadius: "6px" }}
             >
               Start Your Build
             </a>
           </div>
-          <div className="font-mono text-[10px] text-neutral-600 uppercase tracking-wider">
+          <div
+            className="font-mono text-[10px] uppercase tracking-wider"
+            style={{ color: "rgba(255,255,255,0.35)" }}
+          >
             No credit card required · Try the demo instantly · Builds start
             within 48 hours of your call
           </div>
@@ -568,15 +740,24 @@ export default function PortalPage() {
       </section>
 
       {/* ── Intake Form ──────────────────────────────────────────── */}
-      <section className="py-16 border-t border-black/10" id="intake-form">
+      <section className="py-16" id="intake-form" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-10">
-          <span className="font-mono text-xs uppercase tracking-widest text-neutral-500 mb-4 block">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
             Start Your Build
           </span>
-          <h2 className="text-3xl md:text-4xl font-serif font-normal mb-3">
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal mb-3"
+            style={{ color: "var(--text-headline)" }}
+          >
             Tell us about your distribution business.
           </h2>
-          <p className="font-mono text-sm text-neutral-500 max-w-xl leading-relaxed">
+          <p
+            className="font-mono text-sm max-w-xl leading-relaxed"
+            style={{ color: "var(--text-body)" }}
+          >
             5 minutes. We review your answers before your call so every minute
             is spent on building your portal, not discovery.
           </p>
@@ -585,52 +766,69 @@ export default function PortalPage() {
       </section>
 
       {/* ── Footer ───────────────────────────────────────────────── */}
-      <footer className="py-12 border-t border-black/10">
+      <footer className="py-12" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <div className="w-5 h-5 bg-black" />
-              <span className="font-serif text-lg">Portal</span>
+              <span
+                className="font-serif text-lg font-bold tracking-[0.05em]"
+                style={{ color: "var(--text-headline)" }}
+              >
+                HELM
+              </span>
             </div>
-            <p className="font-mono text-xs text-neutral-400 max-w-sm">
+            <p
+              className="font-mono text-xs max-w-sm"
+              style={{ color: "var(--text-muted)" }}
+            >
               Custom B2B wholesale ordering portals for distribution companies.
               Built on battle-tested infrastructure, deployed in under 2 weeks.
             </p>
           </div>
           <div className="flex gap-8">
             <div>
-              <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mb-2">
+              <div
+                className="font-mono text-[9px] uppercase tracking-widest mb-2"
+                style={{ color: "var(--text-muted)" }}
+              >
                 Product
               </div>
               <div className="space-y-1">
                 <a
                   href="#demo"
-                  className="block font-mono text-xs text-neutral-600 hover:text-black transition-colors"
+                  className="block font-mono text-xs transition-colors"
+                  style={{ color: "var(--text-body)" }}
                 >
                   Explore Platform
                 </a>
                 <a
                   href="#intake-form"
-                  className="block font-mono text-xs text-neutral-600 hover:text-black transition-colors"
+                  className="block font-mono text-xs transition-colors"
+                  style={{ color: "var(--text-body)" }}
                 >
                   Start a Build
                 </a>
               </div>
             </div>
             <div>
-              <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mb-2">
+              <div
+                className="font-mono text-[9px] uppercase tracking-widest mb-2"
+                style={{ color: "var(--text-muted)" }}
+              >
                 Company
               </div>
               <div className="space-y-1">
                 <a
                   href="#"
-                  className="block font-mono text-xs text-neutral-600 hover:text-black transition-colors"
+                  className="block font-mono text-xs transition-colors"
+                  style={{ color: "var(--text-body)" }}
                 >
                   About
                 </a>
                 <a
                   href="#"
-                  className="block font-mono text-xs text-neutral-600 hover:text-black transition-colors"
+                  className="block font-mono text-xs transition-colors"
+                  style={{ color: "var(--text-body)" }}
                 >
                   Contact
                 </a>
@@ -638,20 +836,25 @@ export default function PortalPage() {
             </div>
           </div>
         </div>
-        <div className="mt-8 pt-6 border-t border-black/10 flex items-center justify-between">
-          <span className="font-mono text-[10px] text-neutral-400">
-            &copy; {new Date().getFullYear()} Portal. All rights reserved.
+        <div
+          className="mt-8 pt-6 flex items-center justify-between"
+          style={{ borderTop: "1px solid var(--border)" }}
+        >
+          <span className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>
+            &copy; {new Date().getFullYear()} Helm. All rights reserved.
           </span>
           <div className="flex gap-4">
             <a
               href="#"
-              className="font-mono text-[10px] text-neutral-400 hover:text-black transition-colors"
+              className="font-mono text-[10px] transition-colors"
+              style={{ color: "var(--text-muted)" }}
             >
               Privacy
             </a>
             <a
               href="#"
-              className="font-mono text-[10px] text-neutral-400 hover:text-black transition-colors"
+              className="font-mono text-[10px] transition-colors"
+              style={{ color: "var(--text-muted)" }}
             >
               Terms
             </a>

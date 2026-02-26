@@ -11,22 +11,62 @@ import {
   Image,
   Building2,
   ExternalLink,
+  ShoppingBag,
+  Layers,
+  Package,
+  Users,
+  MessageSquare,
 } from "lucide-react";
 
 type ScrapeResult = {
   companyName: string;
+  companyDescription: string;
+  industry: string;
+  tagline: string;
+  valuePropositions: string[];
+  yearFounded: string;
+  location: string;
   logoUrl: string;
-  brandColor: string;
+  primaryColor: string;
+  secondaryColor: string;
+  accentColor: string;
   domain: string;
+  phone: string;
+  email: string;
+  address: string;
+  socialLinks: { instagram: string; facebook: string; linkedin: string; twitter: string };
+  products: Array<{
+    name: string;
+    description: string;
+    price: string;
+    category: string;
+    imageUrl: string;
+    unit: string;
+    featured: boolean;
+  }>;
+  businessType: string;
+  hasWholesale: boolean;
+  deliveryInfo: string;
+  paymentInfo: string;
+  minimumOrder: string;
+  testimonials: Array<{ quote: string; author: string; company: string }>;
+  clientLogos: string[];
+  certifications: string[];
+  heroHeadline: string;
+  heroSubheadline: string;
+  ctaText: string;
+  aboutSnippet: string;
 };
 
 type Phase = "input" | "scanning" | "result";
 
 const SCAN_STEPS = [
   { label: "Crawling your website", icon: Globe, delay: 0 },
-  { label: "Extracting brand colors", icon: Palette, delay: 800 },
-  { label: "Finding your logo", icon: Image, delay: 1600 },
-  { label: "Preparing your demo portal", icon: Building2, delay: 2400 },
+  { label: "Extracting brand identity", icon: Palette, delay: 600 },
+  { label: "Finding your logo & assets", icon: Image, delay: 1200 },
+  { label: "Discovering your products", icon: ShoppingBag, delay: 1800 },
+  { label: "Analyzing business signals", icon: Building2, delay: 2400 },
+  { label: "Building your custom portal", icon: Layers, delay: 3000 },
 ];
 
 export function DemoLauncher() {
@@ -63,7 +103,7 @@ export function DemoLauncher() {
       setResult(data);
 
       // Wait for scan animation to finish, then show result
-      setTimeout(() => setPhase("result"), 3200);
+      setTimeout(() => setPhase("result"), 3800);
     } catch {
       setError("Could not analyze that website. Please check the URL and try again.");
       setPhase("input");
@@ -72,10 +112,12 @@ export function DemoLauncher() {
 
   const launchDemo = () => {
     if (!result) return;
+    // Store the full scrape result in sessionStorage for the demo page
+    sessionStorage.setItem("portal-demo-data", JSON.stringify(result));
     const params = new URLSearchParams({
       company: result.companyName,
       logo: result.logoUrl,
-      color: result.brandColor.replace("#", ""),
+      color: (result.primaryColor || "#1A1A1A").replace("#", ""),
       domain: result.domain,
     });
     window.open(`/demo?${params.toString()}`, "_blank");
@@ -89,7 +131,10 @@ export function DemoLauncher() {
   };
 
   return (
-    <div className="border border-black bg-white">
+    <div
+      className="border bg-white"
+      style={{ borderColor: "var(--border-strong)", borderRadius: "8px", overflow: "hidden" }}
+    >
       <AnimatePresence mode="wait">
         {/* ── Input Phase ────────────────────────────────────────── */}
         {phase === "input" && (
@@ -100,45 +145,58 @@ export function DemoLauncher() {
             exit={{ opacity: 0 }}
             className="p-8"
           >
-            <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mb-3">
+            <div
+              className="font-mono text-[9px] uppercase tracking-widest mb-3"
+              style={{ color: "var(--text-muted)" }}
+            >
               Try it with your brand
             </div>
-            <h3 className="font-serif text-2xl font-normal mb-2">
+            <h3 className="font-serif text-2xl font-normal mb-2" style={{ color: "var(--text-headline)" }}>
               Enter your website. See your portal in 30 seconds.
             </h3>
-            <p className="font-mono text-xs text-neutral-500 mb-6">
+            <p className="font-mono text-xs mb-6" style={{ color: "var(--text-body)" }}>
               We&apos;ll scrape your site, extract your logo and brand colors,
               and spin up a personalized demo portal with sample data — so you
               can experience exactly what your clients will see.
             </p>
 
             {error && (
-              <div className="font-mono text-xs text-red-600 mb-4 px-3 py-2 border border-red-200 bg-red-50">
+              <div className="font-mono text-xs text-red-600 mb-4 px-3 py-2 border border-red-200 bg-red-50" style={{ borderRadius: "6px" }}>
                 {error}
               </div>
             )}
 
             <div className="flex gap-0">
               <div className="relative flex-1">
-                <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-neutral-400" />
+                <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: "var(--text-muted)" }} />
                 <input
                   type="text"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                   placeholder="yourcompany.com"
-                  className="w-full border border-black border-r-0 pl-10 pr-4 py-4 font-mono text-sm bg-white focus:outline-none"
+                  className="w-full border pl-10 pr-4 py-4 font-mono text-sm bg-white focus:outline-none"
+                  style={{
+                    borderColor: "var(--border-strong)",
+                    borderRight: "none",
+                    borderRadius: "6px 0 0 6px",
+                    color: "var(--text-headline)",
+                  }}
                 />
               </div>
               <button
                 onClick={handleSubmit}
                 disabled={!url.trim()}
-                className="bg-black text-white px-6 py-4 font-mono text-xs uppercase tracking-wide border border-black hover:bg-neutral-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center gap-2 flex-shrink-0"
+                className="text-white px-6 py-4 font-mono text-[13px] font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-colors flex items-center gap-2 flex-shrink-0"
+                style={{
+                  backgroundColor: "var(--blue)",
+                  borderRadius: "0 6px 6px 0",
+                }}
               >
                 Launch Demo <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
-            <div className="font-mono text-[9px] text-neutral-400 mt-2">
+            <div className="font-mono text-[9px] mt-2" style={{ color: "var(--text-muted)" }}>
               No signup required. Your data is not stored.
             </div>
           </motion.div>
@@ -154,12 +212,12 @@ export function DemoLauncher() {
             className="p-8"
           >
             <div className="flex items-center gap-3 mb-6">
-              <Loader2 className="w-5 h-5 animate-spin text-black" />
+              <Loader2 className="w-5 h-5 animate-spin" style={{ color: "var(--blue)" }} />
               <div>
-                <div className="font-mono text-xs uppercase tracking-wide font-semibold">
+                <div className="font-mono text-xs uppercase tracking-wide font-semibold" style={{ color: "var(--text-headline)" }}>
                   Analyzing {url}
                 </div>
-                <div className="font-mono text-[9px] text-neutral-400">
+                <div className="font-mono text-[9px]" style={{ color: "var(--text-muted)" }}>
                   This takes about 10 seconds
                 </div>
               </div>
@@ -175,7 +233,8 @@ export function DemoLauncher() {
                     key={step.label}
                     animate={{ opacity: done ? 1 : active ? 0.6 : 0.2 }}
                     transition={{ duration: 0.3 }}
-                    className="flex items-center justify-between px-4 py-3 border border-black/15 bg-white"
+                    className="flex items-center justify-between px-4 py-3 border bg-white"
+                    style={{ borderColor: "var(--border)", borderRadius: "4px" }}
                   >
                     <div className="flex items-center gap-3">
                       {done ? (
@@ -188,20 +247,21 @@ export function DemoLauncher() {
                             damping: 20,
                           }}
                         >
-                          <CheckCircle2 className="w-4 h-4 text-black" />
+                          <CheckCircle2 className="w-4 h-4" style={{ color: "var(--blue)" }} />
                         </motion.div>
                       ) : active ? (
-                        <Loader2 className="w-4 h-4 animate-spin text-neutral-400" />
+                        <Loader2 className="w-4 h-4 animate-spin" style={{ color: "var(--text-muted)" }} />
                       ) : (
-                        <Icon className="w-4 h-4 text-neutral-300" />
+                        <Icon className="w-4 h-4" style={{ color: "var(--border-strong)" }} />
                       )}
-                      <span className="font-mono text-xs">{step.label}</span>
+                      <span className="font-mono text-xs" style={{ color: "var(--text-headline)" }}>{step.label}</span>
                     </div>
                     {done && (
                       <motion.span
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="font-mono text-[9px] text-neutral-400"
+                        className="font-mono text-[9px]"
+                        style={{ color: "var(--text-muted)" }}
                       >
                         Done
                       </motion.span>
@@ -212,10 +272,11 @@ export function DemoLauncher() {
             </div>
 
             {/* Progress bar */}
-            <div className="mt-4 h-[3px] bg-neutral-200">
+            <div className="mt-4 h-[3px]" style={{ backgroundColor: "var(--border)" }}>
               <div
-                className="h-full bg-black transition-all duration-500 ease-out"
+                className="h-full transition-all duration-500 ease-out"
                 style={{
+                  backgroundColor: "var(--blue)",
                   width: `${(scanStep / SCAN_STEPS.length) * 100}%`,
                 }}
               />
@@ -233,28 +294,36 @@ export function DemoLauncher() {
             className="p-8"
           >
             <div className="flex items-center gap-2 mb-6">
-              <CheckCircle2 className="w-5 h-5 text-black" />
-              <span className="font-mono text-xs uppercase tracking-wide font-semibold">
+              <CheckCircle2 className="w-5 h-5" style={{ color: "var(--blue)" }} />
+              <span className="font-mono text-xs uppercase tracking-wide font-semibold" style={{ color: "var(--text-headline)" }}>
                 Your demo portal is ready
               </span>
             </div>
 
             {/* Brand preview */}
-            <div className="border border-black p-6 bg-[#F3F3EF] mb-6">
-              <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mb-4">
+            <div
+              className="border p-6 mb-6"
+              style={{ borderColor: "var(--border)", backgroundColor: "var(--bg-primary)", borderRadius: "6px" }}
+            >
+              <div className="font-mono text-[9px] uppercase tracking-widest mb-4" style={{ color: "var(--text-muted)" }}>
                 Extracted Brand Profile
               </div>
-              <div className="grid grid-cols-3 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 <div>
-                  <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mb-2">
+                  <div className="font-mono text-[9px] uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
                     Company
                   </div>
-                  <div className="font-mono text-sm font-semibold">
+                  <div className="font-mono text-sm font-semibold" style={{ color: "var(--text-headline)" }}>
                     {result.companyName}
                   </div>
+                  {result.industry && (
+                    <div className="font-mono text-[9px] mt-0.5" style={{ color: "var(--text-muted)" }}>
+                      {result.industry}
+                    </div>
+                  )}
                 </div>
                 <div>
-                  <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mb-2">
+                  <div className="font-mono text-[9px] uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
                     Logo
                   </div>
                   <div className="flex items-center gap-2">
@@ -262,53 +331,82 @@ export function DemoLauncher() {
                     <img
                       src={result.logoUrl}
                       alt={result.companyName}
-                      className="w-8 h-8 object-contain border border-black/10"
+                      className="w-8 h-8 object-contain border"
+                      style={{ borderColor: "var(--border)" }}
                       onError={(e) => {
                         (e.target as HTMLImageElement).style.display = "none";
                       }}
                     />
-                    <span className="font-mono text-[9px] text-neutral-400 truncate max-w-[120px]">
+                    <span className="font-mono text-[9px]" style={{ color: "var(--text-muted)" }}>
                       Extracted
                     </span>
                   </div>
                 </div>
                 <div>
-                  <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mb-2">
-                    Brand Color
+                  <div className="font-mono text-[9px] uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
+                    Brand Colors
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <div
+                      className="w-7 h-7 border"
+                      style={{ borderColor: "var(--border-strong)", backgroundColor: result.primaryColor || "#1A1A1A" }}
+                    />
+                    {result.secondaryColor && (
+                      <div
+                        className="w-7 h-7 border"
+                        style={{ borderColor: "var(--border)", backgroundColor: result.secondaryColor }}
+                      />
+                    )}
+                    {result.accentColor && (
+                      <div
+                        className="w-7 h-7 border"
+                        style={{ borderColor: "var(--border)", backgroundColor: result.accentColor }}
+                      />
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <div className="font-mono text-[9px] uppercase tracking-widest mb-2" style={{ color: "var(--text-muted)" }}>
+                    Products Found
                   </div>
                   <div className="flex items-center gap-2">
-                    <div
-                      className="w-8 h-8 border border-black"
-                      style={{ backgroundColor: result.brandColor }}
-                    />
-                    <span className="font-mono text-xs">
-                      {result.brandColor}
+                    <Package className="w-4 h-4" style={{ color: "var(--blue)" }} />
+                    <span className="font-mono text-sm font-semibold" style={{ color: "var(--text-headline)" }}>
+                      {result.products?.length || 0}
                     </span>
                   </div>
                 </div>
               </div>
+              {result.companyDescription && (
+                <div className="mt-4 pt-3" style={{ borderTop: "1px solid var(--border)" }}>
+                  <div className="font-mono text-[10px] line-clamp-2" style={{ color: "var(--text-body)" }}>
+                    {result.companyDescription}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* What the demo includes */}
-            <div className="border border-black p-4 mb-6">
-              <div className="font-mono text-[9px] uppercase tracking-widest text-neutral-400 mb-3">
-                Your demo includes
+            <div
+              className="border p-4 mb-6"
+              style={{ borderColor: "var(--border)", borderRadius: "6px" }}
+            >
+              <div className="font-mono text-[9px] uppercase tracking-widest mb-3" style={{ color: "var(--text-muted)" }}>
+                Your custom portal includes
               </div>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {[
-                  "Full product catalog",
-                  "Client portal dashboard",
-                  "Admin panel with CRM",
-                  "Order management",
-                  "Invoice system",
-                  "SMS ordering flow",
-                  "Loyalty & referrals",
-                  "Sample wholesale clients",
+                  { icon: Package, label: `${result.products?.length || 0} products loaded` },
+                  { icon: Users, label: "Client portal + dashboard" },
+                  { icon: ShoppingBag, label: "Order management" },
+                  { icon: Layers, label: "Full admin panel + CRM" },
+                  { icon: MessageSquare, label: "SMS/iMessage ordering" },
+                  { icon: Building2, label: "Invoicing & analytics" },
                 ].map((item) => (
-                  <div key={item} className="flex items-center gap-2">
-                    <CheckCircle2 className="w-3 h-3 text-black flex-shrink-0" />
-                    <span className="font-mono text-[10px] text-neutral-600">
-                      {item}
+                  <div key={item.label} className="flex items-center gap-2">
+                    <item.icon className="w-3 h-3 flex-shrink-0" style={{ color: "var(--blue)" }} />
+                    <span className="font-mono text-[10px]" style={{ color: "var(--text-body)" }}>
+                      {item.label}
                     </span>
                   </div>
                 ))}
@@ -319,19 +417,25 @@ export function DemoLauncher() {
             <div className="flex gap-3">
               <button
                 onClick={launchDemo}
-                className="flex-1 flex items-center justify-center gap-2 bg-black text-white px-6 py-4 font-mono text-xs uppercase tracking-wide border border-black hover:bg-neutral-800 transition-colors shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none"
+                className="flex-1 flex items-center justify-center gap-2 text-white px-6 py-4 font-mono text-[13px] font-semibold transition-colors"
+                style={{ backgroundColor: "var(--blue)", borderRadius: "6px" }}
               >
                 Open Your Demo Portal{" "}
                 <ExternalLink className="w-3.5 h-3.5" />
               </button>
               <button
                 onClick={reset}
-                className="px-4 py-4 font-mono text-xs uppercase tracking-wide text-neutral-500 border border-neutral-300 hover:border-black transition-colors"
+                className="px-4 py-4 font-mono text-xs uppercase tracking-wide border transition-colors"
+                style={{
+                  color: "var(--text-body)",
+                  borderColor: "var(--border)",
+                  borderRadius: "6px",
+                }}
               >
                 Try Another
               </button>
             </div>
-            <div className="font-mono text-[9px] text-neutral-400 mt-2">
+            <div className="font-mono text-[9px] mt-2" style={{ color: "var(--text-muted)" }}>
               Demo opens in a new tab with your branding applied to real
               platform features
             </div>
