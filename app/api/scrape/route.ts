@@ -92,24 +92,47 @@ function domainToName(url: string): string {
   return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+function cleanTitle(raw: string): string {
+  // Split on common delimiters and take the shortest meaningful segment
+  // e.g. "Stripe | Financial Infrastructure to Grow Your Revenue" → "Stripe"
+  const segments = raw.split(/\s*[|–—:]\s*/);
+
+  // Find the shortest segment that's at least 2 chars (likely the company name)
+  const candidates = segments
+    .map((s) => s.trim())
+    .filter((s) => s.length >= 2)
+    // Remove generic words
+    .filter(
+      (s) =>
+        !/^(home|welcome|official|main|landing|page)$/i.test(s)
+    );
+
+  if (candidates.length === 0) return raw.trim();
+
+  // Prefer the first segment if it's short (< 40 chars), otherwise shortest
+  if (candidates[0].length < 40) return candidates[0];
+  return candidates.sort((a, b) => a.length - b.length)[0];
+}
+
 function extractCompanyName(
   metadata: Record<string, string>,
   html: string
 ): string | null {
-  // Try OG title first
+  // Try OG site_name first (most reliable)
+  const ogSiteName = html.match(
+    /<meta[^>]*property=["']og:site_name["'][^>]*content=["']([^"']+)["']/i
+  );
+  if (ogSiteName) return ogSiteName[1].trim();
+
+  // Try OG title
   if (metadata.title) {
-    // Strip common suffixes like "| Home", "- Welcome", etc.
-    return metadata.title
-      .replace(/\s*[|–—-]\s*(Home|Welcome|Official.*|Main.*)$/i, "")
-      .trim();
+    return cleanTitle(metadata.title);
   }
 
   // Try <title> tag
   const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
   if (titleMatch) {
-    return titleMatch[1]
-      .replace(/\s*[|–—-]\s*(Home|Welcome|Official.*)$/i, "")
-      .trim();
+    return cleanTitle(titleMatch[1]);
   }
 
   return null;

@@ -72,16 +72,13 @@ export function DemoLauncher() {
 
   const launchDemo = () => {
     if (!result) return;
-    const demoBase =
-      process.env.NEXT_PUBLIC_DEMO_URL || "https://demo.getportal.dev";
     const params = new URLSearchParams({
       company: result.companyName,
       logo: result.logoUrl,
       color: result.brandColor.replace("#", ""),
       domain: result.domain,
     });
-    // Redirect to /demo route which sets cookie then redirects to portal root
-    window.open(`${demoBase}/demo?${params.toString()}`, "_blank");
+    window.open(`/demo?${params.toString()}`, "_blank");
   };
 
   const reset = () => {
