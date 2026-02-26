@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
+// All pages render dynamically — template requires env vars at runtime
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Wholesail — Custom B2B Wholesale Ordering Portals",
   description:
