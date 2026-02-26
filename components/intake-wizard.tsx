@@ -21,6 +21,14 @@ import {
   Heart,
   Warehouse,
 } from "lucide-react";
+import { FEATURES as FEATURE_DATA } from "@/lib/client-data";
+
+const FEATURE_VALUES = Object.fromEntries(
+  FEATURE_DATA.map((f) => [f.id, f.value])
+);
+function formatValue(n: number) {
+  return "$" + (n / 1000).toFixed(0) + "K";
+}
 
 // ── Types ──────────────────────────────────────────────────────────────────
 type Step1Data = {
@@ -626,10 +634,13 @@ function Step3({
   return (
     <div className="space-y-7">
       <div>
-        <label className="font-mono text-[10px] uppercase tracking-widest text-neutral-500 block mb-3">
+        <label className="font-mono text-[10px] uppercase tracking-widest block mb-3" style={{ color: "var(--text-muted)" }}>
           Which features do you need? (select all that apply)
-          <span className="ml-2 text-neutral-400">
-            ({data.features.length} selected)
+          <span className="ml-2">
+            ({data.features.length} selected
+            {data.features.length > 0 && (
+              <> · {formatValue(data.features.reduce((sum, id) => sum + (FEATURE_VALUES[id] || 0), 0))} market value</>
+            )})
           </span>
         </label>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -653,9 +664,17 @@ function Step3({
                   className="w-4 h-4 flex-shrink-0 mt-0.5"
                   style={{ color: selected ? "white" : "var(--text-muted)" }}
                 />
-                <div className="min-w-0">
-                  <div className="text-xs uppercase tracking-wide font-semibold">
-                    {f.label}
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs uppercase tracking-wide font-semibold">
+                      {f.label}
+                    </span>
+                    <span
+                      className="text-[10px] font-bold flex-shrink-0"
+                      style={{ color: selected ? "rgba(255,255,255,0.8)" : "var(--text-body)" }}
+                    >
+                      {formatValue(FEATURE_VALUES[f.id] || 0)}
+                    </span>
                   </div>
                   <div
                     className="text-[10px] mt-0.5 leading-snug"

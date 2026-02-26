@@ -26,6 +26,7 @@ import { BuildDemo } from "@/components/build-demo";
 import { DemoLauncher } from "@/components/demo-launcher";
 import { FAQ } from "@/components/faq";
 import { TechMarquee } from "@/components/tech-marquee";
+import { PricingCalculator } from "@/components/pricing-calculator";
 
 /* ── Wholesail Sail Logo ─────────────────────────────────────────────── */
 function SailLogo({ className = "w-6 h-6" }: { className?: string }) {
@@ -574,6 +575,34 @@ export default function WholesailPage() {
         </div>
       </section>
 
+      {/* ── Portal Value Calculator ──────────────────────────────── */}
+      <section className="py-16" id="pricing" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="mb-10">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Your Portal Value
+          </span>
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal mb-3"
+            style={{ color: "var(--text-headline)" }}
+          >
+            $188K+ in platform value.
+            <br />
+            <span style={{ color: "var(--text-muted)" }}>Fraction of the cost to build.</span>
+          </h2>
+          <p
+            className="font-mono text-sm max-w-xl leading-relaxed"
+            style={{ color: "var(--text-body)" }}
+          >
+            Select features to see what your portal would cost to build from
+            scratch. Agencies quote $150K–$200K for equivalent functionality.
+          </p>
+        </div>
+        <PricingCalculator />
+      </section>
+
       {/* ── How It Works ─────────────────────────────────────────── */}
       <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-10">
@@ -845,6 +874,13 @@ export default function WholesailPage() {
                 >
                   Start a Build
                 </a>
+                <a
+                  href="#pricing"
+                  className="block font-mono text-xs transition-colors"
+                  style={{ color: "var(--text-body)" }}
+                >
+                  Pricing
+                </a>
               </div>
             </div>
             <div>
@@ -856,11 +892,11 @@ export default function WholesailPage() {
               </div>
               <div className="space-y-1">
                 <a
-                  href="#"
+                  href="/status"
                   className="block font-mono text-xs transition-colors"
                   style={{ color: "var(--text-body)" }}
                 >
-                  About
+                  Build Status
                 </a>
                 <a
                   href="#"

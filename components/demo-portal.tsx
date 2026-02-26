@@ -2188,6 +2188,65 @@ function PlaceholderView({ brand, title, description }: { brand: Brand; title: s
   );
 }
 
+// ── Guided Tour ────────────────────────────────────────────────────────────
+const TOUR_STEPS: { view: View; title: string; description: string }[] = [
+  { view: "admin-dashboard", title: "CEO Command Center", description: "Real-time KPIs, revenue trends, client analytics — everything you need to run your operation from one screen." },
+  { view: "catalog", title: "Product Catalog", description: "Your full product catalog with search, filters, and one-click add to cart. Clients can browse and order 24/7." },
+  { view: "client-dashboard", title: "Client Dashboard", description: "Each client gets a personalized dashboard showing orders, spending, loyalty tier, and quick reorder." },
+  { view: "sms-demo", title: "SMS Ordering", description: "Clients text their orders in natural language. AI parses them into structured orders automatically." },
+  { view: "admin-analytics", title: "Business Analytics", description: "Revenue by category, client spending trends, and growth metrics — all updated in real-time." },
+];
+
+function TourOverlay({
+  step,
+  total,
+  title,
+  description,
+  onNext,
+  onSkip,
+}: {
+  step: number;
+  total: number;
+  title: string;
+  description: string;
+  onNext: () => void;
+  onSkip: () => void;
+}) {
+  return (
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[420px] max-w-[calc(100vw-2rem)]">
+      <div className="bg-[#0A0A0A] text-[#F9F7F4] p-5 shadow-2xl" style={{ border: "1px solid rgba(249,247,244,0.1)" }}>
+        <div className="flex items-center justify-between mb-2">
+          <span className="font-mono text-[9px] uppercase tracking-widest text-[#F9F7F4]/40">
+            Tour · {step + 1} of {total}
+          </span>
+          <button onClick={onSkip} className="font-mono text-[10px] text-[#F9F7F4]/40 hover:text-[#F9F7F4] transition-colors">
+            Skip Tour
+          </button>
+        </div>
+        <div className="font-serif text-lg mb-1">{title}</div>
+        <p className="font-mono text-xs text-[#F9F7F4]/60 leading-relaxed mb-4">{description}</p>
+        <div className="flex items-center justify-between">
+          <div className="flex gap-1">
+            {Array.from({ length: total }).map((_, i) => (
+              <div
+                key={i}
+                className="h-1 w-6"
+                style={{ backgroundColor: i <= step ? "#F9F7F4" : "rgba(249,247,244,0.15)" }}
+              />
+            ))}
+          </div>
+          <button
+            onClick={onNext}
+            className="font-mono text-xs font-semibold bg-[#F9F7F4] text-[#0A0A0A] px-4 py-2 flex items-center gap-1.5 hover:bg-white transition-colors"
+          >
+            {step < total - 1 ? "Next" : "Start Exploring"} <ArrowRight className="w-3 h-3" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function DemoPortalInner() {
   const { brand, data } = useDemoData();
   const seed = generateSeedData(data);
@@ -2195,6 +2254,22 @@ function DemoPortalInner() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
+  const [tourStep, setTourStep] = useState<number | null>(null);
+  const [tourDismissed, setTourDismissed] = useState(false);
+
+  // Show tour prompt after a short delay
+  useEffect(() => {
+    if (tourDismissed) return;
+    const timer = setTimeout(() => setTourStep(0), 1500);
+    return () => clearTimeout(timer);
+  }, [tourDismissed]);
+
+  // Navigate to tour view when step changes
+  useEffect(() => {
+    if (tourStep !== null && tourStep < TOUR_STEPS.length) {
+      setView(TOUR_STEPS[tourStep].view);
+    }
+  }, [tourStep]);
 
   const addToCart = (product: ScrapeData["products"][0]) => {
     setCart((prev) => {
@@ -2358,6 +2433,28 @@ function DemoPortalInner() {
           onUpdateQty={updateQuantity}
           onClose={() => setCartOpen(false)}
           onCheckout={() => { setCartOpen(false); setView("checkout"); }}
+        />
+      )}
+
+      {/* Guided Tour Overlay */}
+      {tourStep !== null && tourStep < TOUR_STEPS.length && !tourDismissed && (
+        <TourOverlay
+          step={tourStep}
+          total={TOUR_STEPS.length}
+          title={TOUR_STEPS[tourStep].title}
+          description={TOUR_STEPS[tourStep].description}
+          onNext={() => {
+            if (tourStep < TOUR_STEPS.length - 1) {
+              setTourStep(tourStep + 1);
+            } else {
+              setTourStep(null);
+              setTourDismissed(true);
+            }
+          }}
+          onSkip={() => {
+            setTourStep(null);
+            setTourDismissed(true);
+          }}
         />
       )}
     </div>

@@ -1,0 +1,155 @@
+name: Sync Features from Source Platform
+
+on:
+  # Trigger when TBGC pushes to main
+  repository_dispatch:
+    types: [source-platform-updated]
+  # Or run manually
+  workflow_dispatch:
+    inputs:
+      source_repo:
+        description: "Source platform repo (e.g. adamwolfe2/TBGC)"
+        required: true
+        default: "adamwolfe2/TBGC"
+  # Daily at 8am UTC
+  schedule:
+    - cron: "0 8 * * *"
+
+env:
+  SOURCE_REPO: ${{ github.event.inputs.source_repo || 'adamwolfe2/TBGC' }}
+  TEMPLATE_REPO: ${{ github.repository }}
+
+jobs:
+  diff-and-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout template
+        uses: actions/checkout@v4
+        with:
+          path: template
+
+      - name: Checkout source platform
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.SOURCE_REPO }}
+          path: source
+          token: ${{ secrets.SOURCE_REPO_TOKEN }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run sync diff
+        id: diff
+        run: |
+          cd template
+
+          # Install tsx for running TypeScript
+          npm install -g tsx
+
+          # Run the sync script if it exists
+          if [ -f "scripts/sync-from-source.ts" ]; then
+            tsx scripts/sync-from-source.ts ../source > ../sync-report.json 2>&1 || true
+          fi
+
+          # Generate a basic diff report
+          echo "## Sync Report — $(date -u +%Y-%m-%d)" > ../pr-body.md
+          echo "" >> ../pr-body.md
+
+          # Check for new files in source not in template
+          echo "### New Files in Source" >> ../pr-body.md
+          NEW_FILES=0
+          for dir in lib app/api components; do
+            if [ -d "../source/$dir" ]; then
+              for f in $(find "../source/$dir" -name "*.ts" -o -name "*.tsx" 2>/dev/null); do
+                relative="${f#../source/}"
+                if [ ! -f "$relative" ]; then
+                  echo "- \`$relative\`" >> ../pr-body.md
+                  NEW_FILES=$((NEW_FILES + 1))
+                fi
+              done
+            fi
+          done
+
+          if [ "$NEW_FILES" -eq 0 ]; then
+            echo "_No new files detected._" >> ../pr-body.md
+          fi
+
+          # Check for schema changes
+          echo "" >> ../pr-body.md
+          echo "### Schema Changes" >> ../pr-body.md
+          if [ -f "../source/prisma/schema.prisma" ] && [ -f "prisma/schema.prisma" ]; then
+            SCHEMA_DIFF=$(diff prisma/schema.prisma ../source/prisma/schema.prisma 2>/dev/null || true)
+            if [ -n "$SCHEMA_DIFF" ]; then
+              echo '```diff' >> ../pr-body.md
+              echo "$SCHEMA_DIFF" | head -100 >> ../pr-body.md
+              echo '```' >> ../pr-body.md
+            else
+              echo "_No schema changes._" >> ../pr-body.md
+            fi
+          else
+            echo "_Schema file not found in source or template._" >> ../pr-body.md
+          fi
+
+          # Check for new dependencies
+          echo "" >> ../pr-body.md
+          echo "### New Dependencies" >> ../pr-body.md
+          if [ -f "../source/package.json" ] && [ -f "package.json" ]; then
+            SOURCE_DEPS=$(jq -r '.dependencies // {} | keys[]' ../source/package.json 2>/dev/null | sort)
+            TEMPLATE_DEPS=$(jq -r '.dependencies // {} | keys[]' package.json 2>/dev/null | sort)
+            NEW_DEPS=$(comm -23 <(echo "$SOURCE_DEPS") <(echo "$TEMPLATE_DEPS") 2>/dev/null || true)
+            if [ -n "$NEW_DEPS" ]; then
+              echo "$NEW_DEPS" | while read dep; do
+                echo "- \`$dep\`" >> ../pr-body.md
+              done
+            else
+              echo "_No new dependencies._" >> ../pr-body.md
+            fi
+          fi
+
+          # Set output for whether there are changes
+          echo "new_files=$NEW_FILES" >> $GITHUB_OUTPUT
+
+      - name: Create enrichment branch and PR
+        if: steps.diff.outputs.new_files != '0'
+        run: |
+          cd template
+          BRANCH="enrichment/sync-$(date -u +%Y%m%d)"
+          git config user.name "Wholesail Bot"
+          git config user.email "bot@wholesail.io"
+          git checkout -b "$BRANCH"
+
+          # Copy the sync report
+          mkdir -p docs
+          if [ -f "../sync-report.json" ]; then
+            cp ../sync-report.json docs/latest-sync-report.json
+            git add docs/latest-sync-report.json
+          fi
+
+          # Update sync log
+          echo "" >> docs/SYNC_LOG.md
+          echo "## $(date -u +%Y-%m-%d)" >> docs/SYNC_LOG.md
+          echo "- Source: ${{ env.SOURCE_REPO }}" >> docs/SYNC_LOG.md
+          echo "- New files detected: ${{ steps.diff.outputs.new_files }}" >> docs/SYNC_LOG.md
+          echo "- Status: Awaiting manual review and generalization" >> docs/SYNC_LOG.md
+          git add docs/SYNC_LOG.md
+
+          git commit -m "chore: enrichment sync report $(date -u +%Y-%m-%d)"
+          git push origin "$BRANCH"
+
+          gh pr create \
+            --title "Enrichment: Sync from source — $(date -u +%Y-%m-%d)" \
+            --body-file ../pr-body.md \
+            --base main \
+            --head "$BRANCH" \
+            --label "enrichment"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: No changes
+        if: steps.diff.outputs.new_files == '0'
+        run: echo "No new files detected. Source and template are in sync."
