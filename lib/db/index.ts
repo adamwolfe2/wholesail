@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaNeon } from "@prisma/adapter-neon";
+import { PrismaNeonHttp } from "@prisma/adapter-neon";
+import type { HTTPQueryOptions } from "@neondatabase/serverless";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -10,7 +11,11 @@ function createPrismaClient() {
   if (!connectionString) {
     throw new Error("DATABASE_URL is not set");
   }
-  const adapter = new PrismaNeon({ connectionString });
+  // HTTP adapter — more reliable than WebSocket in Node.js 18+ / Vercel serverless
+  const adapter = new PrismaNeonHttp(
+    connectionString,
+    {} as HTTPQueryOptions<boolean, boolean>
+  );
   return new PrismaClient({ adapter });
 }
 
