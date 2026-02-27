@@ -240,7 +240,7 @@ const STEPS = [
 
 export default function WholesailPage() {
   return (
-    <main className="flex-grow w-full max-w-6xl mx-auto px-4 sm:px-6">
+    <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6">
       {/* ── Navigation ───────────────────────────────────────────── */}
       <nav
         className="py-5 flex items-center justify-between sticky top-0 z-50"
@@ -289,10 +289,10 @@ export default function WholesailPage() {
         >
           Wholesail for Distributors
         </span>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 items-start">
           <div>
             <h1
-              className="text-4xl md:text-5xl lg:text-[3.5rem] font-normal leading-[1.08] tracking-tight font-serif mb-7"
+              className="text-4xl md:text-5xl lg:text-[3.25rem] font-normal leading-[1.08] tracking-tight font-serif mb-7"
               style={{ color: "var(--text-headline)" }}
             >
               Your wholesale business,
@@ -390,54 +390,52 @@ export default function WholesailPage() {
 
       {/* ── Explore Platform Demo ────────────────────────────────── */}
       <section className="py-16" id="demo" style={{ borderTop: "1px solid var(--border)" }}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          <div>
-            <span
-              className="font-mono text-xs uppercase tracking-widest mb-4 block"
-              style={{ color: "var(--text-muted)" }}
-            >
-              Try Before You Buy
-            </span>
-            <h2
-              className="text-3xl md:text-4xl font-serif font-normal mb-6"
-              style={{ color: "var(--text-headline)" }}
-            >
-              See the platform with{" "}
-              <span className="italic">your brand</span> in 30 seconds.
-            </h2>
-            <p
-              className="font-mono text-sm leading-relaxed mb-6"
-              style={{ color: "var(--text-body)" }}
-            >
-              Enter your website URL. We&apos;ll scrape your logo and brand
-              colors, apply them to a live demo portal loaded with sample
-              data, and let you click through every feature — client portal,
-              admin panel, orders, invoicing, SMS flow, and more.
-            </p>
-            <div className="space-y-3">
-              {[
-                "Full product catalog with your branding",
-                "Client portal with order history and tracking",
-                "Admin panel with CRM, analytics, and fulfillment",
-                "SMS ordering demo with AI parsing",
-                "Invoice management with Stripe integration",
-                "Loyalty program, referrals, and standing orders",
-              ].map((item) => (
-                <div key={item} className="flex items-center gap-2">
-                  <CheckCircle2
-                    className="w-3.5 h-3.5 flex-shrink-0"
-                    style={{ color: "var(--blue)" }}
-                  />
-                  <span className="font-mono text-xs" style={{ color: "var(--text-body)" }}>
-                    {item}
-                  </span>
-                </div>
-              ))}
-            </div>
+        <div className="max-w-2xl mx-auto text-center mb-10">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Try Before You Buy
+          </span>
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal mb-6"
+            style={{ color: "var(--text-headline)" }}
+          >
+            See the platform with{" "}
+            <span className="italic">your brand</span> in 30 seconds.
+          </h2>
+          <p
+            className="font-mono text-sm leading-relaxed mb-8"
+            style={{ color: "var(--text-body)" }}
+          >
+            Enter your website URL. We&apos;ll scrape your logo and brand
+            colors, apply them to a live demo portal loaded with sample
+            data, and let you click through every feature — client portal,
+            admin panel, orders, invoicing, SMS flow, and more.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5 text-left">
+            {[
+              "Full product catalog with your branding",
+              "Client portal with order history and tracking",
+              "Admin panel with CRM, analytics, and fulfillment",
+              "SMS ordering demo with AI parsing",
+              "Invoice management with Stripe integration",
+              "Loyalty program, referrals, and standing orders",
+            ].map((item) => (
+              <div key={item} className="flex items-center gap-2">
+                <CheckCircle2
+                  className="w-3.5 h-3.5 flex-shrink-0"
+                  style={{ color: "var(--blue)" }}
+                />
+                <span className="font-mono text-xs" style={{ color: "var(--text-body)" }}>
+                  {item}
+                </span>
+              </div>
+            ))}
           </div>
-          <div>
-            <DemoLauncher />
-          </div>
+        </div>
+        <div className="max-w-lg mx-auto">
+          <DemoLauncher />
         </div>
       </section>
 
