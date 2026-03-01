@@ -152,6 +152,14 @@ model IntakeSubmission {
   hasBrandGuidelines String?
   additionalNotes    String?
 
+  // New intake fields (Phase 1 — pipeline automation)
+  targetDomain        String?    // "acmewholesale.com" — desired domain
+  inspirationUrls     String[]   // up to 5 competitor/inspiration site URLs
+  logoUrl             String?    // URL to logo file (website, Google Drive, Dropbox)
+  brandSecondaryColor String?    // hex accent/secondary color
+  minimumOrderValue   String?    // "No minimum" | "$150" | "$250" | "$500" | "$1,000+"
+  goLiveTimeline      String?    // "ASAP" | "Within 1 month" | "Within 3 months" | "Just exploring"
+
   // Firecrawl scrape data (if website was scraped during demo)
   scrapeData Json?
 
@@ -215,14 +223,36 @@ model Project {
   // Call notes from consultation
   callNotes String?
 
+  // Build automation (Phase 1 — pipeline automation)
+  generatedConfig  String?    // full portal.config.ts content (auto-generated on build-start)
+  buildLog         String[]   // sequential build step log entries (timestamps + messages)
+  buildChecklist   Json?      // { configGenerated, githubRepoCreated, vercelCreated, ... }
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   notes ProjectNote[]
   tasks ProjectTask[]
+  costs ProjectCost[]
 
   @@index([contactEmail])
   @@index([status])
+}
+
+/// Per-project cost tracking (AI, Firecrawl, infrastructure)
+model ProjectCost {
+  id          String   @id @default(cuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  service     String   // "anthropic" | "vercel" | "firecrawl" | "neon" | "clerk" | "resend"
+  amountCents Int      @default(0)
+  description String
+  tokens      Int?     // for LLM API calls
+  metadata    Json?
+  date        DateTime @default(now())
+
+  @@index([projectId])
+  @@index([date])
 }
 
 /// Activity log entries for a project

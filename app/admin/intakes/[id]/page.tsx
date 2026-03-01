@@ -31,8 +31,10 @@ import {
   Layers,
   Palette,
   FileText,
+  Search,
 } from "lucide-react";
 import { IntakeActions } from "./intake-actions";
+import { WebsiteIntelligence } from "./website-intelligence";
 
 export const dynamic = "force-dynamic";
 
@@ -81,6 +83,12 @@ export default async function AdminIntakeDetailPage({
     primaryColor: intake.primaryColor,
     hasBrandGuidelines: intake.hasBrandGuidelines,
     additionalNotes: intake.additionalNotes,
+    targetDomain: intake.targetDomain,
+    goLiveTimeline: intake.goLiveTimeline,
+    minimumOrderValue: intake.minimumOrderValue,
+    logoUrl: intake.logoUrl,
+    brandSecondaryColor: intake.brandSecondaryColor,
+    inspirationUrls: intake.inspirationUrls,
     reviewedAt: intake.reviewedAt?.toISOString() ?? null,
     archivedAt: intake.archivedAt?.toISOString() ?? null,
     createdAt: intake.createdAt.toISOString(),
@@ -366,28 +374,78 @@ export default async function AdminIntakeDetailPage({
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-sm">
-              {intake.primaryColor && (
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-10 h-10 border border-[#E5E1DB] shrink-0"
-                    style={{ backgroundColor: intake.primaryColor }}
-                  />
-                  <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Primary Color</p>
-                    <p className="font-mono font-medium">{intake.primaryColor}</p>
+              <div className="flex gap-4 flex-wrap">
+                {intake.primaryColor && (
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 border border-[#E5E1DB] shrink-0"
+                      style={{ backgroundColor: intake.primaryColor }}
+                    />
+                    <div>
+                      <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Primary Color</p>
+                      <p className="font-mono font-medium">{intake.primaryColor}</p>
+                    </div>
                   </div>
-                </div>
-              )}
-              <div>
-                <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
-                  <FileText className="h-3 w-3" /> Brand Guidelines
-                </p>
-                <p>
-                  {intake.hasBrandGuidelines === "yes"
-                    ? "Has brand guidelines"
-                    : "No brand guidelines"}
-                </p>
+                )}
+                {intake.brandSecondaryColor && (
+                  <div className="flex items-center gap-3">
+                    <div
+                      className="w-10 h-10 border border-[#E5E1DB] shrink-0"
+                      style={{ backgroundColor: intake.brandSecondaryColor }}
+                    />
+                    <div>
+                      <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Secondary Color</p>
+                      <p className="font-mono font-medium">{intake.brandSecondaryColor}</p>
+                    </div>
+                  </div>
+                )}
               </div>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div>
+                  <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <FileText className="h-3 w-3" /> Brand Guidelines
+                  </p>
+                  <p>{intake.hasBrandGuidelines || "Not specified"}</p>
+                </div>
+                {intake.logoUrl && (
+                  <div>
+                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Logo URL</p>
+                    <a
+                      href={intake.logoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs font-mono hover:underline truncate block"
+                    >
+                      {intake.logoUrl}
+                    </a>
+                  </div>
+                )}
+              </div>
+
+              {intake.inspirationUrls && intake.inspirationUrls.length > 0 && (
+                <>
+                  <Separator />
+                  <div>
+                    <p className="text-[#0A0A0A]/50 text-xs mb-1.5">Inspiration Sites</p>
+                    <div className="space-y-1">
+                      {intake.inspirationUrls.filter(Boolean).map((url, i) => (
+                        <a
+                          key={i}
+                          href={url.startsWith("http") ? url : `https://${url}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 text-xs font-mono hover:underline text-[#0A0A0A]/70"
+                        >
+                          <Globe className="h-3 w-3" />
+                          {url}
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+
               {intake.additionalNotes && (
                 <>
                   <Separator />
@@ -399,6 +457,23 @@ export default async function AdminIntakeDetailPage({
                   </div>
                 </>
               )}
+            </CardContent>
+          </Card>
+
+          {/* Card 5: Website Intelligence */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
+                <Search className="h-4 w-4 text-[#C8C0B4]" />
+                Website Intelligence
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <WebsiteIntelligence
+                intakeId={intake.id}
+                intakeWebsite={intake.website ?? null}
+                initialScrapeData={intake.scrapeData as Record<string, unknown> | null}
+              />
             </CardContent>
           </Card>
         </div>

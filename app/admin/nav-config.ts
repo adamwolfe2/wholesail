@@ -21,6 +21,7 @@ import {
   CheckSquare,
   Sparkles,
   FileInput,
+  Kanban,
 } from "lucide-react";
 
 // badgeKey maps to a count fetched server-side in layout.tsx and passed as navBadges
@@ -30,6 +31,7 @@ export const adminNav = [
   { href: "/admin/ceo", label: "CEO View", icon: TrendingUp },
   // ── Intake ───────────────────────────────────
   { href: "/admin/intakes", label: "Intakes", icon: FileInput, badgeKey: "pendingIntakes" },
+  { href: "/admin/pipeline", label: "Pipeline", icon: Kanban, badgeKey: "activeBuilds" },
   // ── Operations ───────────────────────────────
   { href: "/admin/orders", label: "Orders", icon: ShoppingCart, badgeKey: "pendingOrders" },
   { href: "/admin/fulfillment", label: "Fulfillment", icon: PackageCheck },

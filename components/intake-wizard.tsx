@@ -41,6 +41,8 @@ type Step1Data = {
   contactPhone: string;
   role: string;
   revenue: string;
+  targetDomain: string;
+  goLiveTimeline: string;
 };
 
 type Step2Data = {
@@ -53,6 +55,7 @@ type Step2Data = {
   avgOrderValue: string;
   paymentTerms: string[];
   deliveryCoverage: string;
+  minimumOrderValue: string;
 };
 
 type Step3Data = {
@@ -60,6 +63,9 @@ type Step3Data = {
   primaryColor: string;
   hasBrandGuidelines: string;
   additionalNotes: string;
+  logoUrl: string;
+  brandSecondaryColor: string;
+  inspirationUrls: string[];
 };
 
 // ── Constants ──────────────────────────────────────────────────────────────
@@ -144,6 +150,21 @@ const DELIVERY_OPTIONS = [
   "Regional (multi-state)",
   "National",
   "International",
+];
+
+const GO_LIVE_TIMELINES = [
+  "ASAP",
+  "Within 1 month",
+  "Within 3 months",
+  "Just exploring",
+];
+
+const MINIMUM_ORDER_VALUES = [
+  "No minimum",
+  "$150",
+  "$250",
+  "$500",
+  "$1,000+",
 ];
 
 const FEATURES = [
@@ -330,6 +351,37 @@ function Step1({
             placeholder="Portland, OR"
             className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
           />
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+            Target Domain
+          </label>
+          <input
+            type="text"
+            value={data.targetDomain}
+            onChange={(e) => onChange({ targetDomain: e.target.value })}
+            placeholder="acmewholesale.com or your preferred domain"
+            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
+          />
+        </div>
+        <div>
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+            When do you want to go live?
+          </label>
+          <div className="grid grid-cols-1 gap-2">
+            {GO_LIVE_TIMELINES.map((t) => (
+              <OptionButton
+                key={t}
+                selected={data.goLiveTimeline === t}
+                onClick={() => onChange({ goLiveTimeline: t })}
+              >
+                {t}
+              </OptionButton>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -610,6 +662,23 @@ function Step2({
           ))}
         </div>
       </div>
+
+      <div>
+        <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          Minimum order value
+        </label>
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+          {MINIMUM_ORDER_VALUES.map((v) => (
+            <OptionButton
+              key={v}
+              selected={data.minimumOrderValue === v}
+              onClick={() => onChange({ minimumOrderValue: v })}
+            >
+              {v}
+            </OptionButton>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
@@ -737,6 +806,72 @@ function Step3({
               </OptionButton>
             ))}
           </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div>
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+            Logo File URL
+          </label>
+          <input
+            type="text"
+            value={data.logoUrl}
+            onChange={(e) => onChange({ logoUrl: e.target.value })}
+            placeholder="Link to your logo file (website, Google Drive, Dropbox)"
+            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+            style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
+          />
+        </div>
+        <div>
+          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+            Secondary / Accent Color
+          </label>
+          <div className="flex items-center gap-3">
+            <input
+              type="color"
+              value={data.brandSecondaryColor || "#666666"}
+              onChange={(e) => onChange({ brandSecondaryColor: e.target.value })}
+              className="w-12 h-12 border cursor-pointer p-0"
+              style={{ borderColor: "var(--border-strong)", borderRadius: "4px" }}
+            />
+            <input
+              type="text"
+              value={data.brandSecondaryColor}
+              onChange={(e) => onChange({ brandSecondaryColor: e.target.value })}
+              placeholder="#666666"
+              className="flex-1 border px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+              style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label className="font-mono text-[10px] uppercase tracking-widest block mb-1" style={{ color: "var(--text-muted)" }}>
+          Websites you like the look or format of
+        </label>
+        <p className="font-mono text-[9px] mb-3" style={{ color: "var(--text-muted)" }}>
+          Competitors, design references, or any site you&apos;d like us to draw inspiration from
+        </p>
+        <div className="space-y-2">
+          {[0, 1, 2, 3, 4].map((i) => (
+            <input
+              key={i}
+              type="text"
+              value={data.inspirationUrls[i] || ""}
+              onChange={(e) => {
+                const updated = [...data.inspirationUrls];
+                updated[i] = e.target.value;
+                // Trim trailing empty entries
+                while (updated.length > 0 && !updated[updated.length - 1]) updated.pop();
+                onChange({ inspirationUrls: updated });
+              }}
+              placeholder={`Inspiration site ${i + 1}`}
+              className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none"
+              style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
+            />
+          ))}
         </div>
       </div>
 
@@ -945,6 +1080,8 @@ export function IntakeWizard() {
     contactPhone: "",
     role: "",
     revenue: "",
+    targetDomain: "",
+    goLiveTimeline: "",
   });
   const [step2, setStep2] = useState<Step2Data>({
     industry: "",
@@ -956,12 +1093,16 @@ export function IntakeWizard() {
     avgOrderValue: "",
     paymentTerms: [],
     deliveryCoverage: "",
+    minimumOrderValue: "",
   });
   const [step3, setStep3] = useState<Step3Data>({
     features: [],
     primaryColor: "",
     hasBrandGuidelines: "",
     additionalNotes: "",
+    logoUrl: "",
+    brandSecondaryColor: "",
+    inspirationUrls: [],
   });
 
   const [submitting, setSubmitting] = useState(false);
@@ -993,6 +1134,8 @@ export function IntakeWizard() {
           contactPhone: step1.contactPhone || undefined,
           contactRole: step1.role || undefined,
           annualRevenue: step1.revenue || undefined,
+          targetDomain: step1.targetDomain || undefined,
+          goLiveTimeline: step1.goLiveTimeline || undefined,
           industry: step2.industry,
           productCategories: step2.productCategories || undefined,
           skuCount: step2.skuCount || undefined,
@@ -1002,10 +1145,14 @@ export function IntakeWizard() {
           avgOrderValue: step2.avgOrderValue || undefined,
           paymentTerms: step2.paymentTerms,
           deliveryCoverage: step2.deliveryCoverage || undefined,
+          minimumOrderValue: step2.minimumOrderValue || undefined,
           selectedFeatures: step3.features,
           primaryColor: step3.primaryColor || undefined,
           hasBrandGuidelines: step3.hasBrandGuidelines || undefined,
           additionalNotes: step3.additionalNotes || undefined,
+          logoUrl: step3.logoUrl || undefined,
+          brandSecondaryColor: step3.brandSecondaryColor || undefined,
+          inspirationUrls: step3.inspirationUrls.filter(Boolean),
         };
         const res = await fetch("/api/intake", {
           method: "POST",

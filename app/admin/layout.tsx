@@ -31,7 +31,7 @@ export default async function AdminLayout({
   }
 
   // Badge counts for nav items — fetched once per layout render
-  const [unreadMessages, pendingOrders, overdueInvoices, pendingApplications, openTasks, pendingIntakes] =
+  const [unreadMessages, pendingOrders, overdueInvoices, pendingApplications, openTasks, pendingIntakes, activeBuilds] =
     await Promise.all([
       prisma.message.count({ where: { senderRole: "client", readAt: null } }).catch(() => 0),
       prisma.order.count({ where: { status: "PENDING" } }).catch(() => 0),
@@ -39,6 +39,7 @@ export default async function AdminLayout({
       prisma.wholesaleApplication.count({ where: { status: "PENDING" } }).catch(() => 0),
       prisma.repTask.count({ where: { completedAt: null } }).catch(() => 0),
       prisma.intakeSubmission.count({ where: { reviewedAt: null, archivedAt: null } }).catch(() => 0),
+      prisma.project.count({ where: { status: { in: ["ONBOARDING", "BUILDING", "REVIEW"] } } }).catch(() => 0),
     ]);
 
   const navBadges: Record<string, number> = {
@@ -48,6 +49,7 @@ export default async function AdminLayout({
     pendingApplications,
     openTasks,
     pendingIntakes,
+    activeBuilds,
   };
 
   return (

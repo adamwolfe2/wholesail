@@ -5,6 +5,7 @@ import {
   notifyAdminNewIntake,
   sendIntakeConfirmation,
 } from "@/lib/email/notifications";
+import { scrapeIntakeWebsite } from "@/lib/build/firecrawl";
 
 const intakeSchema = z.object({
   // Step 1
@@ -35,6 +36,14 @@ const intakeSchema = z.object({
   hasBrandGuidelines: z.string().optional(),
   additionalNotes: z.string().optional(),
 
+  // New intake fields (Phase 1 — pipeline automation)
+  targetDomain: z.string().optional(),
+  inspirationUrls: z.array(z.string()).default([]),
+  logoUrl: z.string().optional(),
+  brandSecondaryColor: z.string().optional(),
+  minimumOrderValue: z.string().optional(),
+  goLiveTimeline: z.string().optional(),
+
   // Optional scrape data
   scrapeData: z.any().optional(),
 });
@@ -45,6 +54,11 @@ export async function POST(req: Request) {
     const data = intakeSchema.parse(body);
 
     const submission = await createIntakeSubmission(data);
+
+    // Fire-and-forget: scrape website + inspiration URLs in background
+    if (data.website) {
+      void scrapeIntakeWebsite(submission.id, data.website, data.inspirationUrls ?? []);
+    }
 
     // Fire-and-forget email notifications
     notifyAdminNewIntake({
