@@ -2,6 +2,7 @@ import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/db";
 import { AdminMobileNav } from "./mobile-nav";
 import { CommandPalette } from "./command-palette";
@@ -11,6 +12,26 @@ import { adminNav } from "./nav-config";
 export const dynamic = 'force-dynamic';
 
 const ALLOWED_ROLES = ["ADMIN", "OPS", "SALES_REP"] as const;
+
+// Cache badge counts for 60 seconds — avoids 7 DB queries on every admin page navigation.
+// Tags allow on-demand invalidation when underlying data changes.
+const getNavBadgeCounts = unstable_cache(
+  async () => {
+    const [unreadMessages, pendingOrders, overdueInvoices, pendingApplications, openTasks, pendingIntakes, activeBuilds] =
+      await Promise.all([
+        prisma.message.count({ where: { senderRole: "client", readAt: null } }).catch(() => 0),
+        prisma.order.count({ where: { status: "PENDING" } }).catch(() => 0),
+        prisma.invoice.count({ where: { status: "OVERDUE" } }).catch(() => 0),
+        prisma.wholesaleApplication.count({ where: { status: "PENDING" } }).catch(() => 0),
+        prisma.repTask.count({ where: { completedAt: null } }).catch(() => 0),
+        prisma.intakeSubmission.count({ where: { reviewedAt: null, archivedAt: null } }).catch(() => 0),
+        prisma.project.count({ where: { status: { in: ["ONBOARDING", "BUILDING", "REVIEW"] } } }).catch(() => 0),
+      ]);
+    return { unreadMessages, pendingOrders, overdueInvoices, pendingApplications, openTasks, pendingIntakes, activeBuilds };
+  },
+  ['admin-nav-badges'],
+  { revalidate: 60, tags: ['admin-nav-badges'] }
+);
 
 export default async function AdminLayout({
   children,
@@ -30,17 +51,9 @@ export default async function AdminLayout({
     redirect("/");
   }
 
-  // Badge counts for nav items — fetched once per layout render
-  const [unreadMessages, pendingOrders, overdueInvoices, pendingApplications, openTasks, pendingIntakes, activeBuilds] =
-    await Promise.all([
-      prisma.message.count({ where: { senderRole: "client", readAt: null } }).catch(() => 0),
-      prisma.order.count({ where: { status: "PENDING" } }).catch(() => 0),
-      prisma.invoice.count({ where: { status: "OVERDUE" } }).catch(() => 0),
-      prisma.wholesaleApplication.count({ where: { status: "PENDING" } }).catch(() => 0),
-      prisma.repTask.count({ where: { completedAt: null } }).catch(() => 0),
-      prisma.intakeSubmission.count({ where: { reviewedAt: null, archivedAt: null } }).catch(() => 0),
-      prisma.project.count({ where: { status: { in: ["ONBOARDING", "BUILDING", "REVIEW"] } } }).catch(() => 0),
-    ]);
+  // Badge counts — served from 60s cache; 7 DB queries max once per minute across all admins
+  const { unreadMessages, pendingOrders, overdueInvoices, pendingApplications, openTasks, pendingIntakes, activeBuilds } =
+    await getNavBadgeCounts();
 
   const navBadges: Record<string, number> = {
     unreadMessages,

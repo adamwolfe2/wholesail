@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { MarketingHeader } from '@/components/marketing-header'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400 // ISR: rebuild at most once per day
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Wholesail',

@@ -5,7 +5,7 @@ import { ArrowUpRight, Instagram } from 'lucide-react'
 import { InstagramFeed } from '@/components/instagram-feed'
 import { MarketingHeader } from '@/components/marketing-header'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400 // ISR: rebuild at most once per day
 
 export const metadata: Metadata = {
   title: 'Wanna Bump? — Wholesail',

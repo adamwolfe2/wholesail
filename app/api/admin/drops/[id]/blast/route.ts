@@ -57,34 +57,41 @@ export async function POST(
   const emailErrors: string[] = []
   const smsErrors: string[] = []
 
-  for (const org of orgs) {
-    // Email
-    const emailResult = await sendDropBlastEmail({
-      email: org.email,
-      dropTitle: drop.title,
-      dropDate: drop.dropDate.toISOString(),
-      description: drop.description,
-      category: drop.category,
-      priceNote: drop.priceNote,
-    })
-    if (emailResult.success) {
-      emailsSent++
-    } else {
-      emailErrors.push(org.email)
-    }
-
-    // SMS (optional — only if org has a phone)
-    if (org.phone) {
-      const e164 = toE164(org.phone)
-      if (e164) {
-        const smsResult = await sendMessage({ to: e164, message: smsBody })
-        if (smsResult.success) {
-          smsSent++
+  // Send email + SMS concurrently across all orgs (batched at 20 parallel to avoid rate limits)
+  const BATCH_SIZE = 20
+  for (let i = 0; i < orgs.length; i += BATCH_SIZE) {
+    const batch = orgs.slice(i, i + BATCH_SIZE)
+    await Promise.allSettled(
+      batch.map(async (org) => {
+        // Email
+        const emailResult = await sendDropBlastEmail({
+          email: org.email,
+          dropTitle: drop.title,
+          dropDate: drop.dropDate.toISOString(),
+          description: drop.description,
+          category: drop.category,
+          priceNote: drop.priceNote,
+        })
+        if (emailResult.success) {
+          emailsSent++
         } else {
-          smsErrors.push(org.phone)
+          emailErrors.push(org.email)
         }
-      }
-    }
+
+        // SMS (optional — only if org has a phone)
+        if (org.phone) {
+          const e164 = toE164(org.phone)
+          if (e164) {
+            const smsResult = await sendMessage({ to: e164, message: smsBody })
+            if (smsResult.success) {
+              smsSent++
+            } else {
+              smsErrors.push(org.phone)
+            }
+          }
+        }
+      })
+    )
   }
 
   // Mark notifiedAt on the drop

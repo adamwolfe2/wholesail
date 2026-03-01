@@ -32,32 +32,40 @@ export async function GET(req: NextRequest) {
   const errors: string[] = []
 
   try {
-    // ── Day-3 emails ──────────────────────────────────────────────────────────
-    const day3Candidates = await prisma.wholesaleApplication.findMany({
+    // ── BATCH FETCH: both candidate sets in parallel ─────────────────────────
+    const [day3Candidates, day7Candidates] = await Promise.all([
+      prisma.wholesaleApplication.findMany({
+        where: { status: 'APPROVED', reviewedAt: { gte: day3Start, lt: day3End } },
+        select: { id: true, contactName: true, email: true, businessName: true },
+      }),
+      prisma.wholesaleApplication.findMany({
+        where: { status: 'APPROVED', reviewedAt: { gte: day7Start, lt: day7End } },
+        select: { id: true, contactName: true, email: true, businessName: true },
+      }),
+    ])
+
+    const allCandidateIds = [
+      ...day3Candidates.map(a => a.id),
+      ...day7Candidates.map(a => a.id),
+    ]
+
+    // ── BATCH QUERY: fetch all dedup audit events in one query ───────────────
+    // Eliminates per-app findFirst loop (was N queries, now 1)
+    const existingAuditEvents = await prisma.auditEvent.findMany({
       where: {
-        status: 'APPROVED',
-        reviewedAt: { gte: day3Start, lt: day3End },
+        entityType: 'WholesaleApplication',
+        entityId: { in: allCandidateIds },
+        action: { in: ['nurture_day3_sent', 'nurture_day7_sent'] },
       },
-      select: {
-        id: true,
-        contactName: true,
-        email: true,
-        businessName: true,
-      },
+      select: { entityId: true, action: true },
     })
 
-    for (const app of day3Candidates) {
-      // Check if nurture_day3_sent audit event already exists
-      const alreadySent = await prisma.auditEvent.findFirst({
-        where: {
-          entityType: 'WholesaleApplication',
-          entityId: app.id,
-          action: 'nurture_day3_sent',
-        },
-        select: { id: true },
-      })
+    // Build lookup set: "appId:action"
+    const sentSet = new Set(existingAuditEvents.map(e => `${e.entityId}:${e.action}`))
 
-      if (alreadySent) {
+    // ── Day-3 emails ──────────────────────────────────────────────────────────
+    for (const app of day3Candidates) {
+      if (sentSet.has(`${app.id}:nurture_day3_sent`)) {
         skipped++
         continue
       }
@@ -90,31 +98,8 @@ export async function GET(req: NextRequest) {
     }
 
     // ── Day-7 emails ──────────────────────────────────────────────────────────
-    const day7Candidates = await prisma.wholesaleApplication.findMany({
-      where: {
-        status: 'APPROVED',
-        reviewedAt: { gte: day7Start, lt: day7End },
-      },
-      select: {
-        id: true,
-        contactName: true,
-        email: true,
-        businessName: true,
-      },
-    })
-
     for (const app of day7Candidates) {
-      // Check if nurture_day7_sent audit event already exists
-      const alreadySent = await prisma.auditEvent.findFirst({
-        where: {
-          entityType: 'WholesaleApplication',
-          entityId: app.id,
-          action: 'nurture_day7_sent',
-        },
-        select: { id: true },
-      })
-
-      if (alreadySent) {
+      if (sentSet.has(`${app.id}:nurture_day7_sent`)) {
         skipped++
         continue
       }

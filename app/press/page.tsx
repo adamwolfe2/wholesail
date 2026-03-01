@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Instagram, Download, Mail, ArrowUpRight } from 'lucide-react'
 import { MarketingHeader } from '@/components/marketing-header'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400 // ISR: rebuild at most once per day
 
 export const metadata: Metadata = {
   title: 'Press & Media — Wholesail',

@@ -103,10 +103,8 @@ export async function GET() {
     .map(([category, revenue]) => ({ category, revenue: Math.round(revenue) }))
     .sort((a, b) => b.revenue - a.revenue);
 
-  return NextResponse.json({
-    monthlyRevenue,
-    topClients,
-    orderStatusCounts,
-    topCategories,
-  });
+  return NextResponse.json(
+    { monthlyRevenue, topClients, orderStatusCounts, topCategories },
+    { headers: { 'Cache-Control': 's-maxage=300, stale-while-revalidate=600' } }
+  );
 }

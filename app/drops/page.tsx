@@ -6,7 +6,7 @@ import { MarketingHeader } from '@/components/marketing-header'
 import { prisma } from '@/lib/db'
 import { DropsAlertForm } from './drops-alert-form'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 1800 // ISR: rebuild at most every 30 minutes
 
 export const metadata: Metadata = {
   title: 'Product Drops | Wholesail',

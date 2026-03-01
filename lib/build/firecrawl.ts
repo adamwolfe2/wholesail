@@ -37,9 +37,14 @@ export async function scrapeIntakeWebsite(
     });
     const websiteData = await websiteRes.json();
 
-    // Scrape up to 3 inspiration URLs in parallel
+    // Deduplicate and skip the main website URL before scraping inspirations
+    const uniqueInspirationUrls = [...new Set(
+      inspirationUrls.filter(u => u && u !== url)
+    )].slice(0, 3)
+
+    // Scrape up to 3 unique inspiration URLs in parallel
     const inspirationData = await Promise.allSettled(
-      inspirationUrls.slice(0, 3).map(async (iUrl) => {
+      uniqueInspirationUrls.map(async (iUrl) => {
         const r = await fetch("https://api.firecrawl.dev/v1/scrape", {
           method: "POST",
           headers: {

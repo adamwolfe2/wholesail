@@ -4,7 +4,7 @@ import { Instagram } from 'lucide-react'
 import { MarketingHeader } from '@/components/marketing-header'
 import { provenanceEntries } from '@/lib/provenance'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400 // ISR: rebuild at most once per day
 
 export const metadata: Metadata = {
   title: 'Our Sourcing Standards — Ingredient Provenance | Wholesail',

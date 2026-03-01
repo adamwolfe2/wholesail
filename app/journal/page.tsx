@@ -4,7 +4,7 @@ import { ArrowUpRight, Instagram } from 'lucide-react'
 import { MarketingHeader } from '@/components/marketing-header'
 import { articles } from '@/lib/journal/articles'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 86400 // ISR: rebuild at most once per day
 
 export const metadata: Metadata = {
   title: 'The Journal',

@@ -17,36 +17,38 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    // Find all inventory levels where stock is at or below threshold for available products.
-    // Prisma doesn't support field-to-field comparisons in where clauses, so we fetch all
-    // tracked inventory for available products and filter in-process.
-    const allLevels = await prisma.inventoryLevel.findMany({
-      where: {
-        product: {
-          available: true,
-        },
-      },
-      include: {
-        product: {
-          select: { name: true, category: true, available: true },
-        },
-      },
-    })
+    // Use raw SQL for field-to-field comparison (quantityOnHand <= lowStockThreshold).
+    // Prisma where clauses can't compare two columns directly — fetching all rows and
+    // filtering in JS would load the full inventory table on every cron tick.
+    type LowStockRow = {
+      name: string
+      category: string
+      quantity_on_hand: number
+      low_stock_threshold: number
+    }
 
-    const lowStockLevels = allLevels.filter(
-      (level) => level.quantityOnHand <= level.lowStockThreshold
-    )
+    const lowStockLevels = await prisma.$queryRaw<LowStockRow[]>`
+      SELECT
+        p.name,
+        p.category,
+        il."quantityOnHand"  AS quantity_on_hand,
+        il."lowStockThreshold" AS low_stock_threshold
+      FROM "InventoryLevel" il
+      JOIN "Product" p ON p.id = il."productId"
+      WHERE p.available = true
+        AND il."quantityOnHand" <= il."lowStockThreshold"
+    `
 
     if (lowStockLevels.length === 0) {
       console.info('Low stock cron: no items below threshold')
       return NextResponse.json({ ok: true, alerts: 0 })
     }
 
-    const items = lowStockLevels.map((level) => ({
-      name: level.product.name,
-      category: level.product.category,
-      quantityOnHand: level.quantityOnHand,
-      lowStockThreshold: level.lowStockThreshold,
+    const items = lowStockLevels.map((row) => ({
+      name: row.name,
+      category: row.category,
+      quantityOnHand: Number(row.quantity_on_hand),
+      lowStockThreshold: Number(row.low_stock_threshold),
     }))
 
     await sendLowStockAlert(items)
