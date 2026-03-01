@@ -2,8 +2,8 @@ const GITHUB_API = "https://api.github.com";
 const GITHUB_OWNER = "adamwolfe2";
 
 function headers() {
-  const token = process.env.GITHUB_TOKEN;
-  if (!token) throw new Error("GITHUB_TOKEN not set");
+  const token = process.env.GITHUB_PAT;
+  if (!token) throw new Error("GITHUB_PAT not set");
   return {
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
