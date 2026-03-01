@@ -9,21 +9,21 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'The Journal',
   description:
-    'Behind the scenes from TBGC — truffle season guides, caviar sourcing stories, and insights from the world of luxury specialty foods.',
+    'Behind the scenes from Wholesail — truffle season guides, caviar sourcing stories, and insights from the world of luxury specialty foods.',
   openGraph: {
-    title: 'The Journal | TBGC',
+    title: 'The Journal | Wholesail',
     description:
-      'Behind the scenes from TBGC — truffle season guides, caviar sourcing stories, and insights from the world of luxury specialty foods.',
+      'Behind the scenes from Wholesail — truffle season guides, caviar sourcing stories, and insights from the world of luxury specialty foods.',
     type: 'website',
-    url: 'https://truffleboys.com/journal',
-    images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: 'Truffle Boys & Girls Club — Luxury Wholesale Specialty Foods' }],
+    url: 'https://wholesailhub.com/journal',
+    images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: 'Wholesail — Luxury Wholesale Specialty Foods' }],
   },
   twitter: {
     card: 'summary_large_image',
     images: ['/Public Social Image.png'],
   },
   alternates: {
-    canonical: 'https://truffleboys.com/journal',
+    canonical: 'https://wholesailhub.com/journal',
   },
 }
 
@@ -36,7 +36,7 @@ export default function JournalPage() {
       <section className="pt-24 pb-16 sm:pt-32 sm:pb-20 border-b border-[#E5E1DB]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-6">
-            TBGC Journal
+            Wholesail Journal
           </p>
           <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] text-[#0A0A0A] mb-7 max-w-3xl">
             Behind the Ingredients.
@@ -105,13 +105,13 @@ export default function JournalPage() {
                 All the news that doesn&apos;t fit in an article — live on Instagram.
               </p>
               <a
-                href="https://www.instagram.com/tbgc_inc/"
+                href="https://www.instagram.com/wholesailhub/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 border border-[#0A0A0A] text-[#0A0A0A] px-7 py-3.5 text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors"
               >
                 <Instagram className="h-4 w-4" />
-                @tbgc_inc
+                @wholesailhub
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
             </div>
@@ -129,19 +129,19 @@ export default function JournalPage() {
       {/* FOOTER */}
       <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <Link href="/" className="font-serif text-xl font-bold">TBGC</Link>
+          <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
           <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
             <Link href="/" className="hover:text-[#F9F7F4] transition-colors">Home</Link>
             <Link href="/catalog" className="hover:text-[#F9F7F4] transition-colors">Catalog</Link>
             <Link href="/partner" className="hover:text-[#F9F7F4] transition-colors">Wholesale</Link>
             <a
-              href="https://www.instagram.com/tbgc_inc/"
+              href="https://www.instagram.com/wholesailhub/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-[#F9F7F4] transition-colors flex items-center gap-1.5"
             >
               <Instagram className="h-3.5 w-3.5" />
-              @tbgc_inc
+              @wholesailhub
             </a>
           </div>
         </div>

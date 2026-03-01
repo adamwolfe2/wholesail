@@ -83,7 +83,7 @@ export async function GET() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const buffer = await renderToBuffer(pdfElement as any);
 
-    const filename = `TBGC-Price-List-${orgName.replace(/[^a-zA-Z0-9]/g, "-")}.pdf`;
+    const filename = `Wholesail-Price-List-${orgName.replace(/[^a-zA-Z0-9]/g, "-")}.pdf`;
 
     return new NextResponse(buffer as unknown as BodyInit, {
       status: 200,

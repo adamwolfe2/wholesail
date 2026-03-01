@@ -129,7 +129,7 @@ export default async function PickListPage({
         </div>
 
         <div className="mt-6 text-xs text-[#0A0A0A]/30 text-center print:mt-4">
-          Truffle Boys &amp; Girls Club — Internal Use Only
+          Wholesail — Internal Use Only
         </div>
       </div>
     </div>

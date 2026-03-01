@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
           messages: {
             create: {
               senderId: userId,
-              senderName: staff?.name ?? 'TBGC Team',
+              senderName: staff?.name ?? 'Wholesail Team',
               senderRole: 'staff',
               content: message.trim(),
             },

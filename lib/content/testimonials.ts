@@ -7,7 +7,7 @@
  */
 export const TESTIMONIALS = [
   {
-    quote: 'TBGC is the only supplier we trust for truffle season. Consistent quality, every single time.',
+    quote: 'Wholesail is the only supplier we trust for truffle season. Consistent quality, every single time.',
     author: 'Executive Chef',
     place: 'Michelin-Starred Restaurant, Los Angeles',
   },

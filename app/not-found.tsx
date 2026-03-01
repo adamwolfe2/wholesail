@@ -8,7 +8,7 @@ export default function NotFound() {
         404 · Page Not Found
       </p>
       <h1 className="font-serif text-5xl sm:text-7xl font-bold text-[#0A0A0A] mb-4 leading-none">
-        Lost in the truffle forest.
+        Page not found.
       </h1>
       <p className="text-[#0A0A0A]/50 text-sm sm:text-base max-w-sm leading-relaxed mb-10">
         The page you&apos;re looking for doesn&apos;t exist or has moved. Let&apos;s get you back.
@@ -22,10 +22,10 @@ export default function NotFound() {
           Back to Home
         </Link>
         <Link
-          href="/catalog"
+          href="#"
           className="inline-flex items-center gap-2 border border-[#E5E1DB] text-[#0A0A0A]/60 px-7 py-3.5 text-sm font-medium hover:border-[#0A0A0A] hover:text-[#0A0A0A] transition-colors"
         >
-          Browse Catalog
+          View Platform
         </Link>
       </div>
     </div>

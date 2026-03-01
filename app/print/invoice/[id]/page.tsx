@@ -78,7 +78,7 @@ export default async function PrintInvoicePage({ params }: Props) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Invoice {invoice.invoiceNumber} — TBGC</title>
+        <title>Invoice {invoice.invoiceNumber} — Wholesail</title>
         <style>{`
           * { box-sizing: border-box; margin: 0; padding: 0; }
           body {
@@ -131,7 +131,7 @@ export default async function PrintInvoicePage({ params }: Props) {
 
           {/* Header */}
           <div className="header">
-            <div className="logo">TBGC</div>
+            <div className="logo">Wholesail</div>
             <div className="invoice-badge">
               <h1>Invoice</h1>
               <div className="num">{invoice.invoiceNumber}</div>
@@ -142,10 +142,10 @@ export default async function PrintInvoicePage({ params }: Props) {
           <div className="parties">
             <div>
               <div className="party-label">From</div>
-              <div className="party-name">Truffle Boys &amp; Girls Co.</div>
+              <div className="party-name">Wholesail</div>
               <div className="party-detail">
                 Los Angeles, CA 90012<br />
-                orders@truffleboys.com
+                orders@wholesailhub.com
               </div>
             </div>
             <div>
@@ -242,7 +242,7 @@ export default async function PrintInvoicePage({ params }: Props) {
 
           {/* Footer */}
           <div className="footer">
-            <span>Truffle Boys &amp; Girls Co. · Los Angeles, CA</span>
+            <span>Wholesail · Los Angeles, CA</span>
             <span>Thank you for your business.</span>
           </div>
         </div>

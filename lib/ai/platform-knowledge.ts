@@ -4,7 +4,7 @@
  * Update this as you add pages/features.
  */
 export const PLATFORM_KNOWLEDGE = `
-## TBGC Admin Platform — Page Map
+## Wholesail Admin Platform — Page Map
 
 ### Dashboard & Analytics
 - /admin — Main dashboard. KPIs: revenue, orders, clients, AOV. Quick links to everything.

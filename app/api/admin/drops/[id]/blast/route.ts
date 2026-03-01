@@ -49,8 +49,8 @@ export async function POST(
     })
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://truffleboys.com'
-  const smsBody = `New TBGC Drop: ${drop.title}${drop.priceNote ? `. ${drop.priceNote}` : ''}. First-come, first-served. Order now: ${appUrl}/drops`
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wholesailhub.com'
+  const smsBody = `New Wholesail Drop: ${drop.title}${drop.priceNote ? `. ${drop.priceNote}` : ''}. First-come, first-served. Order now: ${appUrl}/drops`
 
   let emailsSent = 0
   let smsSent = 0

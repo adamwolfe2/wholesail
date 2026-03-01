@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
   }
 
   const FROM_EMAIL =
-    process.env.RESEND_FROM_EMAIL || 'orders@truffleboys.com'
+    process.env.RESEND_FROM_EMAIL || 'orders@wholesailhub.com'
   const OPS_EMAIL =
     process.env.OPS_NOTIFICATION_EMAIL || FROM_EMAIL
 
@@ -178,7 +178,7 @@ export async function GET(req: NextRequest) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TBGC Weekly Business Report</title>
+  <title>Wholesail Weekly Business Report</title>
 </head>
 <body style="margin:0;padding:0;background-color:#F9F7F4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F9F7F4;padding:32px 0;">
@@ -189,7 +189,7 @@ export async function GET(req: NextRequest) {
           <!-- Header -->
           <tr>
             <td style="background-color:#0A0A0A;padding:24px 36px;">
-              <p style="margin:0 0 4px;color:#C8C0B4;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;">Truffle Boys &amp; Girls Club — Internal</p>
+              <p style="margin:0 0 4px;color:#C8C0B4;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;">Wholesail — Internal</p>
               <h1 style="margin:0;color:#FFFFFF;font-size:20px;font-weight:600;font-family:Georgia,serif;">Weekly Business Report</h1>
               <p style="margin:6px 0 0;color:#C8C0B4;font-size:13px;">${weekLabel}</p>
             </td>
@@ -267,7 +267,7 @@ export async function GET(req: NextRequest) {
           <tr>
             <td style="background-color:#F9F7F4;padding:16px 36px;border-top:1px solid #E5E0D8;">
               <p style="margin:0;color:#888077;font-size:12px;line-height:1.6;">
-                TBGC Internal Report &nbsp;&middot;&nbsp; Generated ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}<br/>
+                Wholesail Internal Report &nbsp;&middot;&nbsp; Generated ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}<br/>
                 Do not forward — for internal ops use only.
               </p>
             </td>
@@ -280,7 +280,7 @@ export async function GET(req: NextRequest) {
 </body>
 </html>`
 
-    const text = `TBGC Weekly Business Report — ${weekLabel}
+    const text = `Wholesail Weekly Business Report — ${weekLabel}
 
 WEEK AT A GLANCE
 Revenue: $${revenueThisWeek.toFixed(2)}${revenueChangePct !== null ? ` (${revenueChangePct >= 0 ? '+' : ''}${revenueChangePct.toFixed(1)}% vs last week)` : ''}
@@ -295,12 +295,12 @@ AT-RISK CLIENTS (45+ days no order)
 ${atRiskOrgs.slice(0, 10).map((o) => `• ${o.name} <${o.email}> — ${o.daysSince} days`).join('\n') || 'None'}
 
 Generated: ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-TBGC Internal Ops`
+Wholesail Internal Ops`
 
     await r.emails.send({
       from: FROM_EMAIL,
       to: OPS_EMAIL,
-      subject: `TBGC Weekly Report — ${weekLabel}`,
+      subject: `Wholesail Weekly Report — ${weekLabel}`,
       html,
       text,
     })

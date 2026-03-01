@@ -26,7 +26,7 @@ export const articles: Article[] = [
 
 <h2>Regional Origins: Why Alba Is the Gold Standard</h2>
 <p>White truffles are found across Italy, Croatia, Slovenia, and parts of France and Spain — but the most prized specimens come from the Langhe hills surrounding Alba in Piedmont, northern Italy. The combination of clay-rich soil, specific oak and hazelnut host trees, and the region's microclimate produces truffles with an aromatic complexity that is widely considered unmatched.</p>
-<p>When sourcing, always ask your supplier for the origin. "Italian white truffle" is not sufficient — Alba-region truffles command and deserve a significant premium over specimens from elsewhere. TBGC sources directly from trusted trifolau (truffle hunters) in the Piedmont region, with origin documentation on every shipment.</p>
+<p>When sourcing, always ask your supplier for the origin. "Italian white truffle" is not sufficient — Alba-region truffles command and deserve a significant premium over specimens from elsewhere. Wholesail sources directly from trusted trifolau (truffle hunters) in the Piedmont region, with origin documentation on every shipment.</p>
 
 <h2>What Affects Quality: Soil Moisture and Harvest Timing</h2>
 <p>White truffle quality is almost entirely determined by conditions outside anyone's control. The primary drivers are:</p>
@@ -40,8 +40,8 @@ export const articles: Article[] = [
 <p>White truffle storage is simple but unforgiving. Wrap each truffle individually in a dry paper towel, place in an airtight glass or ceramic container (never plastic), and store in the coldest part of your refrigerator — ideally 34–38°F. Change the paper towel daily; the truffle respires and the paper absorbs moisture that would accelerate decay. Stored properly, a high-quality white truffle will hold for five to seven days from receipt. Stored improperly, it can degrade meaningfully in 24 hours.</p>
 <p>Do not store white truffles next to eggs or dairy unless you intend to infuse them — the aroma penetrates everything in proximity.</p>
 
-<h2>Ordering Wholesale Through TBGC</h2>
-<p>TBGC offers white truffles throughout the season on a weekly allocation basis. Southern California partners receive same-day delivery; nationwide orders ship overnight in cold-chain packaging with dry ice. Given the volatility of the crop, pricing fluctuates week to week based on Italian market conditions — contact your account manager for current rates and availability. We recommend establishing your weekly allocation early in the season before demand peaks in November.</p>
+<h2>Ordering Wholesale Through Wholesail</h2>
+<p>Wholesail offers white truffles throughout the season on a weekly allocation basis. Southern California partners receive same-day delivery; nationwide orders ship overnight in cold-chain packaging with dry ice. Given the volatility of the crop, pricing fluctuates week to week based on Italian market conditions — contact your account manager for current rates and availability. We recommend establishing your weekly allocation early in the season before demand peaks in November.</p>
 
 <h2>Service Guidance</h2>
 <p>White truffle is always finished raw. Heat destroys the volatile aromatic compounds that make this ingredient worth its price. The truffle should be shaved — with a mandoline-style truffle shaver, not a knife — directly over a warm (not hot) dish at the last possible moment before it reaches the guest. Classic vessels: fresh tagliolini with butter, risotto bianco, scrambled eggs, fonduta. The dish should be simple enough that the truffle is the entire point. Never cook white truffle into a sauce or incorporate it during cooking — you will lose everything that makes it exceptional.</p>
@@ -64,7 +64,7 @@ export const articles: Article[] = [
 <h2>The Major Species</h2>
 <p>Not all caviar is equal — and species is the first variable that matters.</p>
 <ul>
-  <li><strong>Kaluga Hybrid (<em>Huso dauricus</em> × <em>Acipenser schrenckii</em>)</strong> — The workhorse of premium modern aquaculture. The Kaluga hybrid grows quickly relative to other sturgeons, producing large, firm beads with a clean, buttery flavor. It is frequently compared to Beluga in texture and bead size. This is TBGC's primary caviar offering and the product we recommend for most restaurant programs.</li>
+  <li><strong>Kaluga Hybrid (<em>Huso dauricus</em> × <em>Acipenser schrenckii</em>)</strong> — The workhorse of premium modern aquaculture. The Kaluga hybrid grows quickly relative to other sturgeons, producing large, firm beads with a clean, buttery flavor. It is frequently compared to Beluga in texture and bead size. This is Wholesail's primary caviar offering and the product we recommend for most restaurant programs.</li>
   <li><strong>Osetra (<em>Acipenser gueldenstaedtii</em>)</strong> — One of the three classic Caspian species, now farmed globally. Osetra produces medium-to-large beads with a notably complex, nutty flavor profile that distinguishes it from other species. Color ranges from olive-gold to dark grey-brown. Highly prized in fine dining for its expressive flavor.</li>
   <li><strong>Sevruga (<em>Acipenser stellatus</em>)</strong> — The smallest of the classic three, producing small, dark beads with an intensely briny, assertive flavor. Less common in the US market today but prized by traditionalists for its boldness.</li>
   <li><strong>Beluga (<em>Huso huso</em>)</strong> — The most legendary and legally restricted caviar in the world. Wild Beluga import into the United States is banned under CITES. Farmed Beluga is available in limited quantities from certified producers but commands extraordinary prices. The genuine article produces the largest beads of any sturgeon, with a famously delicate, almost creamy flavor.</li>
@@ -83,8 +83,8 @@ export const articles: Article[] = [
 <p>Caviar should be stored at 34–38°F — below the standard refrigerator temperature for most other foods. An unopened tin in proper cold storage has a shelf life of four to six weeks from packing date. Once opened, caviar should be consumed within 24–48 hours. Never freeze caviar; freezing ruptures the bead membrane and destroys the texture entirely.</p>
 <p>For service, use non-reactive spoons — mother of pearl is traditional and optimal, but bone, horn, or high-quality plastic are acceptable. Metal spoons (silver, stainless) impart a metallic note that compromises the flavor of delicate caviar. Serve directly from the tin, nestled in crushed ice.</p>
 
-<h2>TBGC's Caviar Program</h2>
-<p>TBGC offers Kaluga 000 and Osetra as primary SKUs, with allocations of additional species available seasonally. All tins are sourced from certified aquaculture producers with full CITES documentation, cold-chain shipped to arrive fresh, and dated on receipt. Minimum order quantities and pricing are available through your account manager. We recommend establishing a standing weekly allocation for restaurant programs to ensure consistent supply.</p>
+<h2>Wholesail's Caviar Program</h2>
+<p>Wholesail offers Kaluga 000 and Osetra as primary SKUs, with allocations of additional species available seasonally. All tins are sourced from certified aquaculture producers with full CITES documentation, cold-chain shipped to arrive fresh, and dated on receipt. Minimum order quantities and pricing are available through your account manager. We recommend establishing a standing weekly allocation for restaurant programs to ensure consistent supply.</p>
 `,
   },
   {
@@ -100,7 +100,7 @@ export const articles: Article[] = [
 
 <h2>What Cold Chain Means</h2>
 <p>Cold chain refers to the unbroken sequence of temperature-controlled storage and transport that moves a perishable product from its point of origin to its point of use. The word "unbroken" is the operative one. A single gap — a truffle left on a receiving dock for two hours, a caviar tin that spent a flight in ambient cargo hold, a wagyu cut that warmed during a cross-country truck delay — can compromise or destroy the product's quality. The chain only works when it is never broken.</p>
-<p>For standard food distribution, cold chain management is important. For the categories TBGC handles, it is existential to the product.</p>
+<p>For standard food distribution, cold chain management is important. For the categories Wholesail handles, it is existential to the product.</p>
 
 <h2>Why It's Critical for Our Categories</h2>
 <ul>
@@ -113,7 +113,7 @@ export const articles: Article[] = [
 <h2>What Happens When Cold Chain Breaks</h2>
 <p>Temperature abuse produces predictable failures, though they manifest differently by category. For aromatics like truffle: irreversible loss of volatile compounds that cannot be detected visually. For caviar: bead collapse, accelerated oxidation, and off-flavors. For fresh protein (wagyu, foie gras): accelerated bacterial load, textural degradation, and shortened usable window. In all cases, the damage is done before you know it happened — which is why proactive cold chain management matters far more than reactive inspection.</p>
 
-<h2>How TBGC Manages Cold Chain</h2>
+<h2>How Wholesail Manages Cold Chain</h2>
 <p>Every product that leaves our network is packed with category-appropriate insulation and cooling media. Truffles ship in ventilated cold packs. Caviar ships in rigid insulated containers with gel ice. Wagyu and fresh proteins ship with dry ice at quantities calibrated to the transit time and expected ambient temperature of the delivery route. All perishable shipments include a temperature indicator that gives you a visual record of the thermal history from pack to delivery.</p>
 <p>Southern California partners receive same-day delivery via our refrigerated vehicle network — no third-party carrier, no overnight ambient exposure. Nationwide partners receive 24–48 hour overnight cold-chain shipping, with delivery windows timed to avoid weekend carrier delays whenever possible.</p>
 
@@ -128,7 +128,7 @@ export const articles: Article[] = [
 
 <h2>Storing Each Category Correctly Upon Receipt</h2>
 <p>Post-receipt storage is the final step in the cold chain and equally critical. White truffles: wrapped individually in dry paper towel, airtight container, 34–38°F, paper changed daily. Caviar: unopened tins at 34–38°F, consumed within 24–48 hours of opening. A5 Wagyu: 34–38°F, used within 3–5 days of delivery or frozen immediately if needed. Fresh foie gras: 32–36°F (coldest part of your walk-in), used within 3–4 days of delivery.</p>
-<p>If you have questions about receipt condition on any TBGC order, contact us immediately. We would rather resolve a concern on receipt than after service.</p>
+<p>If you have questions about receipt condition on any Wholesail order, contact us immediately. We would rather resolve a concern on receipt than after service.</p>
 `,
   },
   {
@@ -172,8 +172,8 @@ export const articles: Article[] = [
 <h2>Storage and Handling</h2>
 <p>Refrigerate A5 Wagyu at 34–38°F and plan to use within 3–5 days of delivery for optimal quality. The product can be frozen, but freezing and thawing introduces moisture loss and some textural change — we recommend against freezing A5 if your program volume allows for weekly fresh ordering. For service, allow the meat to temper for 20–30 minutes before cooking. Cook quickly over very high heat — A5 responds to a hot surface, short contact time, and minimal seasoning. The Maillard crust and the rendered fat do the rest.</p>
 
-<h2>Sourcing Through TBGC</h2>
-<p>TBGC sources A5 Wagyu directly from certified Japanese export partners with full documentation by prefecture and BMS score. We offer weekly allocation windows for restaurant programs and can advise on cut selection based on your specific menu application. Contact your account manager to discuss current availability and pricing by BMS range.</p>
+<h2>Sourcing Through Wholesail</h2>
+<p>Wholesail sources A5 Wagyu directly from certified Japanese export partners with full documentation by prefecture and BMS score. We offer weekly allocation windows for restaurant programs and can advise on cut selection based on your specific menu application. Contact your account manager to discuss current availability and pricing by BMS range.</p>
 `,
   },
   {
@@ -213,10 +213,10 @@ export const articles: Article[] = [
 <p>For <strong>torchon</strong>: deveining is essential for a clean final product. The two main lobes are separated and the central vein network is removed by gently pulling under running cold water — do not tear the lobe. Season, cure, roll, poach, chill. The quality of your final torchon is almost entirely determined by the quality of the lobe you started with.</p>
 
 <h2>Legal Context: California</h2>
-<p>California law prohibits the sale of foie gras produced through force-feeding within the state — a prohibition that has been upheld by federal courts. TBGC ships foie gras to all states except California. This is a sourcing consideration California-based operators need to be aware of. Our team can discuss compliant alternative preparations and products for California accounts.</p>
+<p>California law prohibits the sale of foie gras produced through force-feeding within the state — a prohibition that has been upheld by federal courts. Wholesail ships foie gras to all states except California. This is a sourcing consideration California-based operators need to be aware of. Our team can discuss compliant alternative preparations and products for California accounts.</p>
 
-<h2>Ordering Through TBGC</h2>
-<p>TBGC sources Grade A Moulard duck foie gras from certified producers with full traceability. We offer whole lobes and portioned options depending on program volume. Same-day delivery in Southern California (excluding California foie gras restrictions) and 24–48 hour overnight nationwide. Contact your account manager to discuss your weekly program requirements and pricing.</p>
+<h2>Ordering Through Wholesail</h2>
+<p>Wholesail sources Grade A Moulard duck foie gras from certified producers with full traceability. We offer whole lobes and portioned options depending on program volume. Same-day delivery in Southern California (excluding California foie gras restrictions) and 24–48 hour overnight nationwide. Contact your account manager to discuss your weekly program requirements and pricing.</p>
 `,
   },
 ]

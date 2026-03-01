@@ -1,5 +1,5 @@
 /**
- * TBGC Stripe Integration — Service Layer
+ * Wholesail Stripe Integration — Service Layer
  *
  * High-level functions for all Stripe interactions in the B2B platform.
  * All money I/O in CENTS unless explicitly marked _dollars.

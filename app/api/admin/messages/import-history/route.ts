@@ -101,7 +101,7 @@ export async function POST() {
               const senderRole: string =
                 msg.direction === 'inbound' ? 'client' : 'staff'
               const senderName =
-                msg.direction === 'inbound' ? org.name : 'TBGC Team'
+                msg.direction === 'inbound' ? org.name : 'Wholesail Team'
 
               return {
                 senderName,

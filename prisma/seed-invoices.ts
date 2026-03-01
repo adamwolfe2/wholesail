@@ -1,7 +1,7 @@
 /**
  * seed-invoices.ts
  *
- * Imports historical invoice data from a CSV export into the TBGC database.
+ * Imports historical invoice data from a CSV export into the Wholesail database.
  *
  * Usage:
  *   1. Place your CSV file at: prisma/invoices.csv
@@ -181,7 +181,7 @@ async function main() {
     process.exit(1)
   }
 
-  console.log('\n🚀  TBGC Invoice Import\n')
+  console.log('\n🚀  Wholesail Invoice Import\n')
   console.log(`📂  Reading: ${csvPath}`)
 
   const content = fs.readFileSync(csvPath, 'utf-8')
@@ -227,7 +227,7 @@ async function main() {
     const hasEmail = !!row['ClientEmail']?.trim()
     clientMap[key] = {
       name: row['ClientName'].trim(),
-      email: hasEmail ? row['ClientEmail'].trim() : `noemail+${slugify(row['ClientName'].trim())}@tbgc-import.local`,
+      email: hasEmail ? row['ClientEmail'].trim() : `noemail+${slugify(row['ClientName'].trim())}@wholesail-import.local`,
       phone: row['ClientPhone']?.trim() || '000-000-0000',
       address: row['ClientAddress']?.trim() || '',
       missingEmail: !hasEmail,

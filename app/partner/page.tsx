@@ -77,14 +77,14 @@ function PartnerOnboardingContent() {
     if (refParam) {
       setReferralCode(refParam.toUpperCase())
       try {
-        localStorage.setItem('tbgc_referral_code', refParam.toUpperCase())
+        localStorage.setItem('wholesail_referral_code', refParam.toUpperCase())
       } catch {
         // localStorage not available
       }
     } else {
       // Check localStorage for previously stored code
       try {
-        const stored = localStorage.getItem('tbgc_referral_code')
+        const stored = localStorage.getItem('wholesail_referral_code')
         if (stored) setReferralCode(stored)
       } catch {
         // localStorage not available
@@ -175,8 +175,8 @@ function PartnerOnboardingContent() {
           <div className="container mx-auto flex h-14 sm:h-16 items-center px-3 sm:px-6 lg:px-8">
             <Link href="/" className="shrink-0">
               <Image
-                src="/truffle-boys-logo.svg"
-                alt="Truffle Boys & Girls Club"
+                src="/wholesail-logo.svg"
+                alt="Wholesail"
                 width={110}
                 height={84}
                 className="h-8 sm:h-9 w-auto"
@@ -190,7 +190,7 @@ function PartnerOnboardingContent() {
             You&apos;re in the queue.
           </h1>
           <p className="text-muted-foreground mb-3 leading-relaxed">
-            Thank you for applying to partner with Truffle Boys &amp; Girls Club.
+            Thank you for applying to partner with Wholesail.
           </p>
           <p className="text-muted-foreground mb-3 leading-relaxed">
             Our team will review your application and reach out within 24 hours to confirm
@@ -218,7 +218,7 @@ function PartnerOnboardingContent() {
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-14 sm:h-16 items-center px-3 sm:px-6 lg:px-8">
           <Link href="/" className="font-serif text-xl tracking-tight">
-            TBGC
+            Wholesail
           </Link>
         </div>
       </header>
@@ -239,7 +239,7 @@ function PartnerOnboardingContent() {
           </h1>
           <p className="text-base text-muted-foreground leading-relaxed max-w-2xl">
             Join 342+ restaurants, hotels, and culinary professionals who source truffles, caviar, and
-            specialty foods through TBGC. Tell us about your establishment and our team will activate
+            specialty foods through Wholesail. Tell us about your establishment and our team will activate
             your account within 24 hours.
           </p>
         </div>

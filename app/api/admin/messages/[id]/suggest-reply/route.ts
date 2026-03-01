@@ -56,7 +56,7 @@ export async function POST(
       })
       .join('\n')
 
-    const prompt = `You are an AI assistant helping a luxury food sales rep at Truffle Boys & Girls Club respond to a client message. TBGC distributes truffles, caviar, wagyu, foie gras, salumi, and specialty foods wholesale to Michelin-starred restaurants and hotels in LA.
+    const prompt = `You are an AI assistant helping a luxury food sales rep at Wholesail respond to a client message. Wholesail distributes wholesale food products to restaurants, hotels, and food service operators.
 
 Based on this conversation, generate 3 different reply options:
 1. Professional & concise

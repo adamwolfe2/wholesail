@@ -39,7 +39,7 @@ export async function POST(request: Request) {
       supplier = await prisma.supplier.create({
         data: {
           name: 'New Supplier',
-          email: `supplier-${userId}@placeholder.tbgc`,
+          email: `supplier-${userId}@placeholder.wholesail`,
           clerkUserId: userId,
           isActive: true,
         },

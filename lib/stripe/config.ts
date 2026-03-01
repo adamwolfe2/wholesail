@@ -1,5 +1,5 @@
 /**
- * TBGC Stripe Integration — Configuration & Initialisation
+ * Wholesail Stripe Integration — Configuration & Initialisation
  *
  * Single source of truth for Stripe client setup.
  * Prefer importing from here rather than lib/payments/stripe.ts for new code.
@@ -32,7 +32,7 @@ export function getStripeClient(): Stripe {
       apiVersion: STRIPE_API_VERSION,
       typescript: true,
       appInfo: {
-        name: "TBGC Wholesale",
+        name: "Wholesail",
         version: "1.0.0",
       },
     });

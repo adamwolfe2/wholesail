@@ -207,7 +207,7 @@ export async function GET() {
       status: 200,
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
-        "Content-Disposition": `attachment; filename="tbgc-executive-summary-${dateStr}.csv"`,
+        "Content-Disposition": `attachment; filename="wholesail-executive-summary-${dateStr}.csv"`,
       },
     });
   } catch {

@@ -4,12 +4,13 @@ export const dynamic = 'force-dynamic';
 
 export default function SignUpPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/30">
+    <div className="min-h-screen flex items-center justify-center bg-[#F9F7F4]">
       <SignUp
+        fallbackRedirectUrl="/admin"
         appearance={{
           elements: {
             rootBox: "mx-auto",
-            card: "shadow-lg",
+            card: "shadow-none border border-[#E5E1DB]",
           },
         }}
       />

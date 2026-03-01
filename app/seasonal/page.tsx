@@ -7,22 +7,22 @@ import { Button } from '@/components/ui/button'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Seasonal Availability Calendar — TBGC',
+  title: 'Seasonal Availability Calendar — Wholesail',
   description:
-    'When are white truffles in season? When does black winter truffle peak? TBGC\'s seasonal availability calendar shows exactly when each luxury ingredient is at its finest.',
+    'When are white truffles in season? When does black winter truffle peak? Wholesail\'s seasonal availability calendar shows exactly when each luxury ingredient is at its finest.',
   openGraph: {
-    title: 'Seasonal Availability Calendar — TBGC',
-    description: 'When are white truffles in season? TBGC\'s monthly availability calendar for truffles, caviar, wagyu, and all specialty ingredients.',
+    title: 'Seasonal Availability Calendar — Wholesail',
+    description: 'When are white truffles in season? Wholesail\'s monthly availability calendar for truffles, caviar, wagyu, and all specialty ingredients.',
     type: 'website',
-    url: 'https://truffleboys.com/seasonal',
-    images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: 'TBGC Seasonal Availability Calendar' }],
+    url: 'https://wholesailhub.com/seasonal',
+    images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: 'Wholesail Seasonal Availability Calendar' }],
   },
   twitter: {
     card: 'summary_large_image',
     images: ['/Public Social Image.png'],
   },
   alternates: {
-    canonical: 'https://truffleboys.com/seasonal',
+    canonical: 'https://wholesailhub.com/seasonal',
   },
 }
 
@@ -198,7 +198,7 @@ function CalendarRow({ product }: { product: SeasonalProduct }) {
 // ─── Product Card ─────────────────────────────────────────────────────────────
 
 function ProductCard({ product }: { product: SeasonalProduct }) {
-  // Pin to LA timezone — TBGC is LA-based; server runs UTC which can drift a month boundary
+  // Pin to LA timezone — Wholesail is LA-based; server runs UTC which can drift a month boundary
   const currentMonth = parseInt(
     new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles', month: 'numeric' }),
     10

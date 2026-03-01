@@ -67,7 +67,7 @@ export async function PATCH(
         }
 
         // SMS notification to client
-        const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://truffleboys.com"
+        const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"
         const clientPhone = fullOrder.organization?.phone
         if (clientPhone) {
           const { sendMessage, toE164 } = await import("@/lib/integrations/blooio")
@@ -76,11 +76,11 @@ export async function PATCH(
           let smsText: string | null = null
 
           if (parsed.data.status === "CONFIRMED") {
-            smsText = `Your TBGC order ${fullOrder.orderNumber} is confirmed — we're packing it now. You'll get another text when it ships.`
+            smsText = `Your Wholesail order ${fullOrder.orderNumber} is confirmed — we're packing it now. You'll get another text when it ships.`
           } else if (parsed.data.status === "SHIPPED") {
-            smsText = `Your TBGC order ${fullOrder.orderNumber} has shipped and is on its way. Questions? Reply here or visit ${APP_URL}/client-portal/orders`
+            smsText = `Your Wholesail order ${fullOrder.orderNumber} has shipped and is on its way. Questions? Reply here or visit ${APP_URL}/client-portal/orders`
           } else if (parsed.data.status === "DELIVERED") {
-            smsText = `Your TBGC order ${fullOrder.orderNumber} has been delivered. Enjoy! Reply here if anything needs attention.`
+            smsText = `Your Wholesail order ${fullOrder.orderNumber} has been delivered. Enjoy! Reply here if anything needs attention.`
           }
 
           if (smsText && normalizedPhone) {

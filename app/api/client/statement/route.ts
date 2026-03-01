@@ -176,7 +176,7 @@ export async function GET(req: NextRequest) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Account Statement — ${org?.name ?? 'TBGC'}</title>
+  <title>Account Statement — ${org?.name ?? 'Wholesail'}</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -212,7 +212,7 @@ export async function GET(req: NextRequest) {
   <!-- Statement Header -->
   <div style="border-bottom:2px solid #0A0A0A;padding-bottom:24px;margin-bottom:32px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px;">
     <div>
-      <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#C8C0B4;margin-bottom:6px">Truffle Boys &amp; Girls Club</p>
+      <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#C8C0B4;margin-bottom:6px">Wholesail</p>
       <h1 style="font-size:30px;font-family:Georgia,serif;font-weight:400;color:#0A0A0A;line-height:1.1">Account Statement</h1>
       <p style="font-size:13px;color:#888077;margin-top:6px">${periodLabel}</p>
     </div>
@@ -269,7 +269,7 @@ export async function GET(req: NextRequest) {
   <!-- Footer -->
   <div style="border-top:1px solid #E5E1DB;margin-top:40px;padding-top:16px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;">
     <p style="font-size:12px;color:#888077;line-height:1.7;">
-      Truffle Boys &amp; Girls Club &nbsp;&middot;&nbsp; orders@truffleboys.com<br />
+      Wholesail &nbsp;&middot;&nbsp; orders@wholesailhub.com<br />
       This statement is for informational purposes only.
     </p>
     <p style="font-size:12px;color:#C8C0B4;text-align:right;white-space:nowrap;">

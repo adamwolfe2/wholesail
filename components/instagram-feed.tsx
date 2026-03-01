@@ -7,11 +7,11 @@ import Link from 'next/link'
 import { Instagram, ArrowUpRight } from 'lucide-react'
 
 const FAN_IMAGES = [
-  { src: '/food-1.jpg', alt: 'Partner kitchen creation — TBGC' },
-  { src: '/food-2.jpg', alt: 'Chef creation with TBGC caviar' },
-  { src: '/food-3.jpg', alt: 'Fine dining with TBGC truffles' },
-  { src: '/food-4.jpg', alt: 'Luxury plating — TBGC partners' },
-  { src: '/food-5.jpg', alt: 'Restaurant creation — TBGC ingredients' },
+  { src: '/food-1.jpg', alt: 'Partner kitchen creation — Wholesail' },
+  { src: '/food-2.jpg', alt: 'Chef creation with Wholesail caviar' },
+  { src: '/food-3.jpg', alt: 'Fine dining with Wholesail truffles' },
+  { src: '/food-4.jpg', alt: 'Luxury plating — Wholesail partners' },
+  { src: '/food-5.jpg', alt: 'Restaurant creation — Wholesail ingredients' },
 ]
 
 function StaticGrid() {
@@ -21,7 +21,7 @@ function StaticGrid() {
         {FAN_IMAGES.map((img, i) => (
           <a
             key={i}
-            href="https://www.instagram.com/tbgc_inc/"
+            href="https://www.instagram.com/wholesailhub/"
             target="_blank"
             rel="noopener noreferrer"
             className="relative aspect-square overflow-hidden bg-[#F5F3F0] group"
@@ -37,13 +37,13 @@ function StaticGrid() {
         ))}
       </div>
       <a
-        href="https://www.instagram.com/tbgc_inc/"
+        href="https://www.instagram.com/wholesailhub/"
         target="_blank"
         rel="noopener noreferrer"
         className="flex items-center justify-center gap-2.5 w-full border border-[#0A0A0A] text-[#0A0A0A] py-3.5 text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors"
       >
         <Instagram className="h-4 w-4" />
-        Follow @tbgc_inc on Instagram
+        Follow @wholesailhub on Instagram
         <ArrowUpRight className="h-3.5 w-3.5" />
       </a>
     </div>
@@ -91,7 +91,7 @@ export function InstagramFeed() {
           onLoad={() => setIframeLoaded(true)}
           src="https://app.mirror-app.com/feed-instagram/c3d7362d-b7a9-46dc-80fd-caedde01c5e6/preview"
           style={{ width: '100%', border: 'none', overflow: 'hidden', minHeight: '600px' }}
-          title="TBGC Instagram Feed"
+          title="Wholesail Instagram Feed"
         />
       </div>
 
@@ -101,7 +101,7 @@ export function InstagramFeed() {
           {FAN_IMAGES.map((img, i) => (
             <a
               key={i}
-              href="https://www.instagram.com/tbgc_inc/"
+              href="https://www.instagram.com/wholesailhub/"
               target="_blank"
               rel="noopener noreferrer"
               className={`relative aspect-square overflow-hidden bg-[#F5F3F0]${i === 0 ? ' col-span-2' : ''}`}
@@ -117,13 +117,13 @@ export function InstagramFeed() {
           ))}
         </div>
         <a
-          href="https://www.instagram.com/tbgc_inc/"
+          href="https://www.instagram.com/wholesailhub/"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2.5 w-full border border-[#0A0A0A] text-[#0A0A0A] py-3.5 text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors"
         >
           <Instagram className="h-4 w-4" />
-          Follow @tbgc_inc on Instagram
+          Follow @wholesailhub on Instagram
           <ArrowUpRight className="h-3.5 w-3.5" />
         </a>
       </div>

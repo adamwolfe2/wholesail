@@ -20,7 +20,7 @@ import { format } from 'date-fns'
 const APP_URL =
   typeof window !== 'undefined'
     ? window.location.origin
-    : 'https://truffleboys.com'
+    : 'https://wholesailhub.com'
 
 interface ReferralRecord {
   id: string

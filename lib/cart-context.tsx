@@ -32,7 +32,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   // Load cart from localStorage on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem('truffle-boys-cart')
+    const savedCart = localStorage.getItem('wholesail-cart')
     if (savedCart) {
       try {
         setItems(JSON.parse(savedCart))
@@ -46,7 +46,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // Save cart to localStorage whenever it changes (only after hydration)
   useEffect(() => {
     if (isHydrated) {
-      localStorage.setItem('truffle-boys-cart', JSON.stringify(items))
+      localStorage.setItem('wholesail-cart', JSON.stringify(items))
     }
   }, [items, isHydrated])
 

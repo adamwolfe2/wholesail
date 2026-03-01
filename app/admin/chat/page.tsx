@@ -45,7 +45,7 @@ interface ChatSession {
 // Constants
 // ---------------------------------------------------------------------------
 
-const SESSIONS_KEY = 'tbgc-rocky-sessions-v2'
+const SESSIONS_KEY = 'wholesail-chat-sessions-v2'
 const MAX_SESSIONS = 30
 
 const SUGGESTED_PROMPTS = [

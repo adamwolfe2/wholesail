@@ -58,7 +58,7 @@ export async function parseOrderText(text: string): Promise<ParseResult> {
 
   const catalog = buildCatalogSummary()
 
-  const prompt = `You are an order assistant for TBGC, a luxury food distributor.
+  const prompt = `You are an order assistant for Wholesail, a luxury food distributor.
 A wholesale client has written a natural-language order. Extract each product and quantity.
 
 PRODUCT CATALOG (only match from this list):

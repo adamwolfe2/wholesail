@@ -1,5 +1,5 @@
 /**
- * TBGC Stripe Integration — Constants
+ * Wholesail Stripe Integration — Constants
  */
 
 /** Stripe API version pinned for this project */
@@ -43,7 +43,7 @@ export const HANDLED_WEBHOOK_EVENTS = [
 export type HandledWebhookEvent = (typeof HANDLED_WEBHOOK_EVENTS)[number];
 
 /** Stripe statement descriptor (max 22 chars) */
-export const STATEMENT_DESCRIPTOR = "TBGC WHOLESALE";
+export const STATEMENT_DESCRIPTOR = "WHOLESAIL";
 
 /** Maximum invoice line items Stripe allows */
 export const MAX_INVOICE_LINE_ITEMS = 250;

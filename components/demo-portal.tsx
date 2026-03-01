@@ -1037,7 +1037,7 @@ function ClientDashboardView({ brand, data, seed, onNavigate }: ViewProps) {
         <p className="text-[10px] text-[#C8C0B4] mt-1">{creditPct}% utilized · Net 30 terms</p>
       </div>
 
-      {/* Quick Reorder — TBGC style */}
+      {/* Quick Reorder — Wholesail style */}
       {top4Products.length > 0 && (
         <div className="border border-[#E5E1DB] bg-[#F9F7F4] mb-6">
           <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center justify-between">
@@ -1090,7 +1090,7 @@ function ClientDashboardView({ brand, data, seed, onNavigate }: ViewProps) {
           ))}
         </div>
 
-        {/* Monthly Spending — horizontal bars (TBGC style) */}
+        {/* Monthly Spending — horizontal bars (Wholesail style) */}
         <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
           <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider block mb-4">Monthly Spending</span>
           <div className="space-y-2">

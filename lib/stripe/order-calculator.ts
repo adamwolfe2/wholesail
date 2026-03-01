@@ -1,5 +1,5 @@
 /**
- * TBGC Stripe Integration — Order Calculator
+ * Wholesail Stripe Integration — Order Calculator
  *
  * Computes subtotals, volume discounts, tax, and totals.
  * All outputs in CENTS (integers). Input prices in dollars.

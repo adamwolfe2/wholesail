@@ -495,7 +495,7 @@ export default function MessagesPage() {
                       <h3 className="font-semibold text-sm text-[#0A0A0A] truncate">
                         {thread?.subject ?? convos.find(c => c.id === selectedId)?.subject ?? ''}
                       </h3>
-                      <p className="text-xs text-[#0A0A0A]/50">TBGC Account Team</p>
+                      <p className="text-xs text-[#0A0A0A]/50">Wholesail Account Team</p>
                     </div>
                     {thread && !thread.isOpen && (
                       <Badge variant="secondary" className="text-xs shrink-0">Closed</Badge>

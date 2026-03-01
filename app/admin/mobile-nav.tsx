@@ -31,7 +31,7 @@ export function AdminMobileNav({ navBadges = {} }: { navBadges?: Record<string, 
         <SheetHeader className="p-4 border-b">
           <SheetTitle className="flex items-center gap-2">
             <Package className="h-5 w-5" />
-            TBGC Admin
+            Wholesail Admin
           </SheetTitle>
         </SheetHeader>
         <nav className="p-3 space-y-1">

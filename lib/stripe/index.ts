@@ -1,5 +1,5 @@
 /**
- * TBGC Stripe Integration — Public Barrel Export
+ * Wholesail Stripe Integration — Public Barrel Export
  *
  * Import everything from here:
  *   import { createCheckoutSession, formatCents } from "@/lib/stripe"

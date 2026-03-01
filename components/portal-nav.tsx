@@ -95,15 +95,15 @@ export function PortalNav() {
         <div className="flex items-center gap-3 h-16 px-5 border-b border-[#E5E1DB]">
           <Link href="/" className="flex items-center gap-3 min-w-0">
             <Image
-              src="/truffle-boys-logo.svg"
-              alt="Truffle Boys Logo"
+              src="/wholesail-logo.svg"
+              alt="Wholesail Logo"
               width={36}
               height={36}
               style={{ width: '36px', height: '36px', objectFit: 'contain' }}
               priority
             />
             <div className="flex flex-col min-w-0">
-              <span className="font-serif font-bold text-lg text-[#0A0A0A] leading-tight truncate">TBGC</span>
+              <span className="font-serif font-bold text-lg text-[#0A0A0A] leading-tight truncate">Wholesail</span>
               <span className="font-serif italic text-sm text-[#C8C0B4] leading-tight">Wholesale Portal</span>
             </div>
           </Link>
@@ -159,14 +159,14 @@ export function PortalNav() {
         <div className="flex h-14 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2 min-w-0">
             <Image
-              src="/truffle-boys-logo.svg"
-              alt="Truffle Boys Logo"
+              src="/wholesail-logo.svg"
+              alt="Wholesail Logo"
               width={32}
               height={32}
               style={{ width: '32px', height: '32px', objectFit: 'contain' }}
             />
             <div className="flex flex-col min-w-0">
-              <span className="font-serif font-bold text-base text-[#0A0A0A] leading-tight">TBGC</span>
+              <span className="font-serif font-bold text-base text-[#0A0A0A] leading-tight">Wholesail</span>
               <span className="font-serif italic text-[10px] text-[#C8C0B4] leading-tight">Wholesale Portal</span>
             </div>
           </Link>

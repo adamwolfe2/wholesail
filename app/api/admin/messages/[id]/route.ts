@@ -74,7 +74,7 @@ export async function POST(
         data: {
           conversationId: id,
           senderId: userId,
-          senderName: staff?.name ?? 'TBGC Team',
+          senderName: staff?.name ?? 'Wholesail Team',
           senderRole: 'staff',
           content: content.trim(),
         },

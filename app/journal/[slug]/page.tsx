@@ -24,15 +24,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: article.description,
       type: "article",
       publishedTime: article.publishedAt,
-      url: `https://truffleboys.com/journal/${article.slug}`,
-      images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: `${article.title} — TBGC Journal` }],
+      url: `https://wholesailhub.com/journal/${article.slug}`,
+      images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: `${article.title} — Wholesail Journal` }],
     },
     twitter: {
       card: 'summary_large_image' as const,
       images: ['/Public Social Image.png'],
     },
     alternates: {
-      canonical: `https://truffleboys.com/journal/${article.slug}`,
+      canonical: `https://wholesailhub.com/journal/${article.slug}`,
     },
   }
 }

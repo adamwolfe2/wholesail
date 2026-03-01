@@ -235,7 +235,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
 
     const optimistic: Message = {
       id: `tmp-${Date.now()}`,
-      senderName: 'TBGC Team',
+      senderName: 'Wholesail Team',
       senderRole: 'staff',
       content,
       createdAt: new Date().toISOString(),

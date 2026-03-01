@@ -33,7 +33,7 @@ interface CreateShipmentFormProps {
   existingShipment: Shipment | null
 }
 
-const CARRIERS = ['TBGC Fleet', 'FedEx', 'UPS', 'DoorDash', 'Other'] as const
+const CARRIERS = ['Wholesail Fleet', 'FedEx', 'UPS', 'DoorDash', 'Other'] as const
 
 const shipmentStatusLabels: Record<string, string> = {
   PREPARING: 'Preparing',
@@ -52,7 +52,7 @@ export function CreateShipmentForm({
   const router = useRouter()
   const [submitting, setSubmitting] = useState(false)
   const [showForm, setShowForm] = useState(false)
-  const [carrier, setCarrier] = useState('TBGC Fleet')
+  const [carrier, setCarrier] = useState('Wholesail Fleet')
   const [driverName, setDriverName] = useState('')
   const [driverPhone, setDriverPhone] = useState('')
   const [driverNotes, setDriverNotes] = useState('')
@@ -332,7 +332,7 @@ export function CreateShipmentForm({
           {/* Tracking Number */}
           <div className="space-y-1.5">
             <Label htmlFor="trackingNumber" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
-              Tracking Number <span className="normal-case text-[#0A0A0A]/40">(optional — not required for TBGC Fleet)</span>
+              Tracking Number <span className="normal-case text-[#0A0A0A]/40">(optional — not required for Wholesail Fleet)</span>
             </Label>
             <Input
               id="trackingNumber"

@@ -103,7 +103,7 @@ export async function GET(req: NextRequest) {
         if (phone) {
           sendMessage({
             to: phone,
-            message: `Hey ${firstName}! It's been ${daysSince} days since your last TBGC order — running low on anything? Text your order or visit truffleboys.com/catalog`,
+            message: `Hey ${firstName}! It's been ${daysSince} days since your last Wholesail order — running low on anything? Text your order or visit wholesailhub.com/catalog`,
           }).catch(err => {
             errors.push(`SMS failed for org ${org.id}: ${err instanceof Error ? err.message : 'unknown'}`)
           })

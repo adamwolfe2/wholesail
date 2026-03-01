@@ -21,7 +21,7 @@ export const provenanceEntries: ProvenanceEntry[] = [
     story: [
       "White truffles cannot be farmed. They grow only in symbiosis with the roots of oak and hazelnut trees, in a handful of regions across France and northern Italy, harvested by trained dogs in the cold months between November and February. No other ingredient inspires the same reverence in a professional kitchen.",
       "The white truffle — Tuber magnatum pico — is prized above all others for its haunting, complex aroma: a blend of garlic, honey, and earthiness that has no substitute. Perigord whites arrive from the oak forests of the Dordogne in peak condition, averaging 30-80 grams per piece.",
-      "TBGC sources directly from two generational truffle families. Every lot is graded by an experienced truffle sommelier before we accept it — we reject more than we approve. When you order from us, you're getting what we would serve at our own table."
+      "Wholesail sources directly from two generational truffle families. Every lot is graded by an experienced truffle sommelier before we accept it — we reject more than we approve. When you order from us, you're getting what we would serve at our own table."
     ],
     qualityMarkers: [
       "Firm exterior with minimal bruising or soft spots",
@@ -67,7 +67,7 @@ export const provenanceEntries: ProvenanceEntry[] = [
     ],
     pairingNotes: "Black truffle's earthiness pairs beautifully with the weight of Burgundy Pinot Noir, aged Pomerol, or a mature northern Rhône Syrah. For whites, try an aged Meursault or Pouilly-Fuissé. The black truffle is also extraordinary with aged Comté — a pairing that has stood the test of centuries.",
     seasonNote: "Prime season: December through March. Summer black truffles (June-August) are milder and better suited for cooked applications.",
-    storageNote: "Same as white truffle: dry paper in airtight container, refrigerated. Black truffles hold slightly longer — 7-10 days — but deteriorate quickly once cut. Store with eggs to infuse them (a TBGC team favorite)."
+    storageNote: "Same as white truffle: dry paper in airtight container, refrigerated. Black truffles hold slightly longer — 7-10 days — but deteriorate quickly once cut. Store with eggs to infuse them (a Wholesail team favorite)."
   },
   {
     slug: 'caviar',
@@ -75,7 +75,7 @@ export const provenanceEntries: ProvenanceEntry[] = [
     origin: 'Multiple Aquaculture Origins',
     heroTagline: 'Sustainably farmed. Impeccably graded. The real thing.',
     story: [
-      "Wild Caspian sturgeon is critically endangered — which is why every ounce of caviar TBGC carries comes from carefully managed aquaculture programs. Our suppliers include the finest farms in China, Italy, France, and the United States, all certified by the Marine Stewardship Council.",
+      "Wild Caspian sturgeon is critically endangered — which is why every ounce of caviar Wholesail carries comes from carefully managed aquaculture programs. Our suppliers include the finest farms in China, Italy, France, and the United States, all certified by the Marine Stewardship Council.",
       "We carry Beluga, Osetra, Sevruga, and American White Sturgeon (Hackleback) — each with distinct flavor profiles. Our team has tasted caviar from over 40 farms worldwide. We carry maybe 8. The rest didn't make the cut.",
       "Caviar degrades with every day of exposure. We receive in small batches, store at -1°C to 2°C, and ship overnight on dry ice. Our clients receive product with a minimum 28-day shelf life on arrival."
     ],

@@ -1,5 +1,5 @@
 /**
- * TBGC Stripe Integration — Formatting Utilities
+ * Wholesail Stripe Integration — Formatting Utilities
  */
 
 /**
@@ -43,7 +43,7 @@ export function formatStripeTimestamp(unixSeconds: number): string {
 /**
  * Format a Stripe invoice number for display.
  * Strips the Stripe prefix and returns a clean number.
- * e.g. "TBGC-0042" → "TBGC-0042" (pass-through if already clean)
+ * e.g. "WSL-0042" → "WSL-0042" (pass-through if already clean)
  */
 export function formatInvoiceNumber(raw: string): string {
   return raw.replace(/^(in_|inv_)/i, "").toUpperCase();

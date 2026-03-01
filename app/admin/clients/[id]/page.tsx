@@ -788,7 +788,7 @@ export default async function AdminClientDetailPage({
             <div>
               <p className="text-xs text-muted-foreground mb-1">Referral Link</p>
               <p className="font-mono text-sm text-muted-foreground break-all">
-                {process.env.NEXT_PUBLIC_APP_URL || 'https://truffleboys.com'}/refer/{client.referralCode}
+                {process.env.NEXT_PUBLIC_APP_URL || 'https://wholesailhub.com'}/refer/{client.referralCode}
               </p>
             </div>
           )}

@@ -114,7 +114,7 @@ export function OrderDeliveryChecklist({ data, viewerRole }: Props) {
     {
       key: 'rocky' as const,
       label: 'Admin Acknowledged',
-      sublabel: 'Waiting for TBGC to confirm receipt.',
+      sublabel: 'Waiting for Wholesail to confirm receipt.',
       confirmedAt: state.rockyConfirmedAt,
       interactive: viewerRole === 'admin',
       actionLabel: 'Confirm Order',

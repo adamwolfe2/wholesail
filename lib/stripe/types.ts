@@ -1,5 +1,5 @@
 /**
- * TBGC Stripe Integration — B2B Type Definitions
+ * Wholesail Stripe Integration — B2B Type Definitions
  *
  * All money values are in CENTS (integers) unless explicitly noted.
  * Use formatCents() from ./format to display to users.

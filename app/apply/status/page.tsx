@@ -67,8 +67,8 @@ function StatusIndicator({ status }: { status: ApplicationResult['status'] }) {
           <p className="font-medium text-[#0A0A0A] mb-1">Application Not Approved</p>
           <p className="text-sm text-[#0A0A0A]/60 leading-relaxed">
             Unfortunately, we&apos;re unable to approve your application at this time. You&apos;re welcome to reapply in 90 days or reach us at{' '}
-            <a href="mailto:orders@truffleboys.com" className="underline underline-offset-2">
-              orders@truffleboys.com
+            <a href="mailto:orders@wholesailhub.com" className="underline underline-offset-2">
+              orders@wholesailhub.com
             </a>.
           </p>
         </div>
@@ -133,7 +133,7 @@ export default function ApplicationStatusPage() {
       <header className="border-b border-[#E5E1DB] bg-[#F9F7F4]">
         <div className="container mx-auto flex h-14 items-center px-4 sm:px-6">
           <Link href="/" className="font-serif text-xl tracking-tight text-[#0A0A0A]">
-            TBGC
+            Wholesail
           </Link>
           <span className="mx-3 text-[#C8C0B4]">/</span>
           <span className="text-sm text-[#0A0A0A]/50">Application Status</span>
@@ -240,10 +240,10 @@ export default function ApplicationStatusPage() {
         <p className="text-center text-xs text-[#C8C0B4] mt-8">
           Questions?{' '}
           <a
-            href="mailto:orders@truffleboys.com"
+            href="mailto:orders@wholesailhub.com"
             className="underline underline-offset-2 hover:text-[#0A0A0A]/50 transition-colors"
           >
-            orders@truffleboys.com
+            orders@wholesailhub.com
           </a>
         </p>
       </div>

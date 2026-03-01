@@ -71,7 +71,7 @@ export async function GET(req: NextRequest) {
   );
 
   const csv = [headers.join(","), ...rows].join("\n");
-  const filename = `tbgc-invoices-${new Date().toISOString().split("T")[0]}.csv`;
+  const filename = `wholesail-invoices-${new Date().toISOString().split("T")[0]}.csv`;
 
   return new Response(csv, {
     headers: {

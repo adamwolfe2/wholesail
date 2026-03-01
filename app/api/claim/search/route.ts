@@ -50,7 +50,7 @@ function normalizeEmail(raw: string): string {
 // Phone: 10 pts max
 // Match threshold to appear in results: 10 pts
 // ---------------------------------------------------------------------------
-const IMPORT_EMAIL_RE = /^noemail\+[^@]+@tbgc-import\.local$/i
+const IMPORT_EMAIL_RE = /^noemail\+[^@]+@wholesail-import.local$/i
 
 function scoreOrg(
   org: { id: string; name: string; email: string; phone: string | null },

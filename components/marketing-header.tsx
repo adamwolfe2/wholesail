@@ -47,8 +47,8 @@ export function MarketingHeader() {
         <div className="flex-1 flex justify-start">
           <Link href="/" className="shrink-0">
             <Image
-              src="/truffle-boys-logo.svg"
-              alt="Truffle Boys & Girls Club"
+              src="/wholesail-logo.svg"
+              alt="Wholesail"
               width={110}
               height={84}
               className="h-8 sm:h-9 w-auto"

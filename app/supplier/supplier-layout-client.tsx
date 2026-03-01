@@ -29,7 +29,7 @@ export function SupplierLayoutClient({ children }: { children: React.ReactNode }
         <div className="flex items-center gap-3 h-16 px-5 border-b border-[#E5E1DB]">
           <Link href="/" className="flex items-center gap-3 min-w-0">
             <Image
-              src="/truffle-boys-logo.svg"
+              src="/wholesail-logo.svg"
               alt="Logo"
               width={32}
               height={32}
@@ -78,7 +78,7 @@ export function SupplierLayoutClient({ children }: { children: React.ReactNode }
         <div className="flex h-14 items-center justify-between px-4">
           <Link href="/" className="flex items-center gap-2 min-w-0">
             <Image
-              src="/truffle-boys-logo.svg"
+              src="/wholesail-logo.svg"
               alt="Logo"
               width={28}
               height={28}

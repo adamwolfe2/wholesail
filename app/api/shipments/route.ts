@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
     // SMS client notification with ETA (fire-and-forget)
     const clientPhone = order.organization?.phone;
     if (clientPhone) {
-      const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://truffleboys.com";
+      const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com";
       const { sendMessage, toE164 } = await import("@/lib/integrations/blooio");
       const normalizedPhone = toE164(clientPhone);
 
@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
         }
 
         const driverPart = driverName ? ` Driver: ${driverName}.` : "";
-        const smsText = `Your TBGC order ${order.orderNumber} has been dispatched and is on its way.${driverPart}${etaText} Track your order: ${APP_URL}/client-portal/orders/${order.orderNumber}/tracking`;
+        const smsText = `Your Wholesail order ${order.orderNumber} has been dispatched and is on its way.${driverPart}${etaText} Track your order: ${APP_URL}/client-portal/orders/${order.orderNumber}/tracking`;
 
         sendMessage({ to: normalizedPhone, message: smsText }).catch((err: unknown) =>
           console.error("Dispatch SMS notification failed:", err)

@@ -1,5 +1,5 @@
 /**
- * TBGC Stripe Integration — Custom Error Types
+ * Wholesail Stripe Integration — Custom Error Types
  */
 
 /** Base class for all Stripe integration errors */

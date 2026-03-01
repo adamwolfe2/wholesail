@@ -11,7 +11,7 @@ function getResend() {
   return new Resend(process.env.RESEND_API_KEY)
 }
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'orders@truffleboys.com'
+const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'orders@wholesailhub.com'
 const APP_URL = getSiteUrl()
 
 const inviteSchema = z.object({
@@ -143,14 +143,14 @@ export async function POST(req: NextRequest) {
       .send({
         from: FROM_EMAIL,
         to: normalizedEmail,
-        subject: `${orgName} invited you to TBGC Wholesale`,
-        text: `${name ? `Hi ${name},\n\n` : ''}${orgName} has invited you to apply for a wholesale account with Truffle Boys & Girls Club — truffles, caviar, and specialty foods for Michelin-caliber kitchens.
+        subject: `${orgName} invited you to Wholesail`,
+        text: `${name ? `Hi ${name},\n\n` : ''}${orgName} has invited you to apply for a wholesale account with Wholesail — truffles, caviar, and specialty foods for Michelin-caliber kitchens.
 
 Apply here: ${referLink}
 
 Applications are reviewed within 24 hours. Once approved, you'll get access to 122+ SKUs at true wholesale pricing with same-day LA delivery.
 
-— The TBGC Team`,
+— The Wholesail Team`,
       })
       .catch((err: unknown) => console.error('Referral invite email failed:', err))
   }

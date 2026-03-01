@@ -258,7 +258,7 @@ model ProjectTask {
 }
 
 // ============================================================
-// CORE OPERATIONAL MODELS (synced from TBGC)
+// CORE OPERATIONAL MODELS (synced from source platform)
 // ============================================================
 
 model User {

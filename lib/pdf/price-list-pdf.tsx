@@ -221,10 +221,10 @@ export function PriceListPDF({
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.brand}>TBGC</Text>
-            <Text style={styles.brandSub}>Truffle Boys &amp; Girls Club</Text>
-            <Text style={styles.brandSub}>truffleboys.com</Text>
-            <Text style={styles.brandSub}>orders@truffleboys.com</Text>
+            <Text style={styles.brand}>Wholesail</Text>
+            <Text style={styles.brandSub}>Wholesail</Text>
+            <Text style={styles.brandSub}>wholesailhub.com</Text>
+            <Text style={styles.brandSub}>orders@wholesailhub.com</Text>
           </View>
           <View style={styles.titleBlock}>
             <Text style={styles.docTitle}>Wholesale Price List</Text>
@@ -307,7 +307,7 @@ export function PriceListPDF({
         {/* Footer */}
         <View style={styles.footer}>
           <Text style={styles.footerText}>
-            Truffle Boys &amp; Girls Club · Wholesale Price List
+            Wholesail · Wholesale Price List
           </Text>
           <Text style={styles.footerText}>Confidential — not for redistribution</Text>
         </View>

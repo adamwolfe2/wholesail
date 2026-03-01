@@ -50,7 +50,7 @@ const schema = z.object({
 })
 
 // Placeholder pattern used for clients imported without a known email
-const IMPORT_EMAIL_RE = /^noemail\+[^@]+@tbgc-import\.local$/i
+const IMPORT_EMAIL_RE = /^noemail\+[^@]+@wholesail-import.local$/i
 
 // ---------------------------------------------------------------------------
 // Fuzzy matching helpers
@@ -293,7 +293,7 @@ export async function POST(req: NextRequest) {
     // Generic Clerk error — log it server-side but return a safe message
     console.error('[/api/claim] Clerk invitation error:', err)
     return NextResponse.json(
-      { error: 'We couldn\'t send the invitation right now. Please try again or contact orders@truffleboys.com.' },
+      { error: 'We couldn\'t send the invitation right now. Please try again or contact orders@wholesailhub.com.' },
       { status: 422 },
     )
   }

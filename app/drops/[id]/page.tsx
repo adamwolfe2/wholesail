@@ -26,18 +26,18 @@ async function getDrop(id: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
   const drop = await getDrop(id)
-  if (!drop) return { title: 'Drop Not Found — TBGC' }
+  if (!drop) return { title: 'Drop Not Found — Wholesail' }
 
   return {
-    title: `${drop.title} — TBGC`,
+    title: `${drop.title} — Wholesail`,
     description:
       drop.description ||
       `Upcoming product drop: ${drop.title}. Available ${format(new Date(drop.dropDate), 'MMMM d, yyyy')}.`,
     openGraph: {
-      title: `${drop.title} — TBGC`,
-      description: drop.description || `Upcoming product drop from Truffle Boys & Girls Club.`,
+      title: `${drop.title} — Wholesail`,
+      description: drop.description || `Upcoming product drop from Wholesail.`,
       type: 'article',
-      images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: `${drop.title} — TBGC Drop` }],
+      images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: `${drop.title} — Wholesail Drop` }],
     },
     twitter: {
       card: 'summary_large_image' as const,
@@ -117,7 +117,7 @@ export default async function DropPage({ params }: Props) {
                 Wholesale Access
               </p>
               <h2 className="font-serif text-2xl font-bold text-[#0A0A0A] mb-3">
-                Partner with TBGC
+                Partner with Wholesail
               </h2>
               <p className="text-sm text-[#0A0A0A]/55 leading-relaxed mb-6">
                 Get priority allocation on every drop. Apply for wholesale access and join 342+ partner kitchens.
@@ -156,7 +156,7 @@ export default async function DropPage({ params }: Props) {
       {/* FOOTER */}
       <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <Link href="/" className="font-serif text-xl font-bold">TBGC</Link>
+          <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
           <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
             <Link href="/" className="hover:text-[#F9F7F4] transition-colors">Home</Link>
             <Link href="/catalog" className="hover:text-[#F9F7F4] transition-colors">Products</Link>

@@ -8,21 +8,21 @@ import { MarketingHeader } from '@/components/marketing-header'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Wanna Bump? — TBGC',
-  description: 'Follow @tbgc_inc on Instagram. 46K followers, weekly caviar giveaway, partner creations, and behind-the-scenes from the world\'s finest food distributor.',
+  title: 'Wanna Bump? — Wholesail',
+  description: 'Follow @wholesailhub on Instagram. 46K followers, weekly caviar giveaway, partner creations, and behind-the-scenes from the world\'s finest food distributor.',
   openGraph: {
-    title: 'Wanna Bump? — TBGC',
-    description: 'Follow @tbgc_inc on Instagram. Weekly caviar giveaway, partner creations, and behind-the-scenes from the world\'s finest food distributor.',
+    title: 'Wanna Bump? — Wholesail',
+    description: 'Follow @wholesailhub on Instagram. Weekly caviar giveaway, partner creations, and behind-the-scenes from the world\'s finest food distributor.',
     type: 'website',
-    url: 'https://truffleboys.com/social',
-    images: [{ url: '/wanna-bump-circle.jpg', width: 800, height: 800, alt: 'Wanna Bump? — TBGC' }],
+    url: 'https://wholesailhub.com/social',
+    images: [{ url: '/wanna-bump-circle.jpg', width: 800, height: 800, alt: 'Wanna Bump? — Wholesail' }],
   },
   twitter: {
     card: 'summary_large_image',
     images: ['/wanna-bump-circle.jpg'],
   },
   alternates: {
-    canonical: 'https://truffleboys.com/social',
+    canonical: 'https://wholesailhub.com/social',
   },
 }
 
@@ -39,7 +39,7 @@ export default function SocialPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
             <div>
               <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-6">
-                Community · @tbgc_inc
+                Community · @wholesailhub
               </p>
               <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] text-[#0A0A0A] mb-7">
                 Follow the Feed.
@@ -49,13 +49,13 @@ export default function SocialPage() {
                 from the world&apos;s finest food distributor. Join the club.
               </p>
               <a
-                href="https://www.instagram.com/tbgc_inc/"
+                href="https://www.instagram.com/wholesailhub/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 border border-[#0A0A0A] text-[#0A0A0A] px-7 py-3.5 text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors"
               >
                 <Instagram className="h-4 w-4" />
-                Follow @tbgc_inc
+                Follow @wholesailhub
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </a>
             </div>
@@ -86,11 +86,11 @@ export default function SocialPage() {
                 Live from Instagram
               </p>
               <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#0A0A0A]">
-                @tbgc_inc
+                @wholesailhub
               </h2>
             </div>
             <a
-              href="https://www.instagram.com/tbgc_inc/"
+              href="https://www.instagram.com/wholesailhub/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-medium text-[#0A0A0A]/60 hover:text-[#0A0A0A] transition-colors"
@@ -126,7 +126,7 @@ export default function SocialPage() {
                 Plus join the Wanna Bump newsletter for weekly drops and new arrivals.
               </p>
               <a
-                href="https://www.instagram.com/tbgc_inc/"
+                href="https://www.instagram.com/wholesailhub/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2.5 border border-[#0A0A0A] text-[#0A0A0A] px-7 py-3.5 text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors"
@@ -142,7 +142,7 @@ export default function SocialPage() {
               <div className="relative w-full max-w-xs sm:max-w-sm">
                 <Image
                   src="/wanna-bump-circle.jpg"
-                  alt="Wanna Bump? — TBGC weekly caviar giveaway"
+                  alt="Wanna Bump? — Wholesail weekly caviar giveaway"
                   width={480}
                   height={480}
                   className="w-full h-auto"
@@ -161,7 +161,7 @@ export default function SocialPage() {
             <div className="w-48 h-48 sm:w-64 sm:h-64 mb-12 sm:mb-16">
               <Image
                 src="/caviar-circle.jpg"
-                alt="Caviar — TBGC"
+                alt="Caviar — Wholesail"
                 width={256}
                 height={256}
                 className="w-full h-auto"
@@ -199,7 +199,7 @@ export default function SocialPage() {
               },
               {
                 tag: 'Partner Kitchens',
-                line: '342+ restaurants creating with TBGC every week.',
+                line: '342+ restaurants creating with Wholesail every week.',
               },
               {
                 tag: 'New Arrivals',
@@ -208,7 +208,7 @@ export default function SocialPage() {
             ].map((item) => (
               <a
                 key={item.tag}
-                href="https://www.instagram.com/tbgc_inc/"
+                href="https://www.instagram.com/wholesailhub/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group bg-[#F9F7F4] hover:bg-[#1A1614] transition-colors duration-300 p-10 sm:p-12 flex flex-col justify-between min-h-[180px]"
@@ -221,7 +221,7 @@ export default function SocialPage() {
                     {item.line}
                   </p>
                   <p className="text-xs text-[#0A0A0A] group-hover:text-[#F9F7F4] flex items-center gap-1.5 group-hover:gap-2.5 transition-all">
-                    @tbgc_inc <ArrowUpRight className="h-3 w-3" />
+                    @wholesailhub <ArrowUpRight className="h-3 w-3" />
                   </p>
                 </div>
               </a>
@@ -233,19 +233,19 @@ export default function SocialPage() {
       {/* ── FOOTER ──────────────────────────────────── */}
       <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <Link href="/" className="font-serif text-xl font-bold">TBGC</Link>
+          <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
           <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
             <Link href="/" className="hover:text-[#F9F7F4] transition-colors">Home</Link>
             <Link href="/catalog" className="hover:text-[#F9F7F4] transition-colors">Products</Link>
             <Link href="/partner" className="hover:text-[#F9F7F4] transition-colors">Wholesale</Link>
             <a
-              href="https://www.instagram.com/tbgc_inc/"
+              href="https://www.instagram.com/wholesailhub/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-[#F9F7F4] transition-colors flex items-center gap-1.5"
             >
               <Instagram className="h-3.5 w-3.5" />
-              @tbgc_inc
+              @wholesailhub
             </a>
           </div>
         </div>

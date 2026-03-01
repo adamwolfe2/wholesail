@@ -63,7 +63,7 @@ export async function GET(
   return new Response(pdfBuffer as unknown as BodyInit, {
     headers: {
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="TBGC-Invoice-${invoice.invoiceNumber}.pdf"`,
+      "Content-Disposition": `attachment; filename="Wholesail-Invoice-${invoice.invoiceNumber}.pdf"`,
     },
   })
 }

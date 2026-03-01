@@ -44,8 +44,8 @@ export default function ClientPortalLogin() {
         <div className="container mx-auto flex h-14 sm:h-16 items-center justify-between px-3 sm:px-6 lg:px-8">
           <Link href="/" className="min-w-0 flex-shrink">
             <Image
-              src="/truffle-boys-logo.svg"
-              alt="Truffle Boys Logo"
+              src="/wholesail-logo.svg"
+              alt="Wholesail Logo"
               width={120}
               height={40}
               style={{ width: '100%', height: 'auto', maxWidth: '56px' }}

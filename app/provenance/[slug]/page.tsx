@@ -21,20 +21,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = entry.story[0].split('.')[0] + '.'
 
   return {
-    title: `${entry.name} — Provenance & Sourcing | TBGC`,
+    title: `${entry.name} — Provenance & Sourcing | Wholesail`,
     description,
     openGraph: {
-      title: `${entry.name} — Provenance & Sourcing | TBGC`,
+      title: `${entry.name} — Provenance & Sourcing | Wholesail`,
       description,
       type: 'article',
-      images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: `${entry.name} — Truffle Boys & Girls Club` }],
+      images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: `${entry.name} — Wholesail` }],
     },
     twitter: {
       card: 'summary_large_image' as const,
       images: ['/Public Social Image.png'],
     },
     alternates: {
-      canonical: `https://truffleboys.com/provenance/${entry.slug}`,
+      canonical: `https://wholesailhub.com/provenance/${entry.slug}`,
     },
   }
 }
@@ -240,20 +240,20 @@ export default async function ProvenanceDetailPage({ params }: Props) {
       {/* FOOTER */}
       <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <Link href="/" className="font-serif text-xl font-bold">TBGC</Link>
+          <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
           <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
             <Link href="/catalog" className="hover:text-[#F9F7F4] transition-colors">Catalog</Link>
             <Link href="/provenance" className="hover:text-[#F9F7F4] transition-colors">Provenance</Link>
             <Link href="/about" className="hover:text-[#F9F7F4] transition-colors">About</Link>
             <Link href="/partner" className="hover:text-[#F9F7F4] transition-colors">Wholesale</Link>
             <a
-              href="https://www.instagram.com/tbgc_inc/"
+              href="https://www.instagram.com/wholesailhub/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-[#F9F7F4] transition-colors flex items-center gap-1.5"
             >
               <Instagram className="h-3.5 w-3.5" />
-              @tbgc_inc
+              @wholesailhub
             </a>
           </div>
         </div>

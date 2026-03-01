@@ -9,19 +9,19 @@ export const dynamic = 'force-dynamic'
 export const metadata: Metadata = {
   title: 'About',
   description:
-    'Truffle Boys & Girls Club is a Los Angeles–based luxury food distributor. Direct-sourced truffles, caviar, wagyu, and artisan specialty foods for the finest restaurants, hotels, and private chefs in the US.',
+    'Wholesail is a Los Angeles–based luxury food distributor. Direct-sourced truffles, caviar, wagyu, and artisan specialty foods for the finest restaurants, hotels, and private chefs in the US.',
   openGraph: {
-    title: 'About TBGC — The Story Behind the Club',
+    title: 'About Wholesail',
     description:
       'Built on direct relationships with truffle hunters in Abruzzo, caviar producers on the Caspian coast, and wagyu farms across Japan. We move luxury ingredients fast, fresh, and overnight.',
-    images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: 'Truffle Boys & Girls Club — Luxury Wholesale Specialty Foods' }],
+    images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: 'Wholesail — Luxury Wholesale Specialty Foods' }],
   },
   twitter: {
     card: 'summary_large_image',
     images: ['/Public Social Image.png'],
   },
   alternates: {
-    canonical: 'https://truffleboys.com/about',
+    canonical: 'https://wholesailhub.com/about',
   },
 }
 
@@ -29,12 +29,12 @@ const MILESTONES = [
   {
     year: 'Founded',
     title: 'Los Angeles, CA',
-    body: "TBGC was born in LA with a simple belief: the city's best kitchens deserved a supplier who matched their obsession with quality.",
+    body: "Wholesail was born in LA with a simple belief: the city's best kitchens deserved a supplier who matched their obsession with quality.",
   },
   {
     year: '342+',
     title: 'Active Partners',
-    body: 'From Michelin-starred dining rooms to elite private chef services, over 342 restaurants, hotels, and culinary professionals trust TBGC weekly.',
+    body: 'From Michelin-starred dining rooms to elite private chef services, over 342 restaurants, hotels, and culinary professionals trust Wholesail weekly.',
   },
   {
     year: 'Weekly',
@@ -83,7 +83,7 @@ export default function AboutPage() {
             We Move It.
           </h1>
           <p className="text-[#0A0A0A]/55 text-base sm:text-lg leading-relaxed max-w-2xl">
-            Truffle Boys & Girls Club started with a deceptively simple premise: the best restaurants
+            Wholesail started with a deceptively simple premise: the best restaurants
             in the world deserve a supplier who takes quality as seriously as they do.
           </p>
         </div>
@@ -104,7 +104,7 @@ export default function AboutPage() {
                 faster than any distributor in the market.
               </blockquote>
               <cite className="text-sm text-[#C8C0B4] not-italic tracking-wide">
-                — TBGC Team
+                — Wholesail Team
               </cite>
             </div>
 
@@ -127,7 +127,7 @@ export default function AboutPage() {
               </p>
               <p>
                 From Michelin-starred dining rooms to some of LA&apos;s most celebrated private chef
-                experiences, 342+ partners trust TBGC because we&apos;ve never once compromised on
+                experiences, 342+ partners trust Wholesail because we&apos;ve never once compromised on
                 quality to make a margin. That reputation is the only one we care about building.
               </p>
             </div>
@@ -232,7 +232,7 @@ export default function AboutPage() {
               Ready to Partner?
             </p>
             <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#0A0A0A] mb-6 leading-tight">
-              Join 342+ kitchens who trust TBGC.
+              Join 342+ kitchens who trust Wholesail.
             </h2>
             <p className="text-[#0A0A0A]/55 text-base leading-relaxed mb-8 max-w-lg">
               Applications take under 2 minutes. Our team reviews and activates accounts within 24 hours.
@@ -264,19 +264,19 @@ export default function AboutPage() {
       {/* FOOTER */}
       <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <Link href="/" className="font-serif text-xl font-bold">TBGC</Link>
+          <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
           <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
             <Link href="/" className="hover:text-[#F9F7F4] transition-colors">Home</Link>
             <Link href="/catalog" className="hover:text-[#F9F7F4] transition-colors">Catalog</Link>
             <Link href="/partner" className="hover:text-[#F9F7F4] transition-colors">Wholesale</Link>
             <a
-              href="https://www.instagram.com/tbgc_inc/"
+              href="https://www.instagram.com/wholesailhub/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-[#F9F7F4] transition-colors flex items-center gap-1.5"
             >
               <Instagram className="h-3.5 w-3.5" />
-              @tbgc_inc
+              @wholesailhub
             </a>
           </div>
         </div>

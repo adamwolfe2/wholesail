@@ -37,7 +37,7 @@ function PageHeader() {
     <header className="sticky top-0 z-50 border-b border-[#E5E1DB] bg-[#F9F7F4]/95 backdrop-blur supports-[backdrop-filter]:bg-[#F9F7F4]/60">
       <div className="container mx-auto flex h-14 sm:h-16 items-center px-3 sm:px-6 lg:px-8">
         <Link href="/" className="font-serif text-xl tracking-tight text-[#0A0A0A]">
-          TBGC
+          Wholesail
         </Link>
       </div>
     </header>
@@ -302,8 +302,8 @@ export default function ClaimPage() {
           </p>
           <p className="text-sm text-[#C8C0B4]">
             Didn&apos;t receive it? Check your spam folder, or email{' '}
-            <a href="mailto:orders@truffleboys.com" className="underline underline-offset-2">
-              orders@truffleboys.com
+            <a href="mailto:orders@wholesailhub.com" className="underline underline-offset-2">
+              orders@wholesailhub.com
             </a>
             .
           </p>
@@ -331,8 +331,8 @@ export default function ClaimPage() {
           </div>
           <p className="mt-8 text-sm text-[#C8C0B4]">
             Having trouble?{' '}
-            <a href="mailto:orders@truffleboys.com" className="underline underline-offset-2">
-              orders@truffleboys.com
+            <a href="mailto:orders@wholesailhub.com" className="underline underline-offset-2">
+              orders@wholesailhub.com
             </a>
           </p>
         </div>
@@ -354,8 +354,8 @@ export default function ClaimPage() {
           </p>
           <p className="text-[#0A0A0A]/70 mb-10 leading-relaxed">
             Email us at{' '}
-            <a href="mailto:orders@truffleboys.com" className="underline underline-offset-2 text-[#0A0A0A]">
-              orders@truffleboys.com
+            <a href="mailto:orders@wholesailhub.com" className="underline underline-offset-2 text-[#0A0A0A]">
+              orders@wholesailhub.com
             </a>{' '}
             and we&apos;ll help you get access.
           </p>
@@ -400,7 +400,7 @@ export default function ClaimPage() {
             Access Your Account
           </h1>
           <p className="text-base text-[#0A0A0A]/60 leading-relaxed">
-            Already a TBGC wholesale partner? Claim your account to view your order history and invoices.
+            Already a Wholesail wholesale partner? Claim your account to view your order history and invoices.
           </p>
         </div>
 
@@ -509,7 +509,7 @@ export default function ClaimPage() {
                       <p className="font-medium mb-1">No account found</p>
                       <p className="text-amber-700">
                         We couldn&apos;t match that information to an existing account. Try a different email or company name, or{' '}
-                        <a href="mailto:orders@truffleboys.com" className="underline underline-offset-2">
+                        <a href="mailto:orders@wholesailhub.com" className="underline underline-offset-2">
                           contact us
                         </a>
                         .
@@ -596,7 +596,7 @@ export default function ClaimPage() {
               )}
 
               <p className="text-center text-xs text-[#C8C0B4] leading-relaxed">
-                New to TBGC?{' '}
+                New to Wholesail?{' '}
                 <Link href="/partner" className="underline underline-offset-2 hover:text-[#0A0A0A]/60 transition-colors">
                   Apply for wholesale access
                 </Link>
@@ -612,8 +612,8 @@ export default function ClaimPage() {
           <p className="text-sm text-[#0A0A0A]/60 leading-relaxed">
             If you placed orders with us before our new portal launched, your account already exists — just enter the
             email we have on file. Can&apos;t remember which email? Reach us at{' '}
-            <a href="mailto:orders@truffleboys.com" className="text-[#0A0A0A] underline underline-offset-2">
-              orders@truffleboys.com
+            <a href="mailto:orders@wholesailhub.com" className="text-[#0A0A0A] underline underline-offset-2">
+              orders@wholesailhub.com
             </a>{' '}
             and we&apos;ll sort it out.
           </p>

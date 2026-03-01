@@ -56,7 +56,7 @@ export default async function AdminLayout({
       <aside className="w-60 border-r border-[#E5E1DB] bg-[#F9F7F4] p-5 hidden md:flex md:flex-col overflow-y-auto">
         <div className="mb-6 px-1">
           <Link href="/admin" className="font-serif font-bold text-xl text-[#0A0A0A] tracking-tight">
-            TBGC
+            Wholesail
           </Link>
           <p className="font-serif italic text-sm text-[#C8C0B4] mt-0.5">Admin</p>
         </div>
@@ -87,7 +87,7 @@ export default async function AdminLayout({
         <header className="border-b border-[#E5E1DB] px-4 md:px-6 py-3 flex items-center justify-between bg-[#F9F7F4]">
           <div className="flex items-center gap-3">
             <AdminMobileNav navBadges={navBadges} />
-            <span className="font-serif font-bold text-lg text-[#0A0A0A] hidden md:block">TBGC Admin</span>
+            <span className="font-serif font-bold text-lg text-[#0A0A0A] hidden md:block">Wholesail Admin</span>
           </div>
           <AdminSearchBar />
           <div className="flex items-center gap-3">

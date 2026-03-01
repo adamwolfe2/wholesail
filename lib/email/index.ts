@@ -15,7 +15,7 @@ const APP_URL = getSiteUrl();
 const OPS_NAME = process.env.OPS_NAME || "our team";
 
 // ---------------------------------------------------------------------------
-// buildBaseHtml — private helper that wraps content in the TBGC branded
+// buildBaseHtml — private helper that wraps content in the Wholesail branded
 // email shell. Used by every transactional email for consistent branding.
 // ---------------------------------------------------------------------------
 
@@ -58,7 +58,7 @@ function buildBaseHtml({
 
         <!-- HEADER: dark bar with brand name -->
         <tr><td style="background-color:#0A0A0A;padding:24px 32px;">
-          <p style="margin:0;color:#FFFFFF;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">Truffle Boys &amp; Girls Club</p>
+          <p style="margin:0;color:#FFFFFF;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">Wholesail</p>
         </td></tr>
 
         <!-- OPTIONAL ALERT BANNER -->
@@ -75,8 +75,8 @@ function buildBaseHtml({
 
         <!-- FOOTER -->
         <tr><td style="padding:20px 32px;border-top:1px solid #E5E1DB;background-color:#F9F7F4;">
-          <p style="margin:0;color:#0A0A0A;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;">Truffle Boys &amp; Girls Club</p>
-          <p style="margin:4px 0 0;color:#C8C0B4;font-size:12px;">truffleboys.com &nbsp;&middot;&nbsp; Los Angeles, CA</p>
+          <p style="margin:0;color:#0A0A0A;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;">Wholesail</p>
+          <p style="margin:4px 0 0;color:#C8C0B4;font-size:12px;">wholesailhub.com &nbsp;&middot;&nbsp; Los Angeles, CA</p>
         </td></tr>
 
       </table>
@@ -184,7 +184,7 @@ View your order: ${orderUrl}
 
 Have questions? Reply to this email.
 
-— Truffle Boys & Girls Club`;
+— Wholesail`;
 
   try {
     const r = getResend();
@@ -244,7 +244,7 @@ Expected delivery: within 24–48 hours.
 
 Track your order: ${orderUrl}
 
-— Truffle Boys & Girls Club`;
+— Wholesail`;
 
   try {
     const r = getResend();
@@ -298,7 +298,7 @@ Place your next order: ${catalogUrl}
 
 P.S. Leave feedback or message us anytime through your portal.
 
-— Truffle Boys & Girls Club`;
+— Wholesail`;
 
   try {
     const r = getResend();
@@ -380,7 +380,7 @@ View and pay your invoice: ${invoicesUrl}
 
 Questions? Reply here or message us in your portal.
 
-— Truffle Boys & Girls Club`;
+— Wholesail`;
 
   try {
     const r = getResend();
@@ -409,12 +409,12 @@ export async function sendWelcomePartnerEmail(data: {
   businessName: string;
   portalUrl?: string;
 }) {
-  const portalUrl = data.portalUrl ?? "https://truffleboys.com/client-portal/dashboard";
-  const catalogUrl = "https://truffleboys.com/catalog";
+  const portalUrl = data.portalUrl ?? "https://wholesailhub.com/client-portal/dashboard";
+  const catalogUrl = "https://wholesailhub.com/catalog";
 
   const bodyHtml = `
     <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">
-      <strong style="color:#0A0A0A;">${data.businessName}</strong> now has wholesale access to TBGC's full catalog — truffles, caviar, A5 wagyu, foie gras, salumi, and more. Welcome, ${data.name}.
+      <strong style="color:#0A0A0A;">${data.businessName}</strong> now has wholesale access to the platform catalog. Welcome, ${data.name}.
     </p>
 
     <!-- Your Account -->
@@ -428,10 +428,10 @@ export async function sendWelcomePartnerEmail(data: {
     <p style="margin:0 0 12px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#C8C0B4;font-weight:600;">How to Order</p>
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
       <tr><td style="padding:0 0 10px;">
-        <p style="margin:0;font-size:14px;color:#3D3833;line-height:1.6;"><strong style="color:#0A0A0A;">Browse 122+ SKUs</strong> at <a href="${catalogUrl}" style="color:#0A0A0A;">/catalog</a> — truffles, caviar, A5 wagyu, foie gras, salumi, and more.</p>
+        <p style="margin:0;font-size:14px;color:#3D3833;line-height:1.6;"><strong style="color:#0A0A0A;">Browse 122+ SKUs</strong> at <a href="${catalogUrl}" style="color:#0A0A0A;">/catalog</a> — wholesale products.</p>
       </td></tr>
       <tr><td style="padding:0 0 10px;">
-        <p style="margin:0;font-size:14px;color:#3D3833;line-height:1.6;"><strong style="color:#0A0A0A;">AI Order Parser</strong> — type what you need in plain English: <em>"2 lbs black truffle, 1 tin Kaluga 000"</em> and we'll match it to your cart in seconds.</p>
+        <p style="margin:0;font-size:14px;color:#3D3833;line-height:1.6;"><strong style="color:#0A0A0A;">AI Order Parser</strong> — type what you need in plain English: <em>"10 cases olive oil, 5 lbs sea salt"</em> and we'll match it to your cart in seconds.</p>
       </td></tr>
       <tr><td>
         <p style="margin:0;font-size:14px;color:#3D3833;line-height:1.6;"><strong style="color:#0A0A0A;">Standing orders</strong> — set up automatic reorders for your staples so you never run low.</p>
@@ -460,29 +460,29 @@ export async function sendWelcomePartnerEmail(data: {
 
   const text = `Hi ${data.name},
 
-You're in. ${data.businessName} now has wholesale access to TBGC's full catalog.
+You're in. ${data.businessName} now has wholesale access to the platform catalog.
 
 YOUR ACCOUNT
 Log in with the email address you applied with:
 ${portalUrl}
 
 HOW TO ORDER
-• Browse 122+ SKUs at ${catalogUrl} — truffles, caviar, A5 wagyu, foie gras, salumi, and more
-• AI Order Parser — just type what you need: "2 lbs black truffle, 1 tin Kaluga 000" and we'll build your cart
+• Browse 122+ SKUs at ${catalogUrl} — wholesale products
+• AI Order Parser — just type what you need: "10 cases olive oil, 5 lbs sea salt" and we'll build your cart
 • Standing orders — set up automatic reorders for your staples
 
 DELIVERY
-SoCal same-day if ordered before 11am. Nationwide 24–48hr cold chain. All orders ship with insulated packaging and ice packs.
+Fast, reliable delivery with cold chain support where required. All orders ship with proper packaging.
 
 MINIMUMS
-No order minimums on most items. Market-rate items (fresh truffle) are priced on request.
+No order minimums on most items. Market-rate items are priced on request.
 
 YOUR REP
 Questions? Reply to this email or reach ${OPS_NAME} directly.
 
 Browse the catalog: ${catalogUrl}
 
-— The TBGC Team`;
+— The Wholesail Team`;
 
   try {
     const r = getResend();
@@ -490,7 +490,7 @@ Browse the catalog: ${catalogUrl}
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: `Welcome to TBGC, ${data.name} — here's everything you need to know`,
+      subject: `Welcome to Wholesail, ${data.name} — here's everything you need to know`,
       html,
       text,
     });
@@ -512,9 +512,9 @@ export async function sendWholesaleRejectionEmail(data: {
 }) {
   const bodyHtml = `
     <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.contactName},</p>
-    <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Thank you for your interest in partnering with Truffle Boys &amp; Girls Club.</p>
+    <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Thank you for your interest in partnering with Wholesail.</p>
     <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">After careful review, we're unable to move forward with <strong style="color:#0A0A0A;">${data.businessName}</strong>'s wholesale application at this time. This decision may be due to our current capacity, geographic focus, or product alignment — it is not a reflection of your business.</p>
-    <p style="margin:0 0 4px;font-size:15px;color:#3D3833;line-height:1.6;">You're welcome to reapply in 90 days, and we encourage you to reach out directly with any questions at <a href="mailto:orders@truffleboys.com" style="color:#0A0A0A;">orders@truffleboys.com</a>.</p>
+    <p style="margin:0 0 4px;font-size:15px;color:#3D3833;line-height:1.6;">You're welcome to reapply in 90 days, and we encourage you to reach out directly with any questions at <a href="mailto:orders@wholesailhub.com" style="color:#0A0A0A;">orders@wholesailhub.com</a>.</p>
   `;
 
   const html = buildBaseHtml({
@@ -524,15 +524,15 @@ export async function sendWholesaleRejectionEmail(data: {
 
   const text = `Hi ${data.contactName},
 
-Thank you for your interest in partnering with Truffle Boys & Girls Club.
+Thank you for your interest in partnering with Wholesail.
 
 After careful review, we're unable to move forward with ${data.businessName}'s wholesale application at this time. This decision may be due to our current capacity, geographic focus, or product alignment — it is not a reflection of your business.
 
-You're welcome to reapply in 90 days, and we encourage you to reach out directly with any questions at orders@truffleboys.com.
+You're welcome to reapply in 90 days, and we encourage you to reach out directly with any questions at orders@wholesailhub.com.
 
 We appreciate your interest and hope to have the opportunity to work together in the future.
 
-— The Truffle Boys Team`;
+— The Wholesail Team`;
 
   try {
     const r = getResend();
@@ -540,7 +540,7 @@ We appreciate your interest and hope to have the opportunity to work together in
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: `Your TBGC Wholesale Application — ${data.businessName}`,
+      subject: `Your Wholesail Application — ${data.businessName}`,
       html,
       text,
     });
@@ -598,7 +598,7 @@ ${data.dropTitle}
 ${categoryLine}Available: ${formattedDate}${descLine}
 Shop now: ${APP_URL}
 
-— Truffle Boys & Girls Club`;
+— Wholesail`;
 
   try {
     const r = getResend();
@@ -684,15 +684,15 @@ export async function sendDropBlastEmail(data: {
   if (data.priceNote) lines.push(`Pricing: ${data.priceNote}`);
   if (data.description) lines.push(`\n${data.description}`);
 
-  const text = `New drop from Truffle Boys & Girls Club.
+  const text = `New drop from Wholesail.
 
 ${data.dropTitle}
 ${lines.join("\n")}
 
 First-come, first-served. Order now:
-truffleboys.com/drops
+wholesailhub.com/drops
 
-— Truffle Boys & Girls Club`;
+— Wholesail`;
 
   try {
     const r = getResend();
@@ -736,7 +736,7 @@ export async function sendAbandonedCartEmail(data: {
 
   const bodyHtml = `
     <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.name},</p>
-    <p style="margin:0 0 24px;font-size:15px;color:#3D3833;line-height:1.6;">You left some items in your TBGC cart. Ready to complete your order?</p>
+    <p style="margin:0 0 24px;font-size:15px;color:#3D3833;line-height:1.6;">You left some items in your cart. Ready to complete your order?</p>
 
     <!-- Cart items table -->
     <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #E5E1DB;margin-bottom:16px;">
@@ -788,7 +788,7 @@ ${data.checkoutUrl}
 
 Items in your cart are subject to availability. Whenever you're ready, we're here.
 
-— Truffle Boys & Girls Club
+— Wholesail
 P.S. Reply to this email if you have any questions about pricing, delivery, or your order.`;
 
   try {
@@ -824,12 +824,12 @@ export async function sendPartnerDay3Email(data: {
     <p style="margin:0 0 24px;font-size:15px;color:#3D3833;line-height:1.6;">Welcome aboard — we're glad to have <strong style="color:#0A0A0A;">${data.businessName}</strong> as a partner. A few things worth knowing before you place your first order:</p>
 
     <!-- Minimums -->
-    <p style="margin:0 0 8px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#C8C0B4;font-weight:600;">Minimums by Category</p>
+    <p style="margin:0 0 8px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#C8C0B4;font-weight:600;">Order Minimums</p>
     <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;border:1px solid #E5E1DB;margin-bottom:24px;">
-      <tr style="background-color:#F9F7F4;"><td style="padding:10px 14px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;">Truffles &amp; Fresh Fungi</td><td style="padding:10px 14px;font-size:13px;color:#C8C0B4;border-bottom:1px solid #E5E1DB;text-align:right;">1 oz minimum</td></tr>
-      <tr><td style="padding:10px 14px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;">Caviar &amp; Roe</td><td style="padding:10px 14px;font-size:13px;color:#C8C0B4;border-bottom:1px solid #E5E1DB;text-align:right;">Sold by the tin (no splits)</td></tr>
-      <tr style="background-color:#F9F7F4;"><td style="padding:10px 14px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;">Salumi &amp; Charcuterie</td><td style="padding:10px 14px;font-size:13px;color:#C8C0B4;border-bottom:1px solid #E5E1DB;text-align:right;">Minimums noted per item</td></tr>
-      <tr><td style="padding:10px 14px;font-size:14px;color:#0A0A0A;">Specialty Pantry</td><td style="padding:10px 14px;font-size:13px;color:#C8C0B4;text-align:right;">No minimum</td></tr>
+      <tr style="background-color:#F9F7F4;"><td style="padding:10px 14px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;">Standard Items</td><td style="padding:10px 14px;font-size:13px;color:#C8C0B4;border-bottom:1px solid #E5E1DB;text-align:right;">No minimum</td></tr>
+      <tr><td style="padding:10px 14px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;">Market-Rate Items</td><td style="padding:10px 14px;font-size:13px;color:#C8C0B4;border-bottom:1px solid #E5E1DB;text-align:right;">Priced on request</td></tr>
+      <tr style="background-color:#F9F7F4;"><td style="padding:10px 14px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;">Bulk Orders</td><td style="padding:10px 14px;font-size:13px;color:#C8C0B4;border-bottom:1px solid #E5E1DB;text-align:right;">Minimums noted per item</td></tr>
+      <tr><td style="padding:10px 14px;font-size:14px;color:#0A0A0A;">Custom Orders</td><td style="padding:10px 14px;font-size:13px;color:#C8C0B4;text-align:right;">Contact your rep</td></tr>
     </table>
 
     <!-- Cold chain -->
@@ -838,7 +838,7 @@ export async function sendPartnerDay3Email(data: {
 
     <!-- AI Parser -->
     <p style="margin:0 0 8px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#C8C0B4;font-weight:600;">AI Order Parser (the fast way)</p>
-    <p style="margin:0 0 4px;font-size:14px;color:#3D3833;line-height:1.6;">Paste a plain-text list — <em>"2 lbs black truffle, 1 tin ossetra"</em> — and our parser will turn it into a cart in seconds. Try it from your dashboard.</p>
+    <p style="margin:0 0 4px;font-size:14px;color:#3D3833;line-height:1.6;">Paste a plain-text list — <em>"10 cases olive oil, 5 lbs sea salt"</em> — and our parser will turn it into a cart in seconds. Try it from your dashboard.</p>
   `;
 
   const html = buildBaseHtml({
@@ -854,24 +854,24 @@ Welcome aboard — we're glad to have ${data.businessName} as a partner.
 
 A few things worth knowing before you place your first order:
 
-Minimums by category:
-• Truffles & Fresh Fungi — 1 oz minimum
-• Caviar & Roe — sold by the tin (no splits)
-• Salumi & Charcuterie — sold by the piece or weight, minimums noted per item
-• Specialty Pantry — no minimum
+Order minimums:
+• Standard items — no minimum
+• Market-rate items — priced on request
+• Bulk orders — minimums noted per item
+• Custom orders — contact your rep
 
-Cold chain delivery:
-All temperature-sensitive items ship with gel packs in insulated packaging. We deliver Tuesday–Friday. If you need weekend delivery, contact us directly and we'll do our best.
+Delivery:
+All temperature-sensitive items ship with proper cold chain packaging. Contact us if you need expedited or weekend delivery.
 
 AI Order Parser (the fast way to order):
-You can paste a plain-text list — like "2 lbs black truffle, 1 tin ossetra" — and our parser will turn it into a cart in seconds. Try it from your dashboard.
+You can paste a plain-text list — like "10 cases olive oil, 5 lbs sea salt" — and our parser will turn it into a cart in seconds. Try it from your dashboard.
 
 Browse the full catalog here:
 ${catalogUrl}
 
-Questions? Reply to this email or reach us at orders@truffleboys.com.
+Questions? Reply to this email or reach us at orders@wholesailhub.com.
 
-— The TBGC Team`;
+— The Wholesail Team`;
 
   try {
     const r = getResend();
@@ -879,7 +879,7 @@ Questions? Reply to this email or reach us at orders@truffleboys.com.
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: `Your first TBGC order — here's what to know`,
+      subject: `Your first Wholesail order — here's what to know`,
       html,
       text,
     });
@@ -923,7 +923,7 @@ ${APP_URL}
 
 As always, reply here if you have questions about availability, pricing, or delivery.
 
-— The TBGC Team`;
+— The Wholesail Team`;
 
   try {
     const r = getResend();
@@ -956,7 +956,7 @@ export async function sendLowStockAlert(
 ) {
   const r = getResend();
   if (!r) return null;
-  const from = process.env.RESEND_FROM_EMAIL || "orders@truffleboys.com";
+  const from = process.env.RESEND_FROM_EMAIL || "orders@wholesailhub.com";
   const to = process.env.OPS_NOTIFICATION_EMAIL || from;
 
   const itemRowsHtml = items
@@ -984,7 +984,7 @@ export async function sendLowStockAlert(
 
         <!-- HEADER -->
         <tr><td style="background-color:#0A0A0A;padding:20px 28px;border-bottom:1px solid #2A2A2A;">
-          <p style="margin:0;color:#F9F7F4;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">TBGC Ops &nbsp;&middot;&nbsp; Internal Alert</p>
+          <p style="margin:0;color:#F9F7F4;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">Wholesail Ops &nbsp;&middot;&nbsp; Internal Alert</p>
         </td></tr>
 
         <!-- CONTENT -->
@@ -1007,7 +1007,7 @@ export async function sendLowStockAlert(
 
         <!-- FOOTER -->
         <tr><td style="padding:16px 28px;border-top:1px solid #2A2A2A;">
-          <p style="margin:0;color:#C8C0B4;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;">TBGC Ops &nbsp;&middot;&nbsp; truffleboys.com</p>
+          <p style="margin:0;color:#C8C0B4;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;">Wholesail Ops &nbsp;&middot;&nbsp; wholesailhub.com</p>
         </td></tr>
 
       </table>
@@ -1025,7 +1025,7 @@ export async function sendLowStockAlert(
     to,
     subject: `Low Stock Alert — ${items.length} item${items.length !== 1 ? "s" : ""} need restocking`,
     html,
-    text: `Low Stock Alert\n\n${items.length} product${items.length !== 1 ? "s are" : " is"} at or below the restock threshold:\n\n${textRows}\n\n— TBGC Ops`,
+    text: `Low Stock Alert\n\n${items.length} product${items.length !== 1 ? "s are" : " is"} at or below the restock threshold:\n\n${textRows}\n\n— Wholesail Ops`,
   });
 }
 
@@ -1141,7 +1141,7 @@ export async function sendTierUpgradeEmail(data: {
   const isVIP = data.newTier === "VIP";
 
   const subject = isVIP
-    ? `${data.businessName} is now a TBGC VIP Partner`
+    ? `${data.businessName} is now a Wholesail VIP Partner`
     : `${data.businessName} has unlocked Repeat Partner status`;
 
   const tierLabel = isVIP ? "VIP Partner" : "Repeat Partner";
@@ -1173,8 +1173,8 @@ export async function sendTierUpgradeEmail(data: {
     .join("");
 
   const spendDesc = isVIP
-    ? `<strong style="color:#0A0A0A;">${data.businessName}</strong> has crossed $${Math.round(data.totalSpend / 1000)}K in total orders with TBGC — making you a <strong style="color:#0A0A0A;">VIP Partner</strong>. That's a big deal to us.`
-    : `<strong style="color:#0A0A0A;">${data.businessName}</strong> has crossed $5,000 in total orders with TBGC — unlocking <strong style="color:#0A0A0A;">Repeat Partner</strong> status.`;
+    ? `<strong style="color:#0A0A0A;">${data.businessName}</strong> has crossed $${Math.round(data.totalSpend / 1000)}K in total orders with us — making you a <strong style="color:#0A0A0A;">VIP Partner</strong>. That's a big deal to us.`
+    : `<strong style="color:#0A0A0A;">${data.businessName}</strong> has crossed $5,000 in total orders with us — unlocking <strong style="color:#0A0A0A;">Repeat Partner</strong> status.`;
 
   const bodyHtml = `
     <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hey ${data.name},</p>
@@ -1205,8 +1205,8 @@ export async function sendTierUpgradeEmail(data: {
   const text = `Hey ${data.name},
 
 ${isVIP
-  ? `${data.businessName} has crossed $${Math.round(data.totalSpend / 1000)}K in total orders with TBGC — making you a VIP Partner. That's a big deal to us.`
-  : `${data.businessName} has crossed $5,000 in total orders with TBGC — unlocking Repeat Partner status.`}
+  ? `${data.businessName} has crossed $${Math.round(data.totalSpend / 1000)}K in total orders with us — making you a VIP Partner. That's a big deal to us.`
+  : `${data.businessName} has crossed $5,000 in total orders with us — unlocking Repeat Partner status.`}
 
 ${isVIP ? "VIP PERKS" : "WHAT'S UNLOCKED"}:
 ${perkLines}
@@ -1215,7 +1215,7 @@ Welcome to ${tierLabel}.
 
 Browse the catalog: ${catalogUrl}
 
-— The TBGC Team`;
+— The Wholesail Team`;
 
   return r.emails.send({
     from: FROM_EMAIL,
@@ -1245,12 +1245,12 @@ export async function sendApplicationStatusEmail(data: {
   let text: string;
 
   if (data.status === "APPROVED") {
-    subject = `Your TBGC wholesale application has been approved!`;
+    subject = `Your Wholesail wholesale application has been approved!`;
     headline = "You're Approved!";
     bodyHtml = `
       <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.contactName},</p>
       <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Great news — <strong style="color:#0A0A0A;">${data.businessName}</strong>'s wholesale application has been approved!</p>
-      <p style="margin:0 0 24px;font-size:15px;color:#3D3833;line-height:1.6;">Your portal invitation is on its way in a separate email. Use it to set up your account and start ordering TBGC's full catalog — truffles, caviar, A5 wagyu, foie gras, salumi, and more.</p>
+      <p style="margin:0 0 24px;font-size:15px;color:#3D3833;line-height:1.6;">Your portal invitation is on its way in a separate email. Use it to set up your account and start ordering the platform catalog.</p>
       <p style="margin:0 0 4px;font-size:13px;color:#C8C0B4;font-style:italic;">Questions? Reply to this email and we'll get back to you the same day.</p>
     `;
     text = `Hi ${data.contactName},
@@ -1259,50 +1259,50 @@ Great news — ${data.businessName}'s wholesale application has been approved!
 
 Your portal invitation link is on its way in a separate email from Clerk. Use it to set up your account and start ordering.
 
-Once you're signed in, you'll have access to TBGC's full catalog of truffles, caviar, A5 wagyu, foie gras, salumi, and more.
+Once you're signed in, you'll have access to the full product catalog.
 
 Get started here: ${portalUrl}
 
 Questions? Reply to this email and we'll get back to you the same day.
 
-— The TBGC Team`;
+— The Wholesail Team`;
   } else if (data.status === "WAITLISTED") {
-    subject = `You've been added to the TBGC waitlist — ${data.businessName}`;
+    subject = `You've been added to the Wholesail waitlist — ${data.businessName}`;
     headline = "You're on the Waitlist";
     bodyHtml = `
       <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.contactName},</p>
-      <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Thank you for applying to partner with Truffle Boys &amp; Girls Club.</p>
+      <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Thank you for applying to partner with Wholesail.</p>
       <p style="margin:0 0 4px;font-size:15px;color:#3D3833;line-height:1.6;">We've reviewed <strong style="color:#0A0A0A;">${data.businessName}</strong>'s application and have added you to our waitlist. We're selectively expanding our partner network and will reach out as soon as space opens up.</p>
     `;
     text = `Hi ${data.contactName},
 
-Thank you for applying to partner with Truffle Boys & Girls Club.
+Thank you for applying to partner with Wholesail.
 
 We've reviewed ${data.businessName}'s application and have added you to our waitlist. We're selectively expanding our partner network and will reach out as soon as space opens up.
 
 We appreciate your interest and look forward to the opportunity to work together.
 
-— The TBGC Team`;
+— The Wholesail Team`;
   } else {
-    subject = `Your TBGC wholesale application — ${data.businessName}`;
+    subject = `Your Wholesail wholesale application — ${data.businessName}`;
     headline = "Thank You for Applying";
     bodyHtml = `
       <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.contactName},</p>
-      <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Thank you for your interest in partnering with Truffle Boys &amp; Girls Club.</p>
+      <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Thank you for your interest in partnering with Wholesail.</p>
       <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">After careful review, we're unable to move forward with <strong style="color:#0A0A0A;">${data.businessName}</strong>'s wholesale application at this time. This decision may be due to our current capacity, geographic focus, or product alignment — it is not a reflection of your business.</p>
-      <p style="margin:0 0 4px;font-size:15px;color:#3D3833;line-height:1.6;">You're welcome to reapply in 90 days, and we encourage you to reach out at <a href="mailto:orders@truffleboys.com" style="color:#0A0A0A;">orders@truffleboys.com</a> with any questions.</p>
+      <p style="margin:0 0 4px;font-size:15px;color:#3D3833;line-height:1.6;">You're welcome to reapply in 90 days, and we encourage you to reach out at <a href="mailto:orders@wholesailhub.com" style="color:#0A0A0A;">orders@wholesailhub.com</a> with any questions.</p>
     `;
     text = `Hi ${data.contactName},
 
-Thank you for your interest in partnering with Truffle Boys & Girls Club.
+Thank you for your interest in partnering with Wholesail.
 
 After careful review, we're unable to move forward with ${data.businessName}'s wholesale application at this time. This decision may be due to our current capacity, geographic focus, or product alignment — it is not a reflection of your business.
 
-You're welcome to reapply in 90 days, and we encourage you to reach out directly with any questions at orders@truffleboys.com.
+You're welcome to reapply in 90 days, and we encourage you to reach out directly with any questions at orders@wholesailhub.com.
 
 We appreciate your interest and hope to have the opportunity to work together in the future.
 
-— The TBGC Team`;
+— The Wholesail Team`;
   }
 
   const html = buildBaseHtml({ headline, bodyHtml });
@@ -1365,7 +1365,7 @@ export async function sendLapsedClientEmail(data: {
   `;
 
   const html = buildBaseHtml({
-    headline: "We miss you at TBGC",
+    headline: "We miss you",
     bodyHtml,
     ctaText: "Shop Current Selection →",
     ctaUrl: catalogUrl,
@@ -1383,7 +1383,7 @@ It's been ${data.daysSinceLastOrder} days since your last order — we wanted to
 ${data.topProducts.length > 0 ? `Your usual:\n${productLines}\n\n` : ""}Shop the current selection: ${catalogUrl}
 
 Reply to this email or message us anytime — ${OPS_NAME}
-TBGC · truffleboys.com`;
+Wholesail · wholesailhub.com`;
 
   return r.emails.send({
     from: FROM_EMAIL,
@@ -1460,7 +1460,7 @@ export async function sendWeeklyDigestEmail(data: {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Weekly TBGC Update</title>
+  <title>Your Weekly Wholesail Update</title>
 </head>
 <body style="margin:0;padding:0;background-color:#F9F7F4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F9F7F4;padding:40px 0;">
@@ -1471,8 +1471,8 @@ export async function sendWeeklyDigestEmail(data: {
           <!-- Header -->
           <tr>
             <td style="background-color:#0A0A0A;padding:28px 40px;">
-              <p style="margin:0 0 4px;color:#C8C0B4;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;">Truffle Boys &amp; Girls Club</p>
-              <h1 style="margin:0;color:#FFFFFF;font-size:22px;font-weight:600;font-family:Georgia,serif;">Your Weekly TBGC Update</h1>
+              <p style="margin:0 0 4px;color:#C8C0B4;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;">Wholesail</p>
+              <h1 style="margin:0;color:#FFFFFF;font-size:22px;font-weight:600;font-family:Georgia,serif;">Your Weekly Wholesail Update</h1>
             </td>
           </tr>
 
@@ -1575,8 +1575,8 @@ export async function sendWeeklyDigestEmail(data: {
           <tr>
             <td style="background-color:#F9F7F4;padding:20px 40px;border-top:1px solid #E5E0D8;">
               <p style="margin:0;color:#888077;font-size:12px;line-height:1.7;">
-                Truffle Boys &amp; Girls Club &nbsp;&middot;&nbsp; orders@truffleboys.com<br />
-                You&rsquo;re receiving this weekly digest as a TBGC wholesale partner.<br />
+                Wholesail &nbsp;&middot;&nbsp; orders@wholesailhub.com<br />
+                You&rsquo;re receiving this weekly digest as a Wholesail wholesale partner.<br />
                 <a href="${settingsUrl}" style="color:#888077;">Manage email preferences</a>
               </p>
             </td>
@@ -1589,7 +1589,7 @@ export async function sendWeeklyDigestEmail(data: {
 </body>
 </html>`;
 
-  const text = `Your Weekly TBGC Update
+  const text = `Your Weekly Wholesail Update
 Hi ${data.name},
 
 YOUR MONTH SO FAR
@@ -1613,13 +1613,13 @@ COMING SOON
 New drops and seasonal arrivals are on the way — check the drops calendar: ${APP_URL}/drops
 
 Manage preferences: ${settingsUrl}
-— Truffle Boys & Girls Club`;
+— Wholesail`;
 
   try {
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: `Your TBGC Weekly Update — ${new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}`,
+      subject: `Your Wholesail Weekly Update — ${new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}`,
       html,
       text,
     });
@@ -1829,13 +1829,13 @@ export async function sendQuoteToClientEmail(data: {
     "",
     `Review your quote: ${quoteUrl}`,
     "",
-    "— Truffle Boys & Girls Club",
+    "— Wholesail",
   ].filter(Boolean);
 
   await resend.emails.send({
     from: FROM_EMAIL,
     to: data.clientEmail,
-    subject: `New Quote from TBGC — ${data.quoteNumber}`,
+    subject: `New Quote from Wholesail — ${data.quoteNumber}`,
     html,
     text: textParts.join("\n"),
   });
@@ -1849,29 +1849,29 @@ export async function sendGiveawayConfirmationEmail(email: string): Promise<void
   const resend = getResend();
   if (!resend) return;
 
-  const instagramUrl = "https://instagram.com/tbgc_inc";
+  const instagramUrl = "https://instagram.com/wholesailhub";
 
   const html = buildBaseHtml({
     headline: "You're entered.",
     bodyHtml: `
       <p style="margin:0 0 16px;color:#0A0A0A;font-size:15px;line-height:1.6;">
-        Your entry for this week's <strong>TBGC Caviar Giveaway</strong> has been received.
+        Your entry for this week's <strong>Wholesail Giveaway</strong> has been received.
       </p>
       <p style="margin:0 0 16px;color:#0A0A0A;font-size:15px;line-height:1.6;">
-        To complete your entry, follow <strong>@tbgc_inc</strong> on Instagram. Winners are selected every Friday and notified by email.
+        To complete your entry, follow <strong>@wholesailhub</strong> on Instagram. Winners are selected every Friday and notified by email.
       </p>
       <p style="margin:0;color:#C8C0B4;font-size:13px;">
         Good luck — only one entry per week, per email.
       </p>
     `,
-    ctaText: "Follow @tbgc_inc",
+    ctaText: "Follow @wholesailhub",
     ctaUrl: instagramUrl,
   });
 
   const text = [
-    "You're entered — TBGC Caviar Giveaway",
+    "You're entered — Wholesail Giveaway",
     "",
-    "Your entry has been received. To complete it, follow @tbgc_inc on Instagram.",
+    "Your entry has been received. To complete it, follow @wholesailhub on Instagram.",
     "Winners are selected every Friday and notified by email.",
     "",
     `Instagram: ${instagramUrl}`,
@@ -1880,7 +1880,7 @@ export async function sendGiveawayConfirmationEmail(email: string): Promise<void
   await resend.emails.send({
     from: FROM_EMAIL,
     to: email,
-    subject: "You're entered — TBGC Weekly Caviar Giveaway",
+    subject: "You're entered — Wholesail Weekly Giveaway",
     html,
     text,
   });
