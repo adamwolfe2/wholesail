@@ -1,4 +1,4 @@
-# TBGC — Environment Variables
+# Wholesail — Environment Variables
 
 Copy `.env.example` → `.env.local` and fill in the values.
 Never commit `.env.local` — it is in `.gitignore`.
@@ -14,10 +14,17 @@ Never commit `.env.local` — it is in `.gitignore`.
 | `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Clerk public key | clerk.com → API Keys |
 | `CLERK_SECRET_KEY` | Clerk server key | clerk.com → API Keys |
 | `CLERK_WEBHOOK_SECRET` | Clerk webhook signing secret | clerk.com → Webhooks → Endpoint → Signing Secret |
-| `STRIPE_SECRET_KEY` | Stripe server key | stripe.com → Developers → API Keys |
-| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe public key | stripe.com → Developers → API Keys |
-| `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret | stripe.com → Developers → Webhooks |
 | `RESEND_API_KEY` | Transactional email | resend.com → API Keys |
+| `NEXT_PUBLIC_APP_URL` | Public base URL | `https://wholesailhub.com` |
+
+## Clerk Auth URLs (set as Next.js env vars)
+
+| Variable | Value |
+|---|---|
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | `/sign-in` |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | `/sign-up` |
+| `NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL` | `/admin` |
+| `NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL` | `/admin` |
 
 ---
 
@@ -27,9 +34,17 @@ Never commit `.env.local` — it is in `.gitignore`.
 
 | Variable | Purpose | Default |
 |---|---|---|
-| `RESEND_FROM_EMAIL` | Sender address (must be verified domain) | `orders@truffleboys.com` |
+| `RESEND_FROM_EMAIL` | Sender address (must be verified domain) | `Wholesail <noreply@wholesailhub.com>` |
 | `OPS_NOTIFICATION_EMAIL` | Internal ops alert email | Falls back to `RESEND_FROM_EMAIL` |
-| `OPS_NAME` | Operator name used in SMS + email copy ("Rocky will confirm…") | `"our team"` |
+| `OPS_NAME` | Operator name used in SMS + email copy | `"our team"` |
+
+### Stripe (billing — if enabled)
+
+| Variable | Purpose |
+|---|---|
+| `STRIPE_SECRET_KEY` | Stripe server key |
+| `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe public key |
+| `STRIPE_WEBHOOK_SECRET` | Stripe webhook signing secret |
 
 ### SMS / iMessage (Bloo.io)
 
@@ -44,10 +59,17 @@ Never commit `.env.local` — it is in `.gitignore`.
 
 | Variable | Purpose | Default |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | Required for `/admin/chat` AI assistant. Without it, chat returns 503. | — |
+| `ANTHROPIC_API_KEY` | Required for `/admin/chat` AI assistant and intake config generator. Without it, both return 503. | — |
 | `AI_CHAT_MODEL` | Override the AI model | `claude-haiku-4-5-20251001` |
 | `GEMINI_API_KEY` | Google Gemini for AI order parser (SMS ordering) | Falls back to fuzzy matching |
-| `GOOGLE_GENERATIVE_AI_API_KEY` | Alternative name for `GEMINI_API_KEY` | — |
+
+### Security
+
+| Variable | Purpose |
+|---|---|
+| `BOOTSTRAP_SECRET` | One-time admin user bootstrap token (POST /api/admin/bootstrap) |
+| `CRON_SECRET` | Bearer token for Vercel cron jobs (generate: `openssl rand -hex 32`) |
+| `TRACKING_API_KEY` | GPS hardware webhook auth (`/api/shipments/[id]/location`) |
 
 ### Company Enrichment
 
@@ -55,7 +77,7 @@ Never commit `.env.local` — it is in `.gitignore`.
 |---|---|
 | `FIRECRAWL_API_KEY` | Firecrawl for lead/company enrichment (firecrawl.dev) |
 
-### Cold Email Campaigns (Cursive)
+### Cold Email Campaigns
 
 | Variable | Purpose |
 |---|---|
@@ -70,20 +92,6 @@ Never commit `.env.local` — it is in `.gitignore`.
 | `KV_REST_API_URL` | Upstash Redis REST URL |
 | `KV_REST_API_TOKEN` | Upstash Redis REST token |
 
-### App URLs
-
-| Variable | Purpose | Default |
-|---|---|---|
-| `NEXT_PUBLIC_APP_URL` | Public base URL for links in emails/SMS | `https://truffleboys.com` |
-| `NEXT_PUBLIC_SITE_URL` | Alternate site URL reference | `https://truffleboys.com` |
-
-### Automation
-
-| Variable | Purpose |
-|---|---|
-| `CRON_SECRET` | Bearer token for Vercel cron jobs (generate: `openssl rand -hex 32`) |
-| `TRACKING_API_KEY` | GPS hardware webhook auth (`/api/shipments/[id]/location`) |
-
 ### Error Tracking / Analytics (optional)
 
 | Variable | Purpose |
@@ -91,7 +99,7 @@ Never commit `.env.local` — it is in `.gitignore`.
 | `SENTRY_DSN` | Sentry error reporting |
 | `SENTRY_AUTH_TOKEN` | Sentry source maps upload |
 | `NEXT_PUBLIC_POSTHOG_KEY` | PostHog analytics |
-| `NEXT_PUBLIC_POSTHOG_HOST` | PostHog host (default: `https://app.posthog.com`) |
+| `NEXT_PUBLIC_POSTHOG_HOST` | PostHog host (default: `https://us.posthog.com`) |
 
 ---
 
@@ -102,15 +110,14 @@ Before going live, confirm these are set in Vercel → Settings → Environment 
 - [ ] `DATABASE_URL` + `DATABASE_URL_UNPOOLED` (production Neon branch)
 - [ ] `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` + `CLERK_SECRET_KEY` (production Clerk app)
 - [ ] `CLERK_WEBHOOK_SECRET` (production webhook endpoint registered)
-- [ ] `STRIPE_SECRET_KEY` → **swap test key for live key**
-- [ ] `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` → **swap test key for live key**
-- [ ] `STRIPE_WEBHOOK_SECRET` (production webhook registered)
 - [ ] `RESEND_API_KEY` (domain verified in Resend)
-- [ ] `NEXT_PUBLIC_APP_URL=https://truffleboys.com`
+- [ ] `RESEND_FROM_EMAIL=Wholesail <noreply@wholesailhub.com>`
+- [ ] `NEXT_PUBLIC_APP_URL=https://wholesailhub.com`
+- [ ] `ANTHROPIC_API_KEY` (for AI admin assistant + config generator)
+- [ ] `BOOTSTRAP_SECRET` (for first admin user setup)
 - [ ] `OPS_NAME` (operator first name for customer-facing messages)
-- [ ] `ANTHROPIC_API_KEY` (for AI admin assistant)
-- [ ] `BLOOIO_API_KEY` + `BLOOIO_FROM_NUMBER` + `BLOOIO_WEBHOOK_SECRET` (for SMS ordering)
-- [ ] `CRON_SECRET` (for automated billing reminders)
+- [ ] `BLOOIO_API_KEY` + `BLOOIO_FROM_NUMBER` + `BLOOIO_WEBHOOK_SECRET` (for SMS ordering, if enabled)
+- [ ] `STRIPE_SECRET_KEY` + `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` + `STRIPE_WEBHOOK_SECRET` (for billing, if enabled)
 
 ---
 
@@ -118,6 +125,6 @@ Before going live, confirm these are set in Vercel → Settings → Environment 
 
 | Service | Endpoint | Events |
 |---|---|---|
-| Clerk | `https://truffleboys.com/api/webhooks/clerk` | `user.created`, `user.updated` |
-| Stripe | `https://truffleboys.com/api/webhooks/stripe` | `checkout.session.completed`, `invoice.paid`, `charge.dispute.created`, etc. |
-| Bloo.io | `https://truffleboys.com/api/webhooks/blooio` | All inbound messages + delivery status |
+| Clerk | `https://wholesailhub.com/api/webhooks/clerk` | `user.created`, `user.updated` |
+| Stripe | `https://wholesailhub.com/api/webhooks/stripe` | `checkout.session.completed`, `invoice.paid`, `charge.dispute.created`, etc. |
+| Bloo.io | `https://wholesailhub.com/api/webhooks/blooio` | All inbound messages + delivery status |

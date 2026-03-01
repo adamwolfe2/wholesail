@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db";
 // Bloo.io Webhook Handler
 //
 // Register this URL in your Bloo.io dashboard:
-//   https://tbgclub.vercel.app/api/webhooks/blooio
+//   https://wholesailhub.com/api/webhooks/blooio
 //
 // Events handled:
 //   message.received  — inbound iMessage from client
@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
           if (messageText.toUpperCase() === "HELP") {
             await sendMessage({
               to: fromPhone,
-              message: "TBGC SMS Ordering:\n• Text your order (e.g. '2 tins Kaluga caviar')\n• Reply YES to confirm, NO to cancel\n• Text MENU to see today's highlights\n• Order online: truffleboys.com",
+              message: "Wholesail SMS Ordering:\n• Text your order (e.g. '2 tins Kaluga caviar')\n• Reply YES to confirm, NO to cancel\n• Text MENU to see today's highlights\n• Order online: wholesailhub.com",
             });
             return NextResponse.json({ ok: true });
           }
@@ -135,7 +135,7 @@ export async function POST(req: NextRequest) {
               .join("\n");
             await sendMessage({
               to: fromPhone,
-              message: `Today's highlights:\n\n${menuText}\n\nFull catalog: truffleboys.com/catalog`,
+              message: `Today's highlights:\n\n${menuText}\n\nFull catalog: wholesailhub.com/catalog`,
             });
             return NextResponse.json({ ok: true });
           }
@@ -220,7 +220,7 @@ export async function POST(req: NextRequest) {
                 await sendMessage({
                   to: fromPhone,
                   message:
-                    "Sorry, something went wrong placing your order. Please call us or log in to truffleboys.com.",
+                    "Sorry, something went wrong placing your order. Please call us or log in to wholesailhub.com.",
                 });
               }
             } else if (pendingDraft && isCancellation(messageText)) {
@@ -239,7 +239,7 @@ export async function POST(req: NextRequest) {
                   await sendMessage({
                     to: fromPhone,
                     message:
-                      "I couldn't match any products to your message. Try something like: '2 tins Kaluga 000 and 1 lb black truffle'. You can also order at truffleboys.com",
+                      "I couldn't match any products to your message. Try something like: '2 tins Kaluga 000 and 1 lb black truffle'. You can also order at wholesailhub.com",
                   });
                 } else {
                   const draftItems = parseResult.items.map((item) => ({
@@ -259,7 +259,7 @@ export async function POST(req: NextRequest) {
                   if (parseResult.unmatched.length > 0) {
                     await sendMessage({
                       to: fromPhone,
-                      message: `Note: I couldn't find these items: ${parseResult.unmatched.join(", ")}. Check the catalog at truffleboys.com/catalog`,
+                      message: `Note: I couldn't find these items: ${parseResult.unmatched.join(", ")}. Check the catalog at wholesailhub.com/catalog`,
                     });
                   }
                 }

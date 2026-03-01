@@ -6,22 +6,22 @@ import { MarketingHeader } from '@/components/marketing-header'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Press & Media — TBGC',
+  title: 'Press & Media — Wholesail',
   description:
-    'TBGC press kit, brand assets, and media inquiries. The wholesale partner behind some of LA\'s most acclaimed restaurants, hotels, and private culinary experiences.',
+    'Wholesail press kit, brand assets, and media inquiries. The wholesale partner behind some of LA\'s most acclaimed restaurants, hotels, and private culinary experiences.',
   openGraph: {
-    title: 'Press & Media — TBGC',
-    description: 'TBGC press kit, brand assets, and media inquiries. The wholesale partner behind some of LA\'s most acclaimed restaurants and hotels.',
+    title: 'Press & Media — Wholesail',
+    description: 'Wholesail press kit, brand assets, and media inquiries. The wholesale partner behind some of LA\'s most acclaimed restaurants and hotels.',
     type: 'website',
-    url: 'https://truffleboys.com/press',
-    images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: 'Truffle Boys & Girls Club — Press & Media' }],
+    url: 'https://wholesailhub.com/press',
+    images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: 'Wholesail — Press & Media' }],
   },
   twitter: {
     card: 'summary_large_image',
     images: ['/Public Social Image.png'],
   },
   alternates: {
-    canonical: 'https://truffleboys.com/press',
+    canonical: 'https://wholesailhub.com/press',
   },
 }
 
@@ -51,7 +51,7 @@ export default function PressPage() {
             Built for the World&apos;s Best Kitchens.
           </h1>
           <p className="text-[#0A0A0A]/55 text-base sm:text-lg leading-relaxed max-w-2xl">
-            TBGC is the wholesale partner behind some of {"LA's"} most acclaimed restaurants,
+            Wholesail is the wholesale partner behind some of {"LA's"} most acclaimed restaurants,
             hotels, and private culinary experiences.
           </p>
         </div>
@@ -70,7 +70,7 @@ export default function PressPage() {
                 We don&apos;t warehouse luxury. We move it.
               </blockquote>
               <cite className="text-sm text-[#C8C0B4] not-italic tracking-wide">
-                — TBGC Founders
+                — Wholesail Founders
               </cite>
             </div>
 
@@ -80,7 +80,7 @@ export default function PressPage() {
                 Our Story
               </p>
               <p>
-                Truffle Boys & Girls Club was founded on a deceptively simple premise: the best
+                Wholesail was founded on a deceptively simple premise: the best
                 restaurants in the world deserve a supplier who takes quality as seriously as they
                 do. We built direct relationships — with truffle hunters in {"Abruzzo's"} oak forests,
                 caviar producers on the Caspian coast, and wagyu farms in Japan&apos;s finest
@@ -95,7 +95,7 @@ export default function PressPage() {
               </p>
               <p>
                 From Michelin-starred dining rooms to some of {"LA's"} most celebrated private chef
-                experiences, 342+ partners trust TBGC because we have never once compromised on
+                experiences, 342+ partners trust Wholesail because we have never once compromised on
                 quality to protect a margin. That reputation is the only one we care about
                 building.
               </p>
@@ -127,7 +127,7 @@ export default function PressPage() {
                 <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
                   <iframe
                     src={`https://www.youtube.com/embed/${video.id}`}
-                    title="TBGC Feature"
+                    title="Wholesail Feature"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                     className="absolute inset-0 w-full h-full"
@@ -212,8 +212,8 @@ export default function PressPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#E5E1DB]">
             {/* SVG Logo */}
             <a
-              href="/truffle-boys-logo.svg"
-              download="TBGC-logo.svg"
+              href="/wholesail-logo.svg"
+              download="wholesail-logo.svg"
               className="group bg-[#F9F7F4] p-8 flex flex-col justify-between min-h-[160px] hover:bg-[#0A0A0A] transition-colors duration-300"
             >
               <div>
@@ -235,8 +235,8 @@ export default function PressPage() {
 
             {/* PNG Logo */}
             <a
-              href="/truffle-boys-logo.svg"
-              download="TBGC-logo.png"
+              href="/wholesail-logo.svg"
+              download="wholesail-logo.png"
               className="group bg-[#F9F7F4] p-8 flex flex-col justify-between min-h-[160px] hover:bg-[#0A0A0A] transition-colors duration-300"
             >
               <div>
@@ -258,7 +258,7 @@ export default function PressPage() {
 
             {/* Press Kit — request via email */}
             <a
-              href="mailto:press@truffleboys.com?subject=Press Kit Request"
+              href="mailto:press@wholesailhub.com?subject=Press Kit Request"
               className="group bg-[#F9F7F4] p-8 flex flex-col justify-between min-h-[160px] hover:bg-[#0A0A0A] transition-colors duration-300"
             >
               <div>
@@ -296,7 +296,7 @@ export default function PressPage() {
                 tier: 'Fine Dining',
                 desc: 'Michelin 1–3 Star Restaurants',
                 detail:
-                  'The most decorated dining rooms in Los Angeles and Southern California trust TBGC for truffle season, caviar service, and premium protein sourcing.',
+                  'The most decorated dining rooms in Los Angeles and Southern California trust Wholesail for truffle season, caviar service, and premium protein sourcing.',
               },
               {
                 tier: 'Hospitality',
@@ -308,7 +308,7 @@ export default function PressPage() {
                 tier: 'Private',
                 desc: 'Private Chef Services',
                 detail:
-                  "LA's elite private chef community uses TBGC for direct access to allocations that aren't available through traditional distributors.",
+                  "LA's elite private chef community uses Wholesail for direct access to allocations that aren't available through traditional distributors.",
               },
               {
                 tier: 'Events',
@@ -326,7 +326,7 @@ export default function PressPage() {
                 tier: 'Wholesale',
                 desc: 'Specialty Retailers',
                 detail:
-                  'Select specialty food retailers partner with TBGC for exclusive allocations that they can offer their most discerning clientele.',
+                  'Select specialty food retailers partner with Wholesail for exclusive allocations that they can offer their most discerning clientele.',
               },
             ].map((item) => (
               <div key={item.tier} className="bg-[#F9F7F4] p-8">
@@ -362,11 +362,11 @@ export default function PressPage() {
                     Media Contact
                   </p>
                   <a
-                    href="mailto:press@truffleboys.com"
+                    href="mailto:press@wholesailhub.com"
                     className="flex items-center gap-2.5 text-[#0A0A0A] font-medium text-lg hover:text-[#0A0A0A]/70 transition-colors group"
                   >
                     <Mail className="h-5 w-5 text-[#C8C0B4]" />
-                    press@truffleboys.com
+                    press@wholesailhub.com
                     <ArrowUpRight className="h-4 w-4 text-[#C8C0B4] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                   </a>
                   <p className="text-sm text-[#0A0A0A]/50 mt-2">
@@ -433,19 +433,19 @@ export default function PressPage() {
       {/* FOOTER */}
       <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <Link href="/" className="font-serif text-xl font-bold">TBGC</Link>
+          <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
           <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
             <Link href="/" className="hover:text-[#F9F7F4] transition-colors">Home</Link>
             <Link href="/catalog" className="hover:text-[#F9F7F4] transition-colors">Products</Link>
             <Link href="/partner" className="hover:text-[#F9F7F4] transition-colors">Wholesale</Link>
             <a
-              href="https://www.instagram.com/tbgc_inc/"
+              href="https://www.instagram.com/wholesailhub/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-[#F9F7F4] transition-colors flex items-center gap-1.5"
             >
               <Instagram className="h-3.5 w-3.5" />
-              @tbgc_inc
+              @wholesailhub
             </a>
           </div>
         </div>

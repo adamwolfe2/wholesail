@@ -413,7 +413,7 @@ export default function WholesailPage() {
             data, and let you click through every feature — client portal,
             admin panel, orders, invoicing, SMS flow, and more.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5 text-left">
+          <div className="space-y-3 text-left">
             {[
               "Full product catalog with your branding",
               "Client portal with order history and tracking",
@@ -1251,18 +1251,18 @@ export default function WholesailPage() {
           </span>
           <div className="flex gap-4">
             <a
-              href="mailto:adam@wholesailhub.com"
+              href="/privacy"
               className="font-mono text-[10px] transition-colors"
               style={{ color: "var(--text-muted)" }}
             >
-              Privacy
+              Privacy Policy
             </a>
             <a
-              href="mailto:adam@wholesailhub.com"
+              href="/terms"
               className="font-mono text-[10px] transition-colors"
               style={{ color: "var(--text-muted)" }}
             >
-              Terms
+              Terms of Service
             </a>
           </div>
         </div>

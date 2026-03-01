@@ -6,22 +6,22 @@ import { MarketingHeader } from '@/components/marketing-header'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'How to Order — Wholesale Ordering Guide | TBGC',
+  title: 'How to Order — Wholesale Ordering Guide | Wholesail',
   description:
-    'Everything you need to know about ordering from TBGC — from applying for wholesale access to iMessage ordering, standing orders, cold-chain delivery, and payment terms.',
+    'Everything you need to know about ordering from Wholesail — from applying for wholesale access to iMessage ordering, standing orders, cold-chain delivery, and payment terms.',
   openGraph: {
-    title: 'How to Order — Wholesale Ordering Guide | TBGC',
+    title: 'How to Order — Wholesale Ordering Guide | Wholesail',
     description:
-      'Everything you need to know about ordering from TBGC — from applying for wholesale access to iMessage ordering, standing orders, cold-chain delivery, and payment terms.',
+      'Everything you need to know about ordering from Wholesail — from applying for wholesale access to iMessage ordering, standing orders, cold-chain delivery, and payment terms.',
     type: 'article',
-    images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: 'Truffle Boys & Girls Club — Luxury Wholesale Specialty Foods' }],
+    images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: 'Wholesail — Luxury Wholesale Specialty Foods' }],
   },
   twitter: {
     card: 'summary_large_image',
     images: ['/Public Social Image.png'],
   },
   alternates: {
-    canonical: 'https://truffleboys.com/guide',
+    canonical: 'https://wholesailhub.com/guide',
   },
 }
 
@@ -34,7 +34,7 @@ const faqItems = [
   {
     question: 'How often do you drop new products?',
     answer:
-      'We run weekly drops on seasonal and limited items — fresh truffles, new caviar lots, and specialty arrivals. Sign up for drop alerts on the Drops page or follow @tbgc_inc on Instagram.',
+      'We run weekly drops on seasonal and limited items — new arrivals, seasonal products, and specialty finds. Sign up for drop alerts on the Drops page or follow @wholesailhub on Instagram.',
   },
   {
     question: 'Can you source something that isn\'t in the catalog?',
@@ -84,7 +84,7 @@ export default function GuidePage() {
       {/* HERO */}
       <div className="pt-24 pb-12 sm:pb-16 border-b border-[#E5E1DB]">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          <p className="text-xs tracking-[0.25em] uppercase text-[#C8C0B4] mb-4">TBGC</p>
+          <p className="text-xs tracking-[0.25em] uppercase text-[#C8C0B4] mb-4">Wholesail</p>
           <h1 className="font-serif text-5xl sm:text-6xl font-normal text-[#0A0A0A] leading-tight mb-6">
             How to Order
           </h1>
@@ -112,7 +112,7 @@ export default function GuidePage() {
             </div>
             <div className="pl-0 sm:pl-20 space-y-5">
               <p className="text-[#0A0A0A]/70 text-base leading-relaxed">
-                TBGC is a wholesale-only operation. We work with Michelin-starred restaurants, four- and
+                Wholesail is a wholesale-only operation. We work with Michelin-starred restaurants, four- and
                 five-star hotels, private chefs, and qualified catering operations. We are not a consumer
                 retailer.
               </p>
@@ -169,7 +169,7 @@ export default function GuidePage() {
               <p className="text-[#0A0A0A]/70 text-base leading-relaxed">
                 Once you have portal access, your client dashboard shows your pricing tier, order history,
                 available items, and any active promotions. The catalog is organized by category —
-                Truffles, Caviar, Wagyu & Protein, Foie Gras & Duck, Salumi, and more.
+                review your catalog categories with your account manager after onboarding.
               </p>
               <ul className="space-y-3">
                 {[
@@ -303,8 +303,8 @@ export default function GuidePage() {
             </div>
             <div className="pl-0 sm:pl-20 space-y-5">
               <p className="text-[#0A0A0A]/70 text-base leading-relaxed">
-                We built an AI ordering system that understands how chefs actually communicate. Text us
-                naturally — &ldquo;I need 500g of black truffle and two tins of Kaluga 000&rdquo; — and our system
+                We built an AI ordering system that understands how buyers actually communicate. Text us
+                naturally — &ldquo;12 cases product A, 5 lbs product B&rdquo; — and our system
                 interprets your order, matches it to the catalog, and routes it to a human for
                 confirmation before anything ships.
               </p>
@@ -312,13 +312,13 @@ export default function GuidePage() {
                 <div className="space-y-4">
                   <div className="flex justify-end">
                     <div className="bg-[#1C6CF7] text-white rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-xs text-right">
-                      I need 500g black truffle, 2 tins Kaluga 000, and the usual A5 ribeye for Friday
+                      I need 12 cases product A and 5 lbs product B for Friday
                     </div>
                   </div>
                   <div className="flex justify-start">
                     <div className="bg-white/10 text-white/80 rounded-2xl rounded-tl-sm px-4 py-2.5 max-w-xs">
-                      Got it. I see: 500g Périgord Black Truffle, 2x Kaluga Hybrid 000 (30g tins), and
-                      A5 Ribeye 12oz (your usual). Total $847. Confirm for Friday delivery?
+                      Got it. I see: 12x Product A and 5 lbs Product B (your usual).
+                      Total calculated at checkout. Confirm for Friday delivery?
                     </div>
                   </div>
                   <div className="flex justify-end">
@@ -422,7 +422,7 @@ export default function GuidePage() {
             Ready to get started?
           </p>
           <p className="text-white/50 text-base mb-8 max-w-xl mx-auto leading-relaxed">
-            Apply for wholesale access and join the kitchens that source with TBGC.
+            Apply for wholesale access and join the kitchens that source with Wholesail.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -444,20 +444,20 @@ export default function GuidePage() {
       {/* FOOTER */}
       <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <Link href="/" className="font-serif text-xl font-bold">TBGC</Link>
+          <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
           <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
             <Link href="/catalog" className="hover:text-[#F9F7F4] transition-colors">Catalog</Link>
             <Link href="/guide" className="hover:text-[#F9F7F4] transition-colors">How to Order</Link>
             <Link href="/about" className="hover:text-[#F9F7F4] transition-colors">About</Link>
             <Link href="/partner" className="hover:text-[#F9F7F4] transition-colors">Wholesale</Link>
             <a
-              href="https://www.instagram.com/tbgc_inc/"
+              href="https://www.instagram.com/wholesailhub/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-[#F9F7F4] transition-colors flex items-center gap-1.5"
             >
               <Instagram className="h-3.5 w-3.5" />
-              @tbgc_inc
+              @wholesailhub
             </a>
           </div>
         </div>

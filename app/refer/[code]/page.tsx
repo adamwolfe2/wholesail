@@ -29,13 +29,13 @@ export default async function ReferralLandingPage({ params }: ReferPageProps) {
           <div className="container mx-auto flex h-16 items-center px-6 lg:px-8">
             <Link href="/" className="flex items-center gap-3">
               <Image
-                src="/truffle-boys-logo.svg"
-                alt="Truffle Boys & Girls Club"
+                src="/wholesail-logo.svg"
+                alt="Wholesail"
                 width={36}
                 height={36}
                 className="h-9 w-auto"
               />
-              <span className="font-serif font-bold text-xl text-[#0A0A0A]">TBGC</span>
+              <span className="font-serif font-bold text-xl text-[#0A0A0A]">Wholesail</span>
             </Link>
           </div>
         </header>
@@ -70,14 +70,14 @@ export default async function ReferralLandingPage({ params }: ReferPageProps) {
         <div className="container mx-auto flex h-16 items-center justify-between px-6 lg:px-8">
           <Link href="/" className="flex items-center gap-3">
             <Image
-              src="/truffle-boys-logo.svg"
-              alt="Truffle Boys & Girls Club"
+              src="/wholesail-logo.svg"
+              alt="Wholesail"
               width={36}
               height={36}
               className="h-9 w-auto"
             />
             <div className="flex flex-col">
-              <span className="font-serif font-bold text-lg text-[#0A0A0A] leading-tight">TBGC</span>
+              <span className="font-serif font-bold text-lg text-[#0A0A0A] leading-tight">Wholesail</span>
               <span className="font-serif italic text-xs text-[#C8C0B4] leading-tight">Wholesale Portal</span>
             </div>
           </Link>
@@ -109,8 +109,8 @@ export default async function ReferralLandingPage({ params }: ReferPageProps) {
           </h1>
 
           <p className="text-lg sm:text-xl text-[#0A0A0A]/70 leading-relaxed mb-10 max-w-2xl">
-            {org.name} thinks you&apos;d love access to TBGC&apos;s wholesale catalog —
-            truffles, caviar, and specialty foods sourced for Michelin-caliber kitchens.
+            {org.name} thinks you&apos;d love access to Wholesail's wholesale catalog —
+            premium products sourced directly for food service and hospitality operators.
           </p>
 
           {/* CTA */}
@@ -159,7 +159,7 @@ export default async function ReferralLandingPage({ params }: ReferPageProps) {
               <div>
                 <p className="font-serif text-lg text-[#0A0A0A] mb-2">True Wholesale Pricing</p>
                 <p className="text-sm text-[#0A0A0A]/60 leading-relaxed">
-                  Direct-source rates on truffles, caviar, wagyu, foie gras, and 100+ specialty SKUs. No middleman markup.
+                  Direct-source rates across your full catalog. No middleman markup — just clean wholesale pricing.
                 </p>
               </div>
               <div>
@@ -183,7 +183,7 @@ export default async function ReferralLandingPage({ params }: ReferPageProps) {
       <footer className="border-t border-[#E5E1DB] py-8">
         <div className="container mx-auto px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[#C8C0B4]">
-            &copy; {new Date().getFullYear()} Truffle Boys &amp; Girls Club. All rights reserved.
+            &copy; {new Date().getFullYear()} Wholesail. All rights reserved.
           </p>
           <div className="flex gap-4 text-xs text-[#C8C0B4]">
             <Link href="/catalog" className="hover:text-[#0A0A0A] transition-colors">Catalog</Link>
