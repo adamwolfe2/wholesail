@@ -116,3 +116,39 @@ export async function getProjectUrl(projectId: string): Promise<string | null> {
   }
   return null;
 }
+
+/**
+ * Triggers a Vercel deployment from the latest commit on the linked GitHub repo.
+ * Call this after all env vars are set so the first real deploy has everything it needs.
+ */
+export async function triggerDeployment(
+  projectId: string,
+  repoFullName: string // e.g. "adamwolfe2/client-portal"
+): Promise<{ deploymentId: string; url: string }> {
+  const [, repo] = repoFullName.split("/");
+  const res = await fetch(`${VERCEL_API}/v13/deployments${teamParam()}`, {
+    method: "POST",
+    headers: headers(),
+    body: JSON.stringify({
+      name: repo,
+      project: projectId,
+      target: "production",
+      gitSource: {
+        type: "github",
+        repoId: repoFullName,
+        ref: "main",
+      },
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Vercel triggerDeployment failed (${res.status}): ${body}`);
+  }
+
+  const data = await res.json();
+  return {
+    deploymentId: data.id ?? data.uid ?? "",
+    url: data.url ? `https://${data.url}` : "",
+  };
+}

@@ -4,12 +4,17 @@ import { getIntakeSubmissionById } from "@/lib/db/intake";
 import { convertIntakeToProject } from "@/lib/db/projects";
 import { logCost } from "@/lib/db/costs";
 import { createRepo, commitFile } from "@/lib/build/github";
-import { createProject as createVercelProject, setEnvVar } from "@/lib/build/vercel-api";
+import {
+  createProject as createVercelProject,
+  setEnvVar,
+  triggerDeployment,
+} from "@/lib/build/vercel-api";
+import { createPostgresStore, createKVStore, connectStoreToProject } from "@/lib/build/storage";
 import { prisma } from "@/lib/db";
 import Anthropic from "@anthropic-ai/sdk";
-import { ENV_VARS } from "@/lib/client-data";
+import crypto from "crypto";
 
-// ── Same config generation logic as /generate-config ─────────────────────────
+// ── Industry defaults ─────────────────────────────────────────────────────────
 
 const INDUSTRY_DEFAULTS: Record<
   string,
@@ -79,6 +84,8 @@ export const portalConfig: PortalConfig = {
 };
 `;
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
 function luminance(hex: string): number {
   const clean = hex.replace("#", "");
   const r = parseInt(clean.substring(0, 2), 16) / 255;
@@ -98,6 +105,8 @@ function ts() {
   return new Date().toISOString();
 }
 
+// ── Route ─────────────────────────────────────────────────────────────────────
+
 export async function POST(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -113,10 +122,10 @@ export async function POST(
       return NextResponse.json({ error: "Intake not found" }, { status: 404 });
     }
 
-    // Idempotency: if project already fully built, return early
+    // Idempotency — if already fully built, return early
     if (intake.project) {
-      const existingChecklist = (intake.project.buildChecklist as Record<string, boolean> | null) ?? {};
-      if (existingChecklist.vercelProjectCreated) {
+      const checklist = (intake.project.buildChecklist as Record<string, boolean> | null) ?? {};
+      if (checklist.vercelProjectCreated && checklist.storageProvisioned) {
         return NextResponse.json({
           projectId: intake.project.id,
           message: "Build already completed",
@@ -124,7 +133,7 @@ export async function POST(
       }
     }
 
-    // ── Step 4: Convert intake to project (if not already done) ────────────
+    // ── Convert intake → Project (idempotent) ──────────────────────────────
     let project = intake.project;
     if (!project) {
       project = await convertIntakeToProject(intakeId);
@@ -142,23 +151,20 @@ export async function POST(
       buildLog.push(`[${ts()}] ${msg}`);
     }
 
-    async function saveProgress() {
+    async function saveProgress(extra?: Record<string, unknown>) {
       await prisma.project.update({
         where: { id: projectId },
-        data: { buildLog, buildChecklist },
+        data: { buildLog, buildChecklist, ...extra },
       });
     }
 
-    // ── Step 5: Generate portal.config.ts via Claude Haiku ─────────────────
+    // ── STEP 1: Generate portal.config.ts via Claude Haiku ─────────────────
     if (!buildChecklist.configGenerated) {
       const defaults =
         INDUSTRY_DEFAULTS[intake.industry] ?? INDUSTRY_DEFAULTS["General Distribution"];
 
       const netTermOptions = (intake.paymentTerms ?? [])
-        .map((t: string) => {
-          const m = t.match(/\d+/);
-          return m ? parseInt(m[0], 10) : null;
-        })
+        .map((t: string) => { const m = t.match(/\d+/); return m ? parseInt(m[0], 10) : null; })
         .filter((n): n is number => n !== null);
       if (!netTermOptions.includes(0)) netTermOptions.unshift(0);
 
@@ -172,7 +178,6 @@ export async function POST(
 
       const primary = intake.primaryColor ?? "#0A0A0A";
       const foreground = primaryForeground(primary);
-
       const features = intake.selectedFeatures ?? [];
       const hasFeature = (f: string) =>
         features.some((s: string) => s.toLowerCase().includes(f.toLowerCase()));
@@ -201,7 +206,7 @@ export async function POST(
         },
       };
 
-      let generatedConfig = "";
+      let generatedConfig = CONFIG_SKELETON;
       let tokensUsed = 0;
 
       if (process.env.ANTHROPIC_API_KEY) {
@@ -220,35 +225,29 @@ export async function POST(
           ],
         });
         generatedConfig =
-          message.content[0].type === "text" ? message.content[0].text : "";
+          message.content[0].type === "text" ? message.content[0].text : CONFIG_SKELETON;
         tokensUsed = message.usage.input_tokens + message.usage.output_tokens;
-      } else {
-        generatedConfig = CONFIG_SKELETON;
       }
 
-      await prisma.project.update({
-        where: { id: projectId },
-        data: { generatedConfig },
-      });
+      await prisma.project.update({ where: { id: projectId }, data: { generatedConfig } });
 
       if (process.env.ANTHROPIC_API_KEY && tokensUsed > 0) {
-        // Haiku pricing: ~$0.25/1M input, $1.25/1M output — estimate $0.02 avg per call
         await logCost(projectId, {
           service: "anthropic",
-          amountCents: 2,
+          amountCents: 2, // ~$0.02 per Haiku config gen call
           description: "Config generation via Claude Haiku",
           tokens: tokensUsed,
         });
       }
 
       buildChecklist.configGenerated = true;
-      appendLog("Config generated via Claude Haiku");
+      appendLog(`Config generated via Claude Haiku (${tokensUsed} tokens)`);
       await saveProgress();
     }
 
-    // ── Step 6: Create GitHub repo ──────────────────────────────────────────
-    let repoName = project.githubRepo;
-    if (!buildChecklist.githubRepoCreated && process.env.GITHUB_TOKEN) {
+    // ── STEP 2: Create GitHub repo ─────────────────────────────────────────
+    let repoName = project.githubRepo?.split("/")[1] ?? null;
+    if (!buildChecklist.githubRepoCreated && process.env.GITHUB_PAT) {
       const slug = intake.companyName
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
@@ -258,49 +257,83 @@ export async function POST(
       try {
         const repo = await createRepo(
           repoName,
-          `${intake.companyName} — Wholesail portal build`
+          `${intake.companyName} — Wholesail distribution portal`
         );
-
         await prisma.project.update({
           where: { id: projectId },
           data: { githubRepo: repo.fullName },
         });
-
         buildChecklist.githubRepoCreated = true;
         appendLog(`GitHub repo created: ${repo.fullName}`);
         await saveProgress();
-
-        // ── Step 7: Commit initial files ──────────────────────────────────
-        const updatedProject = await prisma.project.findUnique({ where: { id: projectId } });
-        const configContent = updatedProject?.generatedConfig ?? CONFIG_SKELETON;
-
-        await commitFile(
-          repoName,
-          "portal.config.ts",
-          configContent,
-          "chore: initial portal config (generated by Wholesail)"
-        );
-
-        const envExampleContent =
-          ENV_VARS.map((v) => `${v.key}=YOUR_VALUE_HERE`).join("\n") + "\n";
-        await commitFile(
-          repoName,
-          ".env.example",
-          envExampleContent,
-          "chore: add env vars example"
-        );
-
-        appendLog("Initial files committed to GitHub");
-        await saveProgress();
       } catch (ghErr) {
-        appendLog(`GitHub error: ${(ghErr as Error).message}`);
+        appendLog(`GitHub repo error: ${(ghErr as Error).message}`);
         await saveProgress();
       }
     }
 
-    // ── Step 8: Create Vercel project ───────────────────────────────────────
+    // ── STEP 3: Commit initial files to GitHub ─────────────────────────────
+    if (
+      buildChecklist.githubRepoCreated &&
+      !buildChecklist.filesCommitted &&
+      repoName
+    ) {
+      try {
+        const updatedProject = await prisma.project.findUnique({ where: { id: projectId } });
+        const configContent = updatedProject?.generatedConfig ?? CONFIG_SKELETON;
+
+        // portal.config.ts — generated client config
+        await commitFile(repoName, "portal.config.ts", configContent,
+          "chore: initial portal config (auto-generated by Wholesail)"
+        );
+
+        // .env.example — env var reference for this client
+        const envExample = [
+          "# Auto-provisioned by Wholesail — DO NOT edit these manually",
+          "DATABASE_URL=",
+          "DATABASE_URL_UNPOOLED=",
+          "UPSTASH_REDIS_REST_URL=",
+          "UPSTASH_REDIS_REST_TOKEN=",
+          "CRON_SECRET=",
+          "NEXT_PUBLIC_APP_URL=",
+          "ANTHROPIC_API_KEY=",
+          "GEMINI_API_KEY=",
+          "RESEND_API_KEY=",
+          "RESEND_FROM_EMAIL=",
+          "",
+          "# Set by Wholesail after Clerk app creation",
+          "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=",
+          "CLERK_SECRET_KEY=",
+          "CLERK_WEBHOOK_SECRET=",
+          "",
+          "# Provided by client",
+          "STRIPE_SECRET_KEY=",
+          "STRIPE_WEBHOOK_SECRET=",
+          "BLOOIO_API_KEY=",
+          "BLOOIO_PHONE_NUMBER=",
+          "BLOOIO_WEBHOOK_SECRET=",
+        ].join("\n");
+
+        await commitFile(repoName, ".env.example", envExample,
+          "chore: env var reference"
+        );
+
+        buildChecklist.filesCommitted = true;
+        appendLog("Initial files committed to GitHub");
+        await saveProgress();
+      } catch (commitErr) {
+        appendLog(`File commit error: ${(commitErr as Error).message}`);
+        await saveProgress();
+      }
+    }
+
+    // ── STEP 4: Create Vercel project ──────────────────────────────────────
     let vercelProjectId = project.vercelProject;
-    if (!buildChecklist.vercelProjectCreated && process.env.VERCEL_TOKEN && repoName) {
+    const vercelUrl = vercelProjectId
+      ? `https://${repoName}.vercel.app`
+      : null;
+
+    if (!buildChecklist.vercelProjectCreated && process.env.WS_VERCEL_TOKEN && repoName) {
       try {
         const vercelProject = await createVercelProject(
           repoName,
@@ -308,53 +341,256 @@ export async function POST(
         );
         vercelProjectId = vercelProject.id;
 
-        const vercelUrl = `https://${repoName}.vercel.app`;
-
         await prisma.project.update({
           where: { id: projectId },
-          data: { vercelProject: vercelProjectId, vercelUrl },
+          data: {
+            vercelProject: vercelProjectId,
+            vercelUrl: `https://${repoName}.vercel.app`,
+          },
         });
 
         buildChecklist.vercelProjectCreated = true;
-        appendLog(`Vercel project created: ${repoName}`);
-        await saveProgress();
-
-        // ── Step 9: Set env vars on Vercel ───────────────────────────────
-        await setEnvVar(vercelProjectId, "NEXT_PUBLIC_APP_URL", vercelUrl);
-        await setEnvVar(
-          vercelProjectId,
-          "NEXT_PUBLIC_COMPANY_NAME",
-          intake.companyName
-        );
-
-        appendLog("Vercel env vars set");
+        appendLog(`Vercel project created: ${repoName} (${vercelProjectId})`);
         await saveProgress();
       } catch (vErr) {
-        appendLog(`Vercel error: ${(vErr as Error).message}`);
+        appendLog(`Vercel project error: ${(vErr as Error).message}`);
         await saveProgress();
       }
     }
 
-    // ── Step 10: Update project status ──────────────────────────────────────
+    // ── STEP 5: Provision Vercel Postgres (Neon) ───────────────────────────
+    let neonStoreId = project.neonStoreId;
+    if (!buildChecklist.storagePostgresCreated && vercelProjectId && process.env.WS_VERCEL_TOKEN) {
+      try {
+        appendLog("Provisioning Vercel Postgres (Neon)...");
+        const pgStore = await createPostgresStore(`${repoName}-db`);
+        neonStoreId = pgStore.storeId;
+
+        // Connect store → Vercel auto-injects POSTGRES_* env vars
+        await connectStoreToProject(pgStore.storeId, vercelProjectId);
+
+        // Also set our template's expected env var names directly
+        await setEnvVar(vercelProjectId, "DATABASE_URL", pgStore.databaseUrl);
+        await setEnvVar(vercelProjectId, "DATABASE_URL_UNPOOLED", pgStore.databaseUrlDirect);
+
+        await logCost(projectId, {
+          service: "vercel-postgres",
+          amountCents: 0, // free tier initially
+          description: "Vercel Postgres (Neon) — free tier provisioned",
+          metadata: { storeId: pgStore.storeId, plan: "hobby" },
+        });
+
+        buildChecklist.storagePostgresCreated = true;
+        appendLog(`Postgres provisioned — store: ${pgStore.storeId}`);
+        await saveProgress({ neonStoreId: pgStore.storeId });
+      } catch (pgErr) {
+        appendLog(`Postgres provisioning error: ${(pgErr as Error).message}`);
+        await saveProgress();
+      }
+    }
+
+    // ── STEP 6: Provision Vercel KV (Upstash) ─────────────────────────────
+    let upstashStoreId = project.upstashStoreId;
+    if (!buildChecklist.storageKVCreated && vercelProjectId && process.env.WS_VERCEL_TOKEN) {
+      try {
+        appendLog("Provisioning Vercel KV (Upstash)...");
+        const kvStore = await createKVStore(`${repoName}-kv`);
+        upstashStoreId = kvStore.storeId;
+
+        // Connect store → Vercel auto-injects KV_* env vars
+        await connectStoreToProject(kvStore.storeId, vercelProjectId);
+
+        // Also set our template's expected env var names
+        await setEnvVar(vercelProjectId, "UPSTASH_REDIS_REST_URL", kvStore.restApiUrl);
+        await setEnvVar(vercelProjectId, "UPSTASH_REDIS_REST_TOKEN", kvStore.restApiToken);
+
+        await logCost(projectId, {
+          service: "vercel-kv",
+          amountCents: 0, // free tier initially
+          description: "Vercel KV (Upstash) — free tier provisioned",
+          metadata: { storeId: kvStore.storeId, plan: "hobby" },
+        });
+
+        buildChecklist.storageKVCreated = true;
+        appendLog(`KV provisioned — store: ${kvStore.storeId}`);
+        await saveProgress({ upstashStoreId: kvStore.storeId });
+      } catch (kvErr) {
+        appendLog(`KV provisioning error: ${(kvErr as Error).message}`);
+        await saveProgress();
+      }
+    }
+
+    // ── STEP 7: Set auto env vars (shared keys + generated secrets) ────────
+    if (!buildChecklist.envVarsAutoSet && vercelProjectId && process.env.WS_VERCEL_TOKEN) {
+      try {
+        const clientUrl = `https://${repoName}.vercel.app`;
+        const cronSecret = crypto.randomBytes(32).toString("hex");
+
+        const autoVars: Record<string, string | undefined> = {
+          // App URL
+          NEXT_PUBLIC_APP_URL: clientUrl,
+
+          // Clerk redirect URLs (standard — admin sets the publishable/secret keys)
+          NEXT_PUBLIC_CLERK_SIGN_IN_URL: "/sign-in",
+          NEXT_PUBLIC_CLERK_SIGN_UP_URL: "/sign-up",
+          NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: "/client-portal",
+          NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: "/client-portal",
+
+          // Cron auth — unique per client
+          CRON_SECRET: cronSecret,
+
+          // Shared Wholesail API keys (client inherits until they switch to own)
+          ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+          GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+          RESEND_API_KEY: process.env.RESEND_API_KEY,
+          RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL ?? "orders@wholesailhub.com",
+        };
+
+        const setPromises = Object.entries(autoVars)
+          .filter(([, v]) => Boolean(v))
+          .map(([k, v]) => setEnvVar(vercelProjectId!, k, v!));
+
+        await Promise.all(setPromises);
+
+        buildChecklist.envVarsAutoSet = true;
+        appendLog(`Auto env vars set (${Object.keys(autoVars).filter(k => autoVars[k]).length} vars)`);
+        await saveProgress();
+      } catch (envErr) {
+        appendLog(`Auto env var error: ${(envErr as Error).message}`);
+        await saveProgress();
+      }
+    }
+
+    // ── STEP 8: Set placeholder env vars (admin fills after Clerk/Stripe setup)
+    if (!buildChecklist.envVarsPlaceholderSet && vercelProjectId && process.env.WS_VERCEL_TOKEN) {
+      try {
+        const placeholders: Record<string, string> = {
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "PENDING_CLERK_SETUP",
+          CLERK_SECRET_KEY: "PENDING_CLERK_SETUP",
+          CLERK_WEBHOOK_SECRET: "PENDING_CLERK_SETUP",
+          STRIPE_SECRET_KEY: "PENDING_CLIENT_STRIPE",
+          STRIPE_WEBHOOK_SECRET: "PENDING_CLIENT_STRIPE",
+        };
+
+        // Only set Bloo.io placeholders if SMS ordering was requested
+        const features = intake.selectedFeatures ?? [];
+        const hasSMS = features.some((f: string) =>
+          f.toLowerCase().includes("sms") || f.toLowerCase().includes("bloo")
+        );
+        if (hasSMS) {
+          placeholders.BLOOIO_API_KEY = "PENDING_BLOOIO_SETUP";
+          placeholders.BLOOIO_PHONE_NUMBER = "PENDING_BLOOIO_SETUP";
+          placeholders.BLOOIO_WEBHOOK_SECRET = "PENDING_BLOOIO_SETUP";
+        }
+
+        await Promise.all(
+          Object.entries(placeholders).map(([k, v]) => setEnvVar(vercelProjectId!, k, v))
+        );
+
+        // Track env var status on project for the dashboard
+        const envVarStatus = {
+          DATABASE_URL: "configured",
+          DATABASE_URL_UNPOOLED: "configured",
+          UPSTASH_REDIS_REST_URL: "configured",
+          UPSTASH_REDIS_REST_TOKEN: "configured",
+          CRON_SECRET: "configured",
+          ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY ? "configured" : "missing",
+          GEMINI_API_KEY: process.env.GEMINI_API_KEY ? "configured" : "missing",
+          RESEND_API_KEY: process.env.RESEND_API_KEY ? "configured" : "missing",
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pending",
+          CLERK_SECRET_KEY: "pending",
+          CLERK_WEBHOOK_SECRET: "pending",
+          STRIPE_SECRET_KEY: "pending",
+          STRIPE_WEBHOOK_SECRET: "pending",
+          ...(hasSMS ? {
+            BLOOIO_API_KEY: "pending",
+            BLOOIO_PHONE_NUMBER: "pending",
+            BLOOIO_WEBHOOK_SECRET: "pending",
+          } : {}),
+        };
+
+        await prisma.project.update({
+          where: { id: projectId },
+          data: { envVars: envVarStatus },
+        });
+
+        buildChecklist.envVarsPlaceholderSet = true;
+        appendLog("Placeholder env vars set (Clerk + Stripe pending admin/client)");
+        await saveProgress();
+      } catch (phErr) {
+        appendLog(`Placeholder env var error: ${(phErr as Error).message}`);
+        await saveProgress();
+      }
+    }
+
+    // ── STEP 9: Trigger first Vercel deployment ────────────────────────────
+    let deploymentId = project.deploymentId;
+    if (
+      !buildChecklist.deploymentTriggered &&
+      vercelProjectId &&
+      repoName &&
+      buildChecklist.filesCommitted &&
+      process.env.WS_VERCEL_TOKEN
+    ) {
+      try {
+        const deployment = await triggerDeployment(vercelProjectId, `adamwolfe2/${repoName}`);
+        deploymentId = deployment.deploymentId;
+
+        await logCost(projectId, {
+          service: "vercel-build",
+          amountCents: 0, // hobby builds are free
+          description: "First Vercel deployment triggered",
+          metadata: { deploymentId: deployment.deploymentId },
+        });
+
+        buildChecklist.deploymentTriggered = true;
+        appendLog(`Deployment triggered: ${deployment.deploymentId}`);
+        await saveProgress({ deploymentId: deployment.deploymentId });
+      } catch (dErr) {
+        appendLog(`Deployment trigger error: ${(dErr as Error).message} — admin can trigger manually from Vercel dashboard`);
+        await saveProgress();
+      }
+    }
+
+    // ── STEP 10: Mark storage fully provisioned + update status ───────────
+    buildChecklist.storageProvisioned =
+      !!buildChecklist.storagePostgresCreated && !!buildChecklist.storageKVCreated;
+
     await prisma.project.update({
       where: { id: projectId },
       data: {
-        status: "ONBOARDING",
-        currentPhase: 1,
+        status: "BUILDING",
+        currentPhase: 2,
         buildLog,
         buildChecklist,
+        neonStoreId,
+        upstashStoreId,
+        deploymentId,
       },
     });
 
     const finalProject = await prisma.project.findUnique({ where: { id: projectId } });
+
+    // Summarize what still needs manual action
+    const pendingActions = [
+      !buildChecklist.storagePostgresCreated && "Provision Postgres DB manually",
+      !buildChecklist.storageKVCreated && "Provision KV store manually",
+      "Create Clerk app → set NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, CLERK_SECRET_KEY, CLERK_WEBHOOK_SECRET",
+      "Get client Stripe keys → set STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET",
+      "Connect custom domain in Vercel",
+    ].filter(Boolean);
 
     return NextResponse.json({
       projectId,
       githubRepo: finalProject?.githubRepo,
       vercelProjectId: finalProject?.vercelProject,
       vercelUrl: finalProject?.vercelUrl,
+      neonStoreId: finalProject?.neonStoreId,
+      upstashStoreId: finalProject?.upstashStoreId,
+      deploymentId: finalProject?.deploymentId,
       buildChecklist,
       buildLog,
+      pendingManualActions: pendingActions,
     });
   } catch (err) {
     console.error("[build-start] Error:", err);
