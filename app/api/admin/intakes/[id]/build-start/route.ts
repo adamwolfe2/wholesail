@@ -10,6 +10,7 @@ import {
   triggerDeployment,
 } from "@/lib/build/vercel-api";
 import { createPostgresStore, createKVStore, connectStoreToProject } from "@/lib/build/storage";
+import { createResendApiKey } from "@/lib/build/resend-admin";
 import { prisma } from "@/lib/db";
 import Anthropic from "@anthropic-ai/sdk";
 import crypto from "crypto";
@@ -420,11 +421,41 @@ export async function POST(
       }
     }
 
-    // ── STEP 7: Set auto env vars (shared keys + generated secrets) ────────
+    // ── STEP 7: Provision per-client Resend API key ────────────────────────
+    let resendKeyId: string | null = null;
+    let resendToken: string | null = null;
+    if (!buildChecklist.resendKeyCreated && process.env.RESEND_API_KEY) {
+      try {
+        const keyName = `${intake.companyName.slice(0, 40)} Portal`;
+        const resendKey = await createResendApiKey(keyName);
+        resendKeyId = resendKey.keyId;
+        resendToken = resendKey.token;
+
+        await logCost(projectId, {
+          service: "resend",
+          amountCents: 0, // free tier initially
+          description: `Per-client Resend API key provisioned: ${keyName}`,
+          metadata: { keyId: resendKey.keyId },
+        });
+
+        buildChecklist.resendKeyCreated = true;
+        appendLog(`Resend API key created — keyId: ${resendKey.keyId}`);
+        await saveProgress();
+      } catch (resendErr) {
+        appendLog(`Resend key error: ${(resendErr as Error).message} — will fall back to shared key`);
+        await saveProgress();
+      }
+    }
+
+    // ── STEP 8: Set auto env vars (per-client + generated secrets) ─────────
     if (!buildChecklist.envVarsAutoSet && vercelProjectId && process.env.WS_VERCEL_TOKEN) {
       try {
         const clientUrl = `https://${repoName}.vercel.app`;
         const cronSecret = crypto.randomBytes(32).toString("hex");
+
+        // Use dedicated per-client Resend key if provisioned, else fall back to shared
+        const resendApiKey = resendToken ?? process.env.RESEND_API_KEY;
+        const usingDedicatedResend = !!resendToken;
 
         const autoVars: Record<string, string | undefined> = {
           // App URL
@@ -439,10 +470,13 @@ export async function POST(
           // Cron auth — unique per client
           CRON_SECRET: cronSecret,
 
-          // Shared Wholesail API keys (client inherits until they switch to own)
+          // AI keys — Anthropic is shared (no programmatic key creation API).
+          // Tag usage by injecting CLIENT_ID so we can filter Anthropic dashboard by project.
           ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
           GEMINI_API_KEY: process.env.GEMINI_API_KEY,
-          RESEND_API_KEY: process.env.RESEND_API_KEY,
+
+          // Email — dedicated per-client key when available
+          RESEND_API_KEY: resendApiKey,
           RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL ?? "orders@wholesailhub.com",
         };
 
@@ -452,8 +486,28 @@ export async function POST(
 
         await Promise.all(setPromises);
 
+        // Persist service key references for cost-tracking queries
+        const serviceKeys = {
+          resend: resendKeyId
+            ? { keyId: resendKeyId, dedicated: true }
+            : { keyId: null, dedicated: false, note: "using shared Wholesail key" },
+          anthropic: {
+            keyId: null,
+            dedicated: false,
+            note: "shared key — no programmatic creation API; attribute via metadata",
+          },
+        };
+
+        await prisma.project.update({
+          where: { id: projectId },
+          data: { serviceKeys },
+        });
+
         buildChecklist.envVarsAutoSet = true;
-        appendLog(`Auto env vars set (${Object.keys(autoVars).filter(k => autoVars[k]).length} vars)`);
+        const varCount = Object.keys(autoVars).filter(k => autoVars[k]).length;
+        appendLog(
+          `Env vars set (${varCount} vars) — Resend: ${usingDedicatedResend ? "dedicated key" : "shared key (fallback)"}`
+        );
         await saveProgress();
       } catch (envErr) {
         appendLog(`Auto env var error: ${(envErr as Error).message}`);
@@ -461,8 +515,8 @@ export async function POST(
       }
     }
 
-    // ── STEP 8: Set placeholder env vars (admin fills after Clerk/Stripe setup)
-    if (!buildChecklist.envVarsPlaceholderSet && vercelProjectId && process.env.WS_VERCEL_TOKEN) {
+    // ── STEP 9: Set placeholder env vars (admin fills after Clerk/Stripe setup)
+    if (!buildChecklist.envVarsPlaceholderSet && vercelProjectId && process.env.WS_VERCEL_TOKEN) { // Step 9
       try {
         const placeholders: Record<string, string> = {
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "PENDING_CLERK_SETUP",
@@ -494,9 +548,9 @@ export async function POST(
           UPSTASH_REDIS_REST_URL: "configured",
           UPSTASH_REDIS_REST_TOKEN: "configured",
           CRON_SECRET: "configured",
-          ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY ? "configured" : "missing",
-          GEMINI_API_KEY: process.env.GEMINI_API_KEY ? "configured" : "missing",
-          RESEND_API_KEY: process.env.RESEND_API_KEY ? "configured" : "missing",
+          ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY ? "configured-shared" : "missing",
+          GEMINI_API_KEY: process.env.GEMINI_API_KEY ? "configured-shared" : "missing",
+          RESEND_API_KEY: resendKeyId ? "configured-dedicated" : (process.env.RESEND_API_KEY ? "configured-shared" : "missing"),
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pending",
           CLERK_SECRET_KEY: "pending",
           CLERK_WEBHOOK_SECRET: "pending",
@@ -523,7 +577,7 @@ export async function POST(
       }
     }
 
-    // ── STEP 9: Trigger first Vercel deployment ────────────────────────────
+    // ── STEP 10: Trigger first Vercel deployment ───────────────────────────
     let deploymentId = project.deploymentId;
     if (
       !buildChecklist.deploymentTriggered &&
@@ -552,9 +606,11 @@ export async function POST(
       }
     }
 
-    // ── STEP 10: Mark storage fully provisioned + update status ───────────
+    // ── STEP 11: Mark storage fully provisioned + update status ───────────
     buildChecklist.storageProvisioned =
-      !!buildChecklist.storagePostgresCreated && !!buildChecklist.storageKVCreated;
+      !!buildChecklist.storagePostgresCreated &&
+      !!buildChecklist.storageKVCreated &&
+      !!buildChecklist.resendKeyCreated;
 
     await prisma.project.update({
       where: { id: projectId },
@@ -588,6 +644,7 @@ export async function POST(
       neonStoreId: finalProject?.neonStoreId,
       upstashStoreId: finalProject?.upstashStoreId,
       deploymentId: finalProject?.deploymentId,
+      serviceKeys: finalProject?.serviceKeys,
       buildChecklist,
       buildLog,
       pendingManualActions: pendingActions,

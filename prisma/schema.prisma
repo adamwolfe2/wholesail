@@ -233,6 +233,10 @@ model Project {
   upstashStoreId String?  // Vercel KV store ID — query /v1/storage/stores/{id} for usage + cost
   deploymentId   String?  // first triggered Vercel deployment ID
 
+  // Per-client service key references — stored for cost attribution queries
+  // Shape: { resend: { keyId: "xxx" }, anthropic: { note: "shared+metadata" }, ... }
+  serviceKeys Json?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
