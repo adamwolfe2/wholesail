@@ -1,8 +1,8 @@
 const VERCEL_API = "https://api.vercel.com";
 
 function headers() {
-  const token = process.env.VERCEL_TOKEN;
-  if (!token) throw new Error("VERCEL_TOKEN not set");
+  const token = process.env.WS_VERCEL_TOKEN;
+  if (!token) throw new Error("WS_VERCEL_TOKEN not set");
   return {
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json",
