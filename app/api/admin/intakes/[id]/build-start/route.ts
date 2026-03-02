@@ -11,6 +11,7 @@ import {
 } from "@/lib/build/vercel-api";
 import { createPostgresStore, createKVStore, connectStoreToProject } from "@/lib/build/storage";
 import { createResendApiKey } from "@/lib/build/resend-admin";
+import { createSentryProject } from "@/lib/build/sentry-admin";
 import { prisma } from "@/lib/db";
 import Anthropic from "@anthropic-ai/sdk";
 import crypto from "crypto";
@@ -301,6 +302,8 @@ export async function POST(
           "GEMINI_API_KEY=",
           "RESEND_API_KEY=",
           "RESEND_FROM_EMAIL=",
+          "SENTRY_DSN=",
+          "NEXT_PUBLIC_SENTRY_DSN=",
           "",
           "# Set by Wholesail after Clerk app creation",
           "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=",
@@ -421,7 +424,43 @@ export async function POST(
       }
     }
 
-    // ── STEP 7: Provision per-client Resend API key ────────────────────────
+    // ── STEP 7: Provision per-client Sentry project ────────────────────────
+    let sentryDsn: string | null = null;
+    let sentryProjectSlug: string | null = null;
+    if (
+      !buildChecklist.sentryProjectCreated &&
+      process.env.SENTRY_AUTH_TOKEN &&
+      process.env.SENTRY_ORG &&
+      process.env.SENTRY_TEAM_SLUG &&
+      repoName
+    ) {
+      try {
+        const projectName = `${intake.companyName.slice(0, 50)} Portal`;
+        const projectSlug = repoName; // already kebab-case, e.g. "tbgc-portal"
+        const sentryProject = await createSentryProject(projectName, projectSlug);
+        sentryDsn = sentryProject.dsn;
+        sentryProjectSlug = sentryProject.projectSlug;
+
+        await logCost(projectId, {
+          service: "sentry",
+          amountCents: 0, // free tier
+          description: `Per-client Sentry project created: ${projectName}`,
+          metadata: {
+            projectId: sentryProject.projectId,
+            projectSlug: sentryProject.projectSlug,
+          },
+        });
+
+        buildChecklist.sentryProjectCreated = true;
+        appendLog(`Sentry project created — slug: ${sentryProject.projectSlug}`);
+        await saveProgress();
+      } catch (sentryErr) {
+        appendLog(`Sentry project error: ${(sentryErr as Error).message} — error monitoring will be disabled until manually configured`);
+        await saveProgress();
+      }
+    }
+
+    // ── STEP 8: Provision per-client Resend API key ───────────────────────
     let resendKeyId: string | null = null;
     let resendToken: string | null = null;
     if (!buildChecklist.resendKeyCreated && process.env.RESEND_API_KEY) {
@@ -478,6 +517,13 @@ export async function POST(
           // Email — dedicated per-client key when available
           RESEND_API_KEY: resendApiKey,
           RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL ?? "orders@wholesailhub.com",
+
+          // Error monitoring — dedicated per-client Sentry project when available
+          // Both server and client-side SDKs need the same DSN value under different names
+          ...(sentryDsn ? {
+            SENTRY_DSN: sentryDsn,
+            NEXT_PUBLIC_SENTRY_DSN: sentryDsn,
+          } : {}),
         };
 
         const setPromises = Object.entries(autoVars)
@@ -491,6 +537,9 @@ export async function POST(
           resend: resendKeyId
             ? { keyId: resendKeyId, dedicated: true }
             : { keyId: null, dedicated: false, note: "using shared Wholesail key" },
+          sentry: sentryProjectSlug
+            ? { projectSlug: sentryProjectSlug, dedicated: true }
+            : { projectSlug: null, dedicated: false, note: "project creation failed or skipped" },
           anthropic: {
             keyId: null,
             dedicated: false,
@@ -551,6 +600,7 @@ export async function POST(
           ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY ? "configured-shared" : "missing",
           GEMINI_API_KEY: process.env.GEMINI_API_KEY ? "configured-shared" : "missing",
           RESEND_API_KEY: resendKeyId ? "configured-dedicated" : (process.env.RESEND_API_KEY ? "configured-shared" : "missing"),
+          SENTRY_DSN: sentryDsn ? "configured-dedicated" : "not-configured",
           NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pending",
           CLERK_SECRET_KEY: "pending",
           CLERK_WEBHOOK_SECRET: "pending",
@@ -610,7 +660,8 @@ export async function POST(
     buildChecklist.storageProvisioned =
       !!buildChecklist.storagePostgresCreated &&
       !!buildChecklist.storageKVCreated &&
-      !!buildChecklist.resendKeyCreated;
+      !!buildChecklist.resendKeyCreated &&
+      !!buildChecklist.sentryProjectCreated;
 
     await prisma.project.update({
       where: { id: projectId },
