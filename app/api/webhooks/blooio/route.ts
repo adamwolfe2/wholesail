@@ -198,7 +198,7 @@ export async function POST(req: NextRequest) {
             const pendingDraft = await getPendingDraft(fromPhone);
 
             if (pendingDraft && isConfirmation(messageText)) {
-              // Convert draft to real order — Rocky gets notified and reviews before anything ships
+              // Convert draft to real order — admin reviews before anything ships
               try {
                 const orgUser = await prisma.user.findFirst({
                   where: { organizationId: org.id },

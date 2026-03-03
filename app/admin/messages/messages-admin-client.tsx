@@ -116,6 +116,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
   const [newConvoError, setNewConvoError] = useState<string | null>(null)
 
   const [markingAllRead, setMarkingAllRead] = useState(false)
+  const [statusFilter, setStatusFilter] = useState<'open' | 'closed' | 'all'>('open')
 
   const totalUnread = convos.reduce((sum, c) => sum + c.unreadCount, 0)
 
@@ -419,10 +420,15 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
     o.contactPerson.toLowerCase().includes(orgSearch.toLowerCase())
   )
 
-  const filtered = convos.filter(c =>
-    c.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    c.orgName.toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  const filtered = convos.filter(c => {
+    const matchesStatus =
+      statusFilter === 'all' ||
+      (statusFilter === 'open' ? c.isOpen : !c.isOpen)
+    const matchesSearch =
+      c.subject.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      c.orgName.toLowerCase().includes(searchQuery.toLowerCase())
+    return matchesStatus && matchesSearch
+  })
 
   return (
     <div className="space-y-6">
@@ -605,15 +611,37 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
             'w-full sm:w-80 border-r border-[#E5E1DB] flex flex-col bg-[#F9F7F4]',
             mobileShowThread && 'hidden sm:flex'
           )}>
-            <div className="p-3 border-b border-[#E5E1DB]">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#0A0A0A]/40" />
-                <Input
-                  placeholder="Search by client or subject..."
-                  value={searchQuery}
-                  onChange={e => setSearchQuery(e.target.value)}
-                  className="pl-8 h-9 text-sm border-[#C8C0B4]"
-                />
+            <div className="border-b border-[#E5E1DB]">
+              {/* Status filter tabs */}
+              <div className="flex">
+                {(['open', 'all', 'closed'] as const).map(f => (
+                  <button
+                    key={f}
+                    type="button"
+                    onClick={() => setStatusFilter(f)}
+                    className={cn(
+                      'flex-1 py-2 text-[10px] uppercase tracking-widest font-medium border-b-2 transition-colors',
+                      statusFilter === f
+                        ? 'border-[#0A0A0A] text-[#0A0A0A]'
+                        : 'border-transparent text-[#0A0A0A]/40 hover:text-[#0A0A0A]/70'
+                    )}
+                  >
+                    {f === 'open' && convos.filter(c => c.isOpen).length > 0
+                      ? `Open (${convos.filter(c => c.isOpen).length})`
+                      : f.charAt(0).toUpperCase() + f.slice(1)}
+                  </button>
+                ))}
+              </div>
+              <div className="p-3">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#0A0A0A]/40" />
+                  <Input
+                    placeholder="Search by client or subject..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className="pl-8 h-9 text-sm border-[#C8C0B4]"
+                  />
+                </div>
               </div>
             </div>
             <ScrollArea className="flex-1">

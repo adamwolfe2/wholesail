@@ -1,3 +1,4 @@
+// SAMPLE DATA — replace with client testimonials
 /**
  * Homepage testimonials — "What Chefs Say" section.
  *

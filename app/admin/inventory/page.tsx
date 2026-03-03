@@ -2,11 +2,13 @@ import { prisma } from "@/lib/db";
 import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AlertCircle, Package, TrendingDown, AlertTriangle } from "lucide-react";
+import { AlertCircle, Package, TrendingDown, AlertTriangle, Boxes } from "lucide-react";
 import { InventoryTable } from "./inventory-table";
 import { AddTrackingButtons } from "./add-tracking-buttons";
 
 async function getInventoryData() {
+  const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
+
   // Products WITH inventory levels
   const tracked = await prisma.product.findMany({
     where: { inventoryLevel: { isNot: null } },
@@ -43,7 +45,33 @@ async function getInventoryData() {
     orderBy: { expectedDate: "asc" },
   });
 
-  return { tracked, untracked, upcomingRestocks };
+  // Consumption data: sum of quantities from DELIVERED orders in last 90 days
+  const consumption = await prisma.orderItem.groupBy({
+    by: ["productId"],
+    where: {
+      order: {
+        status: "DELIVERED",
+        createdAt: { gte: ninetyDaysAgo },
+      },
+    },
+    _sum: { quantity: true },
+  });
+
+  const consumptionMap: Record<string, number> = {};
+  for (const row of consumption) {
+    consumptionMap[row.productId] = row._sum.quantity ?? 0;
+  }
+
+  // Distributor self-reported inventory
+  const distributorStock = await prisma.distributorInventory.findMany({
+    include: {
+      distributor: { select: { id: true, name: true } },
+      product: { select: { id: true, name: true, category: true, unit: true } },
+    },
+    orderBy: [{ distributor: { name: 'asc' } }, { product: { name: 'asc' } }],
+  });
+
+  return { tracked, untracked, upcomingRestocks, consumptionMap, distributorStock };
 }
 
 export default async function InventoryPage() {
@@ -51,6 +79,8 @@ export default async function InventoryPage() {
     tracked: [] as Awaited<ReturnType<typeof getInventoryData>>["tracked"],
     untracked: [] as Awaited<ReturnType<typeof getInventoryData>>["untracked"],
     upcomingRestocks: [] as Awaited<ReturnType<typeof getInventoryData>>["upcomingRestocks"],
+    consumptionMap: {} as Record<string, number>,
+    distributorStock: [] as Awaited<ReturnType<typeof getInventoryData>>["distributorStock"],
   };
 
   try {
@@ -77,15 +107,22 @@ export default async function InventoryPage() {
   const hasAlerts = lowStock > 0 || outOfStock > 0;
 
   // Serialize for client component
-  const trackedItems = data.tracked.map((p) => ({
-    productId: p.id,
-    productName: p.name,
-    category: p.category,
-    available: p.available,
-    quantityOnHand: p.inventoryLevel!.quantityOnHand,
-    quantityReserved: p.inventoryLevel!.quantityReserved,
-    lowStockThreshold: p.inventoryLevel!.lowStockThreshold,
-  }));
+  const trackedItems = data.tracked.map((p) => {
+    const onHand = p.inventoryLevel!.quantityOnHand;
+    const consumed90 = data.consumptionMap[p.id] ?? 0;
+    const dailyRate = consumed90 / 90;
+    const daysUntilStockout = dailyRate > 0 ? Math.round(onHand / dailyRate) : null;
+    return {
+      productId: p.id,
+      productName: p.name,
+      category: p.category,
+      available: p.available,
+      quantityOnHand: onHand,
+      quantityReserved: p.inventoryLevel!.quantityReserved,
+      lowStockThreshold: p.inventoryLevel!.lowStockThreshold,
+      daysUntilStockout,
+    };
+  });
 
   const upcomingRestocks = data.upcomingRestocks.map((r) => ({
     id: r.id,
@@ -252,6 +289,72 @@ export default async function InventoryPage() {
           </CardContent>
         </Card>
       )}
+
+      {/* Distributor Self-Reported Stock */}
+      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <CardHeader className="border-b border-[#E5E1DB] pb-3">
+          <div className="flex items-center gap-2">
+            <Boxes className="h-4 w-4 text-[#0A0A0A]/40" />
+            <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+              Distributor-Reported Stock
+            </CardTitle>
+          </div>
+          <p className="text-sm text-[#0A0A0A]/50 mt-1">
+            Stock levels self-reported by your distributor partners. Updated by them from their portal.
+          </p>
+        </CardHeader>
+        <CardContent className="pt-4">
+          {data.distributorStock.length === 0 ? (
+            <p className="text-sm text-[#0A0A0A]/40 py-4 text-center">
+              No distributor stock reports yet. Distributors can report their inventory from the portal under &ldquo;My Inventory&rdquo;.
+            </p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-[#E5E1DB]">
+                    <th className="text-left pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Distributor</th>
+                    <th className="text-left pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Product</th>
+                    <th className="text-right pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">On Hand</th>
+                    <th className="text-right pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Back Stock</th>
+                    <th className="text-left pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden md:table-cell">Notes</th>
+                    <th className="text-left pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden lg:table-cell">Last Updated</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.distributorStock.map((row) => (
+                    <tr key={row.id} className="border-b border-[#E5E1DB] last:border-0">
+                      <td className="py-3 font-medium text-[#0A0A0A]">{row.distributor.name}</td>
+                      <td className="py-3 text-[#0A0A0A]/70">
+                        <div>{row.product.name}</div>
+                        <Badge variant="outline" className="text-[10px] border-[#E5E1DB] text-[#0A0A0A]/40 mt-0.5">
+                          {row.product.category}
+                        </Badge>
+                      </td>
+                      <td className="py-3 text-right">
+                        <span className={`font-semibold tabular-nums ${row.quantityOnHand === 0 ? 'text-red-600' : row.quantityOnHand <= 5 ? 'text-amber-600' : 'text-[#0A0A0A]'}`}>
+                          {row.quantityOnHand}
+                        </span>
+                        {row.product.unit && <span className="text-xs text-[#0A0A0A]/30 ml-1">{row.product.unit}</span>}
+                      </td>
+                      <td className="py-3 text-right font-semibold tabular-nums text-[#0A0A0A]">
+                        {row.quantityBackstock}
+                        {row.product.unit && <span className="text-xs text-[#0A0A0A]/30 ml-1">{row.product.unit}</span>}
+                      </td>
+                      <td className="py-3 text-[#0A0A0A]/50 hidden md:table-cell text-xs max-w-[200px] truncate">
+                        {row.notes ?? "—"}
+                      </td>
+                      <td className="py-3 text-[#0A0A0A]/40 hidden lg:table-cell text-xs">
+                        {format(new Date(row.updatedAt), "MMM d, yyyy")}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }

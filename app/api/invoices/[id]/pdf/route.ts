@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server"
 import { prisma } from "@/lib/db"
 import { renderToBuffer, type DocumentProps } from "@react-pdf/renderer"
 import { InvoicePDF } from "@/lib/pdf/invoice-pdf"
+import { getOrganizationByUserId } from "@/lib/db/organizations"
 import React from "react"
 import { NextResponse } from "next/server"
 
@@ -14,10 +15,13 @@ export async function GET(
 
   const { id } = await params
 
+  // Fetch user's org for access control (admins have no org — they get full access)
+  const userOrg = await getOrganizationByUserId(userId).catch(() => null)
+
   const invoice = await prisma.invoice.findUnique({
     where: { id },
     include: {
-      organization: { select: { name: true, email: true } },
+      organization: { select: { id: true, name: true, email: true } },
       order: {
         include: {
           items: {
@@ -34,6 +38,11 @@ export async function GET(
   })
 
   if (!invoice) return NextResponse.json({ error: "Not found" }, { status: 404 })
+
+  // Access control: clients can only download their own invoices
+  if (userOrg && invoice.organization.id !== userOrg.id) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+  }
 
   // Build items array from the linked order's line items
   const items = invoice.order.items.map((item) => ({

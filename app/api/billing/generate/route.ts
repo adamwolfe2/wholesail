@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/db";
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 import { addDays } from "date-fns";
 
@@ -10,9 +11,9 @@ const generateSchema = z.object({
 
 /**
  * Generates an invoice number like INV-2026-0001.
- * Sequence is based on invoice count for the current year.
+ * Offset is passed in so callers can retry on P2002 unique collisions.
  */
-async function generateInvoiceNumber(): Promise<string> {
+async function generateInvoiceNumber(offset = 0): Promise<string> {
   const year = new Date().getFullYear();
   const count = await prisma.invoice.count({
     where: {
@@ -22,7 +23,7 @@ async function generateInvoiceNumber(): Promise<string> {
       },
     },
   });
-  return `INV-${year}-${String(count + 1).padStart(4, "0")}`;
+  return `INV-${year}-${String(count + 1 + offset).padStart(4, "0")}`;
 }
 
 /**
@@ -83,36 +84,51 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const invoiceNumber = await generateInvoiceNumber();
     const dueDate = addDays(new Date(), 30); // Net-30
 
-    const invoice = await prisma.invoice.create({
-      data: {
-        invoiceNumber,
-        orderId: order.id,
-        organizationId: order.organizationId,
-        dueDate,
-        status: "PENDING",
-        subtotal: order.subtotal,
-        tax: order.tax,
-        total: order.total,
-      },
-    });
-
-    await prisma.auditEvent.create({
-      data: {
-        entityType: "Invoice",
-        entityId: invoice.id,
-        action: "created",
-        userId,
-        metadata: {
-          invoiceNumber,
-          orderId,
-          dueDate: dueDate.toISOString(),
-          total: Number(order.total),
-        },
-      },
-    });
+    // Retry up to 5 times on unique constraint collision (concurrent invoice creation)
+    let invoice;
+    for (let attempt = 0; attempt < 5; attempt++) {
+      const invoiceNumber = await generateInvoiceNumber(attempt);
+      try {
+        invoice = await prisma.invoice.create({
+          data: {
+            invoiceNumber,
+            orderId: order.id,
+            organizationId: order.organizationId,
+            dueDate,
+            status: "PENDING",
+            subtotal: order.subtotal,
+            tax: order.tax,
+            total: order.total,
+          },
+        });
+        await prisma.auditEvent.create({
+          data: {
+            entityType: "Invoice",
+            entityId: invoice.id,
+            action: "created",
+            userId,
+            metadata: {
+              invoiceNumber,
+              orderId,
+              dueDate: dueDate.toISOString(),
+              total: Number(order.total),
+            },
+          },
+        });
+        break;
+      } catch (createErr) {
+        if (
+          createErr instanceof Prisma.PrismaClientKnownRequestError &&
+          createErr.code === "P2002" &&
+          attempt < 4
+        ) {
+          continue; // retry with next offset
+        }
+        throw createErr;
+      }
+    }
 
     return NextResponse.json({ invoice, created: true }, { status: 201 });
   } catch (error) {
@@ -147,36 +163,50 @@ export async function generateInvoiceForOrder(
 
   if (!order || order.status === "CANCELLED") return null;
 
-  const invoiceNumber = await generateInvoiceNumber();
   const dueDate = addDays(new Date(), 30);
 
-  const invoice = await prisma.invoice.create({
-    data: {
-      invoiceNumber,
-      orderId: order.id,
-      organizationId: order.organizationId,
-      dueDate,
-      status: "PENDING",
-      subtotal: order.subtotal,
-      tax: order.tax,
-      total: order.total,
-    },
-  });
+  // Retry up to 5 times on unique constraint collision (concurrent invoice creation)
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const invoiceNumber = await generateInvoiceNumber(attempt);
+    try {
+      const invoice = await prisma.invoice.create({
+        data: {
+          invoiceNumber,
+          orderId: order.id,
+          organizationId: order.organizationId,
+          dueDate,
+          status: "PENDING",
+          subtotal: order.subtotal,
+          tax: order.tax,
+          total: order.total,
+        },
+      });
+      await prisma.auditEvent.create({
+        data: {
+          entityType: "Invoice",
+          entityId: invoice.id,
+          action: "created",
+          userId: actingUserId,
+          metadata: {
+            invoiceNumber,
+            orderId,
+            dueDate: dueDate.toISOString(),
+            total: Number(order.total),
+          },
+        },
+      });
+      return { invoice, created: true };
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === "P2002" &&
+        attempt < 4
+      ) {
+        continue; // retry with next offset
+      }
+      throw err;
+    }
+  }
 
-  await prisma.auditEvent.create({
-    data: {
-      entityType: "Invoice",
-      entityId: invoice.id,
-      action: "created",
-      userId: actingUserId,
-      metadata: {
-        invoiceNumber,
-        orderId,
-        dueDate: dueDate.toISOString(),
-        total: Number(order.total),
-      },
-    },
-  });
-
-  return { invoice, created: true };
+  return null; // unreachable, but satisfies TS
 }

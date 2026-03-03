@@ -13,7 +13,7 @@ export async function PATCH(
   }
 
   const org = await getOrganizationByUserId(userId)
-  if (!org || !org.isWholesaler) {
+  if (!org || !org.isDistributor) {
     return NextResponse.json({ error: 'Forbidden — not a distributor account.' }, { status: 403 })
   }
 
@@ -23,7 +23,7 @@ export async function PATCH(
     where: { id },
     select: {
       id: true,
-      rockyConfirmedAt: true,
+      adminConfirmedAt: true,
       distributorConfirmedAt: true,
       distributorOrgId: true,
     },
@@ -38,8 +38,8 @@ export async function PATCH(
     return NextResponse.json({ error: 'Forbidden — this order is not assigned to your organization.' }, { status: 403 })
   }
 
-  // Rocky must have confirmed first
-  if (!order.rockyConfirmedAt) {
+  // Admin must have confirmed first
+  if (!order.adminConfirmedAt) {
     return NextResponse.json({ error: 'Admin must acknowledge the order first.' }, { status: 422 })
   }
 

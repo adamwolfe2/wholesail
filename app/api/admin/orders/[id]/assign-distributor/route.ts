@@ -38,13 +38,13 @@ export async function PATCH(
     return NextResponse.json({ error: 'Order not found.' }, { status: 404 })
   }
 
-  // Validate the distributor org exists and is a wholesaler
+  // Validate the distributor org exists and is a distributor
   if (distributorOrgId) {
     const distOrg = await prisma.organization.findUnique({
       where: { id: distributorOrgId },
-      select: { id: true, isWholesaler: true },
+      select: { id: true, isDistributor: true },
     })
-    if (!distOrg || !distOrg.isWholesaler) {
+    if (!distOrg || !distOrg.isDistributor) {
       return NextResponse.json({ error: 'Organization is not a registered distributor.' }, { status: 422 })
     }
   }

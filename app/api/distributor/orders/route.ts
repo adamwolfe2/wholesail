@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
       status: true,
       total: true,
       createdAt: true,
-      rockyConfirmedAt: true,
+      adminConfirmedAt: true,
       distributorConfirmedAt: true,
       clientConfirmedAt: true,
       organization: { select: { name: true, contactPerson: true, phone: true } },

@@ -24,6 +24,7 @@ import {
   Gift,
   MoreHorizontal,
   Truck,
+  Boxes,
 } from 'lucide-react'
 
 interface NotificationCounts {
@@ -35,6 +36,7 @@ const portalLinks = [
   { href: '/client-portal/dashboard', label: 'Dashboard', icon: LayoutDashboard, badge: null as keyof NotificationCounts | null, distributorOnly: false },
   { href: '/client-portal/orders', label: 'Orders', icon: ShoppingBag, badge: null as keyof NotificationCounts | null, distributorOnly: false },
   { href: '/client-portal/fulfillment', label: 'Fulfillment', icon: Truck, badge: null as keyof NotificationCounts | null, distributorOnly: true },
+  { href: '/client-portal/inventory', label: 'My Inventory', icon: Boxes, badge: null as keyof NotificationCounts | null, distributorOnly: true },
   { href: '/client-portal/invoices', label: 'Invoices', icon: FileText, badge: null as keyof NotificationCounts | null, distributorOnly: false },
   { href: '/client-portal/quotes', label: 'Quotes', icon: FileCheck, badge: null as keyof NotificationCounts | null, distributorOnly: false },
   { href: '/client-portal/saved-carts', label: 'Saved Carts', icon: Bookmark, badge: null as keyof NotificationCounts | null, distributorOnly: false },

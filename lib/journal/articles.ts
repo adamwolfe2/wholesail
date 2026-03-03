@@ -1,3 +1,4 @@
+// SAMPLE DATA — replace with client blog content
 export interface Article {
   slug: string
   title: string

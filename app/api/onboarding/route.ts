@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { sendWelcomePartnerEmail } from "@/lib/email";
+import { publicSignupLimiter, checkRateLimit, getIp } from "@/lib/rate-limit";
 
 const onboardingSchema = z.object({
   businessName: z.string().min(1),
@@ -30,6 +31,14 @@ const onboardingSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  const { allowed } = await checkRateLimit(publicSignupLimiter, getIp(req))
+  if (!allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    )
+  }
+
   try {
     const body = await req.json();
     const parsed = onboardingSchema.safeParse(body);

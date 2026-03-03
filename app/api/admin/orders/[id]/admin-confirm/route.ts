@@ -13,14 +13,14 @@ export async function PATCH(
 
   const order = await prisma.order.findUnique({
     where: { id },
-    select: { id: true, rockyConfirmedAt: true },
+    select: { id: true, adminConfirmedAt: true },
   })
 
   if (!order) {
     return NextResponse.json({ error: 'Order not found.' }, { status: 404 })
   }
 
-  if (order.rockyConfirmedAt) {
+  if (order.adminConfirmedAt) {
     return NextResponse.json({ error: 'Already confirmed.' }, { status: 409 })
   }
 
@@ -29,13 +29,13 @@ export async function PATCH(
   await prisma.$transaction([
     prisma.order.update({
       where: { id },
-      data: { rockyConfirmedAt: now },
+      data: { adminConfirmedAt: now },
     }),
     prisma.auditEvent.create({
       data: {
         entityType: 'Order',
         entityId: id,
-        action: 'rocky_confirmed',
+        action: 'admin_confirmed',
         userId,
         metadata: { confirmedAt: now.toISOString() },
       },
@@ -44,6 +44,6 @@ export async function PATCH(
 
   return NextResponse.json({
     success: true,
-    updates: { rockyConfirmedAt: now.toISOString() },
+    updates: { adminConfirmedAt: now.toISOString() },
   })
 }

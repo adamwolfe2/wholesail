@@ -57,7 +57,7 @@ interface OrderDetail {
   notes: string | null
   createdAt: string
   paidAt: string | null
-  rockyConfirmedAt: string | null
+  adminConfirmedAt: string | null
   distributorConfirmedAt: string | null
   clientConfirmedAt: string | null
   organization: {
@@ -314,7 +314,7 @@ export default function ClientOrderDetailPage() {
         </Card>
 
         {/* Delivery Confirmation Checklist */}
-        {(order.rockyConfirmedAt || order.distributorConfirmedAt || order.clientConfirmedAt || order.status !== 'CANCELLED') && (
+        {(order.adminConfirmedAt || order.distributorConfirmedAt || order.clientConfirmedAt || order.status !== 'CANCELLED') && (
           <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
             <CardHeader className="pb-3 border-b border-[#C8C0B4]/50">
               <CardTitle className="font-serif text-lg text-[#0A0A0A]">Delivery Confirmation</CardTitle>
@@ -327,7 +327,7 @@ export default function ClientOrderDetailPage() {
                 data={{
                   // The client confirm route uses orderNumber as the param
                   orderId: order.orderNumber,
-                  rockyConfirmedAt: order.rockyConfirmedAt,
+                  adminConfirmedAt: order.adminConfirmedAt,
                   distributorConfirmedAt: order.distributorConfirmedAt,
                   clientConfirmedAt: order.clientConfirmedAt,
                 }}

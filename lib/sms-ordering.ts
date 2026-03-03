@@ -150,7 +150,7 @@ export async function convertDraftToOrder(
     },
   })
 
-  // ── Notify ops team — email + SMS to Rocky ──────────────────────────
+  // ── Notify ops team — email + SMS ──────────────────────────
   const hasMarketRate = items.some((i) => i.marketRate)
   const itemLines = items.map(
     (i) =>
@@ -173,7 +173,7 @@ export async function convertDraftToOrder(
     total: subtotal,
   }).catch(console.error)
 
-  // SMS notification to Rocky (OPS_PHONE_NUMBER env var)
+  // SMS notification to ops team (OPS_PHONE_NUMBER env var)
   const opsPhone = process.env.OPS_PHONE_NUMBER
   if (opsPhone) {
     const smsLines = itemLines.map((l) => `  ${l}`).join("\n")

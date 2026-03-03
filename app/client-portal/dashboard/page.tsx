@@ -267,12 +267,12 @@ export default function ClientDashboard() {
 
         {!hasOrders ? (
           /* Onboarding empty state */
-          <div className="flex flex-col items-center justify-center py-24 text-center">
-            <p className="text-xs tracking-widest uppercase text-[#C8C0B4] mb-4">No orders yet</p>
-            <h2 className="font-serif text-3xl mb-4 text-[#0A0A0A]">Ready to place your first order?</h2>
-            <p className="text-[#0A0A0A]/50 mb-8 max-w-md">Browse our catalog of truffles, caviar, and specialty foods.</p>
-            <Button asChild className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none min-h-[44px]">
-              <Link href="/catalog">Browse Catalog</Link>
+          <div className="border border-[#E5E1DB] bg-white p-8 text-center">
+            <Package className="h-8 w-8 text-[#C8C0B4] mx-auto mb-3" />
+            <p className="font-serif text-lg text-[#0A0A0A] mb-1">No orders yet</p>
+            <p className="text-sm text-[#0A0A0A]/50 mb-4">Browse our catalog and place your first order.</p>
+            <Button asChild className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none">
+              <Link href="/catalog">Browse Products</Link>
             </Button>
           </div>
         ) : (
@@ -330,32 +330,71 @@ export default function ClientDashboard() {
               </Card>
 
               {/* Loyalty Points Card */}
-              {loyaltyStatus && (
-                <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
-                  <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                    <CardTitle className="text-xs sm:text-sm font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
-                      Loyalty Points
-                    </CardTitle>
-                    <Star className="h-4 w-4 text-[#C8C0B4]" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-xl sm:text-2xl font-bold text-[#0A0A0A]">
-                      {loyaltyStatus.currentPoints.toLocaleString()}
-                    </div>
-                    <div className="flex items-center gap-2 mt-1">
-                      <Badge
-                        variant="outline"
-                        className={`text-[10px] px-1.5 py-0 border ${tierBadgeStyles[loyaltyStatus.tier]}`}
-                      >
-                        {loyaltyStatus.tier}
-                      </Badge>
-                      <p className="text-xs text-[#0A0A0A]/40">
-                        = ${loyaltyStatus.dollarValue.toFixed(2)} in credits
+              {loyaltyStatus && (() => {
+                const tierThresholds: Record<LoyaltyStatus['tier'], { next: LoyaltyStatus['tier'] | null; pts: number }> = {
+                  Bronze: { next: 'Silver', pts: 500 },
+                  Silver: { next: 'Gold', pts: 2000 },
+                  Gold: { next: 'Platinum', pts: 5000 },
+                  Platinum: { next: null, pts: 5000 },
+                }
+                const tierData = tierThresholds[loyaltyStatus.tier]
+                const nextTier = tierData.next
+                const nextTierPts = tierData.pts
+                const prevTierPts: Record<LoyaltyStatus['tier'], number> = {
+                  Bronze: 0,
+                  Silver: 500,
+                  Gold: 2000,
+                  Platinum: 5000,
+                }
+                const prevPts = prevTierPts[loyaltyStatus.tier]
+                const lifetimePts = loyaltyStatus.lifetimePoints
+                const progress = nextTier
+                  ? Math.min((lifetimePts - prevPts) / (nextTierPts - prevPts), 1)
+                  : 1
+
+                return (
+                  <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                      <CardTitle className="text-xs sm:text-sm font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+                        Loyalty Points
+                      </CardTitle>
+                      <Star className="h-4 w-4 text-[#C8C0B4]" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-xl sm:text-2xl font-bold text-[#0A0A0A]">
+                        {loyaltyStatus.currentPoints.toLocaleString()}
+                      </div>
+                      <p className="text-[10px] text-[#0A0A0A]/40 mt-0.5">
+                        ${(loyaltyStatus.currentPoints / 100).toFixed(2)} value
                       </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
+                      <div className="flex items-center gap-2 mt-1.5">
+                        <Badge
+                          variant="outline"
+                          className={`text-[10px] px-1.5 py-0 border ${tierBadgeStyles[loyaltyStatus.tier]}`}
+                        >
+                          {loyaltyStatus.tier}
+                        </Badge>
+                      </div>
+                      <div className="mt-2">
+                        <div className="flex justify-between text-[10px] text-[#0A0A0A]/40 mb-1">
+                          <span>{loyaltyStatus.tier}</span>
+                          <span>
+                            {nextTier
+                              ? `${Math.max(nextTierPts - lifetimePts, 0)} pts to ${nextTier}`
+                              : 'Top tier'}
+                          </span>
+                        </div>
+                        <div className="h-1.5 bg-[#E5E1DB] w-full">
+                          <div
+                            className="h-1.5 bg-[#0A0A0A] transition-all"
+                            style={{ width: `${Math.min(progress * 100, 100)}%` }}
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              })()}
 
               {/* Credit Status Card — shown only when credit limit is set or there is outstanding balance */}
               {creditStatus && (

@@ -1,3 +1,4 @@
+// SAMPLE DATA — replace with client sourcing narratives
 export interface ProvenanceEntry {
   slug: string
   name: string

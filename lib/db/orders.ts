@@ -1,5 +1,5 @@
 import { prisma } from "./index";
-import type { OrderStatus } from "@prisma/client";
+import { Prisma, type OrderStatus } from "@prisma/client";
 import { getDiscountForOrg } from "@/lib/pricing";
 import {
   isConfigured as blooIsConfigured,
@@ -30,8 +30,8 @@ function getTaxRate(state?: string): number {
   return STATE_TAX_RATES[state.trim().toUpperCase()] ?? 0;
 }
 
-// Generate order number: ORD-2026-0001
-async function generateOrderNumber(): Promise<string> {
+// Generate order number: ORD-2026-0001. Offset is used for retry on P2002.
+async function generateOrderNumber(offset = 0): Promise<string> {
   const year = new Date().getFullYear();
   const count = await prisma.order.count({
     where: {
@@ -41,7 +41,7 @@ async function generateOrderNumber(): Promise<string> {
       },
     },
   });
-  return `ORD-${year}-${String(count + 1).padStart(4, "0")}`;
+  return `ORD-${year}-${String(count + 1 + offset).padStart(4, "0")}`;
 }
 
 interface CreateOrderInput {
@@ -60,8 +60,6 @@ interface CreateOrderInput {
 }
 
 export async function createOrder(input: CreateOrderInput) {
-  const orderNumber = await generateOrderNumber();
-
   // Apply org-tier discount (catch-all rule) to all items
   const discountPct = await getDiscountForOrg(input.organizationId, "__order__");
   const discountMultiplier = discountPct > 0 ? 1 - discountPct / 100 : 1;
@@ -95,35 +93,62 @@ export async function createOrder(input: CreateOrderInput) {
   const creditApplied = Math.min(input.creditApplied ?? 0, subtotal + tax + deliveryFee);
   const total = subtotal + tax + deliveryFee - creditApplied;
 
-  const order = await prisma.order.create({
-    data: {
-      orderNumber,
-      organizationId: input.organizationId,
-      userId: input.userId,
-      subtotal,
-      tax,
-      deliveryFee,
-      creditApplied,
-      total,
-      shippingAddressId: input.shippingAddressId,
-      notes: input.notes,
-      items: {
-        create: pricedItems.map((item) => ({
-          productId: item.productId,
-          name: item.name,
-          quantity: item.quantity,
-          unitPrice: item.unitPrice,
-          total: item.unitPrice * item.quantity,
-          distributorOrgId: item.distributorOrgId,
-        })),
-      },
-    },
+  // Retry up to 5 times on unique constraint collision (concurrent order creation)
+  type OrderResult = Prisma.OrderGetPayload<{
     include: {
-      items: true,
-      organization: { select: { name: true, email: true } },
-      shippingAddress: { select: { street: true, city: true, state: true, zip: true } },
-    },
-  });
+      items: true;
+      organization: { select: { name: true; email: true } };
+      shippingAddress: { select: { street: true; city: true; state: true; zip: true } };
+    };
+  }>;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  let order!: OrderResult;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  let orderNumber!: string;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    orderNumber = await generateOrderNumber(attempt);
+    try {
+      order = await prisma.order.create({
+        data: {
+          orderNumber,
+          organizationId: input.organizationId,
+          userId: input.userId,
+          subtotal,
+          tax,
+          deliveryFee,
+          creditApplied,
+          total,
+          shippingAddressId: input.shippingAddressId,
+          notes: input.notes,
+          items: {
+            create: pricedItems.map((item) => ({
+              productId: item.productId,
+              name: item.name,
+              quantity: item.quantity,
+              unitPrice: item.unitPrice,
+              total: item.unitPrice * item.quantity,
+              distributorOrgId: item.distributorOrgId,
+            })),
+          },
+        },
+        include: {
+          items: true,
+          organization: { select: { name: true, email: true } },
+          shippingAddress: { select: { street: true, city: true, state: true, zip: true } },
+        },
+      });
+      break;
+    } catch (err) {
+      if (
+        err instanceof Prisma.PrismaClientKnownRequestError &&
+        err.code === "P2002" &&
+        attempt < 4
+      ) {
+        continue;
+      }
+      throw err;
+    }
+  }
 
   // Audit event
   await prisma.auditEvent.create({

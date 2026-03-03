@@ -1,3 +1,4 @@
+// SAMPLE DATA — replace with client product categories
 export interface CatalogCategory {
   slug: string           // URL slug: "truffles"
   name: string           // Display name: "Truffles"

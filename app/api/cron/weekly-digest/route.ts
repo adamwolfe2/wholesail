@@ -20,6 +20,7 @@ export async function GET(req: NextRequest) {
 
   // Date windows
   const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000)
+  const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
   const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
   const nextWeek = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000)
@@ -29,6 +30,36 @@ export async function GET(req: NextRequest) {
   const errors: string[] = []
 
   try {
+    // ── Platform-wide operational snapshot ────────────────────────────────
+    const [
+      platformPendingOrders,
+      platformOverdueInvoices,
+      platformLowStock,
+      platformLapsedClients,
+    ] = await Promise.all([
+      prisma.order.count({ where: { status: 'PENDING' } }),
+      prisma.invoice.count({ where: { status: 'OVERDUE' } }),
+      prisma.inventoryLevel.count({
+        where: { quantityOnHand: { lte: 5, gt: 0 } },
+      }).catch(() => 0),
+      // Clients who haven't ordered in 30+ days (simple lapsed signal)
+      prisma.organization.count({
+        where: {
+          isWholesaler: true,
+          orders: {
+            none: {
+              createdAt: { gte: thirtyDaysAgo },
+              status: { not: 'CANCELLED' },
+            },
+          },
+        },
+      }).catch(() => 0),
+    ])
+
+    console.info(
+      `Weekly digest platform snapshot — pending orders: ${platformPendingOrders}, overdue invoices: ${platformOverdueInvoices}, low stock: ${platformLowStock}, lapsed clients (30d): ${platformLapsedClients}`
+    )
+
     // Find all active wholesale orgs (ordered in the last 90 days)
     const activeOrgs = await prisma.organization.findMany({
       where: {
@@ -182,6 +213,12 @@ export async function GET(req: NextRequest) {
                 totalSpentThisMonth,
                 reorderSuggestions,
                 newDropsCount: newDrops.length,
+                platformSnapshot: {
+                  pendingOrders: platformPendingOrders,
+                  overdueInvoices: platformOverdueInvoices,
+                  lowStockProducts: platformLowStock,
+                  lapsedClients30d: platformLapsedClients,
+                },
               },
             },
           })
@@ -209,6 +246,12 @@ export async function GET(req: NextRequest) {
       sent,
       skipped,
       errors: errors.length > 0 ? errors : undefined,
+      platformSnapshot: {
+        pendingOrders: platformPendingOrders,
+        overdueInvoices: platformOverdueInvoices,
+        lowStockProducts: platformLowStock,
+        lapsedClients30d: platformLapsedClients,
+      },
     })
   } catch (err) {
     console.error('Weekly digest cron error:', err)

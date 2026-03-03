@@ -1,54 +1,52 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function OrdersLoading() {
   return (
     <div className="space-y-6">
+      {/* Page header */}
       <div className="flex items-center justify-between">
-        <Skeleton className="h-8 w-32" />
-        <Skeleton className="h-9 w-28" />
+        <div>
+          <Skeleton className="h-4 w-20 mb-1" style={{ background: '#E5E1DB' }} />
+          <Skeleton className="h-8 w-28" style={{ background: '#E5E1DB' }} />
+        </div>
+        <Skeleton className="h-9 w-32" style={{ background: '#E5E1DB' }} />
       </div>
 
-      <Card>
-        <CardHeader>
-          <Skeleton className="h-6 w-24" />
-        </CardHeader>
-        <CardContent>
-          {/* Search + Filter */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-6">
-            <Skeleton className="h-10 flex-1" />
-            <Skeleton className="h-10 w-40" />
-          </div>
+      {/* Search + filter row */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <Skeleton className="h-10 flex-1" style={{ background: '#E5E1DB' }} />
+        <Skeleton className="h-10 w-40" style={{ background: '#E5E1DB' }} />
+        <Skeleton className="h-10 w-40" style={{ background: '#E5E1DB' }} />
+      </div>
 
-          {/* Table Header */}
-          <div className="flex items-center gap-4 pb-3 border-b">
-            <Skeleton className="h-4 w-4" />
-            <Skeleton className="h-4 w-20" />
-            <Skeleton className="h-4 w-24" />
-            <Skeleton className="h-4 w-12" />
-            <Skeleton className="h-4 w-16" />
-            <Skeleton className="h-4 w-16" />
-            <Skeleton className="h-4 w-20" />
+      {/* Table */}
+      <div className="border border-[#E5E1DB]">
+        {/* Table header */}
+        <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center gap-4">
+          <Skeleton className="h-3 w-4" style={{ background: '#E5E1DB' }} />
+          <Skeleton className="h-3 w-20" style={{ background: '#E5E1DB' }} />
+          <Skeleton className="h-3 w-28" style={{ background: '#E5E1DB' }} />
+          <Skeleton className="h-3 w-12" style={{ background: '#E5E1DB' }} />
+          <Skeleton className="h-3 w-16 ml-auto" style={{ background: '#E5E1DB' }} />
+          <Skeleton className="h-3 w-18" style={{ background: '#E5E1DB' }} />
+          <Skeleton className="h-3 w-20" style={{ background: '#E5E1DB' }} />
+        </div>
+        {/* Table rows */}
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div
+            key={i}
+            className="px-4 py-3 border-b border-[#E5E1DB] flex items-center gap-4 last:border-0"
+          >
+            <Skeleton className="h-4 w-4" style={{ background: '#E5E1DB' }} />
+            <Skeleton className="h-4 w-24 font-mono" style={{ background: '#E5E1DB' }} />
+            <Skeleton className="h-4 w-32" style={{ background: '#E5E1DB' }} />
+            <Skeleton className="h-4 w-8" style={{ background: '#E5E1DB' }} />
+            <Skeleton className="h-4 w-16 ml-auto" style={{ background: '#E5E1DB' }} />
+            <Skeleton className="h-5 w-20" style={{ background: '#E5E1DB' }} />
+            <Skeleton className="h-4 w-20" style={{ background: '#E5E1DB' }} />
           </div>
-
-          {/* Table Rows */}
-          {Array.from({ length: 8 }).map((_, i) => (
-            <div
-              key={i}
-              className="flex items-center gap-4 py-3 border-b last:border-0"
-              style={{ animationDelay: `${i * 50}ms` }}
-            >
-              <Skeleton className="h-4 w-4" />
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-4 w-32" />
-              <Skeleton className="h-4 w-8" />
-              <Skeleton className="h-4 w-16" />
-              <Skeleton className="h-5 w-20 rounded-full" />
-              <Skeleton className="h-4 w-20" />
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+        ))}
+      </div>
     </div>
-  );
+  )
 }

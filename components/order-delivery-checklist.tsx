@@ -6,7 +6,7 @@ import { CheckCircle2, Circle, Loader2 } from 'lucide-react'
 
 export interface OrderChecklistData {
   orderId: string
-  rockyConfirmedAt: string | null
+  adminConfirmedAt: string | null
   distributorConfirmedAt: string | null
   clientConfirmedAt: string | null
 }
@@ -79,16 +79,16 @@ function ChecklistStep({ label, sublabel, confirmedAt, interactive, actionLabel,
 
 export function OrderDeliveryChecklist({ data, viewerRole }: Props) {
   const [state, setState] = useState<OrderChecklistData>(data)
-  const [loading, setLoading] = useState<'rocky' | 'distributor' | 'client' | null>(null)
+  const [loading, setLoading] = useState<'admin' | 'distributor' | 'client' | null>(null)
 
-  async function confirm(step: 'rocky' | 'distributor' | 'client') {
+  async function confirm(step: 'admin' | 'distributor' | 'client') {
     setLoading(step)
     try {
       let url = ''
-      let method = 'PATCH'
+      const method = 'PATCH'
 
-      if (step === 'rocky') {
-        url = `/api/admin/orders/${state.orderId}/rocky-confirm`
+      if (step === 'admin') {
+        url = `/api/admin/orders/${state.orderId}/admin-confirm`
       } else if (step === 'distributor') {
         url = `/api/distributor/orders/${state.orderId}/confirm`
       } else {
@@ -112,10 +112,10 @@ export function OrderDeliveryChecklist({ data, viewerRole }: Props) {
 
   const steps = [
     {
-      key: 'rocky' as const,
+      key: 'admin' as const,
       label: 'Admin Acknowledged',
-      sublabel: 'Waiting for Wholesail to confirm receipt.',
-      confirmedAt: state.rockyConfirmedAt,
+      sublabel: 'Waiting for admin to confirm receipt.',
+      confirmedAt: state.adminConfirmedAt,
       interactive: viewerRole === 'admin',
       actionLabel: 'Confirm Order',
       gated: false,
@@ -127,7 +127,7 @@ export function OrderDeliveryChecklist({ data, viewerRole }: Props) {
       confirmedAt: state.distributorConfirmedAt,
       interactive: viewerRole === 'distributor',
       actionLabel: 'Confirm & Queue for Fulfillment',
-      gated: state.rockyConfirmedAt === null,
+      gated: state.adminConfirmedAt === null,
     },
     {
       key: 'client' as const,

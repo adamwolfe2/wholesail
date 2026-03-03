@@ -1,5 +1,5 @@
 /**
- * Static platform knowledge injected into every Rocky Assistant system prompt.
+ * Static platform knowledge injected into every AI Assistant system prompt.
  * Describes all admin pages, key workflows, and platform conventions.
  * Update this as you add pages/features.
  */
@@ -50,7 +50,7 @@ export const PLATFORM_KNOWLEDGE = `
 ## Key Workflows
 
 ### New Order Flow
-Client places order → Order created (PENDING) → Rocky confirms via delivery checklist → assign distributor → Distributor confirms fulfillment → Client confirms delivery received
+Client places order → Order created (PENDING) → Admin confirms via delivery checklist (adminConfirmedAt) → Admin assigns distributor → Distributor confirms fulfillment (distributorConfirmedAt) → Client confirms delivery received (clientConfirmedAt)
 
 ### Client Onboarding
 Wholesale application submitted → Admin reviews at /admin/wholesale → Approve → org created with isWholesaler=true → Client invited via Clerk → Client claims account at /claim
@@ -64,7 +64,7 @@ Products have stock levels. When quantityOnHand < lowStockThreshold → shows in
 ## Data Model Key Facts
 - Organizations: the primary client entity. Has tier (NEW/REPEAT/VIP), isWholesaler flag, credit limit, payment terms, loyalty points
 - Orders: status enum is PENDING → CONFIRMED → PACKED → SHIPPED → DELIVERED (or CANCELLED)
-- Delivery checklist: rockyConfirmedAt, distributorConfirmedAt, clientConfirmedAt — 3-step internal tracking
+- Delivery checklist: adminConfirmedAt, distributorConfirmedAt, clientConfirmedAt — 3-step internal tracking
 - Invoice status: DRAFT → PENDING → PAID (or OVERDUE)
 - Quote status: DRAFT → SENT → ACCEPTED/DECLINED/EXPIRED
 - Users have roles: CLIENT, SALES_REP, OPS, ADMIN

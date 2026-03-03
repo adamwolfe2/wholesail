@@ -31,7 +31,7 @@ export async function PlatformHealthCard() {
       prisma.product.count({ where: { available: true, distributorOrgId: null } }),
       prisma.organization.count({ where: { members: { none: {} } } }),
       prisma.pricingRule.count({ where: { isActive: true } }).catch(() => 0),
-      prisma.order.count({ where: { rockyConfirmedAt: null, status: { in: ['CONFIRMED', 'PACKED', 'SHIPPED'] } } }),
+      prisma.order.count({ where: { adminConfirmedAt: null, status: { in: ['CONFIRMED', 'PACKED', 'SHIPPED'] } } }),
     ])
 
     items = [

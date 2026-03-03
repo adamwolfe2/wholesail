@@ -67,6 +67,14 @@ export default async function AdminLayout({
 
   return (
     <div className="flex min-h-screen bg-[#F9F7F4]">
+      {/* Skip to main content — screen readers and keyboard users */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:top-2 focus:left-2 focus:px-4 focus:py-2 focus:bg-[#0A0A0A] focus:text-[#F9F7F4] focus:text-sm focus:font-medium"
+      >
+        Skip to main content
+      </a>
+
       {/* Desktop Sidebar */}
       <aside className="w-60 border-r border-[#E5E1DB] bg-[#F9F7F4] p-5 hidden md:flex md:flex-col overflow-y-auto">
         <div className="mb-6 px-1">
@@ -110,7 +118,7 @@ export default async function AdminLayout({
             <UserButton />
           </div>
         </header>
-        <main className="flex-1 p-4 md:p-6 animate-fade-in bg-[#F9F7F4]">{children}</main>
+        <main id="main-content" className="flex-1 p-4 md:p-6 animate-fade-in bg-[#F9F7F4]">{children}</main>
       </div>
     </div>
   );

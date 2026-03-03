@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth/require-admin'
 import Anthropic from '@anthropic-ai/sdk'
-import { anthropicTools, toolExecutors } from '@/lib/ai/rocky-tools'
+import { anthropicTools, toolExecutors } from '@/lib/ai/ai-tools'
 import { PLATFORM_KNOWLEDGE } from '@/lib/ai/platform-knowledge'
 import { prisma } from '@/lib/db'
 
@@ -43,7 +43,7 @@ const TOOL_LABELS: Record<string, string> = {
   get_top_products: 'Finding top products',
   get_order_trends: 'Analyzing order trends',
   get_client_lifetime_value: 'Calculating client value',
-  rocky_confirm_order: 'Confirming order',
+  admin_confirm_order: 'Confirming order',
   update_order_status: 'Updating order status',
   update_client_tier: 'Updating client tier',
   update_client: 'Updating client details',
@@ -173,7 +173,7 @@ ${adminName} will speak naturally, not in commands. Recognize these patterns:
 - "what's low" / "running out" / "stock check" → get_low_stock_alerts
 
 **Actions (preview first, then confirm):**
-- "confirm it" / "step 1" / "acknowledge that order" → rocky_confirm_order
+- "confirm it" / "step 1" / "acknowledge that order" → admin_confirm_order
 - "mark it shipped" / "update to shipped" / "ship that" → update_order_status
 - "bump them up" / "upgrade to VIP" / "move to repeat" → update_client_tier
 - "note this down" / "add a note" / "log that" → add_client_note or add_order_note

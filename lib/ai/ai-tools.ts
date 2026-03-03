@@ -131,7 +131,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       items: o.items.map(i => `${i.name} × ${i.quantity}`),
       createdAt: o.createdAt.toISOString().split('T')[0],
       checklist: {
-        rocky: o.rockyConfirmedAt !== null,
+        adminConfirmed: o.adminConfirmedAt !== null,
         distributor: o.distributorConfirmedAt !== null,
         client: o.clientConfirmedAt !== null,
       },
@@ -165,7 +165,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       notes: order.notes, internalNotes: order.internalNotes,
       distributor: order.distributorOrg?.name ?? null,
       deliveryChecklist: {
-        rockyConfirmedAt: order.rockyConfirmedAt?.toISOString() ?? null,
+        adminConfirmedAt: order.adminConfirmedAt?.toISOString() ?? null,
         distributorConfirmedAt: order.distributorConfirmedAt?.toISOString() ?? null,
         clientConfirmedAt: order.clientConfirmedAt?.toISOString() ?? null,
       },
@@ -348,26 +348,26 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
   },
 
   // ---------------------------------------------------------------------------
-  // WRITE TOOLS — Rocky can now ACT on the platform
+  // WRITE TOOLS — AI Assistant can act on the platform
   // ---------------------------------------------------------------------------
 
-  rocky_confirm_order: async (input, ctx) => {
+  admin_confirm_order: async (input, ctx) => {
     if (input.all) {
       // Bulk confirm all orders awaiting step 1
       const orders = await prisma.order.findMany({
-        where: { rockyConfirmedAt: null, status: { in: ['CONFIRMED', 'PACKED', 'SHIPPED'] } },
+        where: { adminConfirmedAt: null, status: { in: ['CONFIRMED', 'PACKED', 'SHIPPED'] } },
         select: { id: true, orderNumber: true },
       })
       if (orders.length === 0) return { message: 'No orders need confirmation right now.' }
 
       await Promise.all(orders.map(o =>
-        prisma.order.update({ where: { id: o.id }, data: { rockyConfirmedAt: new Date() } })
+        prisma.order.update({ where: { id: o.id }, data: { adminConfirmedAt: new Date() } })
       ))
       await prisma.auditEvent.createMany({
         data: orders.map(o => ({
           entityType: 'Order', entityId: o.id,
-          action: 'rocky_confirmed', userId: ctx.userId,
-          metadata: { source: 'rocky_ai_bulk' },
+          action: 'admin_confirmed', userId: ctx.userId,
+          metadata: { source: 'ai_assistant_bulk' },
         })),
       })
       return {
@@ -382,14 +382,14 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
     const isOrderNumber = identifier.startsWith('ORD-')
     const order = await prisma.order.findFirst({
       where: isOrderNumber ? { orderNumber: identifier } : { id: identifier },
-      select: { id: true, orderNumber: true, rockyConfirmedAt: true },
+      select: { id: true, orderNumber: true, adminConfirmedAt: true },
     })
     if (!order) return { error: `Order not found: ${identifier}` }
-    if (order.rockyConfirmedAt) return { message: `${order.orderNumber} was already confirmed on ${order.rockyConfirmedAt.toLocaleDateString()}` }
+    if (order.adminConfirmedAt) return { message: `${order.orderNumber} was already confirmed on ${order.adminConfirmedAt.toLocaleDateString()}` }
 
-    await prisma.order.update({ where: { id: order.id }, data: { rockyConfirmedAt: new Date() } })
+    await prisma.order.update({ where: { id: order.id }, data: { adminConfirmedAt: new Date() } })
     await prisma.auditEvent.create({
-      data: { entityType: 'Order', entityId: order.id, action: 'rocky_confirmed', userId: ctx.userId, metadata: { source: 'rocky_ai' } },
+      data: { entityType: 'Order', entityId: order.id, action: 'admin_confirmed', userId: ctx.userId, metadata: { source: 'ai_assistant' } },
     })
     return { success: true, orderNumber: order.orderNumber, link: `/admin/orders/${order.id}` }
   },
@@ -684,7 +684,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       total: `$${Number(o.total).toFixed(2)}`,
       items: o.items.map(i => `${i.name} × ${i.quantity}`),
       createdAt: o.createdAt.toISOString().split('T')[0],
-      awaitingConfirmation: !o.rockyConfirmedAt && ['CONFIRMED', 'PACKED', 'SHIPPED'].includes(o.status),
+      awaitingConfirmation: !o.adminConfirmedAt && ['CONFIRMED', 'PACKED', 'SHIPPED'].includes(o.status),
       link: `/admin/orders/${o.id}`,
     }))
   },
@@ -987,7 +987,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       openTasks,
     ] = await Promise.all([
       prisma.order.count({ where: { status: 'PENDING' } }),
-      prisma.order.count({ where: { rockyConfirmedAt: null, status: { in: ['CONFIRMED', 'PACKED', 'SHIPPED'] } } }),
+      prisma.order.count({ where: { adminConfirmedAt: null, status: { in: ['CONFIRMED', 'PACKED', 'SHIPPED'] } } }),
       prisma.invoice.count({ where: { status: 'OVERDUE' } }),
       prisma.wholesaleApplication.count({ where: { status: 'PENDING' } }),
       prisma.message.count({ where: { senderRole: 'client', readAt: null } }),
@@ -1003,7 +1003,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
     const info: { label: string; link: string }[] = []
 
     if (pendingOrders > 0) urgent.push({ label: `${pendingOrders} pending order${pendingOrders > 1 ? 's' : ''} awaiting confirmation`, link: '/admin/orders?status=PENDING' })
-    if (ordersNeedingConfirm > 0) urgent.push({ label: `${ordersNeedingConfirm} order${ordersNeedingConfirm > 1 ? 's' : ''} need Rocky's delivery confirmation (step 1 of 3)`, link: '/admin/orders' })
+    if (ordersNeedingConfirm > 0) urgent.push({ label: `${ordersNeedingConfirm} order${ordersNeedingConfirm > 1 ? 's' : ''} need delivery confirmation (step 1 of 3)`, link: '/admin/orders' })
     if (overdueInvoices > 0) urgent.push({ label: `${overdueInvoices} overdue invoice${overdueInvoices > 1 ? 's' : ''} — send reminders`, link: '/admin/invoices' })
     if (pendingApplications > 0) urgent.push({ label: `${pendingApplications} partner application${pendingApplications > 1 ? 's' : ''} awaiting review`, link: '/admin/wholesale' })
     if (unreadMessages > 0) urgent.push({ label: `${unreadMessages} unread client message${unreadMessages > 1 ? 's' : ''}`, link: '/admin/messages' })
@@ -1023,6 +1023,159 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
         ? 'Platform is in great shape — no urgent items or setup gaps!'
         : `${urgent.length} urgent item${urgent.length !== 1 ? 's' : ''}, ${setup.length} setup gap${setup.length !== 1 ? 's' : ''} found.`,
     }
+  },
+
+  // ── HEALTH & GROWTH TOOLS ─────────────────────────────────────────────────
+
+  get_client_health: async (input) => {
+    const { orgId } = input as { orgId?: string }
+    const now = new Date()
+    const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000)
+
+    if (orgId) {
+      // Single client health breakdown
+      const [org, orders90d, totalOrders, revenue] = await Promise.all([
+        prisma.organization.findUnique({ where: { id: orgId }, select: { id: true, name: true, tier: true, loyaltyPoints: true, createdAt: true } }),
+        prisma.order.count({ where: { organizationId: orgId, createdAt: { gte: ninetyDaysAgo }, status: { not: 'CANCELLED' } } }),
+        prisma.order.count({ where: { organizationId: orgId, status: { not: 'CANCELLED' } } }),
+        prisma.order.aggregate({ where: { organizationId: orgId, status: { not: 'CANCELLED' } }, _sum: { total: true } }),
+      ])
+      if (!org) return { error: 'Client not found' }
+      const lastOrder = await prisma.order.findFirst({ where: { organizationId: orgId, status: { not: 'CANCELLED' } }, orderBy: { createdAt: 'desc' }, select: { createdAt: true } })
+      const daysSinceLast = lastOrder ? Math.floor((now.getTime() - lastOrder.createdAt.getTime()) / 86400000) : null
+      const recencyScore = daysSinceLast === null ? 0 : daysSinceLast <= 7 ? 40 : daysSinceLast <= 14 ? 35 : daysSinceLast <= 30 ? 25 : daysSinceLast <= 60 ? 15 : 5
+      const freqScore = Math.min(orders90d * 10, 30)
+      const revScore = Math.min(Math.floor(Number(revenue._sum.total ?? 0) / 1000), 30)
+      const score = recencyScore + freqScore + revScore
+      const badge = score >= 80 ? 'Champion' : score >= 60 ? 'Healthy' : score >= 30 ? 'At Risk' : 'Dormant'
+      return { name: org.name, score, badge, tier: org.tier, loyaltyPoints: org.loyaltyPoints, totalOrders, orders90d, totalRevenue: Number(revenue._sum.total ?? 0), daysSinceLast }
+    }
+
+    // Portfolio health summary
+    const orgs = await prisma.organization.findMany({
+      where: { isWholesaler: true },
+      select: { id: true, name: true, tier: true },
+    })
+    const scores = await Promise.all(orgs.map(async (org) => {
+      const [orders90d, lastOrder, revenue] = await Promise.all([
+        prisma.order.count({ where: { organizationId: org.id, createdAt: { gte: ninetyDaysAgo }, status: { not: 'CANCELLED' } } }),
+        prisma.order.findFirst({ where: { organizationId: org.id, status: { not: 'CANCELLED' } }, orderBy: { createdAt: 'desc' }, select: { createdAt: true } }),
+        prisma.order.aggregate({ where: { organizationId: org.id, status: { not: 'CANCELLED' } }, _sum: { total: true } }),
+      ])
+      const daysSinceLast = lastOrder ? Math.floor((now.getTime() - lastOrder.createdAt.getTime()) / 86400000) : null
+      const recencyScore = daysSinceLast === null ? 0 : daysSinceLast <= 7 ? 40 : daysSinceLast <= 14 ? 35 : daysSinceLast <= 30 ? 25 : daysSinceLast <= 60 ? 15 : 5
+      const freqScore = Math.min(orders90d * 10, 30)
+      const revScore = Math.min(Math.floor(Number(revenue._sum.total ?? 0) / 1000), 30)
+      const score = recencyScore + freqScore + revScore
+      const badge = score >= 80 ? 'Champion' : score >= 60 ? 'Healthy' : score >= 30 ? 'At Risk' : 'Dormant'
+      return { name: org.name, id: org.id, score, badge, tier: org.tier }
+    }))
+    const buckets = { Champion: 0, Healthy: 0, 'At Risk': 0, Dormant: 0 }
+    scores.forEach(s => { buckets[s.badge as keyof typeof buckets]++ })
+    const atRisk = scores.filter(s => s.badge === 'At Risk' || s.badge === 'Dormant').slice(0, 5)
+    return { total: orgs.length, buckets, atRiskClients: atRisk }
+  },
+
+  get_loyalty_summary: async (input) => {
+    const { orgId } = input as { orgId?: string }
+    if (orgId) {
+      const org = await prisma.organization.findUnique({
+        where: { id: orgId },
+        select: { name: true, loyaltyPoints: true, lifetimeLoyaltyPoints: true, tier: true },
+      })
+      if (!org) return { error: 'Client not found' }
+      const tier = org.lifetimeLoyaltyPoints >= 5000 ? 'Platinum' : org.lifetimeLoyaltyPoints >= 2000 ? 'Gold' : org.lifetimeLoyaltyPoints >= 500 ? 'Silver' : 'Bronze'
+      const nextThreshold = tier === 'Bronze' ? 500 : tier === 'Silver' ? 2000 : tier === 'Gold' ? 5000 : null
+      return { name: org.name, currentPoints: org.loyaltyPoints, lifetimePoints: org.lifetimeLoyaltyPoints, loyaltyTier: tier, pointsValueDollars: (org.loyaltyPoints / 100).toFixed(2), nextTier: nextThreshold ? `${nextThreshold - org.lifetimeLoyaltyPoints} pts to next tier` : 'Platinum — top tier' }
+    }
+    const [totalPoints, totalLifetime, topOrgs] = await Promise.all([
+      prisma.organization.aggregate({ _sum: { loyaltyPoints: true } }),
+      prisma.organization.aggregate({ _sum: { lifetimeLoyaltyPoints: true } }),
+      prisma.organization.findMany({ where: { loyaltyPoints: { gt: 0 } }, orderBy: { loyaltyPoints: 'desc' }, take: 10, select: { name: true, loyaltyPoints: true, lifetimeLoyaltyPoints: true } }),
+    ])
+    return {
+      totalOutstandingPoints: totalPoints._sum.loyaltyPoints ?? 0,
+      totalLifetimePoints: totalLifetime._sum.lifetimeLoyaltyPoints ?? 0,
+      estimatedLiabilityDollars: ((totalPoints._sum.loyaltyPoints ?? 0) / 100).toFixed(2),
+      topHolders: topOrgs.map(o => ({ name: o.name, points: o.loyaltyPoints, lifetime: o.lifetimeLoyaltyPoints })),
+    }
+  },
+
+  get_referral_stats: async () => {
+    const [total, converted, pending, topReferrers] = await Promise.all([
+      prisma.referral.count().catch(() => 0),
+      prisma.referral.count({ where: { status: 'CONVERTED' } }).catch(() => 0),
+      prisma.referral.count({ where: { status: 'PENDING' } }).catch(() => 0),
+      prisma.referral.groupBy({ by: ['referrerId'], _count: { id: true }, where: { status: 'CONVERTED' }, orderBy: { _count: { id: 'desc' } }, take: 5 }).catch(() => []),
+    ])
+    const referrerIds = topReferrers.map((r: { referrerId: string; _count: { id: number } }) => r.referrerId)
+    const referrerOrgs = referrerIds.length > 0
+      ? await prisma.organization.findMany({ where: { id: { in: referrerIds } }, select: { id: true, name: true, referralCredits: true } })
+      : []
+    const orgMap = Object.fromEntries(referrerOrgs.map((o: { id: string; name: string; referralCredits: unknown }) => [o.id, o]))
+    return {
+      totalReferrals: total,
+      converted,
+      pending,
+      conversionRate: total > 0 ? `${Math.round((converted / total) * 100)}%` : '0%',
+      topReferrers: topReferrers.map((r: { referrerId: string; _count: { id: number } }) => ({
+        name: orgMap[r.referrerId]?.name ?? 'Unknown',
+        conversions: r._count.id,
+        creditsEarned: `$${Number(orgMap[r.referrerId]?.referralCredits ?? 0).toFixed(2)}`,
+      })),
+    }
+  },
+
+  get_smart_reorder_alerts: async (input) => {
+    const { limit = 10 } = input as { limit?: number }
+    const now = new Date()
+    const orgs = await prisma.organization.findMany({
+      where: { isWholesaler: true },
+      select: { id: true, name: true, email: true },
+      take: 100,
+    })
+    const alerts: { client: string; email: string; avgCadenceDays: number; daysSinceLastOrder: number; daysOverdue: number; link: string }[] = []
+
+    for (const org of orgs) {
+      const orders = await prisma.order.findMany({
+        where: { organizationId: org.id, status: { not: 'CANCELLED' } },
+        orderBy: { createdAt: 'desc' },
+        take: 5,
+        select: { createdAt: true },
+      })
+      if (orders.length < 2) continue
+      const gaps: number[] = []
+      for (let i = 0; i < orders.length - 1; i++) {
+        gaps.push(Math.floor((orders[i].createdAt.getTime() - orders[i + 1].createdAt.getTime()) / 86400000))
+      }
+      const avgCadence = Math.round(gaps.reduce((a, b) => a + b, 0) / gaps.length)
+      const daysSinceLast = Math.floor((now.getTime() - orders[0].createdAt.getTime()) / 86400000)
+      if (daysSinceLast > avgCadence * 1.25) {
+        alerts.push({ client: org.name, email: org.email, avgCadenceDays: avgCadence, daysSinceLastOrder: daysSinceLast, daysOverdue: daysSinceLast - avgCadence, link: `/admin/clients/${org.id}` })
+      }
+    }
+    alerts.sort((a, b) => b.daysOverdue - a.daysOverdue)
+    return { count: alerts.length, alerts: alerts.slice(0, limit) }
+  },
+
+  get_credit_utilization: async (input) => {
+    const { threshold = 80 } = input as { threshold?: number }
+    const orgs = await prisma.organization.findMany({
+      where: { creditLimit: { not: null } },
+      select: { id: true, name: true, creditLimit: true, email: true, contactPerson: true },
+    })
+    const results = await Promise.all(orgs.map(async (org) => {
+      const outstanding = await prisma.invoice.aggregate({
+        where: { organizationId: org.id, status: { in: ['PENDING', 'OVERDUE'] } },
+        _sum: { total: true },
+      })
+      const limit = Number(org.creditLimit)
+      const used = Number(outstanding._sum?.total ?? 0)
+      const pct = limit > 0 ? Math.round((used / limit) * 100) : 0
+      return { name: org.name, email: org.email, creditLimit: limit, outstanding: used, utilizationPct: pct, link: `/admin/clients/${org.id}` }
+    }))
+    const flagged = results.filter(r => r.utilizationPct >= threshold).sort((a, b) => b.utilizationPct - a.utilizationPct)
+    return { threshold, flaggedCount: flagged.length, clients: flagged }
   },
 }
 
@@ -1131,7 +1284,7 @@ export const anthropicTools: Tool[] = [
   },
   {
     name: 'navigate_to',
-    description: 'Generate a link to any admin page so Rocky can navigate there.',
+    description: 'Generate a link to any admin page.',
     input_schema: {
       type: 'object' as const,
       properties: {
@@ -1155,8 +1308,8 @@ export const anthropicTools: Tool[] = [
   // ── WRITE TOOLS ──────────────────────────────────────────────────────────
 
   {
-    name: 'rocky_confirm_order',
-    description: 'Confirm Rocky\'s delivery step 1 for an order (marks rockyConfirmedAt). Pass identifier for a specific order, or all: true to confirm every order currently waiting. Use this when the admin says "confirm", "acknowledge", or "step 1".',
+    name: 'admin_confirm_order',
+    description: 'Confirm the admin delivery step 1 for an order (marks adminConfirmedAt). Pass identifier for a specific order, or all: true to confirm every order currently waiting. Use this when the admin says "confirm", "acknowledge", or "step 1".',
     input_schema: {
       type: 'object' as const,
       properties: {
@@ -1354,6 +1507,54 @@ export const anthropicTools: Tool[] = [
         note: { type: 'string', description: 'The internal note to add' },
       },
       required: ['identifier', 'note'],
+    },
+  },
+
+  // ── HEALTH, LOYALTY & GROWTH TOOLS ────────────────────────────────────────
+
+  {
+    name: 'get_client_health',
+    description: 'Get client health score using RFM (Recency/Frequency/Monetary) scoring. If orgId provided, returns detailed health breakdown for that client. Without orgId, returns portfolio-wide health distribution (Champion/Healthy/At Risk/Dormant counts) and top at-risk clients. Use for "who is at risk?", "health scores", "which clients might churn?", "is [client] a healthy account?".',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        orgId: { type: 'string', description: 'Organization ID for single-client analysis. Omit for portfolio summary.' },
+      },
+    },
+  },
+  {
+    name: 'get_loyalty_summary',
+    description: 'Get loyalty points data. With orgId, shows a client\'s current points, lifetime points, tier (Bronze/Silver/Gold/Platinum), points value in dollars, and progress to next tier. Without orgId, shows total outstanding loyalty liability and top point holders. Use for "loyalty points", "how many points does [client] have?", "who has the most points?", "what\'s our loyalty liability?".',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        orgId: { type: 'string', description: 'Organization ID for single-client loyalty detail. Omit for portfolio overview.' },
+      },
+    },
+  },
+  {
+    name: 'get_referral_stats',
+    description: 'Get referral program statistics: total referrals, conversion rate, pending referrals, top referrers and their earnings. Use for "referral program", "how is our referral program doing?", "who has referred the most clients?", "referral conversions".',
+    input_schema: { type: 'object' as const, properties: {} },
+  },
+  {
+    name: 'get_smart_reorder_alerts',
+    description: 'Find clients who are overdue for a reorder based on their historical ordering cadence. Returns clients who haven\'t reordered within 125% of their average order interval. Use for "who should reorder?", "reorder alerts", "clients due for replenishment", "proactive outreach list".',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        limit: { type: 'number', description: 'Max clients to return (default 10)' },
+      },
+    },
+  },
+  {
+    name: 'get_credit_utilization',
+    description: 'Find clients who are using a high percentage of their credit limit. Returns clients at or above the threshold. Use for "who is near their credit limit?", "credit utilization", "high credit usage", "clients close to limit".',
+    input_schema: {
+      type: 'object' as const,
+      properties: {
+        threshold: { type: 'number', description: 'Utilization % threshold (default 80). Returns clients at or above this level.' },
+      },
     },
   },
 ]

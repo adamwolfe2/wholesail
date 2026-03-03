@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, XCircle } from "lucide-react";
 import { OrderStatusControl } from "./status-control";
 import { SendNotification } from "../../send-notification";
 import { CreateShipmentForm } from "./create-shipment-form";
@@ -33,6 +33,62 @@ import { AssignDistributor } from "./assign-distributor";
 
 const statusColors = orderStatusColors;
 
+const STATUS_STEPS = ["PENDING", "CONFIRMED", "PACKED", "SHIPPED", "DELIVERED"] as const;
+type OrderStatus = typeof STATUS_STEPS[number] | "CANCELLED";
+
+function OrderStatusTimeline({ status }: { status: string }) {
+  if (status === "CANCELLED") {
+    return (
+      <div className="border border-[#E5E1DB] bg-white p-4 mb-6 flex items-center gap-3">
+        <XCircle className="h-5 w-5 text-red-500 shrink-0" />
+        <span className="text-sm font-semibold uppercase tracking-wider text-red-600">Order Cancelled</span>
+      </div>
+    );
+  }
+
+  const currentIndex = STATUS_STEPS.indexOf(status as typeof STATUS_STEPS[number]);
+
+  return (
+    <div className="border border-[#E5E1DB] bg-white p-4 mb-6">
+      <div className="flex items-center">
+        {STATUS_STEPS.map((step, index) => {
+          const isCompleted = index <= currentIndex;
+          const isCurrent = index === currentIndex;
+          const isLast = index === STATUS_STEPS.length - 1;
+
+          return (
+            <div key={step} className="flex items-center flex-1 last:flex-none">
+              <div className="flex flex-col items-center">
+                <div
+                  className={`w-3 h-3 rounded-full border-2 flex-shrink-0 ${
+                    isCompleted
+                      ? "bg-[#0A0A0A] border-[#0A0A0A]"
+                      : "bg-white border-[#E5E1DB]"
+                  }`}
+                />
+                <span
+                  className={`mt-1.5 text-[10px] uppercase tracking-wider whitespace-nowrap ${
+                    isCurrent
+                      ? "font-semibold text-[#0A0A0A]"
+                      : isCompleted
+                      ? "font-medium text-[#0A0A0A]/30"
+                      : "text-[#0A0A0A]/20"
+                  }`}
+                >
+                  {step}
+                </span>
+              </div>
+              {!isLast && (
+                <div className="flex-1 border-t border-[#E5E1DB] mx-2 mb-5" />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 async function getOrder(id: string) {
   return prisma.order.findUnique({
     where: { id },
@@ -50,7 +106,7 @@ async function getOrder(id: string) {
 
 async function getDistributors() {
   return prisma.organization.findMany({
-    where: { isWholesaler: true },
+    where: { isDistributor: true },
     select: { id: true, name: true },
     orderBy: { name: 'asc' },
   });
@@ -130,6 +186,9 @@ export default async function AdminOrderDetailPage({
         </Badge>
       </div>
 
+      {/* Status Timeline */}
+      <OrderStatusTimeline status={order.status} />
+
       {/* Status Control + Notification */}
       <div className="flex flex-wrap items-center gap-3">
         <OrderStatusControl orderId={order.id} organizationId={order.organizationId} currentStatus={order.status} />
@@ -187,7 +246,7 @@ export default async function AdminOrderDetailPage({
             <OrderDeliveryChecklist
               data={{
                 orderId: order.id,
-                rockyConfirmedAt: (order as { rockyConfirmedAt?: Date | null }).rockyConfirmedAt?.toISOString() ?? null,
+                adminConfirmedAt: (order as { adminConfirmedAt?: Date | null }).adminConfirmedAt?.toISOString() ?? null,
                 distributorConfirmedAt: (order as { distributorConfirmedAt?: Date | null }).distributorConfirmedAt?.toISOString() ?? null,
                 clientConfirmedAt: (order as { clientConfirmedAt?: Date | null }).clientConfirmedAt?.toISOString() ?? null,
               }}

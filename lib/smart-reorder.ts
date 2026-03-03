@@ -74,23 +74,8 @@ export async function getOverdueReorders(): Promise<OverdueReorder[]> {
 
   if (results.length === 0) return []
 
-  // Fetch top products for each overdue org
+  // Fetch top products per overdue org
   const overdueOrgIds = results.map((r) => r.orgId)
-
-  const itemGroups = await prisma.orderItem.groupBy({
-    by: ['productId', 'name'],
-    where: {
-      order: {
-        organizationId: { in: overdueOrgIds },
-        status: { not: 'CANCELLED' },
-      },
-    },
-    _sum: { quantity: true },
-    orderBy: { _sum: { quantity: 'desc' } },
-  })
-
-  // We need to group by orgId too — do a raw lookup per org for top products
-  // itemGroups is across all orgs; fetch per-org top items
   const orgItemMap = new Map<string, string[]>()
 
   for (const orgId of overdueOrgIds) {
@@ -113,9 +98,6 @@ export async function getOverdueReorders(): Promise<OverdueReorder[]> {
   for (const result of results) {
     result.topProducts = orgItemMap.get(result.orgId) ?? []
   }
-
-  // Suppress the unused variable warning from itemGroups
-  void itemGroups
 
   return results
     .sort((a, b) => b.overdueDays - a.overdueDays)

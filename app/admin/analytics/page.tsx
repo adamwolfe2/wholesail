@@ -23,6 +23,8 @@ export default async function AdminAnalyticsPage() {
     monthlyRevenue: [] as { month: string; revenue: number; orders: number }[],
     topClients: [] as { name: string; revenue: number; orders: number }[],
     statusBreakdown: [] as { status: string; count: number }[],
+    aovByMonth: [] as { month: string; aov: number }[],
+    dayOfWeekCounts: [] as { day: string; orders: number }[],
   };
 
   try {
@@ -139,6 +141,45 @@ export default async function AdminAnalyticsPage() {
       .map(([category, revenue]) => ({ category, revenue: Math.round(revenue) }))
       .sort((a, b) => b.revenue - a.revenue);
 
+    // AOV by month — last 6 months
+    const sixMonthsAgo = new Date();
+    sixMonthsAgo.setMonth(sixMonthsAgo.getMonth() - 6);
+
+    const sixMonthOrders = recentOrders.filter(
+      (o) => new Date(o.createdAt) >= sixMonthsAgo
+    );
+
+    const aovMonthMap = new Map<string, { sum: number; count: number }>();
+    for (const order of sixMonthOrders) {
+      const d = new Date(order.createdAt);
+      const key = `${months[d.getMonth()]} ${d.getFullYear()}`;
+      const existing = aovMonthMap.get(key) || { sum: 0, count: 0 };
+      existing.sum += Number(order.total);
+      existing.count += 1;
+      aovMonthMap.set(key, existing);
+    }
+
+    const aovByMonth: typeof stats.aovByMonth = [];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date();
+      d.setMonth(d.getMonth() - i);
+      const key = `${months[d.getMonth()]} ${d.getFullYear()}`;
+      const data = aovMonthMap.get(key) || { sum: 0, count: 0 };
+      aovByMonth.push({
+        month: key,
+        aov: data.count > 0 ? Math.round(data.sum / data.count) : 0,
+      });
+    }
+
+    // Day-of-week order distribution — from last 6 months
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const dayOfWeekCounts = dayNames.map((day, i) => ({
+      day,
+      orders: sixMonthOrders.filter(
+        (o) => new Date(o.createdAt).getDay() === i
+      ).length,
+    }));
+
     stats = {
       totalRevenue,
       totalOrders: orderCount,
@@ -157,6 +198,8 @@ export default async function AdminAnalyticsPage() {
         status: g.status,
         count: g._count.id,
       })),
+      aovByMonth,
+      dayOfWeekCounts,
     };
   } catch {
     // DB not connected
@@ -230,6 +273,8 @@ export default async function AdminAnalyticsPage() {
         statusBreakdown={stats.statusBreakdown}
         topCategories={stats.topCategories}
         topCategoryRevenue={stats.topCategoryRevenue}
+        aovByMonth={stats.aovByMonth}
+        dayOfWeekCounts={stats.dayOfWeekCounts}
       />
 
       {/* Smart Reorder Alerts (client component — fetches its own data) */}

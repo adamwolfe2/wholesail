@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/db";
+import { Prisma } from "@prisma/client";
 import { z } from "zod";
 
 const tierSchema = z.object({
@@ -40,6 +41,9 @@ export async function PATCH(
 
     return NextResponse.json({ organization: org });
   } catch (err) {
+    if (err instanceof Prisma.PrismaClientKnownRequestError && err.code === "P2025") {
+      return NextResponse.json({ error: "Client not found" }, { status: 404 });
+    }
     console.error("Failed to update tier:", err);
     return NextResponse.json(
       { error: "Failed to update tier" },

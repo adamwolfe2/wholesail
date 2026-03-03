@@ -32,6 +32,7 @@ interface InventoryItem {
   quantityReserved: number
   lowStockThreshold: number
   available: boolean
+  daysUntilStockout: number | null
 }
 
 function getStockStatus(onHand: number, threshold: number) {
@@ -316,6 +317,7 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                   <th className="text-right pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden sm:table-cell">Available</th>
                   <th className="text-right pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden lg:table-cell">Threshold</th>
                   <th className="text-left pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Status</th>
+                  <th className="text-right pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden xl:table-cell">Days Left</th>
                   <th className="text-center pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden sm:table-cell">In Catalog</th>
                   <th className="pb-2"></th>
                 </tr>
@@ -378,6 +380,21 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                         >
                           {stockStatusLabels[status]}
                         </Badge>
+                      </td>
+                      <td className="py-3 pr-4 text-right hidden xl:table-cell">
+                        {item.daysUntilStockout === null ? (
+                          <span className="text-xs text-[#0A0A0A]/30">—</span>
+                        ) : item.daysUntilStockout <= 0 ? (
+                          <span className="text-xs font-semibold text-[#0A0A0A]">0d</span>
+                        ) : (
+                          <span className={`text-xs font-medium ${
+                            item.daysUntilStockout <= 7 ? 'text-red-600' :
+                            item.daysUntilStockout <= 21 ? 'text-amber-600' :
+                            'text-[#0A0A0A]/60'
+                          }`}>
+                            {item.daysUntilStockout}d
+                          </span>
+                        )}
                       </td>
                       <td className="py-3 pr-4 text-center hidden sm:table-cell">
                         <Switch

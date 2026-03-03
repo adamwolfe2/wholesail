@@ -1,3 +1,4 @@
+// SAMPLE DATA — replace with client product catalog
 export interface Product {
   id: string
   name: string

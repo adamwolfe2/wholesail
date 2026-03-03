@@ -76,6 +76,7 @@ enum InvoiceStatus {
   PENDING
   PAID
   OVERDUE
+  CANCELLED
 }
 
 enum QuoteStatus {
@@ -357,6 +358,7 @@ model Organization {
   distributorOrders Order[]   @relation("DistributorOrders")
   suppliedProducts  Product[] @relation("DistributorProducts")
   distributorItems  OrderItem[] @relation("DistributorItems")
+  distributorInventory DistributorInventory[] @relation("DistributorStock")
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
@@ -402,6 +404,7 @@ model Product {
   standingOrderItems StandingOrderItem[]
   inventoryLevel    InventoryLevel?
   drops             ProductDrop[]
+  distributorInventory DistributorInventory[] @relation("DistributorStock")
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
@@ -435,7 +438,7 @@ model Order {
   packedAt               DateTime?
   shippedAt              DateTime?
   driverName             String?
-  rockyConfirmedAt       DateTime?
+  adminConfirmedAt       DateTime?
   distributorOrgId       String?
   distributorOrg         Organization? @relation("DistributorOrders", fields: [distributorOrgId], references: [id])
   distributorConfirmedAt DateTime?
@@ -946,4 +949,22 @@ model Referral {
 
   @@index([referrerId])
   @@index([refereeEmail])
+}
+
+// ============================================================
+// DISTRIBUTOR INVENTORY
+// ============================================================
+
+model DistributorInventory {
+  id                String       @id @default(cuid())
+  distributorOrgId  String
+  productId         String
+  quantityOnHand    Int          @default(0)
+  quantityBackstock Int          @default(0)
+  notes             String?
+  updatedAt         DateTime     @updatedAt
+  distributor Organization @relation("DistributorStock", fields: [distributorOrgId], references: [id], onDelete: Cascade)
+  product     Product      @relation("DistributorStock", fields: [productId], references: [id], onDelete: Cascade)
+  @@unique([distributorOrgId, productId])
+  @@index([distributorOrgId])
 }
