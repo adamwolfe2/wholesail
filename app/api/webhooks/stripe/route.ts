@@ -263,7 +263,7 @@ export async function POST(req: NextRequest) {
         const paymentIntentId =
           typeof session.payment_intent === "string"
             ? session.payment_intent
-            : session.payment_intent?.id ?? null;
+            : session.payment_intent?.id;
 
         // Idempotency check
         const existing = await prisma.order.findUnique({
