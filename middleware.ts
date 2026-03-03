@@ -1,4 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 const isAdminRoute = createRouteMatcher([
   "/admin(.*)",
@@ -6,6 +7,15 @@ const isAdminRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
+  // Strip www before Clerk ever sees the request — prevents blank sign-in widget
+  // caused by redirect_url containing www (which Clerk treats as a disallowed origin)
+  const host = req.headers.get("host") || "";
+  if (host.startsWith("www.")) {
+    const url = req.nextUrl.clone();
+    url.host = host.slice(4);
+    return NextResponse.redirect(url, 308);
+  }
+
   if (isAdminRoute(req)) {
     await auth.protect();
   }
