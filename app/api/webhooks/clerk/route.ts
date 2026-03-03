@@ -58,6 +58,10 @@ export async function POST(req: NextRequest) {
       const { id, email_addresses, first_name, last_name, public_metadata } =
         event.data;
       const email = email_addresses[0]?.email_address;
+      if (!email) {
+        console.warn(`Clerk user ${id} (${event.type}) has no email address — skipping DB sync`);
+        break;
+      }
       const name = [first_name, last_name].filter(Boolean).join(" ") || "User";
       const rawRole = public_metadata?.role;
       const role: ValidRole = isValidRole(rawRole) ? rawRole : "CLIENT";

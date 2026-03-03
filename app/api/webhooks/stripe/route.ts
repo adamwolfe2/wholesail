@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
           const paymentIntentId =
             typeof session.payment_intent === "string"
               ? session.payment_intent
-              : session.payment_intent?.id;
+              : session.payment_intent?.id ?? null;
 
           // Idempotency: skip if already converted
           const existingQuote = await prisma.quote.findUnique({
@@ -215,7 +215,7 @@ export async function POST(req: NextRequest) {
           const paymentIntentId =
             typeof session.payment_intent === "string"
               ? session.payment_intent
-              : session.payment_intent?.id;
+              : session.payment_intent?.id ?? null;
 
           // Idempotency: skip if already paid
           const existingInv = await prisma.invoice.findUnique({
@@ -263,7 +263,7 @@ export async function POST(req: NextRequest) {
         const paymentIntentId =
           typeof session.payment_intent === "string"
             ? session.payment_intent
-            : session.payment_intent?.id;
+            : session.payment_intent?.id ?? null;
 
         // Idempotency check
         const existing = await prisma.order.findUnique({

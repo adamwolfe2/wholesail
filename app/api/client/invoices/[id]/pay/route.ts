@@ -1,19 +1,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
-import { isStripeConfigured } from "@/lib/payments/stripe";
-import Stripe from "stripe";
+import { isStripeConfigured, getStripeClient } from "@/lib/stripe/config";
 import { getSiteUrl } from "@/lib/get-site-url";
-
-function getStripe(): Stripe {
-  if (!process.env.STRIPE_SECRET_KEY) {
-    throw new Error("STRIPE_SECRET_KEY is not set");
-  }
-  return new Stripe(process.env.STRIPE_SECRET_KEY, {
-    apiVersion: "2026-02-25.clover",
-    httpClient: Stripe.createNodeHttpClient(),
-  });
-}
 
 export async function POST(
   _req: Request,
@@ -73,7 +62,7 @@ export async function POST(
 
     const appUrl = getSiteUrl();
 
-    const stripe = getStripe();
+    const stripe = getStripeClient();
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       customer_email: user.email,

@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
   }
 
   const org = await getOrganizationByUserId(userId)
-  if (!org || !org.isWholesaler) {
+  if (!org || !org.isDistributor) {
     return NextResponse.json({ error: 'Forbidden — not a distributor account.' }, { status: 403 })
   }
 
