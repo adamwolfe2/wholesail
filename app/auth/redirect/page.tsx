@@ -1,44 +1,47 @@
+'use client'
+
 /**
  * Smart auth redirect — runs after Clerk sign-in or sign-up.
- * Checks the user's DB role and redirects to the right section:
- *   - ADMIN / OPS / SALES_REP → /admin
- *   - SUPPLIER → /supplier/dashboard
- *   - CLIENT (with org) → /client-portal/dashboard
- *   - CLIENT (no org) → /client-portal/dashboard (empty state with apply CTA)
+ * Must be a client component so Clerk's session is available
+ * immediately after the post-sign-in redirect.
  */
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
-import { prisma } from "@/lib/db";
+import { useEffect } from 'react'
+import { useAuth } from '@clerk/nextjs'
+import { useRouter } from 'next/navigation'
 
-export const dynamic = "force-dynamic";
+export default function AuthRedirectPage() {
+  const { userId, isLoaded } = useAuth()
+  const router = useRouter()
 
-export default async function AuthRedirectPage() {
-  const { userId } = await auth();
+  useEffect(() => {
+    if (!isLoaded) return
 
-  if (!userId) {
-    redirect("/sign-in");
-  }
+    if (!userId) {
+      router.replace('/sign-in')
+      return
+    }
 
-  const dbUser = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { role: true, organizationId: true },
-  }).catch(() => null);
+    // Fetch role from DB and redirect accordingly
+    fetch('/api/auth/role')
+      .then(r => r.json())
+      .then(({ role }) => {
+        if (role === 'ADMIN' || role === 'OPS' || role === 'SALES_REP') {
+          router.replace('/admin')
+        } else if (role === 'SUPPLIER') {
+          router.replace('/supplier/dashboard')
+        } else {
+          router.replace('/client-portal/dashboard')
+        }
+      })
+      .catch(() => {
+        // DB not ready or no record yet — default to client portal
+        router.replace('/client-portal/dashboard')
+      })
+  }, [isLoaded, userId, router])
 
-  if (!dbUser) {
-    // User exists in Clerk but not in DB yet — webhook may still be processing.
-    // Redirect to client portal; it will show an appropriate empty state.
-    redirect("/client-portal/dashboard");
-  }
-
-  switch (dbUser.role) {
-    case "ADMIN":
-    case "OPS":
-    case "SALES_REP":
-      redirect("/admin");
-    case "SUPPLIER":
-      redirect("/supplier/dashboard");
-    case "CLIENT":
-    default:
-      redirect("/client-portal/dashboard");
-  }
+  return (
+    <div className="min-h-screen bg-[#F9F7F4] flex items-center justify-center">
+      <p className="text-sm text-[#0A0A0A]/40">Redirecting…</p>
+    </div>
+  )
 }
