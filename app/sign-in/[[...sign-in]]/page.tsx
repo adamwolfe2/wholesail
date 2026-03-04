@@ -3,8 +3,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Sign In | Partner Portal",
-  description: "Sign in to your wholesale partner portal.",
+  title: "Sign In | Wholesail",
+  description: "Sign in to your Wholesail account.",
 };
 
 export default function SignInPage() {
@@ -26,10 +26,10 @@ export default function SignInPage() {
           {/* Heading */}
           <div className="mb-8 text-center">
             <h1 className="font-serif text-3xl font-normal text-[#0A0A0A] mb-2">
-              Partner Portal
+              Sign in
             </h1>
             <p className="text-sm text-[#0A0A0A]/50">
-              Sign in to manage your orders, invoices, and account.
+              Welcome back. You&apos;ll be routed to your portal automatically.
             </p>
           </div>
 

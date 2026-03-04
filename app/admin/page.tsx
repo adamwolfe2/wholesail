@@ -19,7 +19,7 @@ export default async function AdminPage() {
   const clientProjects = mapProjectsForDashboard(projects);
 
   if (clientProjects.length === 0 && intakes.length === 0) {
-    redirect('/admin/orders')
+    redirect('/admin/intakes')
   }
 
   return (
