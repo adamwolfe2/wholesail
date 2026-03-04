@@ -13,21 +13,16 @@ export const dynamic = 'force-dynamic';
 
 const ALLOWED_ROLES = ["ADMIN", "OPS", "SALES_REP"] as const;
 
-// Cache badge counts for 60 seconds — avoids 7 DB queries on every admin page navigation.
-// Tags allow on-demand invalidation when underlying data changes.
+// Cache badge counts for 60 seconds — 3 DB queries max once per minute across all admins.
 const getNavBadgeCounts = unstable_cache(
   async () => {
-    const [unreadMessages, pendingOrders, overdueInvoices, pendingApplications, openTasks, pendingIntakes, activeBuilds] =
+    const [unreadMessages, pendingIntakes, activeBuilds] =
       await Promise.all([
         prisma.message.count({ where: { senderRole: "client", readAt: null } }).catch(() => 0),
-        prisma.order.count({ where: { status: "PENDING" } }).catch(() => 0),
-        prisma.invoice.count({ where: { status: "OVERDUE" } }).catch(() => 0),
-        prisma.wholesaleApplication.count({ where: { status: "PENDING" } }).catch(() => 0),
-        prisma.repTask.count({ where: { completedAt: null } }).catch(() => 0),
         prisma.intakeSubmission.count({ where: { reviewedAt: null, archivedAt: null } }).catch(() => 0),
         prisma.project.count({ where: { status: { in: ["ONBOARDING", "BUILDING", "REVIEW"] } } }).catch(() => 0),
       ]);
-    return { unreadMessages, pendingOrders, overdueInvoices, pendingApplications, openTasks, pendingIntakes, activeBuilds };
+    return { unreadMessages, pendingIntakes, activeBuilds };
   },
   ['admin-nav-badges'],
   { revalidate: 60, tags: ['admin-nav-badges'] }
@@ -51,16 +46,10 @@ export default async function AdminLayout({
     redirect("/");
   }
 
-  // Badge counts — served from 60s cache; 7 DB queries max once per minute across all admins
-  const { unreadMessages, pendingOrders, overdueInvoices, pendingApplications, openTasks, pendingIntakes, activeBuilds } =
-    await getNavBadgeCounts();
+  const { unreadMessages, pendingIntakes, activeBuilds } = await getNavBadgeCounts();
 
   const navBadges: Record<string, number> = {
     unreadMessages,
-    pendingOrders,
-    overdueInvoices,
-    pendingApplications,
-    openTasks,
     pendingIntakes,
     activeBuilds,
   };
