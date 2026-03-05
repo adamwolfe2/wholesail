@@ -22,7 +22,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "What integrations are included?",
-    a: "The core platform includes Stripe (payments & invoicing), Clerk (authentication), Resend (transactional emails), and Neon (database). Optional add-ons include Bloo.io (SMS/iMessage ordering), Google Gemini (AI order parsing), Firecrawl (lead enrichment), and Upstash Redis (rate limiting). All integrations are configured during the build.",
+    a: "The core platform includes Stripe (payments & invoicing), Clerk (client authentication), Resend (transactional emails), and Neon (database). Optional add-ons include Bloo.io (text message ordering), Firecrawl (lead enrichment), and Upstash Redis (rate limiting). All integrations are configured during the build — nothing for you to set up.",
   },
   {
     q: "Can my existing wholesale clients use this?",
@@ -33,8 +33,8 @@ const FAQ_ITEMS = [
     a: "The portal is built to evolve. After launch, we offer ongoing support packages for adding features, adjusting workflows, and scaling. Since you own the code and it's built on standard Next.js / React, any developer can also make changes independently.",
   },
   {
-    q: "How does SMS ordering work?",
-    a: "Clients send a text message with their order (e.g., '2 cases salmon, 5 lb truffles'). Our AI parses the natural language into a structured order using your product catalog, sends a confirmation message with the total, and the client replies 'YES' to confirm. The order flows directly into your admin panel.",
+    q: "How does text message ordering work?",
+    a: "Clients send a text with what they need (e.g., '2 cases salmon, 5 lb truffles'). The system matches those items to your product catalog, sends back a confirmation with the order total, and the client replies 'YES' to confirm. The order flows directly into your admin panel — no phone call required.",
   },
 ];
 

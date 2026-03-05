@@ -20,12 +20,18 @@ import {
   Newspaper,
   Warehouse,
   CheckCircle2,
+  X,
+  ChefHat,
+  GlassWater,
+  Wrench,
+  Sparkles,
+  Building2,
+  Utensils,
 } from "lucide-react";
 import { IntakeWizard } from "@/components/intake-wizard";
 import { BuildDemo } from "@/components/build-demo";
 import { DemoLauncher } from "@/components/demo-launcher";
 import { FAQ } from "@/components/faq";
-import { TechMarquee } from "@/components/tech-marquee";
 import { PainPointExplorer } from "@/components/pain-point-explorer";
 
 /* ── Wholesail Sail Logo ─────────────────────────────────────────────── */
@@ -65,27 +71,27 @@ function SailLogo({ className = "w-6 h-6" }: { className?: string }) {
 const STATS = [
   {
     icon: Clock,
-    stat: "45+ hrs",
-    label: "your team spends every week on manual work that should be automated",
-    source: "Process audit",
+    stat: "3–4 hrs",
+    label: "per day the average distribution team spends manually entering orders, confirming inventory, and chasing payments",
+    source: "Conexiom, 2024",
   },
   {
     icon: DollarSign,
-    stat: "$180K+",
-    label: "wasted every year on disconnected software and manual labor",
-    source: "Cost analysis",
+    stat: "34%",
+    label: "increase in repeat purchase frequency when wholesale clients can place orders through a self-service portal",
+    source: "Shopify B2B Research",
   },
   {
     icon: TrendingUp,
-    stat: "3.2x",
-    label: "more reorders when clients can order themselves 24/7 through a portal",
-    source: "Client data",
+    stat: "12 days",
+    label: "faster invoice collection when clients can pay online — less time chasing, better cash flow, fewer phone calls",
+    source: "Industry average",
   },
   {
     icon: Zap,
     stat: "< 2 wks",
-    label: "from intake call to a fully deployed, branded portal — replacing all your tools",
-    source: "Build timeline",
+    label: "from first call to fully deployed portal — versus 9–12 months for a standard ERP implementation",
+    source: "vs. ERP average",
   },
 ];
 
@@ -95,73 +101,73 @@ const FEATURES = [
     icon: ShoppingCart,
     label: "Self-Service Ordering",
     title: "Your clients order when they want.",
-    body: "Full product catalog, saved carts, standing orders, and quick reorder. No more phone tag.",
+    body: "Full product catalog, saved carts, standing orders, and quick reorder. No more phone tag or missed voicemails.",
   },
   {
     icon: LayoutDashboard,
     label: "Admin Panel",
     title: "Run your operation from one screen.",
-    body: "Orders, fulfillment, CRM, inventory, pricing, analytics — 25+ pages, one dashboard.",
+    body: "Orders, fulfillment, CRM, inventory, pricing, analytics — 25+ pages, one dashboard. Everything in one place.",
   },
   {
     icon: CreditCard,
-    label: "Stripe Billing",
-    title: "Get paid faster. Automatically.",
-    body: "Online checkout, Net-30/60/90 invoicing, reminders, and overdue escalation.",
+    label: "Billing & Invoicing",
+    title: "Get paid faster. On your terms.",
+    body: "Online checkout, Net-30/60/90 invoicing, payment reminders, and overdue escalation — without chasing anyone by phone.",
   },
   {
     icon: MessageSquare,
-    label: "SMS Ordering",
-    title: "Clients text. AI parses. Orders flow.",
-    body: "Clients text orders in plain English — AI creates them and confirms automatically.",
+    label: "Text Message Ordering",
+    title: "Clients text their order. It shows up in your system.",
+    body: "Clients send a text with what they need. Your system receives it, confirms the total, and routes it to your dashboard. No voicemails.",
   },
   {
     icon: Globe,
-    label: "Marketing Site",
+    label: "Your Own Website",
     title: "Your brand, not a marketplace.",
-    body: "17 SEO pages: catalog, wholesale application, journal, referral landing pages.",
+    body: "A fully branded online catalog your clients can browse and order from. Your domain, your logo — not a marketplace where your competitors are one click away.",
   },
   {
     icon: BarChart3,
     label: "Client Intelligence",
-    title: "Know who to call before they lapse.",
-    body: "Health scoring, smart reorder nudges, and churn detection — all automated.",
+    title: "Know who to call before they go quiet.",
+    body: "Health scoring, reorder nudges, and lapse detection — so you always know which accounts need attention before they stop ordering.",
   },
   {
     icon: Heart,
     label: "Loyalty & Referrals",
     title: "Reward your best clients.",
-    body: "Points, tiers, referral codes — clients earn and redeem at checkout automatically.",
+    body: "Points, tiers, referral codes — clients earn credit on every order and redeem it at checkout.",
   },
   {
     icon: Truck,
     label: "Shipment Tracking",
     title: "Clients track their own orders.",
-    body: "Real-time tracking pages so clients stop calling to ask 'where's my order?'",
+    body: "Real-time tracking pages so clients stop calling to ask 'where's my order?' — and your team stops answering that call.",
   },
   {
     icon: Package,
     label: "Inventory Management",
     title: "Never oversell. Never run dry.",
-    body: "Stock updates automatically as orders come in. Low-stock alerts and batch tracking.",
+    body: "Stock levels update as orders come in. Low-stock alerts and batch tracking keep you ahead of what's running low.",
   },
   {
     icon: Shield,
     label: "Custom Domain",
     title: "Your portal. Your brand. Zero watermarks.",
-    body: "White-label everything: domain, emails, logo. Clients never see our name.",
+    body: "White-label everything: domain, emails, logo. Your clients see your company name — never ours.",
   },
   {
     icon: Brain,
-    label: "AI Chatbot",
-    title: "Your team's knowledge, always on.",
-    body: "AI answers product and pricing questions 24/7. Escalates to your team when needed.",
+    label: "24/7 Answer Bot",
+    title: "Fewer 'quick question' calls to your office.",
+    body: "Clients get product and pricing answers at any hour. Handles common questions and escalates to your team for anything it can't answer.",
   },
   {
     icon: Gift,
     label: "Product Drops",
     title: "Create urgency. Drive reorders.",
-    body: "Limited-time releases with instant notifications. First come, first served.",
+    body: "Limited-time releases with instant notifications to your client list. First come, first served.",
   },
 ];
 
@@ -234,8 +240,44 @@ const STEPS = [
   {
     step: "04",
     title: "Launch & Onboard Clients",
-    desc: "Deploy to production, train your team, invite your first wholesale clients, and activate SMS ordering. You're live.",
+    desc: "Deploy to production, train your team, invite your first wholesale clients, and activate text message ordering. You're live.",
   },
+];
+
+/* ── Before / After ───────────────────────────────────────────────────── */
+const BEFORE_AFTER = [
+  {
+    before: "Orders arrive by phone, email, and voicemail at all hours. Someone types them in manually — and sometimes makes mistakes.",
+    after: "Clients log in and place their own orders any time of day. Every order lands in your dashboard the moment it's placed.",
+  },
+  {
+    before: "Invoices go out when someone has time. Late payments are chased one by one with phone calls and follow-up emails.",
+    after: "Invoices generate when an order ships. Reminders go out on schedule at Day 25, 30, and 35. You collect 12 days faster on average.",
+  },
+  {
+    before: "Your catalog is in a spreadsheet. Every client has different pricing and only you know it — or think you do.",
+    after: "Every client sees their own catalog, their own prices, and their full order history — logged in to their private portal.",
+  },
+  {
+    before: "You don't know a client is about to leave until they've already switched to a competitor.",
+    after: "Your dashboard flags clients who haven't ordered in 14+ days. You call them before they're gone.",
+  },
+  {
+    before: "Your team spends 3–4 hours every day on order entry, billing questions, and 'where's my order?' calls.",
+    after: "Your team focuses on growing accounts and finding new clients. The portal handles the rest.",
+  },
+];
+
+/* ── Industries ───────────────────────────────────────────────────────── */
+const INDUSTRIES = [
+  { icon: Utensils, name: "Food & Beverage", desc: "Specialty foods, produce, dairy" },
+  { icon: GlassWater, name: "Wine & Spirits", desc: "Importers and distributors" },
+  { icon: Wrench, name: "Industrial Supply", desc: "MRO and safety equipment" },
+  { icon: Sparkles, name: "Beauty & Cosmetics", desc: "Salon and retail wholesale" },
+  { icon: ChefHat, name: "Restaurant Supply", desc: "Foodservice distribution" },
+  { icon: Package, name: "Specialty Goods", desc: "Artisan and niche products" },
+  { icon: Building2, name: "Building Materials", desc: "Trade and contractor supply" },
+  { icon: Heart, name: "Medical Supply", desc: "Healthcare distribution" },
 ];
 
 export default function WholesailPage() {
@@ -397,6 +439,87 @@ export default function WholesailPage() {
         </div>
       </section>
 
+      {/* ── Before / After ───────────────────────────────────────── */}
+      <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="mb-10">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
+            The Transformation
+          </span>
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal"
+            style={{ color: "var(--text-headline)" }}
+          >
+            What changes when you go live.
+          </h2>
+        </div>
+        <div
+          className="grid grid-cols-1 lg:grid-cols-2 gap-0"
+          style={{ border: "1px solid var(--border-strong)" }}
+        >
+          {/* Before column */}
+          <div
+            className="p-8 border-b lg:border-b-0 lg:border-r"
+            style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-white)" }}
+          >
+            <div
+              className="font-mono text-[9px] uppercase tracking-widest mb-6"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Before Wholesail
+            </div>
+            <div className="space-y-5">
+              {BEFORE_AFTER.map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <X
+                    className="w-3.5 h-3.5 flex-shrink-0 mt-0.5"
+                    style={{ color: "#dc2626" }}
+                    strokeWidth={2.5}
+                  />
+                  <p
+                    className="font-mono text-xs leading-relaxed"
+                    style={{ color: "var(--text-body)" }}
+                  >
+                    {item.before}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* After column */}
+          <div
+            className="p-8"
+            style={{ backgroundColor: "var(--bg-blue)" }}
+          >
+            <div
+              className="font-mono text-[9px] uppercase tracking-widest mb-6"
+              style={{ color: "rgba(255,255,255,0.4)" }}
+            >
+              After Wholesail
+            </div>
+            <div className="space-y-5">
+              {BEFORE_AFTER.map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <CheckCircle2
+                    className="w-3.5 h-3.5 flex-shrink-0 mt-0.5"
+                    style={{ color: "rgba(255,255,255,0.6)" }}
+                    strokeWidth={2}
+                  />
+                  <p
+                    className="font-mono text-xs leading-relaxed"
+                    style={{ color: "rgba(255,255,255,0.85)" }}
+                  >
+                    {item.after}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── Explore Platform Demo ────────────────────────────────── */}
       <section className="py-16" id="demo" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="max-w-2xl mx-auto text-center mb-10">
@@ -427,7 +550,7 @@ export default function WholesailPage() {
               "Full product catalog with your branding",
               "Client portal with order history and tracking",
               "Admin panel with CRM, analytics, and fulfillment",
-              "SMS ordering demo with AI parsing",
+              "Text message ordering demo",
               "Invoice management with Stripe integration",
               "Loyalty program, referrals, and standing orders",
             ].map((item) => (
@@ -448,20 +571,54 @@ export default function WholesailPage() {
         </div>
       </section>
 
-      {/* ── Tech Stack Marquee ────────────────────────────────────── */}
-      <section
-        className="py-10 overflow-hidden"
-        style={{ borderTop: "1px solid var(--border)" }}
-      >
-        <div className="mb-4">
+      {/* ── Industries We Serve ──────────────────────────────────── */}
+      <section className="py-12" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="mb-8">
           <span
             className="font-mono text-xs uppercase tracking-widest"
             style={{ color: "var(--text-muted)" }}
           >
-            Built on
+            Who this is built for
           </span>
         </div>
-        <TechMarquee />
+        <div
+          className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-0"
+          style={{ border: "1px solid var(--border-strong)" }}
+        >
+          {INDUSTRIES.map((industry, i) => {
+            const Icon = industry.icon;
+            return (
+              <div
+                key={industry.name}
+                className={`p-4 flex flex-col items-center text-center ${
+                  i < INDUSTRIES.length - 1 ? "border-b sm:border-b-0 sm:border-r" : ""
+                }`}
+                style={{
+                  borderColor: "var(--border-strong)",
+                  backgroundColor: "var(--bg-white)",
+                }}
+              >
+                <Icon
+                  className="w-5 h-5 mb-2"
+                  style={{ color: "var(--blue)" }}
+                  strokeWidth={1.5}
+                />
+                <div
+                  className="font-mono text-[9px] uppercase tracking-wide font-semibold mb-0.5"
+                  style={{ color: "var(--text-headline)" }}
+                >
+                  {industry.name}
+                </div>
+                <div
+                  className="font-mono text-[8px] leading-tight"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {industry.desc}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </section>
 
       {/* ── Pain Point Explorer ──────────────────────────────────── */}
@@ -574,7 +731,7 @@ export default function WholesailPage() {
             className="text-3xl md:text-4xl font-serif font-normal"
             style={{ color: "var(--text-headline)" }}
           >
-            32 database models. 133 API routes. 76 pages.
+            Three parts. One platform. Everything your distribution business runs on.
           </h2>
         </div>
         <div
@@ -1031,7 +1188,7 @@ export default function WholesailPage() {
             { icon: Gift, label: "Referral Program" },
             { icon: Package, label: "Product Drops" },
             { icon: Warehouse, label: "Supplier Portal" },
-            { icon: Brain, label: "AI Order Parsing" },
+            { icon: Brain, label: "Text Order Entry" },
             { icon: Newspaper, label: "Blog / Journal" },
             { icon: Shield, label: "Rate Limiting" },
             { icon: Users, label: "Sales Rep Tools" },
@@ -1222,6 +1379,13 @@ export default function WholesailPage() {
                   style={{ color: "var(--text-body)" }}
                 >
                   Pricing
+                </a>
+                <a
+                  href="/blog"
+                  className="block font-mono text-xs transition-colors"
+                  style={{ color: "var(--text-body)" }}
+                >
+                  Blog
                 </a>
               </div>
             </div>

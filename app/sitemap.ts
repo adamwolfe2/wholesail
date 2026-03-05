@@ -40,5 +40,41 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${BASE_URL}/blog/food-beverage-distribution-wholesale-ordering-portal`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/blog/wine-spirits-distributor-ordering-portal`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/blog/wholesail-vs-netsuite-for-distributors`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/blog/replace-quickbooks-spreadsheets-with-ordering-portal`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/blog/hubspot-salesforce-distribution-alternatives`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/blog/industrial-supply-distribution-online-ordering`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
   ];
 }
