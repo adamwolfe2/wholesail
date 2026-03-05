@@ -373,27 +373,27 @@ export default function WholesailPage() {
       <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6">
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <section className="py-20" style={{ borderTop: "1px solid var(--border)" }}>
-        {/* Eyebrow pill */}
-        <span
-          className="inline-block font-mono text-[12px] font-semibold tracking-[0.04em] mb-2"
-          style={{
-            backgroundColor: "var(--blue-light)",
-            color: "var(--blue)",
-            borderRadius: "100px",
-            padding: "4px 14px",
-          }}
-        >
-          For wholesale distributors doing $1M–$20M
-        </span>
         <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 items-center">
           <div>
+            {/* Eyebrow pill */}
+            <span
+              className="inline-block font-mono text-[12px] font-semibold tracking-[0.04em] mb-2"
+              style={{
+                backgroundColor: "var(--blue-light)",
+                color: "var(--blue)",
+                borderRadius: "100px",
+                padding: "4px 14px",
+              }}
+            >
+              For wholesale distributors doing $1M–$20M
+            </span>
             <h1
               className="text-4xl md:text-5xl lg:text-[3.25rem] font-normal leading-[1.08] tracking-tight font-serif mb-7"
               style={{ color: "var(--text-headline)" }}
             >
               Your Entire Wholesale Business
               <br />
-              <span className="italic"><Link href="/ai-ified" style={{ color: "inherit", borderBottom: "2px solid var(--blue)", textDecoration: "none" }}>AI-ified</Link> &amp; Fully Automated.</span>
+              <span className="italic"><Link href="/ai-ified" style={{ color: "inherit", textDecoration: "none", position: "relative", display: "inline-block" }}>AI-ified<svg aria-hidden="true" viewBox="0 0 120 8" preserveAspectRatio="none" style={{ position: "absolute", bottom: "-6px", left: 0, width: "100%", height: "8px", overflow: "visible" }}><path d="M2 5 Q15 1 30 5 Q45 9 60 5 Q75 1 90 5 Q105 9 118 5" fill="none" stroke="var(--blue)" strokeWidth="2.5" strokeLinecap="round"/></svg></Link> &amp; Fully Automated.</span>
             </h1>
             <p
               className="font-mono text-sm sm:text-base leading-relaxed mb-8 max-w-lg"
