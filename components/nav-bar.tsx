@@ -103,6 +103,12 @@ export function NavBar() {
               { label: "Food & Beverage", href: "/food-beverage", desc: "Specialty foods, produce, dairy" },
               { label: "Wine & Spirits", href: "/wine-spirits", desc: "Importers and distributors" },
               { label: "Industrial Supply", href: "/industrial-supply", desc: "MRO and safety equipment" },
+              { label: "Coffee & Tea", href: "/coffee-tea", desc: "Roasters and importers" },
+              { label: "Seafood & Meat", href: "/seafood-meat", desc: "Protein and perishables" },
+              { label: "Specialty Food", href: "/specialty-food", desc: "Artisan and gourmet importers" },
+              { label: "Beauty & Cosmetics", href: "/beauty-cosmetics", desc: "Salon and professional supply" },
+              { label: "Pet Supply", href: "/pet-supply", desc: "Pet stores and groomers" },
+              { label: "View All Industries →", href: "/food-beverage", desc: "" },
             ]}
           />
           <Link href="/blog" className="font-mono text-[13px] link-body">

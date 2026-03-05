@@ -137,5 +137,183 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    // Tier 1 industry pages
+    {
+      url: `${BASE_URL}/coffee-tea`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/seafood-meat`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/bakery-distribution`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/floral-nursery`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/produce-dairy`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/specialty-food`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/beauty-cosmetics`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/pet-supply`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    // Tier 2 industry pages
+    {
+      url: `${BASE_URL}/jan-san`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/building-materials`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/agricultural-supply`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/apparel-fashion`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/auto-parts`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/chemical-supply`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    // Tier 3 industry pages
+    {
+      url: `${BASE_URL}/supplements`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/electrical-supply`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/tobacco-vape`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/restaurant-equipment`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/packaging-supply`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/plumbing-hvac`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/office-breakroom`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/craft-art-supply`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/jewelry-accessories`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    // Competitor comparison blog posts
+    {
+      url: `${BASE_URL}/blog/wholesail-vs-faire-for-distributors`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/blog/wholesail-vs-freshline-for-distributors`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/blog/wholesail-vs-nuorder-for-distributors`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/blog/wholesail-vs-repspark-for-distributors`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/blog/wholesail-vs-integrasoft-acctivate-for-distributors`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/blog/wholesail-vs-orderease-for-distributors`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
   ];
 }
