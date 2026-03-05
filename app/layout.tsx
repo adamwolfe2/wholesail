@@ -8,8 +8,8 @@ export const metadata: Metadata = {
     "Wholesail builds custom ordering portals for distribution companies. Your clients order online, you manage everything in one place. Live in under 2 weeks.",
   metadataBase: new URL("https://wholesailhub.com"),
   icons: {
-    icon: "/og-image.png",
-    apple: "/og-image.png",
+    icon: "/favicon.svg",
+    apple: "/apple-icon.png",
   },
   openGraph: {
     title: "Wholesail — Wholesale Ordering Portals for Distribution Companies",
