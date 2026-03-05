@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { NavBar } from "@/components/nav-bar";
 import {
   ArrowRight,
   Clock,
@@ -366,47 +368,9 @@ const INDUSTRIES = [
 
 export default function WholesailPage() {
   return (
-    <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6">
-      {/* ── Navigation ───────────────────────────────────────────── */}
-      <nav
-        className="py-5 flex items-center justify-between sticky top-0 z-50"
-        style={{
-          backgroundColor: "var(--bg-primary)",
-          borderBottom: "1px solid var(--border)",
-        }}
-      >
-        <span className="flex items-center gap-2">
-          <SailLogo className="w-5 h-5" />
-          <span
-            className="font-serif text-lg tracking-[0.05em] font-bold"
-            style={{ color: "var(--text-headline)" }}
-          >
-            WHOLESAIL
-          </span>
-        </span>
-        <div className="flex items-center gap-4">
-          <a
-            href="#demo"
-            className="font-mono text-[13px] hidden sm:block link-body"
-          >
-            Explore Platform
-          </a>
-          <a
-            href="/blog"
-            className="font-mono text-[13px] hidden sm:block link-body"
-          >
-            Blog
-          </a>
-          <a
-            href="#intake-form"
-            className="font-mono text-[13px] font-semibold btn-blue"
-            style={{ padding: "9px 20px", borderRadius: "6px" }}
-          >
-            Get Started
-          </a>
-        </div>
-      </nav>
-
+    <>
+      <NavBar />
+      <main className="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6">
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <section className="py-20" style={{ borderTop: "1px solid var(--border)" }}>
         {/* Eyebrow pill */}
@@ -421,7 +385,7 @@ export default function WholesailPage() {
         >
           For wholesale distributors doing $1M–$20M
         </span>
-        <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 items-center">
           <div>
             <h1
               className="text-4xl md:text-5xl lg:text-[3.25rem] font-normal leading-[1.08] tracking-tight font-serif mb-7"
@@ -429,7 +393,7 @@ export default function WholesailPage() {
             >
               Your Entire Wholesale Business
               <br />
-              <span className="italic">AI-ified &amp; Fully Automated.</span>
+              <span className="italic"><Link href="/ai-ified" style={{ color: "inherit", borderBottom: "2px solid var(--blue)", textDecoration: "none" }}>AI-ified</Link> &amp; Fully Automated.</span>
             </h1>
             <p
               className="font-mono text-sm sm:text-base leading-relaxed mb-8 max-w-lg"
@@ -1829,5 +1793,6 @@ export default function WholesailPage() {
         </div>
       </footer>
     </main>
+    </>
   );
 }

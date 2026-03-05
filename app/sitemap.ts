@@ -106,6 +106,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.85,
     },
+    {
+      url: `${BASE_URL}/about`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/ai-ified`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
     // Industry landing pages
     {
       url: `${BASE_URL}/food-beverage`,

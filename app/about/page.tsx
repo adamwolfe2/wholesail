@@ -1,319 +1,333 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { ArrowRight, Instagram } from 'lucide-react'
-import { MarketingHeader } from '@/components/marketing-header'
-import { Button } from '@/components/ui/button'
-
-export const dynamic = "force-dynamic"
+import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { NavBar } from "@/components/nav-bar";
+import { IntakeWizard } from "@/components/intake-wizard";
 
 export const metadata: Metadata = {
-  title: 'About',
+  title: "About Wholesail | Wholesale Distribution Automation",
   description:
-    'Wholesail is a Los Angeles–based luxury food distributor. Direct-sourced truffles, caviar, wagyu, and artisan specialty foods for the finest restaurants, hotels, and private chefs in the US.',
+    "Wholesail builds custom AI-powered ordering portals for independent wholesale distributors. We believe every distributor deserves to stop working in their business and start working on it.",
   openGraph: {
-    title: 'About Wholesail',
+    title: "About Wholesail",
     description:
-      'Built on direct relationships with truffle hunters in Abruzzo, caviar producers on the Caspian coast, and wagyu farms across Japan. We move luxury ingredients fast, fresh, and overnight.',
-    images: [{ url: '/Public Social Image.png', width: 1731, height: 966, alt: 'Wholesail — Luxury Wholesale Specialty Foods' }],
+      "We build the AI-powered infrastructure independent distributors need to compete, grow, and reclaim their time. Custom portals. Live in under 2 weeks.",
   },
-  twitter: {
-    card: 'summary_large_image',
-    images: ['/Public Social Image.png'],
-  },
-  alternates: {
-    canonical: 'https://wholesailhub.com/about',
-  },
-}
-
-const MILESTONES = [
-  {
-    year: 'Founded',
-    title: 'Los Angeles, CA',
-    body: "Wholesail was born in LA with a simple belief: the city's best kitchens deserved a supplier who matched their obsession with quality.",
-  },
-  {
-    year: '342+',
-    title: 'Active Partners',
-    body: 'From Michelin-starred dining rooms to elite private chef services, over 342 restaurants, hotels, and culinary professionals trust Wholesail weekly.',
-  },
-  {
-    year: 'Weekly',
-    title: 'Direct Sourcing',
-    body: 'We source directly from truffle hunters in Italy\'s Abruzzo region, caviar producers on the Caspian coast, and wagyu farms across Japan\'s finest prefectures.',
-  },
-  {
-    year: '24–48hr',
-    title: 'Nationwide Cold Chain',
-    body: 'Same-day delivery across Southern California. Nationwide 24–48 hour cold chain guaranteed. No frozen product — ever.',
-  },
-]
-
-const VALUES = [
-  {
-    title: 'We Don\'t Warehouse Luxury',
-    body: 'Where traditional distributors stockpile and sit on inventory, we source on-demand and move fast. Every truffle, every tin of caviar arrives at its peak — because we timed it that way.',
-  },
-  {
-    title: 'Direct Relationships Only',
-    body: 'We built personal relationships with every producer we represent. That means better provenance traceability, better pricing, and access to allocations that never reach the open market.',
-  },
-  {
-    title: 'Quality Over Margin',
-    body: 'We have never compromised on product quality to protect a margin. Our reputation is built on the confidence our partners feel putting our ingredients on their menus — that\'s the only currency we care about.',
-  },
-  {
-    title: 'The Cold Chain Is Sacred',
-    body: 'Temperature integrity from source to kitchen is non-negotiable. Every product in our network is cold-chain certified, tracked, and delivered in conditions that preserve peak quality.',
-  },
-]
+  alternates: { canonical: "https://wholesailhub.com/about" },
+};
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#F9F7F4]">
-      <MarketingHeader />
+    <>
+      <NavBar />
+      <div className="min-h-screen" style={{ backgroundColor: "var(--bg-primary)" }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
 
-      {/* HERO */}
-      <section className="pt-24 pb-16 sm:pt-32 sm:pb-20 border-b border-[#E5E1DB]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-6">
-            Our Story
-          </p>
-          <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.05] text-[#0A0A0A] mb-7 max-w-3xl">
-            We Don&apos;t Warehouse Luxury.<br />
-            We Move It.
-          </h1>
-          <p className="text-[#0A0A0A]/55 text-base sm:text-lg leading-relaxed max-w-2xl">
-            Wholesail started with a deceptively simple premise: the best restaurants
-            in the world deserve a supplier who takes quality as seriously as they do.
-          </p>
-        </div>
-      </section>
+          {/* HERO */}
+          <section className="py-20 sm:py-28" style={{ borderBottom: "1px solid var(--border)" }}>
+            <span
+              className="font-mono text-[10px] uppercase tracking-widest mb-5 block"
+              style={{ color: "var(--text-muted)" }}
+            >
+              About Wholesail
+            </span>
+            <h1
+              className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.08] mb-6 max-w-3xl"
+              style={{ color: "var(--text-headline)" }}
+            >
+              We build the infrastructure
+              <br />
+              <span style={{ color: "var(--blue)" }}>independent distributors never had.</span>
+            </h1>
+            <p
+              className="font-mono text-sm leading-relaxed max-w-xl mb-6"
+              style={{ color: "var(--text-body)" }}
+            >
+              Wholesail is a Los Angeles–based technology company. We build custom AI-powered
+              wholesale ordering portals for independent distribution companies — the ones doing
+              $1M–$20M who can&apos;t afford a $100K ERP implementation and don&apos;t have an
+              IT department to run one.
+            </p>
+            <p
+              className="font-mono text-sm leading-relaxed max-w-xl mb-10"
+              style={{ color: "var(--text-body)" }}
+            >
+              Our clients are owner-operators. They built their distribution businesses through
+              relationships, hustle, and deep product knowledge — not technology. We give them the
+              technology layer so they can keep doing what they do best.
+            </p>
+            <Link
+              href="/#intake-form"
+              className="inline-flex items-center justify-center gap-2 font-mono text-sm font-semibold btn-blue"
+              style={{ padding: "14px 28px", borderRadius: "6px" }}
+            >
+              Start Your Build <ArrowRight className="w-4 h-4" />
+            </Link>
+          </section>
 
-      {/* BRAND STORY */}
-      <section className="py-16 sm:py-24 border-b border-[#E5E1DB]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-
-            {/* Pull quote */}
-            <div className="border border-[#E5E1DB] bg-white p-10 sm:p-14">
-              <p className="font-serif text-6xl text-[#E5E1DB] leading-none mb-6 select-none">
-                &ldquo;
-              </p>
-              <blockquote className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A] leading-snug italic mb-8">
-                Every product that leaves our cold chain has been touched by fewer hands and moved
-                faster than any distributor in the market.
-              </blockquote>
-              <cite className="text-sm text-[#C8C0B4] not-italic tracking-wide">
-                — Wholesail Team
-              </cite>
-            </div>
-
-            {/* Narrative */}
-            <div className="space-y-5 text-[15px] text-[#0A0A0A]/65 leading-relaxed">
-              <p>
-                We built direct relationships — with truffle hunters in Abruzzo&apos;s oak forests,
-                caviar producers on the Caspian coast, and wagyu farms in Japan&apos;s finest
-                prefectures — so our clients never have to compromise.
-              </p>
-              <p>
-                Every product that moves through our cold chain has been touched by fewer hands and
-                moved faster than any distributor in the market. Where others warehouse and wait, we
-                source on-demand. Where others average, we curate.
-              </p>
-              <p>
-                Our obsession with provenance means our partners can put anything we supply on their
-                menu with complete confidence. That trust took years to earn. We protect it on every
-                single order.
-              </p>
-              <p>
-                From Michelin-starred dining rooms to some of LA&apos;s most celebrated private chef
-                experiences, 342+ partners trust Wholesail because we&apos;ve never once compromised on
-                quality to make a margin. That reputation is the only one we care about building.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* BY THE NUMBERS */}
-      <section className="py-16 sm:py-20 border-b border-[#E5E1DB] bg-[#0A0A0A]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-10">
-            By the Numbers
-          </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-px bg-[#1A1614]">
-            {MILESTONES.map((m) => (
-              <div key={m.title} className="bg-[#0A0A0A] p-8 sm:p-10">
-                <p className="font-serif text-3xl sm:text-4xl font-bold text-[#F9F7F4] mb-2">
-                  {m.year}
+          {/* THE PROBLEM WE SOLVE */}
+          <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
+            <span
+              className="font-mono text-xs uppercase tracking-widest mb-4 block"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Why We Exist
+            </span>
+            <h2
+              className="font-serif text-3xl font-normal mb-8 max-w-2xl"
+              style={{ color: "var(--text-headline)" }}
+            >
+              The wholesale distribution industry runs on antiquated systems.
+              <br />
+              <span style={{ color: "var(--blue)" }}>That&apos;s about to change.</span>
+            </h2>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              <div className="space-y-5">
+                <p className="font-mono text-sm leading-relaxed" style={{ color: "var(--text-body)" }}>
+                  73% of independent wholesale distributors are still taking orders by phone,
+                  email, or text message. Their catalog is in a spreadsheet. Their pricing is in
+                  someone&apos;s head. Their invoices go out when someone has time to send them.
                 </p>
-                <p className="text-[11px] tracking-[0.15em] uppercase text-[#C8C0B4] mb-4">
-                  {m.title}
+                <p className="font-mono text-sm leading-relaxed" style={{ color: "var(--text-body)" }}>
+                  These businesses aren&apos;t failing — they&apos;re thriving. They have loyal
+                  clients, deep relationships, and real competitive advantages. But they&apos;re
+                  spending 3–4 hours every day on tasks that software should handle. And as AI
+                  transforms every other industry, the gap between manual-operations distributors
+                  and AI-native ones is widening fast.
                 </p>
-                <p className="text-sm text-[#F9F7F4]/45 leading-relaxed hidden sm:block">
-                  {m.body}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* VALUES */}
-      <section className="py-16 sm:py-24 border-b border-[#E5E1DB]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-3">
-            How We Operate
-          </p>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#0A0A0A] mb-12">
-            What We Stand For
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#E5E1DB]">
-            {VALUES.map((v) => (
-              <div key={v.title} className="bg-[#F9F7F4] p-8 sm:p-10">
-                <h3 className="font-serif text-xl font-bold text-[#0A0A0A] mb-4">{v.title}</h3>
-                <p className="text-sm text-[#0A0A0A]/60 leading-relaxed">{v.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SOURCING */}
-      <section className="py-16 sm:py-20 border-b border-[#E5E1DB]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div>
-              <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-3">
-                Where We Source
-              </p>
-              <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#0A0A0A] mb-6 leading-tight">
-                Direct from the Source.<br />Weekly.
-              </h2>
-              <div className="space-y-5 text-sm text-[#0A0A0A]/65 leading-relaxed">
-                <p>
-                  <strong className="text-[#0A0A0A] font-medium">Italy — Abruzzo & Périgord.</strong>{' '}
-                  Black truffles (Tuber Melanosporum), summer truffles, and white truffles (Tuber
-                  Magnatum) sourced directly from trusted hunters with generational expertise.
-                </p>
-                <p>
-                  <strong className="text-[#0A0A0A] font-medium">Caspian Region.</strong>{' '}
-                  Beluga, Ossetra, and Kaluga caviar from certified aquaculture partners with full
-                  CITES traceability. Every tin is dated and quality-checked before it ships.
-                </p>
-                <p>
-                  <strong className="text-[#0A0A0A] font-medium">Japan — Kagoshima & Miyazaki.</strong>{' '}
-                  A5 Wagyu from Japan&apos;s finest prefectures, sourced by BMS score and cut.
-                  We work with farms directly — not through aggregator middlemen.
-                </p>
-                <p>
-                  <strong className="text-[#0A0A0A] font-medium">France & Spain.</strong>{' '}
-                  Grade-A foie gras, artisan charcuterie, and specialty salumi from Gascony and
-                  Iberian producers whose craft speaks for itself on the plate.
+                <p className="font-mono text-sm leading-relaxed" style={{ color: "var(--text-body)" }}>
+                  The distributors who get in now — who build their AI-powered infrastructure
+                  before their competitors do — will be miles ahead. They&apos;ll operate at
+                  higher efficiency, serve clients better, and have the headspace to actually
+                  grow. The window is open. Not for long.
                 </p>
               </div>
+              <div
+                className="p-8"
+                style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
+              >
+                <div
+                  className="font-mono text-[9px] uppercase tracking-widest mb-6"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  The reality for most distributors today
+                </div>
+                <div className="space-y-4">
+                  {[
+                    "Taking orders by phone, text, and email at all hours",
+                    "Pricing managed in spreadsheets only reps understand",
+                    "Invoices chased manually by phone and follow-up email",
+                    "No visibility into which clients are about to churn",
+                    "Every minute spent on operations = a minute not spent on growth",
+                    "Quoted $75K–$150K for ERP and told to wait 9 months",
+                  ].map((item) => (
+                    <div key={item} className="flex items-start gap-3">
+                      <div
+                        className="w-1.5 h-1.5 rounded-full flex-shrink-0 mt-1.5"
+                        style={{ backgroundColor: "#dc2626" }}
+                      />
+                      <span className="font-mono text-xs leading-relaxed" style={{ color: "var(--text-body)" }}>
+                        {item}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-            <div className="grid grid-cols-2 gap-px bg-[#E5E1DB]">
-              {['Italy', 'Caspian', 'Japan', 'France'].map((region) => (
-                <div key={region} className="bg-[#F9F7F4] p-8 sm:p-10 flex items-center justify-center min-h-[140px]">
-                  <p className="font-serif text-2xl font-bold text-[#0A0A0A]/25 italic">{region}</p>
+          </section>
+
+          {/* OUR BELIEF */}
+          <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
+            <div
+              className="p-8 sm:p-12"
+              style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-blue)" }}
+            >
+              <span
+                className="font-mono text-[10px] uppercase tracking-widest mb-6 block"
+                style={{ color: "rgba(255,255,255,0.4)" }}
+              >
+                Our belief
+              </span>
+              <p
+                className="font-serif text-2xl sm:text-3xl leading-snug mb-6 max-w-3xl"
+                style={{ color: "rgba(255,255,255,0.95)" }}
+              >
+                &ldquo;Every distributor should be focused on their partnerships, their lead
+                generation, and their client relationships — not on entering orders, chasing
+                invoices, or maintaining spreadsheets. You should be working on the business,
+                not in it.&rdquo;
+              </p>
+              <p className="font-mono text-sm leading-relaxed max-w-2xl" style={{ color: "rgba(255,255,255,0.7)" }}>
+                The owner-operators we work with built real businesses. They deserve
+                infrastructure that matches their ambition — not duct-taped tools that create
+                more work than they solve. That&apos;s what we build.
+              </p>
+            </div>
+          </section>
+
+          {/* WHAT WE BUILD */}
+          <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
+            <span
+              className="font-mono text-xs uppercase tracking-widest mb-4 block"
+              style={{ color: "var(--text-muted)" }}
+            >
+              What We Build
+            </span>
+            <h2
+              className="font-serif text-3xl font-normal mb-10"
+              style={{ color: "var(--text-headline)" }}
+            >
+              Three portals. One seamless platform.
+            </h2>
+            <div
+              className="grid grid-cols-1 lg:grid-cols-3 gap-0"
+              style={{ border: "1px solid var(--border-strong)" }}
+            >
+              {[
+                {
+                  title: "Client Portal",
+                  desc: "Your wholesale clients log in to browse your catalog, see their pricing tier, place orders, view order history, track shipments, and pay invoices — without calling you. Available 24/7.",
+                  items: ["Branded to your company", "Per-account pricing", "Self-service ordering", "Online invoice payments"],
+                },
+                {
+                  title: "Admin Panel",
+                  desc: "Your team manages everything from one screen — orders, fulfillment, CRM, inventory, pricing rules, analytics, and client health scoring. 25+ pages. No training required.",
+                  items: ["Order & fulfillment board", "Client CRM + health scores", "Revenue analytics", "Inventory management"],
+                },
+                {
+                  title: "AI Layer",
+                  desc: "The automation that runs underneath everything. Standing orders placed automatically. Invoice reminders sent on schedule. Text orders processed without a rep. AI answers client questions 24/7.",
+                  items: ["Standing order automation", "Invoice collection automation", "SMS order processing", "24/7 AI answer bot"],
+                },
+              ].map((col, i) => (
+                <div
+                  key={col.title}
+                  className={`p-8 ${i < 2 ? "border-b lg:border-b-0 lg:border-r" : ""}`}
+                  style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-white)" }}
+                >
+                  <div
+                    className="font-mono text-[9px] uppercase tracking-widest mb-3"
+                    style={{ color: "var(--blue)" }}
+                  >
+                    {col.title}
+                  </div>
+                  <p
+                    className="font-mono text-xs leading-relaxed mb-5"
+                    style={{ color: "var(--text-body)" }}
+                  >
+                    {col.desc}
+                  </p>
+                  <div className="space-y-2">
+                    {col.items.map((item) => (
+                      <div key={item} className="flex items-center gap-2">
+                        <CheckCircle2
+                          className="w-3 h-3 flex-shrink-0"
+                          style={{ color: "var(--blue)" }}
+                        />
+                        <span className="font-mono text-[11px]" style={{ color: "var(--text-body)" }}>
+                          {item}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* CTA */}
-      <section className="py-20 sm:py-28">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-5">
-              Ready to Partner?
-            </p>
-            <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#0A0A0A] mb-6 leading-tight">
-              Join 342+ kitchens who trust Wholesail.
-            </h2>
-            <p className="text-[#0A0A0A]/55 text-base leading-relaxed mb-8 max-w-lg">
-              Applications take under 2 minutes. Our team reviews and activates accounts within 24 hours.
-              No gatekeeping, no minimums to get started.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Button
-                asChild
-                size="lg"
-                className="h-12 px-8 text-sm font-medium bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#1A1614]"
+          {/* WHO WE BUILD FOR */}
+          <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <span
+                  className="font-mono text-xs uppercase tracking-widest mb-4 block"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  Who We Build For
+                </span>
+                <h2
+                  className="font-serif text-3xl font-normal mb-5"
+                  style={{ color: "var(--text-headline)" }}
+                >
+                  Built for the independent distributor.
+                  <br />
+                  <span style={{ color: "var(--blue)" }}>Not the enterprise.</span>
+                </h2>
+                <p className="font-mono text-sm leading-relaxed mb-4" style={{ color: "var(--text-body)" }}>
+                  Our clients are independent wholesale distributors doing $1M–$20M in annual
+                  revenue. They have 2–25 employees. They&apos;re owner-operated. They&apos;ve been
+                  quoted $50K–$150K for ERP implementations and walked away.
+                </p>
+                <p className="font-mono text-sm leading-relaxed" style={{ color: "var(--text-body)" }}>
+                  They operate in specialty food, produce, wine & spirits, industrial supply,
+                  beauty, and dozens of other distribution categories. What they share: the desire
+                  to run a modern, AI-native business — and the need for a partner who builds it
+                  for them in under 2 weeks.
+                </p>
+              </div>
+              <div
+                className="p-8"
+                style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
               >
-                <Link href="/partner">
-                  Apply for Wholesale <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="h-12 px-8 text-sm font-medium border-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4]"
-              >
-                <Link href="/catalog">Browse the Catalog</Link>
-              </Button>
+                <div
+                  className="font-mono text-[9px] uppercase tracking-widest mb-5"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  The Wholesail Client Profile
+                </div>
+                <div className="space-y-4">
+                  {[
+                    { label: "Revenue", value: "$1M–$20M annual" },
+                    { label: "Team size", value: "2–25 employees" },
+                    { label: "Current tools", value: "Phone, email, spreadsheets" },
+                    { label: "Industries", value: "Food, beverage, industrial, beauty, and more" },
+                    { label: "ERP quote received", value: "Yes — walked away" },
+                    { label: "Timeline to launch", value: "Under 2 weeks" },
+                  ].map((row) => (
+                    <div
+                      key={row.label}
+                      className="flex items-center justify-between py-2"
+                      style={{ borderBottom: "1px solid var(--border)" }}
+                    >
+                      <span className="font-mono text-[11px]" style={{ color: "var(--text-muted)" }}>
+                        {row.label}
+                      </span>
+                      <span className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>
+                        {row.value}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </section>
+          </section>
 
-      {/* PORTAL CTA */}
-      <section className="py-16 sm:py-20 border-t border-[#E5E1DB] bg-[#0A0A0A]">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-5">
-              Built With Wholesail
-            </p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#F9F7F4] mb-4 leading-tight">
-              Want a portal like this built for your distribution business?
-            </h2>
-            <p className="text-[#F9F7F4]/55 text-sm leading-relaxed mb-8 max-w-lg">
-              Wholesail builds custom B2B wholesale ordering portals for distributors — fully
-              branded, deployed in under 2 weeks, and built to own. See the platform or start
-              your intake to get a quote.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <Link
-                href="/#demo"
-                className="inline-flex items-center justify-center h-12 px-8 text-sm font-medium bg-[#F9F7F4] text-[#0A0A0A] hover:bg-[#E5E1DB] transition-colors"
-              >
-                See the Platform Demo
-              </Link>
-              <Link
-                href="/#intake-form"
-                className="inline-flex items-center justify-center h-12 px-8 text-sm font-medium border border-[#F9F7F4]/30 text-[#F9F7F4] hover:bg-[#F9F7F4]/10 transition-colors"
-              >
-                Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FOOTER */}
-      <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
-          <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
-            <Link href="/" className="hover:text-[#F9F7F4] transition-colors">Home</Link>
-            <Link href="/catalog" className="hover:text-[#F9F7F4] transition-colors">Catalog</Link>
-            <Link href="/partner" className="hover:text-[#F9F7F4] transition-colors">Wholesale</Link>
-            <a
-              href="https://www.instagram.com/wholesailhub/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[#F9F7F4] transition-colors flex items-center gap-1.5"
+          {/* CTA */}
+          <section className="py-16" id="intake-form">
+            <span
+              className="font-mono text-xs uppercase tracking-widest mb-4 block"
+              style={{ color: "var(--text-muted)" }}
             >
-              <Instagram className="h-3.5 w-3.5" />
-              @wholesailhub
-            </a>
-          </div>
+              Work With Us
+            </span>
+            <h2
+              className="font-serif text-3xl font-normal mb-3"
+              style={{ color: "var(--text-headline)" }}
+            >
+              Ready to build your portal?
+            </h2>
+            <p
+              className="font-mono text-sm max-w-xl leading-relaxed mb-10"
+              style={{ color: "var(--text-body)" }}
+            >
+              5 minutes. We review your answers before your call so every minute is spent on
+              building your portal, not discovery.
+            </p>
+            <IntakeWizard />
+          </section>
+
         </div>
-      </footer>
-    </div>
-  )
+      </div>
+    </>
+  );
 }
