@@ -375,7 +375,7 @@ export default function WholesailPage() {
       <section className="py-20" style={{ borderTop: "1px solid var(--border)" }}>
         {/* Eyebrow pill */}
         <span
-          className="inline-block font-mono text-[12px] font-semibold tracking-[0.04em] mb-5"
+          className="inline-block font-mono text-[12px] font-semibold tracking-[0.04em] mb-2"
           style={{
             backgroundColor: "var(--blue-light)",
             color: "var(--blue)",
