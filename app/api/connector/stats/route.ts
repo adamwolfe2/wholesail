@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const secret = req.headers.get("x-connector-secret");
-  if (!secret || secret !== process.env.WHOLESAIL_CONNECTOR_SECRET) {
+  if (!secret || secret !== process.env.WHOLESAIL_CONNECTOR_SECRET?.trim()) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
