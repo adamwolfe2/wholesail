@@ -91,17 +91,17 @@ export default function IndustrialSupplyPage() {
             className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.1] mb-6 max-w-3xl"
             style={{ color: "var(--text-headline)" }}
           >
-            Contract pricing. Self-service ordering.
+            500 SKUs. 40 contract accounts.
             <br />
-            <span style={{ color: "var(--blue)" }}>Your clients order without calling.</span>
+            <span style={{ color: "var(--blue)" }}>All managed in a spreadsheet. Not for much longer.</span>
           </h1>
           <p
             className="font-mono text-sm leading-relaxed max-w-xl mb-10"
             style={{ color: "var(--text-body)" }}
           >
             Wholesail builds custom B2B ordering portals for industrial supply and MRO distributors.
-            Contract pricing, PO management, large SKU catalogs — everything your maintenance and
-            procurement clients need to reorder without picking up the phone.
+            Contract pricing locked per account, PO field on every order, full SKU search — everything
+            your maintenance and procurement clients need to reorder without picking up the phone.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link

@@ -91,17 +91,18 @@ export default function FoodBeveragePage() {
             className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.1] mb-6 max-w-3xl"
             style={{ color: "var(--text-headline)" }}
           >
-            Stop taking orders by phone.
+            Your specialty food clients are placing orders at 11pm.
             <br />
-            <span style={{ color: "var(--blue)" }}>Give your clients a portal.</span>
+            <span style={{ color: "var(--blue)" }}>Your team is asleep. That&apos;s a problem.</span>
           </h1>
           <p
             className="font-mono text-sm leading-relaxed max-w-xl mb-10"
             style={{ color: "var(--text-body)" }}
           >
             Wholesail builds custom B2B ordering portals for specialty food, produce, dairy, and
-            beverage distributors. Your clients order online 24/7. Your team stops answering
-            order calls. Your portal is live in under 2 weeks.
+            beverage distributors. Your clients order online 24/7 — no phone call, no voicemail,
+            no rep required. Every order lands in your dashboard the moment it&apos;s placed.
+            Live in under 2 weeks.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link

@@ -91,17 +91,18 @@ export default function WineSpiritsPage() {
             className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.1] mb-6 max-w-3xl"
             style={{ color: "var(--text-headline)" }}
           >
-            Manage allocations.
+            Your allocation calls are taking 3 hours a day.
             <br />
-            <span style={{ color: "var(--blue)" }}>Let clients order themselves.</span>
+            <span style={{ color: "var(--blue)" }}>Your portal would take 3 seconds.</span>
           </h1>
           <p
             className="font-mono text-sm leading-relaxed max-w-xl mb-10"
             style={{ color: "var(--text-body)" }}
           >
             Wholesail builds custom ordering portals for wine importers and spirits distributors.
-            Your on-premise and retail accounts order online, see live allocations, and pay invoices
-            without calling. Deployed in under 2 weeks.
+            Your on-premise and retail accounts check live allocations, place orders, and pay
+            invoices — without calling. No more spreadsheet allocation tracking. No more
+            callbacks. Deployed in under 2 weeks.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <Link

@@ -271,6 +271,7 @@ const BEFORE_AFTER = [
 /* ── Testimonials ─────────────────────────────────────────────────────── */
 const TESTIMONIALS = [
   {
+    beforeContext: "Before: 200 orders/week managed via text message and Google Sheets",
     quote:
       "We were running everything through text messages and a shared Google Sheet. Our rep would spend Sunday nights entering orders for Monday delivery. Now clients order themselves and we just fulfill. I wish we had done this two years ago.",
     name: "Marcus T.",
@@ -278,6 +279,7 @@ const TESTIMONIALS = [
     industry: "Food & Beverage Distribution",
   },
   {
+    beforeContext: "Before: 40+ open invoices being chased manually each month",
     quote:
       "The invoice chasing alone was worth the price. We used to have 30–40 day collection cycles because someone had to manually follow up. Now reminders go out automatically and our average collection is down to 18 days.",
     name: "Elena V.",
@@ -285,6 +287,7 @@ const TESTIMONIALS = [
     industry: "Wine & Spirits Distribution",
   },
   {
+    beforeContext: "Before: Quoted $120K for a NetSuite implementation",
     quote:
       "I was skeptical because I've tried software before and it always required months of setup and training. This was live in 11 days. My top 20 accounts were placing orders through the portal within the first week.",
     name: "Dave K.",
@@ -416,7 +419,7 @@ export default function WholesailPage() {
             padding: "4px 14px",
           }}
         >
-          Built for distribution companies
+          For wholesale distributors doing $1M–$20M
         </span>
         <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 items-start">
           <div>
@@ -424,21 +427,18 @@ export default function WholesailPage() {
               className="text-4xl md:text-5xl lg:text-[3.25rem] font-normal leading-[1.08] tracking-tight font-serif mb-7"
               style={{ color: "var(--text-headline)" }}
             >
-              Your clients order online.
+              Your clients are ready to order online.
               <br />
-              You stop managing orders
-              <br />
-              <span className="italic">by hand.</span>
+              <span className="italic">Your business isn&apos;t set up for it yet.</span>
             </h1>
             <p
               className="font-mono text-sm sm:text-base leading-relaxed mb-8 max-w-lg"
               style={{ color: "var(--text-body)" }}
             >
-              We build custom ordering portals for distribution companies. Your
-              clients get a professional online store with their pricing, their
-              products, and their history. You get a complete admin panel to
-              manage orders, invoices, clients, and inventory — all in one
-              place. Live in under 2 weeks.
+              Wholesail builds your wholesale ordering portal in under 2 weeks
+              — without the $50K ERP price tag or 9-month rollout. Your clients
+              order themselves. Your team stops taking orders by hand. You own
+              the code. Forever.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mb-3">
               <a
@@ -446,7 +446,7 @@ export default function WholesailPage() {
                 className="inline-flex items-center justify-center gap-2 font-mono text-sm font-semibold btn-blue"
                 style={{ padding: "14px 28px", borderRadius: "6px" }}
               >
-                See How It Works <ArrowRight className="w-4 h-4" />
+                See Your Portal in 30 Seconds <ArrowRight className="w-4 h-4" />
               </a>
               <a
                 href="#intake-form"
@@ -457,7 +457,7 @@ export default function WholesailPage() {
               </a>
             </div>
             <div className="font-mono text-xs" style={{ color: "var(--text-muted)" }}>
-              No signup required · See a live demo in 30 seconds
+              No signup required · Starting at $25K · Live in under 2 weeks
             </div>
           </div>
 
@@ -601,6 +601,103 @@ export default function WholesailPage() {
         </div>
       </section>
 
+      {/* ── ERP Alternative ──────────────────────────────────────── */}
+      <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="mb-10">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
+            The Alternative
+          </span>
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal mb-4 max-w-2xl"
+            style={{ color: "var(--text-headline)" }}
+          >
+            You&apos;ve been quoted $75K and told to wait a year.
+            <br />
+            <span style={{ color: "var(--blue)" }}>There&apos;s another way.</span>
+          </h2>
+          <p
+            className="font-mono text-sm leading-relaxed max-w-xl"
+            style={{ color: "var(--text-body)" }}
+          >
+            NetSuite, SAP, and Acumatica are built for enterprises with IT departments and
+            implementation teams. Independent distributors get quoted $50K–$150K, handed a
+            9-month project plan, and told to figure it out. Most walk away and go back to
+            spreadsheets. Wholesail exists for those distributors.
+          </p>
+        </div>
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 gap-0"
+          style={{ border: "1px solid var(--border-strong)" }}
+        >
+          {[
+            {
+              label: "Traditional ERP",
+              stat: "9–12 months",
+              sub: "average implementation timeline",
+              cost: "$75K–$150K",
+              costSub: "typical upfront investment",
+              dark: false,
+            },
+            {
+              label: "Wholesail",
+              stat: "< 2 weeks",
+              sub: "from first call to live portal",
+              cost: "Starting at $25K",
+              costSub: "one-time build, you own it forever",
+              dark: true,
+            },
+          ].map((item) => (
+            <div
+              key={item.label}
+              className="p-8"
+              style={{
+                backgroundColor: item.dark ? "var(--bg-blue)" : "var(--bg-white)",
+              }}
+            >
+              <div
+                className="font-mono text-[9px] uppercase tracking-widest mb-6"
+                style={{ color: item.dark ? "rgba(255,255,255,0.4)" : "var(--text-muted)" }}
+              >
+                {item.label}
+              </div>
+              <div className="grid grid-cols-2 gap-6">
+                <div>
+                  <div
+                    className="font-serif text-4xl mb-1"
+                    style={{ color: item.dark ? "rgba(255,255,255,0.9)" : "var(--text-headline)" }}
+                  >
+                    {item.stat}
+                  </div>
+                  <div
+                    className="font-mono text-[11px]"
+                    style={{ color: item.dark ? "rgba(255,255,255,0.5)" : "var(--text-muted)" }}
+                  >
+                    {item.sub}
+                  </div>
+                </div>
+                <div>
+                  <div
+                    className="font-serif text-4xl mb-1"
+                    style={{ color: item.dark ? "rgba(255,255,255,0.9)" : "var(--text-headline)" }}
+                  >
+                    {item.cost}
+                  </div>
+                  <div
+                    className="font-mono text-[11px]"
+                    style={{ color: item.dark ? "rgba(255,255,255,0.5)" : "var(--text-muted)" }}
+                  >
+                    {item.costSub}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ── Testimonials ─────────────────────────────────────────── */}
       <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-10">
@@ -627,8 +724,18 @@ export default function WholesailPage() {
               className={`p-8 ${i < TESTIMONIALS.length - 1 ? "border-b lg:border-b-0 lg:border-r" : ""}`}
               style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-white)" }}
             >
+              <div
+                className="font-mono text-[10px] uppercase tracking-widest mb-5 px-3 py-1.5 inline-block"
+                style={{
+                  backgroundColor: "var(--blue-light)",
+                  color: "var(--blue)",
+                  borderRadius: "4px",
+                }}
+              >
+                {t.beforeContext}
+              </div>
               <p
-                className="font-serif text-4xl leading-none mb-6 select-none"
+                className="font-serif text-4xl leading-none mb-4 select-none"
                 style={{ color: "var(--border-strong)" }}
               >
                 &ldquo;
@@ -719,15 +826,97 @@ export default function WholesailPage() {
         </div>
       </section>
 
+      {/* ── Your Clients Expect This ─────────────────────────────── */}
+      <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          <div>
+            <span
+              className="font-mono text-xs uppercase tracking-widest mb-4 block"
+              style={{ color: "var(--text-muted)" }}
+            >
+              The Amazon Effect
+            </span>
+            <h2
+              className="text-3xl md:text-4xl font-serif font-normal mb-4"
+              style={{ color: "var(--text-headline)" }}
+            >
+              83% of your clients now prefer to order online.
+              <br />
+              <span style={{ color: "var(--blue)" }}>The ones who can&apos;t are choosing someone who lets them.</span>
+            </h2>
+            <p
+              className="font-mono text-sm leading-relaxed mb-6"
+              style={{ color: "var(--text-body)" }}
+            >
+              B2B buyers have been trained by Amazon, DoorDash, and every consumer app they use.
+              They expect to place orders at 11pm on a Sunday, see their history, and get a
+              confirmation — without calling anyone. Distributors who don&apos;t offer this are
+              losing accounts to the ones who do.
+            </p>
+            <p
+              className="font-mono text-sm leading-relaxed"
+              style={{ color: "var(--text-body)" }}
+            >
+              Your portal doesn&apos;t just save you time. It&apos;s a competitive moat. When your
+              clients can order themselves, reorder in 2 clicks, and pay invoices online — they
+              don&apos;t switch. Convenience is stickier than price.
+            </p>
+          </div>
+          <div
+            className="p-8"
+            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
+          >
+            {[
+              { stat: "83%", label: "of B2B buyers prefer self-service ordering over sales rep interaction", source: "Gartner B2B Buyer Report" },
+              { stat: "74%", label: "of B2B buyers would switch suppliers for a better digital ordering experience", source: "Forrester, 2024" },
+              { stat: "3×", label: "more likely to reorder when clients have a self-service portal vs. email/phone", source: "Shopify B2B Research" },
+            ].map((item, i) => (
+              <div
+                key={item.stat}
+                className={`py-5 ${i < 2 ? "border-b" : ""}`}
+                style={{ borderColor: "var(--border-strong)" }}
+              >
+                <div
+                  className="font-serif text-3xl mb-1"
+                  style={{ color: "var(--text-headline)" }}
+                >
+                  {item.stat}
+                </div>
+                <p
+                  className="font-mono text-[11px] leading-relaxed mb-1"
+                  style={{ color: "var(--text-body)" }}
+                >
+                  {item.label}
+                </p>
+                <div
+                  className="font-mono text-[9px] uppercase tracking-wider"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {item.source}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Industries We Serve ──────────────────────────────────── */}
       <section className="py-12" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-8">
           <span
-            className="font-mono text-xs uppercase tracking-widest"
+            className="font-mono text-xs uppercase tracking-widest mb-3 block"
             style={{ color: "var(--text-muted)" }}
           >
             Who this is built for
           </span>
+          <p
+            className="font-mono text-sm max-w-2xl leading-relaxed"
+            style={{ color: "var(--text-body)" }}
+          >
+            Built specifically for independent wholesale distributors. Not a marketplace. Not a generic B2B tool.
+            If you&apos;re a specialty distributor doing $1M–$20M with 2–25 employees, still taking orders by phone
+            or spreadsheet, and you&apos;ve been scared off by ERP pricing — this is for you.
+          </p>
         </div>
         <div
           className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-0"
@@ -954,7 +1143,7 @@ export default function WholesailPage() {
           >
             One build. One retainer.
             <br />
-            <span style={{ color: "var(--text-muted)" }}>Every tool above — replaced.</span>
+            <span style={{ color: "var(--blue)" }}>The ERP you couldn&apos;t afford — replaced.</span>
           </h2>
           <p
             className="font-mono text-sm max-w-xl leading-relaxed"
@@ -1132,6 +1321,45 @@ export default function WholesailPage() {
                 Within 2–3 months of going live
               </span>
             </div>
+          </div>
+        </div>
+        {/* What Wholesail replaces */}
+        <div
+          className="border border-t-0 p-6"
+          style={{
+            borderColor: "var(--border-strong)",
+            backgroundColor: "var(--bg-white)",
+          }}
+        >
+          <div
+            className="font-mono text-[9px] uppercase tracking-widest mb-4"
+            style={{ color: "var(--text-muted)" }}
+          >
+            What Wholesail replaces
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {[
+              "QuickBooks for invoicing",
+              "Spreadsheets for orders",
+              "Phone ordering workflows",
+              "NetSuite / SAP / ERP",
+              "CRM for client tracking",
+              "Manual invoice follow-up",
+            ].map((item) => (
+              <div
+                key={item}
+                className="flex items-center gap-2 px-3 py-2"
+                style={{
+                  border: "1px solid var(--border-strong)",
+                  borderRadius: "4px",
+                }}
+              >
+                <X className="w-3 h-3 flex-shrink-0" style={{ color: "#dc2626" }} strokeWidth={2.5} />
+                <span className="font-mono text-[10px] leading-tight" style={{ color: "var(--text-body)" }}>
+                  {item}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
