@@ -427,18 +427,18 @@ export default function WholesailPage() {
               className="text-4xl md:text-5xl lg:text-[3.25rem] font-normal leading-[1.08] tracking-tight font-serif mb-7"
               style={{ color: "var(--text-headline)" }}
             >
-              Your clients are ready to order online.
+              Your entire wholesale business
               <br />
-              <span className="italic">Your business isn&apos;t set up for it yet.</span>
+              <span className="italic">AI-ified &amp; fully automated.</span>
             </h1>
             <p
               className="font-mono text-sm sm:text-base leading-relaxed mb-8 max-w-lg"
               style={{ color: "var(--text-body)" }}
             >
-              Wholesail builds your wholesale ordering portal in under 2 weeks
-              — without the $50K ERP price tag or 9-month rollout. Your clients
-              order themselves. Your team stops taking orders by hand. You own
-              the code. Forever.
+              Wholesail builds your custom wholesale ordering portal in under 2
+              weeks. Your clients order themselves. Your team stops managing
+              orders by hand. Invoices collect automatically. You own the code.
+              Forever.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mb-3">
               <a
