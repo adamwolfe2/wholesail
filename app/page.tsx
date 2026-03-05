@@ -182,7 +182,7 @@ const INCLUDED = [
       "Invoice payments via Stripe",
       "Standing / recurring orders",
       "Loyalty points & referrals",
-      "AI chatbot & support messaging",
+      "Live chat & support messaging",
       "Quote requests & approval",
       "Personal spending analytics",
       "Product drop notifications",
@@ -204,16 +204,16 @@ const INCLUDED = [
     ],
   },
   {
-    category: "Automation",
+    category: "Built-in Workflows",
     items: [
-      "SMS / iMessage ordering with AI parsing",
-      "AI chatbot with contextual responses",
-      "Automated billing reminders",
+      "Text message ordering (clients text, orders flow in)",
+      "Live chat with suggested replies",
+      "Billing reminders at Day 25, 30 & 35",
       "Abandoned cart recovery emails",
-      "Lapsed client re-engagement",
+      "Lapsed client re-engagement emails",
       "Partner nurture sequences (Day 3, Day 7)",
       "Weekly digest & report emails",
-      "Standing order auto-processing",
+      "Standing order processing",
       "Low stock alerts & reorder triggers",
       "Product drop blasts & alerts",
     ],
@@ -843,7 +843,7 @@ export default function WholesailPage() {
                 "Data migration from existing tools",
                 "Team training and onboarding",
                 "All 18 software platforms — replaced",
-                "45+ hours/week of manual work — automated",
+                "45+ hours/week of manual work — eliminated",
               ].map((item) => (
                 <div key={item} className="flex items-start gap-2">
                   <CheckCircle2
