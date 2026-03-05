@@ -13,15 +13,15 @@ import {
 } from "@/components/ui/command";
 import {
   LayoutDashboard,
-  ShoppingCart,
-  FileText,
-  Package,
+  FileInput,
+  Kanban,
   Users,
   BarChart3,
   Settings,
-  Plus,
+  MessageSquare,
+  Sparkles,
   Search,
-  Download,
+  ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -71,21 +71,21 @@ export function CommandPalette() {
               <LayoutDashboard className="mr-2 h-4 w-4" />
               Dashboard
             </CommandItem>
-            <CommandItem onSelect={() => navigate("/admin/orders")}>
-              <ShoppingCart className="mr-2 h-4 w-4" />
-              Orders
+            <CommandItem onSelect={() => navigate("/admin/intakes")}>
+              <FileInput className="mr-2 h-4 w-4" />
+              Intakes
             </CommandItem>
-            <CommandItem onSelect={() => navigate("/admin/invoices")}>
-              <FileText className="mr-2 h-4 w-4" />
-              Invoices
-            </CommandItem>
-            <CommandItem onSelect={() => navigate("/admin/products")}>
-              <Package className="mr-2 h-4 w-4" />
-              Products
+            <CommandItem onSelect={() => navigate("/admin/pipeline")}>
+              <Kanban className="mr-2 h-4 w-4" />
+              Pipeline
             </CommandItem>
             <CommandItem onSelect={() => navigate("/admin/clients")}>
               <Users className="mr-2 h-4 w-4" />
               Clients
+            </CommandItem>
+            <CommandItem onSelect={() => navigate("/admin/messages")}>
+              <MessageSquare className="mr-2 h-4 w-4" />
+              Messages
             </CommandItem>
             <CommandItem onSelect={() => navigate("/admin/analytics")}>
               <BarChart3 className="mr-2 h-4 w-4" />
@@ -95,27 +95,9 @@ export function CommandPalette() {
               <Settings className="mr-2 h-4 w-4" />
               Settings
             </CommandItem>
-          </CommandGroup>
-
-          <CommandSeparator />
-
-          <CommandGroup heading="Quick Actions">
-            <CommandItem onSelect={() => navigate("/admin/products")}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Product
-            </CommandItem>
-            <CommandItem onSelect={() => navigate("/admin/invoices")}>
-              <Plus className="mr-2 h-4 w-4" />
-              Create Invoice
-            </CommandItem>
-            <CommandItem
-              onSelect={() => {
-                window.location.href = "/api/admin/orders/export";
-                setOpen(false);
-              }}
-            >
-              <Download className="mr-2 h-4 w-4" />
-              Export Orders CSV
+            <CommandItem onSelect={() => navigate("/admin/chat")}>
+              <Sparkles className="mr-2 h-4 w-4" />
+              AI Assistant
             </CommandItem>
           </CommandGroup>
 
@@ -124,12 +106,12 @@ export function CommandPalette() {
           <CommandGroup heading="External">
             <CommandItem
               onSelect={() => {
-                window.open("/", "_blank");
+                window.open("https://wholesailhub.com", "_blank");
                 setOpen(false);
               }}
             >
-              <Package className="mr-2 h-4 w-4" />
-              View Storefront
+              <ExternalLink className="mr-2 h-4 w-4" />
+              View Marketing Site
             </CommandItem>
           </CommandGroup>
         </CommandList>
