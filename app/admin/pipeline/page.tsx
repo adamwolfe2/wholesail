@@ -13,7 +13,7 @@ export default async function AdminPipelinePage() {
         project: { select: { id: true, status: true, vercelUrl: true } },
       },
       orderBy: { createdAt: "desc" },
-    }),
+    }).catch(() => []),
     prisma.project.findMany({
       where: { status: { not: "CHURNED" } },
       select: {
@@ -32,7 +32,7 @@ export default async function AdminPipelinePage() {
         intake: { select: { id: true } },
       },
       orderBy: { updatedAt: "desc" },
-    }),
+    }).catch(() => []),
   ]);
 
   // ── Build PipelineItem lists per column ────────────────────────────────────
