@@ -165,3 +165,42 @@
 .animate-fade-up {
   animation: fade-up 0.5s ease-out both;
 }
+
+/* ── Blog CTA block (rendered inside prose article body) ───────────── */
+.prose .cta-block {
+  border: 1px solid var(--border-strong);
+  background-color: var(--bg-white);
+  padding: 2rem;
+  margin: 2.5rem 0;
+  border-radius: 0;
+}
+.prose .cta-block h3 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--text-headline);
+  margin: 0 0 0.5rem;
+}
+.prose .cta-block p {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  color: var(--text-body);
+  margin: 0 0 1.25rem;
+}
+.prose .cta-block a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: white;
+  background-color: var(--blue);
+  padding: 10px 20px;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+.prose .cta-block a:hover {
+  background-color: var(--blue-hover);
+}

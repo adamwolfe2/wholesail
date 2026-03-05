@@ -4,7 +4,7 @@ import { ArrowRight, Instagram } from 'lucide-react'
 import { MarketingHeader } from '@/components/marketing-header'
 import { Button } from '@/components/ui/button'
 
-export const revalidate = 86400 // ISR: rebuild at most once per day
+export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
   title: 'About',

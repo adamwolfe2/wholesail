@@ -266,6 +266,12 @@ export default function WholesailPage() {
             Explore Platform
           </a>
           <a
+            href="/blog"
+            className="font-mono text-[13px] hidden sm:block link-body"
+          >
+            Blog
+          </a>
+          <a
             href="#intake-form"
             className="font-mono text-[13px] font-semibold btn-blue"
             style={{ padding: "9px 20px", borderRadius: "6px" }}
@@ -287,7 +293,7 @@ export default function WholesailPage() {
             padding: "4px 14px",
           }}
         >
-          Wholesail for Distributors
+          Built for distribution companies
         </span>
         <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 items-start">
           <div>
@@ -295,18 +301,21 @@ export default function WholesailPage() {
               className="text-4xl md:text-5xl lg:text-[3.25rem] font-normal leading-[1.08] tracking-tight font-serif mb-7"
               style={{ color: "var(--text-headline)" }}
             >
-              Your wholesale business,
+              Your clients order online.
               <br />
-              fully automated.
+              You stop managing orders
+              <br />
+              <span className="italic">by hand.</span>
             </h1>
             <p
               className="font-mono text-sm sm:text-base leading-relaxed mb-8 max-w-lg"
               style={{ color: "var(--text-body)" }}
             >
-              We build fully custom B2B ordering portals for distribution
-              companies. Client portal, admin panel, SMS ordering, Stripe
-              billing, automated invoicing — all white-labeled to your brand.
-              Deployed in under 2 weeks.
+              We build custom ordering portals for distribution companies. Your
+              clients get a professional online store with their pricing, their
+              products, and their history. You get a complete admin panel to
+              manage orders, invoices, clients, and inventory — all in one
+              place. Live in under 2 weeks.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 mb-3">
               <a
@@ -314,7 +323,7 @@ export default function WholesailPage() {
                 className="inline-flex items-center justify-center gap-2 font-mono text-sm font-semibold btn-blue"
                 style={{ padding: "14px 28px", borderRadius: "6px" }}
               >
-                Explore the Platform <ArrowRight className="w-4 h-4" />
+                See How It Works <ArrowRight className="w-4 h-4" />
               </a>
               <a
                 href="#intake-form"
@@ -325,7 +334,7 @@ export default function WholesailPage() {
               </a>
             </div>
             <div className="font-mono text-xs" style={{ color: "var(--text-muted)" }}>
-              No signup required to explore
+              No signup required · See a live demo in 30 seconds
             </div>
           </div>
 

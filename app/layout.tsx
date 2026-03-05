@@ -2,22 +2,19 @@ import type { Metadata } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 
-// All pages render dynamically — template requires env vars at runtime
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
-  title: "Wholesail — Custom B2B Wholesale Ordering Portals",
+  title: "Wholesail — Wholesale Ordering Portals for Distribution Companies",
   description:
-    "Wholesail builds fully custom wholesale ordering portals for distribution companies. Client portal, admin panel, SMS ordering, Stripe billing. Live in under 2 weeks.",
+    "Wholesail builds custom ordering portals for distribution companies. Your clients order online, you manage everything in one place. Live in under 2 weeks.",
   metadataBase: new URL("https://wholesailhub.com"),
   icons: {
     icon: "/og-image.png",
     apple: "/og-image.png",
   },
   openGraph: {
-    title: "Wholesail — Custom B2B Wholesale Ordering Portals",
+    title: "Wholesail — Wholesale Ordering Portals for Distribution Companies",
     description:
-      "We build fully custom B2B ordering portals for distribution companies. Client portal, admin panel, SMS ordering, Stripe billing. Deployed in under 2 weeks.",
+      "Custom ordering portals for distribution companies. Your clients order online. You stop managing orders by phone and spreadsheet. Live in under 2 weeks.",
     type: "website",
     siteName: "Wholesail",
     images: [
@@ -25,15 +22,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Wholesail — Your wholesale business, fully automated",
+        alt: "Wholesail — Wholesale ordering portals for distribution companies",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Wholesail — Custom B2B Wholesale Ordering Portals",
+    title: "Wholesail — Wholesale Ordering Portals for Distribution Companies",
     description:
-      "Custom wholesale ordering portals for distribution companies. 34+ features, live in under 2 weeks.",
+      "Custom ordering portals for distribution companies. Your clients order online. Live in under 2 weeks.",
     images: ["/og-image.png"],
   },
 };
