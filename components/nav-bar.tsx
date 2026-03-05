@@ -14,83 +14,64 @@ function SailLogo({ className = "w-5 h-5" }: { className?: string }) {
   );
 }
 
-interface DropdownItem {
+interface NavItem {
   label: string;
   href: string;
   desc?: string;
 }
 
-const ALL_INDUSTRIES: DropdownItem[] = [
-  { label: "Food & Beverage", href: "/food-beverage", desc: "Specialty foods, produce, dairy" },
-  { label: "Wine & Spirits", href: "/wine-spirits", desc: "Importers and distributors" },
-  { label: "Industrial Supply", href: "/industrial-supply", desc: "MRO and safety equipment" },
-  { label: "Coffee & Tea", href: "/coffee-tea", desc: "Roasters and importers" },
-  { label: "Seafood & Meat", href: "/seafood-meat", desc: "Protein and perishables" },
-  { label: "Bakery Distribution", href: "/bakery-distribution", desc: "Artisan and baked goods" },
-  { label: "Floral & Nursery", href: "/floral-nursery", desc: "Wholesale floral and plants" },
-  { label: "Produce & Dairy", href: "/produce-dairy", desc: "Fresh food and perishables" },
-  { label: "Specialty Food", href: "/specialty-food", desc: "Artisan and gourmet importers" },
-  { label: "Beauty & Cosmetics", href: "/beauty-cosmetics", desc: "Salon and professional supply" },
-  { label: "Pet Supply", href: "/pet-supply", desc: "Pet stores and groomers" },
-  { label: "Jan-San", href: "/jan-san", desc: "Janitorial and sanitation" },
-  { label: "Building Materials", href: "/building-materials", desc: "Contractors and lumber yards" },
-  { label: "Agricultural Supply", href: "/agricultural-supply", desc: "Seed, feed, and ag inputs" },
-  { label: "Apparel & Fashion", href: "/apparel-fashion", desc: "Clothing and accessories wholesale" },
-  { label: "Auto Parts", href: "/auto-parts", desc: "Aftermarket and OEM parts" },
-  { label: "Chemical Supply", href: "/chemical-supply", desc: "Industrial chemicals and compliance" },
-  { label: "Supplements", href: "/supplements", desc: "Nutraceuticals and health products" },
-  { label: "Electrical Supply", href: "/electrical-supply", desc: "Contractors and commercial" },
-  { label: "Tobacco & Vape", href: "/tobacco-vape", desc: "C-store and smoke shop supply" },
-  { label: "Restaurant Equipment", href: "/restaurant-equipment", desc: "Commercial kitchen supply" },
-  { label: "Packaging Supply", href: "/packaging-supply", desc: "Corrugated and industrial packaging" },
-  { label: "Plumbing & HVAC", href: "/plumbing-hvac", desc: "Contractors and supply houses" },
-  { label: "Office & Breakroom", href: "/office-breakroom", desc: "Facilities consumables" },
-  { label: "Craft & Art Supply", href: "/craft-art-supply", desc: "Independent retailers" },
-  { label: "Jewelry & Accessories", href: "/jewelry-accessories", desc: "Boutiques and specialty retail" },
+const ALL_INDUSTRIES: NavItem[] = [
+  { label: "Food & Beverage",       href: "/food-beverage",       desc: "Specialty foods, produce, dairy" },
+  { label: "Wine & Spirits",        href: "/wine-spirits",         desc: "Importers and distributors" },
+  { label: "Industrial Supply",     href: "/industrial-supply",    desc: "MRO and safety equipment" },
+  { label: "Coffee & Tea",          href: "/coffee-tea",           desc: "Roasters and importers" },
+  { label: "Seafood & Meat",        href: "/seafood-meat",         desc: "Protein and perishables" },
+  { label: "Bakery Distribution",   href: "/bakery-distribution",  desc: "Artisan and baked goods" },
+  { label: "Floral & Nursery",      href: "/floral-nursery",       desc: "Wholesale floral and plants" },
+  { label: "Produce & Dairy",       href: "/produce-dairy",        desc: "Fresh perishables" },
+  { label: "Specialty Food",        href: "/specialty-food",       desc: "Artisan and gourmet imports" },
+  { label: "Beauty & Cosmetics",    href: "/beauty-cosmetics",     desc: "Salon and pro supply" },
+  { label: "Pet Supply",            href: "/pet-supply",           desc: "Pet stores and groomers" },
+  { label: "Jan-San",               href: "/jan-san",              desc: "Janitorial and sanitation" },
+  { label: "Building Materials",    href: "/building-materials",   desc: "Contractors and lumber yards" },
+  { label: "Agricultural Supply",   href: "/agricultural-supply",  desc: "Seed, feed, and ag inputs" },
+  { label: "Apparel & Fashion",     href: "/apparel-fashion",      desc: "Clothing wholesale" },
+  { label: "Auto Parts",            href: "/auto-parts",           desc: "Aftermarket and OEM" },
+  { label: "Chemical Supply",       href: "/chemical-supply",      desc: "Industrial chemicals" },
+  { label: "Supplements",           href: "/supplements",          desc: "Nutraceuticals and health" },
+  { label: "Electrical Supply",     href: "/electrical-supply",    desc: "Contractors and commercial" },
+  { label: "Tobacco & Vape",        href: "/tobacco-vape",         desc: "C-store and smoke shops" },
+  { label: "Restaurant Equipment",  href: "/restaurant-equipment", desc: "Commercial kitchen supply" },
+  { label: "Packaging Supply",      href: "/packaging-supply",     desc: "Corrugated and industrial" },
+  { label: "Plumbing & HVAC",       href: "/plumbing-hvac",        desc: "Contractors and supply houses" },
+  { label: "Office & Breakroom",    href: "/office-breakroom",     desc: "Facilities consumables" },
+  { label: "Craft & Art Supply",    href: "/craft-art-supply",     desc: "Independent retailers" },
+  { label: "Jewelry & Accessories", href: "/jewelry-accessories",  desc: "Boutiques and specialty retail" },
 ];
 
-function IndustriesMegaMenu({ onClose }: { onClose: () => void }) {
-  return (
-    <div
-      className="fixed left-0 right-0 mt-px z-50 py-6 px-8"
-      style={{
-        top: "57px",
-        border: "1px solid var(--border-strong)",
-        borderTop: "none",
-        backgroundColor: "var(--bg-white)",
-        boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
-      }}
-    >
-      <div className="max-w-7xl mx-auto">
-        <div className="font-mono text-[9px] uppercase tracking-widest mb-4" style={{ color: "var(--text-muted)" }}>
-          All Industries — 26 verticals
-        </div>
-        <div className="grid grid-cols-4 lg:grid-cols-6 xl:grid-cols-7 gap-x-4 gap-y-0.5">
-          {ALL_INDUSTRIES.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={onClose}
-              className="block py-2 px-2 rounded hover:opacity-70 transition-opacity"
-              style={{ textDecoration: "none" }}
-            >
-              <div className="font-mono text-[11px] font-semibold leading-tight" style={{ color: "var(--text-headline)" }}>
-                {item.label}
-              </div>
-              {item.desc && (
-                <div className="font-mono text-[9px] leading-tight mt-0.5" style={{ color: "var(--text-muted)" }}>
-                  {item.desc}
-                </div>
-              )}
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+const MORE_ITEMS: NavItem[] = [
+  { label: "What Is AI-ified?",        href: "/ai-ified",                                         desc: "AI automation for distributors" },
+  { label: "Press",                    href: "/press",                                             desc: "Coverage and news" },
+  { label: "Shopify B2B vs Wholesail", href: "/blog/shopify-b2b-vs-custom-wholesale-portal",      desc: "Feature comparison" },
+  { label: "Wholesail vs NetSuite",    href: "/blog/wholesail-vs-netsuite-for-distributors",       desc: "ERP alternative" },
+  { label: "vs HubSpot / Salesforce",  href: "/blog/hubspot-salesforce-distribution-alternatives", desc: "CRM alternative" },
+  { label: "vs Handshake / Faire",     href: "/blog/handshake-faire-vs-custom-wholesale-portal",  desc: "Marketplace alternative" },
+];
 
-function Dropdown({ label, items }: { label: string; items: DropdownItem[] }) {
+/** Shared floating card-grid dropdown used by both Industries and More */
+function CardGridButton({
+  label,
+  items,
+  cols,
+  width,
+  eyebrow,
+}: {
+  label: string;
+  items: NavItem[];
+  cols: number;
+  width: number;
+  eyebrow?: string;
+}) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -110,65 +91,88 @@ function Dropdown({ label, items }: { label: string; items: DropdownItem[] }) {
         style={{ background: "none", border: "none", padding: 0 }}
       >
         {label}
-        <ChevronDown className={`w-3 h-3 transition-transform duration-150 ${open ? "rotate-180" : ""}`} />
-      </button>
-      {open && (
-        <div
-          className="absolute top-full left-0 mt-2 z-50 py-1 min-w-[220px]"
+        <ChevronDown
+          className="w-3 h-3"
           style={{
+            transition: "transform 180ms ease",
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+          }}
+        />
+      </button>
+
+      {/* Centering wrapper */}
+      <div style={{ position: "absolute", left: "50%", top: "calc(100% + 10px)", zIndex: 50 }}>
+        {/* Animated panel */}
+        <div
+          style={{
+            width: `${width}px`,
+            transform: open
+              ? "translateX(-50%) translateY(0)"
+              : "translateX(-50%) translateY(-6px)",
+            opacity: open ? 1 : 0,
+            pointerEvents: open ? "auto" : "none",
+            transition: "opacity 160ms ease, transform 160ms ease",
             border: "1px solid var(--border-strong)",
             backgroundColor: "var(--bg-white)",
-            borderRadius: "6px",
-            boxShadow: "0 4px 16px rgba(0,0,0,0.08)",
+            borderRadius: "10px",
+            boxShadow: "0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.05)",
+            padding: "20px 20px 16px",
           }}
         >
-          {items.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setOpen(false)}
-              className="block px-4 py-2.5 hover:opacity-70 transition-opacity"
-              style={{ textDecoration: "none" }}
+          {eyebrow && (
+            <div
+              className="font-mono text-[9px] uppercase tracking-widest mb-3"
+              style={{ color: "var(--text-muted)" }}
             >
-              <div className="font-mono text-[12px] font-semibold" style={{ color: "var(--text-headline)" }}>
-                {item.label}
-              </div>
-              {item.desc && (
-                <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>
-                  {item.desc}
+              {eyebrow}
+            </div>
+          )}
+
+          <div
+            className="grid gap-1.5"
+            style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
+          >
+            {items.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setOpen(false)}
+                className="block rounded-md"
+                style={{
+                  textDecoration: "none",
+                  padding: "9px 11px",
+                  border: "1px solid var(--border)",
+                  backgroundColor: "var(--bg-primary)",
+                  transition: "border-color 120ms ease, background-color 120ms ease",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "var(--border-strong)";
+                  (e.currentTarget as HTMLElement).style.backgroundColor = "var(--bg-white)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.borderColor = "var(--border)";
+                  (e.currentTarget as HTMLElement).style.backgroundColor = "var(--bg-primary)";
+                }}
+              >
+                <div
+                  className="font-mono text-[11px] font-semibold leading-snug"
+                  style={{ color: "var(--text-headline)" }}
+                >
+                  {item.label}
                 </div>
-              )}
-            </Link>
-          ))}
+                {item.desc && (
+                  <div
+                    className="font-mono text-[9px] leading-snug mt-0.5"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    {item.desc}
+                  </div>
+                )}
+              </Link>
+            ))}
+          </div>
         </div>
-      )}
-    </div>
-  );
-}
-
-function IndustriesButton() {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
-
-  return (
-    <div ref={ref}>
-      <button
-        onClick={() => setOpen(!open)}
-        className="font-mono text-[13px] flex items-center gap-1 cursor-pointer link-body"
-        style={{ background: "none", border: "none", padding: 0 }}
-      >
-        Industries
-        <ChevronDown className={`w-3 h-3 transition-transform duration-150 ${open ? "rotate-180" : ""}`} />
-      </button>
-      {open && <IndustriesMegaMenu onClose={() => setOpen(false)} />}
+      </div>
     </div>
   );
 }
@@ -194,23 +198,25 @@ export function NavBar() {
           <Link href="/#pricing" className="font-mono text-[13px] link-body">
             Pricing
           </Link>
-          <IndustriesButton />
+          <CardGridButton
+            label="Industries"
+            items={ALL_INDUSTRIES}
+            cols={4}
+            width={760}
+            eyebrow="All Industries"
+          />
           <Link href="/blog" className="font-mono text-[13px] link-body">
             Blog
           </Link>
           <Link href="/about" className="font-mono text-[13px] link-body">
             About
           </Link>
-          <Dropdown
+          <CardGridButton
             label="More"
-            items={[
-              { label: "What Is AI-ified?", href: "/ai-ified", desc: "AI automation for distributors" },
-              { label: "Press", href: "/press" },
-              { label: "Shopify B2B vs Wholesail", href: "/blog/shopify-b2b-vs-custom-wholesale-portal" },
-              { label: "Wholesail vs NetSuite", href: "/blog/wholesail-vs-netsuite-for-distributors" },
-              { label: "vs HubSpot / Salesforce", href: "/blog/hubspot-salesforce-distribution-alternatives" },
-              { label: "vs Handshake / Faire", href: "/blog/handshake-faire-vs-custom-wholesale-portal" },
-            ]}
+            items={MORE_ITEMS}
+            cols={3}
+            width={480}
+            eyebrow="Resources & Comparisons"
           />
         </div>
 
