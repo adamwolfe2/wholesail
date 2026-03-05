@@ -902,7 +902,7 @@ export default function WholesailPage() {
 
       {/* ── Industries We Serve ──────────────────────────────────── */}
       <section className="py-12" style={{ borderTop: "1px solid var(--border)" }}>
-        <div className="mb-8">
+        <div className="mb-8 text-center">
           <span
             className="font-mono text-xs uppercase tracking-widest mb-3 block"
             style={{ color: "var(--text-muted)" }}
@@ -910,7 +910,7 @@ export default function WholesailPage() {
             Who this is built for
           </span>
           <p
-            className="font-mono text-sm max-w-2xl leading-relaxed"
+            className="font-mono text-sm max-w-2xl leading-relaxed mx-auto"
             style={{ color: "var(--text-body)" }}
           >
             Built specifically for independent wholesale distributors. Not a marketplace. Not a generic B2B tool.
@@ -1550,7 +1550,7 @@ export default function WholesailPage() {
 
       {/* ── Additional Features Icons ────────────────────────────── */}
       <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
-        <div className="mb-10">
+        <div className="mb-10 text-center">
           <span
             className="font-mono text-xs uppercase tracking-widest mb-4 block"
             style={{ color: "var(--text-muted)" }}
