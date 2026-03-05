@@ -427,9 +427,9 @@ export default function WholesailPage() {
               className="text-4xl md:text-5xl lg:text-[3.25rem] font-normal leading-[1.08] tracking-tight font-serif mb-7"
               style={{ color: "var(--text-headline)" }}
             >
-              Your entire wholesale business
+              Your Entire Wholesale Business
               <br />
-              <span className="italic">AI-ified &amp; fully automated.</span>
+              <span className="italic">AI-ified &amp; Fully Automated.</span>
             </h1>
             <p
               className="font-mono text-sm sm:text-base leading-relaxed mb-8 max-w-lg"
