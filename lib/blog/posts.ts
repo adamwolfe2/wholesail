@@ -82,7 +82,7 @@ export const posts: BlogPost[] = [
 
 <p><strong>You get the order instantly in your admin panel.</strong> Not a voicemail. Not a text. A complete, accurate order with every SKU, quantity, and delivery note already in there. Your warehouse sees it. Your inventory updates. An invoice is ready the moment the order ships.</p>
 
-<p><strong>Payments come through automatically.</strong> Online checkout via credit card, or the system tracks Net-30/60/90 terms and sends reminders automatically when invoices are due. Your accounts receivable process stops being a weekly phone marathon and becomes a dashboard you check once a day.</p>
+<p><strong>Payments come through automatically.</strong> Online checkout via credit card, or the system tracks Net-30/60/90 terms and sends reminders automatically when invoices are due. If you extend credit to wholesale accounts, the right setup makes a significant difference — see our guide on <a href="/blog/how-to-set-up-net-30-billing-for-wholesale-clients" style="color: #2563EB; text-decoration: underline;">how to set up Net-30 billing for wholesale clients</a>. Your accounts receivable process stops being a weekly phone marathon and becomes a dashboard you check once a day.</p>
 
 <h2>"My Clients Won't Use It"</h2>
 
@@ -133,7 +133,7 @@ export const posts: BlogPost[] = [
 
 <h2>What to Look for in a Portal</h2>
 
-<p>Not all ordering portals are created equal. When evaluating options, the things that matter most for a distribution business are:</p>
+<p>Not all ordering portals are created equal. Our <a href="/blog/wholesale-ordering-software-complete-guide" style="color: #2563EB; text-decoration: underline;">complete guide to wholesale ordering software</a> covers the full landscape of options, but when evaluating specifically for a distribution business, the things that matter most are:</p>
 
 <ul>
   <li><strong>Client-specific pricing.</strong> Your pricing isn't one-size-fits-all. Your portal shouldn't be either. Every account should see their own negotiated prices.</li>
@@ -194,7 +194,7 @@ export const posts: BlogPost[] = [
 
 <h3>1. B2B Add-ons to Consumer Ecommerce Platforms</h3>
 
-<p>The most well-known example is Shopify B2B. These work by adding a wholesale layer on top of a platform originally designed for direct-to-consumer retail. They're widely available and familiar, but come with real trade-offs for distribution businesses:</p>
+<p>The most well-known example is <a href="/blog/shopify-b2b-vs-custom-wholesale-portal" style="color: #2563EB; text-decoration: underline;">Shopify B2B</a>. These work by adding a wholesale layer on top of a platform originally designed for direct-to-consumer retail. They're widely available and familiar, but come with real trade-offs for distribution businesses:</p>
 
 <ul>
   <li>Pricing complexity is limited — tiered pricing, volume discounts, and account-specific rules are difficult to implement correctly</li>
@@ -213,7 +213,7 @@ export const posts: BlogPost[] = [
 
 <h3>3. Enterprise Distribution Software</h3>
 
-<p>Full ERP and distribution management systems — think NetSuite, SAP Business One, or industry-specific platforms like Encompass or VIP. These are comprehensive but expensive, complex to implement, and typically designed for companies doing $10M+ in revenue with dedicated IT resources. The implementation timeline is measured in months, not weeks, and the ongoing maintenance requires specialized staff.</p>
+<p>Full ERP and distribution management systems — think NetSuite, SAP Business One, or industry-specific platforms like Encompass or VIP. These are comprehensive but expensive, complex to implement, and typically designed for companies doing $10M+ in revenue with dedicated IT resources. The implementation timeline is measured in months, not weeks, and the ongoing maintenance requires specialized staff. For a direct comparison, see our breakdown of <a href="/blog/wholesail-vs-netsuite-for-distributors" style="color: #2563EB; text-decoration: underline;">Wholesail vs. NetSuite for regional distributors</a>.</p>
 
 <h3>4. Custom-Built Portals</h3>
 
@@ -302,7 +302,7 @@ export const posts: BlogPost[] = [
       ],
     },
     content: `
-<p class="lead">Net terms are a fact of life in wholesale distribution. If you supply to restaurants, retailers, or foodservice operations, you're almost certainly extending credit — Net-30 at minimum, often Net-60 or Net-90 for larger accounts. It's how the industry works.</p>
+<p class="lead">Net terms are a fact of life in wholesale distribution. If you supply to restaurants, retailers, or <a href="/blog/food-beverage-distribution-wholesale-ordering-portal" style="color: #2563EB; text-decoration: underline;">foodservice operations</a>, you're almost certainly extending credit — Net-30 at minimum, often Net-60 or Net-90 for larger accounts. It's how the industry works.</p>
 
 <p>The problem isn't the terms themselves. The problem is managing them. Tracking which invoices are outstanding, which are overdue, which accounts have reached their credit limit, and which need a reminder call — all of that adds up fast when you're doing it by hand.</p>
 
@@ -324,7 +324,7 @@ export const posts: BlogPost[] = [
 
 <h3>Tracking Becomes Guesswork</h3>
 
-<p>A typical distribution business managing Net terms manually has a spreadsheet (or three) tracking outstanding invoices, due dates, and payment status. The problem with spreadsheets is that they don't update themselves. Someone has to remember to check them, update them when payments come in, and flag ones that are overdue. When that person is out sick or leaves the company, institutional knowledge about your AR situation walks out the door with them.</p>
+<p>A typical distribution business managing Net terms manually has a spreadsheet (or three) tracking outstanding invoices, due dates, and payment status. The problem with spreadsheets is that they don't update themselves. Someone has to remember to check them, update them when payments come in, and flag ones that are overdue. When that person is out sick or leaves the company, institutional knowledge about your AR situation walks out the door with them. If your wider ordering process still runs on spreadsheets, see why <a href="/blog/why-distribution-companies-are-replacing-spreadsheets-with-ordering-portals" style="color: #2563EB; text-decoration: underline;">distribution companies are replacing spreadsheets with ordering portals</a>.</p>
 
 <h3>Reminders Are Ad Hoc</h3>
 
@@ -409,7 +409,7 @@ export const posts: BlogPost[] = [
       ],
     },
     content: `
-<p class="lead">If you're researching wholesale ordering software for your distribution business, Shopify B2B comes up early. It's well-known, it's from a company everyone's heard of, and it shows up in every "best wholesale software" list. But is it actually built for distribution businesses?</p>
+<p class="lead">If you're researching <a href="/blog/wholesale-ordering-software-complete-guide" style="color: #2563EB; text-decoration: underline;">wholesale ordering software</a> for your distribution business, Shopify B2B comes up early. It's well-known, it's from a company everyone's heard of, and it shows up in every "best wholesale software" list. But is it actually built for distribution businesses?</p>
 
 <p>The short answer is: it depends on what your business looks like. This comparison is designed to help you understand exactly where each approach delivers — and where each one has real gaps.</p>
 
@@ -495,7 +495,7 @@ export const posts: BlogPost[] = [
 
 <p>The right question isn't "which platform is better" — it's "which platform is built for a business like mine?" Shopify is exceptional for what it was designed for. If your wholesale operation looks like a retail store with B2B customers, Shopify B2B is worth a serious look.</p>
 
-<p>If your distribution business has the complexity, the workflows, and the operational needs of an actual distribution company — client-specific pricing, Net terms AR, order management from pick to delivery, a complete admin panel — you'll spend a significant amount of time and money trying to get a retail platform to behave like a distribution platform.</p>
+<p>If your distribution business has the complexity, the workflows, and the operational needs of an actual distribution company — client-specific pricing, Net terms AR, order management from pick to delivery, a complete admin panel — you'll spend a significant amount of time and money trying to get a retail platform to behave like a distribution platform. This is especially true for industry-specific operations: see how this plays out for <a href="/blog/food-beverage-distribution-wholesale-ordering-portal" style="color: #2563EB; text-decoration: underline;">food and beverage distributors</a> who manage per-account pricing, cut-off windows, and perishables.</p>
 
 <div class="cta-block">
   <p>Wholesail is built specifically for distribution companies. See how it compares to what you're using today — enter your website URL for a live branded demo.</p>
@@ -555,7 +555,7 @@ export const posts: BlogPost[] = [
 
 <h2>The Specific Challenges of Food & Beverage Portals</h2>
 
-<p>Not every ordering portal is built for the complexity of food and beverage distribution. Here's what a good one handles:</p>
+<p>Not every <a href="/blog/wholesale-ordering-software-complete-guide" style="color: #2563EB; text-decoration: underline;">wholesale ordering software</a> option is built for the complexity of food and beverage distribution. Here's what a good one handles:</p>
 
 <h3>Per-Account Pricing</h3>
 <p>A restaurant with a standing contract gets different pricing than a walk-in retail account. A chef-driven boutique operation pays differently than a chain grocery buyer. Your portal needs to show every client only their own prices — not a generic catalog. This sounds obvious, but most general-purpose e-commerce platforms (Shopify, WooCommerce) require significant customization to get per-account pricing right.</p>
@@ -605,8 +605,10 @@ export const posts: BlogPost[] = [
   <li>How does the portal handle reorders from previous order history?</li>
   <li>Can we send order confirmation texts or emails to clients automatically?</li>
   <li>Does the admin panel show real-time order status across all accounts?</li>
-  <li>Can we manage net terms (Net-30, Net-60) and invoice clients directly through the portal?</li>
+  <li>Can we manage <a href="/blog/how-to-set-up-net-30-billing-for-wholesale-clients" style="color: #2563EB; text-decoration: underline;">net terms (Net-30, Net-60)</a> and invoice clients directly through the portal?</li>
 </ol>
+
+<p>If your business includes beverage distribution beyond food, see our dedicated guide for <a href="/blog/wine-spirits-distributor-ordering-portal" style="color: #2563EB; text-decoration: underline;">wine and spirits distributors</a>.</p>
 
 <div class="cta-block">
   <p>Wholesail builds custom ordering portals specifically for food and beverage distributors. Your clients order online. You manage everything from one dashboard. Live in under 2 weeks.</p>
@@ -637,7 +639,7 @@ export const posts: BlogPost[] = [
       ],
     },
     content: `
-<p>The three-tier system has defined wine and spirits distribution for generations. Supplier to distributor to retailer. Sales reps walk accounts, take orders on paper or tablets, and phone them in. Brand reps submit depletion reports via spreadsheet. It works — until your portfolio grows past 300 SKUs, your rep-to-account ratio hits 1:150, and your inside sales team can't keep up with callbacks.</p>
+<p>The three-tier system has defined wine and spirits distribution for generations. Supplier to distributor to retailer. Sales reps walk accounts, take orders on paper or tablets, and phone them in. Brand reps submit depletion reports via spreadsheet. It works — until your portfolio grows past 300 SKUs, your rep-to-account ratio hits 1:150, and your inside sales team can't keep up with callbacks. The same ordering bottlenecks affect other regulated distribution verticals — <a href="/blog/food-beverage-distribution-wholesale-ordering-portal" style="color: #2563EB; text-decoration: underline;">food and beverage distributors</a> face similar peak-window pressure.</p>
 
 <p>The U.S. wine and spirits wholesale market supports approximately 2,200 distributors, down significantly from 4,000+ in the 1980s due to consolidation. The survivors are the ones who figured out how to do more with less. Technology is increasingly how they do it.</p>
 
@@ -693,7 +695,7 @@ export const posts: BlogPost[] = [
 
 <p>The most effective adoption strategy for wine and spirits distributors is to have your reps drive portal signups during regular account visits. The rep shows the account the portal during the visit — "here's where you can reorder anytime, see your invoices, and check what's in allocation." First orders placed during the visit, rep assists. Second order, rep checks in. Third order, client is independent.</p>
 
-<p>Adoption typically reaches 60–70% of regular accounts within 90 days when this rep-driven onboarding approach is used consistently.</p>
+<p>Adoption typically reaches 60–70% of regular accounts within 90 days when this rep-driven onboarding approach is used consistently. For a look at how a different distribution vertical handles similar adoption challenges, see our guide for <a href="/blog/industrial-supply-distribution-online-ordering" style="color: #2563EB; text-decoration: underline;">industrial supply distributors moving to online ordering</a>.</p>
 
 <div class="cta-block">
   <p>Wholesail builds ordering portals for wine, spirits, and beverage distributors. Your accounts order online. Your reps focus on account development. Live in under 2 weeks.</p>
@@ -726,7 +728,7 @@ export const posts: BlogPost[] = [
     content: `
 <p>NetSuite is the answer to a question most regional distributors aren't asking yet. It's a world-class ERP platform — financials, inventory, order management, CRM, and e-commerce, all in one system. It's also priced and architected for companies doing $10M–$500M with 50–500 employees, dedicated IT staff, and a 6-month runway to deploy.</p>
 
-<p>If you're a regional distributor doing $3M–$20M with a lean team and a need to solve specific problems — phone-based ordering, manual invoicing, disconnected systems — NetSuite is probably not your next step. This comparison will explain why, and help you understand what actually makes sense.</p>
+<p>If you're a regional distributor doing $3M–$20M with a lean team and a need to solve specific problems — <a href="/blog/why-distribution-companies-are-replacing-spreadsheets-with-ordering-portals" style="color: #2563EB; text-decoration: underline;">phone-based ordering, manual invoicing, disconnected spreadsheets</a> — NetSuite is probably not your next step. This comparison will explain why, and help you understand what actually makes sense.</p>
 
 <h2>What NetSuite Is (and Isn't)</h2>
 
@@ -820,7 +822,7 @@ export const posts: BlogPost[] = [
   <li>Your annual revenue is $2M–$25M and you need outcomes, not infrastructure</li>
 </ul>
 
-<p>The two aren't mutually exclusive. Many distributors run Wholesail while they're growing toward a NetSuite implementation — getting the ordering and billing under control now, while building toward a full ERP when the business complexity demands it.</p>
+<p>The two aren't mutually exclusive. Many distributors run Wholesail while they're growing toward a NetSuite implementation — getting the ordering and billing under control now, while building toward a full ERP when the business complexity demands it. This path is especially common for <a href="/blog/food-beverage-distribution-wholesale-ordering-portal" style="color: #2563EB; text-decoration: underline;">food and beverage distributors</a> who need to solve the operational ordering problem without the cost and delay of a full ERP rollout.</p>
 
 <div class="cta-block">
   <p>Ready to see what your ordering portal could look like? Enter your website URL for a live branded demo — no signup required.</p>
@@ -870,7 +872,7 @@ export const posts: BlogPost[] = [
 </ul>
 
 <h3>Labor Cost: Invoice Management</h3>
-<p>According to Ardent Partners research, manual invoice processing costs an average of $12.88 per invoice. Companies that automate this process get the cost down to $2.88 — a 4.5x difference. For a distributor processing 800 invoices per month, that's $8,000/month in invoice processing labor vs. $2,304 with a system. The difference: $5,700/month, $68,400/year.</p>
+<p>According to Ardent Partners research, manual invoice processing costs an average of $12.88 per invoice. Companies that automate this process get the cost down to $2.88 — a 4.5x difference. For a distributor processing 800 invoices per month, that's $8,000/month in invoice processing labor vs. $2,304 with a system. The difference: $5,700/month, $68,400/year. A proper <a href="/blog/how-to-set-up-net-30-billing-for-wholesale-clients" style="color: #2563EB; text-decoration: underline;">Net-30 billing system</a> handles invoice generation, reminders, and AR tracking automatically.</p>
 
 <h3>Late Payments</h3>
 <p>Research from Upflow found that over 50% of B2B invoices are paid late, with the average invoice paid 6–9 days after the due date. For a distributor with $500K in outstanding AR, even a 10-day improvement in average collection time improves cash flow by $13,700 (at a 10% cost of capital). Automated reminders at Day 25, Day 30, and Day 35 move the needle without requiring a phone call.</p>
@@ -917,7 +919,7 @@ export const posts: BlogPost[] = [
 
 <h2>Making the Decision</h2>
 
-<p>The question to ask yourself is simple: at your current growth trajectory, what does your operation look like in 18 months if nothing changes? More phone calls. More hires. More entry errors. More late payments you're chasing manually.</p>
+<p>The question to ask yourself is simple: at your current growth trajectory, what does your operation look like in 18 months if nothing changes? More phone calls. More hires. More entry errors. More late payments you're chasing manually. For a sector-specific view of what modernization looks like, see how <a href="/blog/industrial-supply-distribution-online-ordering" style="color: #2563EB; text-decoration: underline;">industrial supply distributors</a> are making the same shift.</p>
 
 <p>Or: a portal goes live in two weeks, clients start ordering online, and your team spends the next 18 months growing accounts instead of entering them.</p>
 
@@ -950,7 +952,7 @@ export const posts: BlogPost[] = [
       ],
     },
     content: `
-<p>Every year, a meaningful number of distribution companies sign up for HubSpot or Salesforce. The pitch makes sense: you want to manage your client relationships, track orders, and run your sales team more efficiently. HubSpot and Salesforce both claim to do all of this.</p>
+<p>Every year, a meaningful number of distribution companies sign up for HubSpot or Salesforce. The pitch makes sense: you want to manage your client relationships, track orders, and run your sales team more efficiently. HubSpot and Salesforce both claim to do all of this. Most of these companies are still <a href="/blog/why-distribution-companies-are-replacing-spreadsheets-with-ordering-portals" style="color: #2563EB; text-decoration: underline;">running orders through spreadsheets and phone calls</a> six months later.</p>
 
 <p>Six to eighteen months later, most of those companies are still managing orders by phone and spreadsheet — and now paying $1,300–$4,700/month for a CRM that nobody updates consistently.</p>
 
@@ -1032,7 +1034,7 @@ export const posts: BlogPost[] = [
 
 <p>If you're using HubSpot for prospect tracking and email campaigns, you don't need to get rid of it. That's exactly what it's good for. You can continue using HubSpot for lead management and use Wholesail as your ordering and operations platform for your active accounts. They serve different purposes.</p>
 
-<p>If you bought HubSpot or Salesforce hoping it would become your order management system and it hasn't — you're not alone, and it's not a problem with your implementation. It's a category mismatch. The right tool for distribution order management is a distribution ordering platform, not a CRM.</p>
+<p>If you bought HubSpot or Salesforce hoping it would become your order management system and it hasn't — you're not alone, and it's not a problem with your implementation. It's a category mismatch. The right tool for distribution order management is a distribution ordering platform, not a CRM. This applies across distribution verticals — from <a href="/blog/food-beverage-distribution-wholesale-ordering-portal" style="color: #2563EB; text-decoration: underline;">food and beverage distributors</a> to industrial supply companies — where the core need is a client-facing ordering portal, not a pipeline manager.</p>
 
 <div class="cta-block">
   <p>Wholesail is built for distribution — not adapted from something else. See the platform in 30 seconds by entering your website URL for a live branded demo.</p>
@@ -1098,7 +1100,7 @@ export const posts: BlogPost[] = [
 
 <p>This pricing is account-specific. A portal that shows generic catalog prices — even at a wholesale tier — is useless to a contract account. Your portal needs to show each account exactly their contracted price for every item in your catalog. This is not optional for industrial distribution.</p>
 
-<p>Most general-purpose e-commerce platforms (Shopify, WooCommerce) require significant customization to deliver per-account pricing at scale. A platform built specifically for distribution handles this natively.</p>
+<p>Most general-purpose e-commerce platforms require significant customization to deliver per-account pricing at scale — for a detailed breakdown of why, see our comparison of <a href="/blog/shopify-b2b-vs-custom-wholesale-portal" style="color: #2563EB; text-decoration: underline;">Shopify B2B vs. a custom wholesale portal</a>. A platform built specifically for distribution handles contract pricing natively.</p>
 
 <h2>The Catalog Complexity Reality</h2>
 
@@ -1125,7 +1127,7 @@ export const posts: BlogPost[] = [
 
 <p>Punchout is a real technical requirement for some large accounts, and it's beyond what most ordering portals provide out of the box. If you have 2–3 accounts that specifically require punchout, that's a custom integration project. But for the majority of your accounts — the 100–200 small-to-mid manufacturing facilities and maintenance shops — a well-built ordering portal is sufficient.</p>
 
-<p>Don't let the punchout requirement for your biggest accounts become the reason your other 150 accounts continue ordering by phone.</p>
+<p>Don't let the punchout requirement for your biggest accounts become the reason your other 150 accounts continue ordering by phone. The same logic applies across regulated distribution sectors — <a href="/blog/wine-spirits-distributor-ordering-portal" style="color: #2563EB; text-decoration: underline;">wine and spirits distributors</a> face similar compliance-as-excuse dynamics that prevent otherwise straightforward portal deployments.</p>
 
 <h2>What an Industrial Supply Portal Delivers</h2>
 
@@ -1144,6 +1146,640 @@ export const posts: BlogPost[] = [
 <div class="cta-block">
   <p>Wholesail builds ordering portals for industrial and specialty distributors. Per-account pricing, full catalog management, and an admin panel built for operations. Live in under 2 weeks.</p>
   <a href="/#demo">See the platform →</a>
+</div>
+`,
+  },
+  {
+    slug: "produce-distribution-ordering-portal",
+    title: "How Produce Distributors Are Cutting Order Entry Time in Half",
+    excerpt:
+      "Fresh produce distribution runs on speed and accuracy — but most distributors are still taking orders by phone and managing availability through text chains. Here's what a purpose-built ordering portal changes.",
+    publishedAt: "2026-03-05",
+    category: "Operations",
+    readTime: 6,
+    author: {
+      name: "Wholesail Team",
+      title: "Distribution Operations",
+    },
+    seo: {
+      title: "How Produce Distributors Are Cutting Order Entry Time in Half | Wholesail",
+      description:
+        "Fresh produce distributors face daily pricing changes, short shelf life, and constant client calls. Here's how a self-service ordering portal cuts order entry time and reduces mis-orders by 41%.",
+      keywords: [
+        "produce distribution software",
+        "fresh produce ordering portal",
+        "wholesale produce ordering system",
+        "food distributor ordering portal",
+        "reduce mis-orders produce distribution",
+      ],
+    },
+    content: `
+<p class="lead">Fresh produce distribution is one of the most demanding logistics environments in wholesale. Pricing changes daily. Availability can flip between morning and afternoon. Clients call to ask what's in stock, and if you don't answer fast, they call your competitor. And when an order goes wrong — a misheard unit count, a wrong variety — you can't hold the product for the next delivery cycle. It's gone.</p>
+
+<p>Despite this, a USDA distribution survey found that <strong>73% of produce distributors still manage orders primarily through phone and email</strong>. That's not a technology preference. It's a gap waiting to be closed.</p>
+
+<h2>Why Produce Distribution Is Different</h2>
+
+<p>Most ordering software is designed for stable, predictable catalogs. A produce distributor's catalog is neither. You might carry 70, 100, or 150 SKUs on a given day — but the prices, availability, and even the products themselves shift constantly based on what came in from your growers and what the market is doing.</p>
+
+<p>This creates a unique problem: your clients don't just need to place an order, they need to know what's available right now, at what price, before they can commit. That's why so many produce orders still happen by phone — it feels like the only way to ensure accuracy.</p>
+
+<p>The result is a bottleneck that compounds as you grow. At 30 accounts, it's manageable. At 60 accounts, someone is always waiting on hold. At 100 accounts, your reps are spending more time answering availability questions than building relationships.</p>
+
+<h2>The Spoilage and Error Connection</h2>
+
+<p>Mis-orders in produce distribution don't just create returns and credits — they create waste. ReFED estimates that <strong>spoilage costs $3.5 billion per year in U.S. produce distribution</strong>, and a significant portion of that is driven by ordering errors: wrong quantities, wrong varieties, or product arriving at a client who changed their mind after placing the order.</p>
+
+<p>When orders are placed verbally or via text message, the error rate goes up for reasons that have nothing to do with carelessness. A rep mishears "2 cases" as "12 cases." A buyer sends a photo of a handwritten list and one item is illegible. An order gets logged in the system after the pick has already started.</p>
+
+<p>Industry data shows that <strong>same-day digital order confirmation reduces mis-orders by 41%</strong>. That number is significant enough to justify a technology investment on its own.</p>
+
+<h2>What a Purpose-Built Portal Does for Produce Distributors</h2>
+
+<p>An ordering portal for produce distribution isn't the same as a generic B2B e-commerce platform. The requirements are more specific:</p>
+
+<ul>
+  <li><strong>Daily catalog updates</strong>: Prices and availability should be editable by your team in real time, not require a developer or a CSV import every morning</li>
+  <li><strong>Item-level availability controls</strong>: Mark items as available, limited, or unavailable so clients see accurate stock before they order</li>
+  <li><strong>Client-specific pricing</strong>: Different account tiers or long-term clients often have negotiated prices — the portal should enforce those automatically</li>
+  <li><strong>Order cutoff times</strong>: Produce routes have hard cutoffs. The portal should stop accepting orders for the current delivery window at the right time, without manual intervention</li>
+  <li><strong>Confirmation and paper trail</strong>: Every order creates a timestamped record that both sides can reference if there's a dispute about what was ordered</li>
+</ul>
+
+<h2>The Time Math</h2>
+
+<p>A regional produce distributor with 60 active accounts placing orders three times per week is handling roughly 180 orders per week. If each order requires a phone call or text exchange averaging 8 minutes — receiving the order, checking availability, confirming quantities, logging the order — that's <strong>24 hours of order management per week</strong>.</p>
+
+<p>Move 70% of those orders online. The remaining 30% are complex orders, new accounts, or special requests that genuinely need a conversation. Your team now handles 54 order interactions instead of 180, and the 126 digital orders each take under 2 minutes to confirm and route to the warehouse.</p>
+
+<p>That's roughly 14 hours per week reclaimed. At $22/hour, that's $308/week — over $16,000 per year — in labor that can be redirected toward growth instead of order entry.</p>
+
+<h2>Client Adoption in Produce: What Actually Works</h2>
+
+<p>The common objection is that produce buyers won't use an online portal — they want to talk to a person who knows what came in this morning. That's a real concern, and it's worth taking seriously.</p>
+
+<p>The solution isn't to force adoption. It's to make the portal genuinely useful for the buyer, not just convenient for you:</p>
+
+<ul>
+  <li>Show real-time availability so they don't have to call to find out what's in stock</li>
+  <li>Let them reorder from their last order with one click for routine items</li>
+  <li>Send a push notification or email when their regular items come back in stock</li>
+  <li>Give them order history and invoices in one place so they're not digging through email</li>
+</ul>
+
+<p>When the portal saves the buyer time — not just the distributor — adoption follows naturally. Most produce distributors who launch a well-configured portal see 50–65% of their existing accounts actively using it within 60 days.</p>
+
+<h2>Integration With Your Operations</h2>
+
+<p>For produce distribution to work efficiently, the portal can't be a standalone island. Orders placed online need to flow directly into your warehouse routing, your invoicing, and your delivery scheduling — without a manual step in between.</p>
+
+<p>This is where generic platforms often fall short. They capture the order but leave it to you to move the data into your operations. A purpose-built portal connects to your existing systems so the order that comes in at 6am is already in the pick queue by the time your warehouse opens.</p>
+
+<p>For more on how food and beverage distributors are implementing portals, see our guide on <a href="/blog/food-beverage-distribution-wholesale-ordering-portal" style="color: #2563EB; text-decoration: underline;">wholesale ordering portals for food and beverage distributors</a>.</p>
+
+<p>And if you're still evaluating whether a portal makes sense versus your current spreadsheet setup, <a href="/blog/why-distribution-companies-are-replacing-spreadsheets-with-ordering-portals" style="color: #2563EB; text-decoration: underline;">this breakdown of the real costs of spreadsheet ordering</a> is a useful starting point.</p>
+
+<h2>What to Look For in a Produce Distribution Portal</h2>
+
+<p>When evaluating options, prioritize:</p>
+
+<ul>
+  <li>Daily catalog management that your team can handle without technical support</li>
+  <li>Mobile-first design — many produce buyers are placing orders from a phone at the market or in the back of their restaurant kitchen</li>
+  <li>Client-specific pricing tiers and minimum order controls</li>
+  <li>Cutoff time enforcement per delivery route</li>
+  <li>Clean order history and invoice access for clients</li>
+</ul>
+
+<div class="cta-block">
+  <h3>Ready to see this in your business?</h3>
+  <p>Get a live demo built with your branding in under 5 minutes.</p>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "craft-beverage-beer-distributor-portal",
+    title: "Why Craft Beer and Beverage Distributors Need a Self-Service Ordering Portal",
+    excerpt:
+      "Craft beverage distribution runs on relationships, seasonal releases, and allocation management — but the administrative load is crushing your reps. Here's what a self-service portal changes.",
+    publishedAt: "2026-03-05",
+    category: "Operations",
+    readTime: 7,
+    author: {
+      name: "Wholesail Team",
+      title: "Distribution Operations",
+    },
+    seo: {
+      title: "Why Craft Beer and Beverage Distributors Need a Self-Service Ordering Portal | Wholesail",
+      description:
+        "Craft beer and beverage distributors manage 50-200 SKUs, seasonal releases, and allocation windows. A self-service portal cuts admin time by 40% and keeps retailers ordering on their schedule.",
+      keywords: [
+        "craft beer distributor software",
+        "beverage distributor ordering portal",
+        "craft beverage wholesale portal",
+        "beer distributor ordering system",
+        "self-service wholesale portal beverages",
+      ],
+    },
+    content: `
+<p class="lead">Craft beverage distribution has a paradox at its core: the products are exciting, the relationships are strong, and demand is growing — but the operations underneath are stuck in a model built for a much simpler time. Distributors carrying 80 craft SKUs across 150 retail accounts are using the same phone-and-spreadsheet process that worked when they had 20 SKUs and 40 accounts.</p>
+
+<p>The Brewers Association reports that craft beer distribution grew 8% in 2024. That growth is real, but it comes with operational complexity that manual processes weren't designed to handle.</p>
+
+<h2>The Craft Beverage Distribution Challenge</h2>
+
+<p>Craft beverage distribution is different from commodity distribution in ways that matter for ordering systems:</p>
+
+<ul>
+  <li><strong>Seasonal and limited releases</strong>: A new seasonal IPA, a summer shandy, a holiday stout — these have short windows and often generate a rush of orders in a compressed timeframe</li>
+  <li><strong>Allocation management</strong>: High-demand products need to be distributed fairly across accounts. Without a system, allocations happen via whoever calls first or whoever has the best relationship with the rep</li>
+  <li><strong>SKU turnover</strong>: Craft portfolios rotate constantly. Products are added, discontinued, and replaced. Keeping retailers informed and keeping the catalog current is a continuous job</li>
+  <li><strong>Rep coordination</strong>: Craft sales reps are relationship managers, market educators, and account developers. But when 40% of their time goes to admin tasks — checking stock, relaying orders, chasing invoices — they're not doing what they're best at</li>
+</ul>
+
+<p>NBWA survey data shows that <strong>62% of beverage retailers prefer digital ordering over phone</strong> when a quality online option exists. The preference is already there. What's missing is the tool.</p>
+
+<h2>What Self-Service Changes for Craft Distributors</h2>
+
+<p>A self-service portal doesn't replace the rep relationship — it removes the friction that makes that relationship feel like overhead instead of value.</p>
+
+<p>When a retailer can log in at 9pm on a Tuesday and place their weekly order without waiting for your rep to be available, two things happen. First, the order gets placed at the moment of intent rather than deferred until the next rep visit or call. Second, your rep's next conversation with that account is about new products, upcoming releases, and business growth — not "did you get my order?"</p>
+
+<p>Distributor sales reps spend an average of <strong>40% of their time on administrative tasks</strong> rather than selling activities. A well-implemented portal cuts that number dramatically, freeing reps to manage more accounts without burning out.</p>
+
+<h2>Pre-Order Windows and Limited Releases</h2>
+
+<p>One of the highest-value applications of a portal for craft distributors is managing pre-order windows for new releases. Without a system, the process usually looks like this: you email your accounts about an upcoming release, they respond at different times, you track allocations manually in a spreadsheet, someone doesn't get their allocation because they responded late, and they're upset.</p>
+
+<p>With a portal, you can open a pre-order window with a deadline, set per-account allocation limits, and let accounts claim their allocation online. When the window closes, you have a clean order list with no manual tracking. Retailers who participated know exactly what they ordered. The process is fair and visible to everyone.</p>
+
+<p>This is particularly valuable for high-demand releases — specialty releases, collaboration beers, small-batch kombucha runs — where managing demand fairly is as important as fulfilling it efficiently.</p>
+
+<h2>Inventory Visibility Reduces Inbound Calls</h2>
+
+<p>One of the most consistent complaints from craft beverage distributors is the volume of inbound calls just to check on availability. "Do you still have the summer wheat? How many cases of the hazy IPA do you have left? Is the seasonal kolsch back?"</p>
+
+<p>Every one of those calls is 3–5 minutes of time from someone on your team. Across 150 accounts calling once or twice a week, that's hundreds of minutes per week that could be eliminated entirely by showing real-time availability in the portal.</p>
+
+<p>When accounts can see what's in stock before they place their order — and see it update in real time — they stop calling to check. They just order.</p>
+
+<h2>Tiered Pricing for Different Account Types</h2>
+
+<p>Craft beverage distributors often have different pricing structures for different account types: on-premise (bars and restaurants) vs. off-premise (retail), high-volume accounts vs. smaller independents, established partners vs. new accounts.</p>
+
+<p>Managing these manually means reps have to remember which accounts get which pricing, or you maintain separate price lists and hope they stay current. A portal enforces the right pricing automatically based on account type — so every order places at the correct price without human oversight on every transaction.</p>
+
+<h2>Retention and Reorder Rates</h2>
+
+<p>Accounts with portal access consistently reorder at higher rates than accounts managed exclusively through rep visits and phone calls. The reason is friction: placing a routine reorder through a portal takes two minutes. Waiting for a rep visit or a call-back takes longer, requires scheduling, and introduces opportunities for the account to consider other options in the meantime.</p>
+
+<p>Reducing that friction keeps your accounts engaged between rep visits, which translates directly to better retention and higher average order frequency.</p>
+
+<p>For a broader look at how beverage distributors are approaching digital ordering, see our post on <a href="/blog/wine-spirits-distributor-ordering-portal" style="color: #2563EB; text-decoration: underline;">wine and spirits distributor portals</a>, which covers many of the same dynamics in a different vertical.</p>
+
+<p>If you're evaluating software options broadly, our <a href="/blog/wholesale-ordering-software-complete-guide" style="color: #2563EB; text-decoration: underline;">complete guide to wholesale ordering software</a> walks through what to look for across all categories.</p>
+
+<h2>What Craft Beverage Distributors Should Look For</h2>
+
+<ul>
+  <li>Pre-order window management with allocation controls and per-account limits</li>
+  <li>Real-time inventory visibility in the client-facing portal</li>
+  <li>SKU-level availability controls (available, limited quantity, sold out)</li>
+  <li>Mobile-optimized ordering — retailers are often placing orders from a phone</li>
+  <li>Account-type pricing tiers that enforce automatically</li>
+  <li>Order history and invoice access without needing to call your office</li>
+</ul>
+
+<div class="cta-block">
+  <h3>Ready to see this in your business?</h3>
+  <p>Get a live demo built with your branding in under 5 minutes.</p>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "how-to-onboard-wholesale-clients-to-an-ordering-portal",
+    title: "How to Onboard Wholesale Clients to a Self-Service Ordering Portal (Without Losing Them)",
+    excerpt:
+      "Launching a wholesale ordering portal is step one. Getting your clients to actually use it is step two — and it's where most distributors stumble. Here's the exact onboarding sequence that works.",
+    publishedAt: "2026-03-05",
+    category: "Operations",
+    readTime: 8,
+    author: {
+      name: "Wholesail Team",
+      title: "Distribution Operations",
+    },
+    seo: {
+      title: "How to Onboard Wholesale Clients to a Self-Service Ordering Portal | Wholesail",
+      description:
+        "A step-by-step guide to onboarding wholesale clients to an ordering portal. Includes bulk import, invite emails, claim flow, training, and first-order incentives. 60-70% activation in 7 days.",
+      keywords: [
+        "wholesale portal onboarding",
+        "onboard wholesale clients",
+        "client onboarding ordering portal",
+        "wholesale portal activation",
+        "b2b portal client adoption",
+      ],
+    },
+    content: `
+<p class="lead">You've built the portal. The catalog is loaded, the branding is set, and everything works. Now you have to get your clients to use it — and that's a different challenge entirely. The technical build is the easy part. The human change management is where distributors either succeed or spend the next year nagging accounts to stop calling in orders.</p>
+
+<p>The good news: with a structured onboarding sequence, you can realistically achieve <strong>60–70% client activation within 7 days of launch</strong>. That number drops significantly if you skip the sequence and just send a single "we have a new portal" email.</p>
+
+<p>This guide covers the exact steps — bulk import, invite emails, claim flow, training materials, and first-order incentives — that separate successful portal launches from ones that stall at 20% adoption.</p>
+
+<h2>Step 1: Bulk Import Your Existing Client Accounts</h2>
+
+<p>Before you send a single invite, your clients need accounts waiting for them. The worst onboarding experience is asking someone to "sign up" for something they didn't ask for. Instead, pre-create their accounts with their business name, email, and pricing tier already set.</p>
+
+<p>Most portals support a CSV import. Your import file should include:</p>
+
+<ul>
+  <li>Business name</li>
+  <li>Primary contact name and email</li>
+  <li>Account tier or pricing group</li>
+  <li>Delivery day/route if applicable</li>
+  <li>Any account-specific notes (minimum order, credit terms)</li>
+</ul>
+
+<p>Once imported, accounts exist in the system but are "unclaimed." The invite email gives the client a link to claim their account and set their password. This flow — account exists, client claims it — is meaningfully better than asking clients to register from scratch, because it communicates that their information is already there and the portal is personalized to them.</p>
+
+<h2>Step 2: The Invite Email Sequence</h2>
+
+<p>A single launch email achieves roughly 20–30% activation. A three-email sequence achieves 60–70%. The difference isn't aggressive marketing — it's that people are busy and the first email often arrives at the wrong moment.</p>
+
+<p><strong>Email 1 — Day 0 (Launch Day):</strong> Announce the portal with a clear, specific value proposition for the client. Not "we built a new system" but "you can now check availability and place orders any time — no waiting for a callback." Include a single CTA button: "Claim your account." Keep it short — three short paragraphs maximum.</p>
+
+<p><strong>Email 2 — Day 3 (Follow-up for non-activators):</strong> Send only to accounts that haven't claimed yet. Acknowledge they may have missed the first email. Add one piece of social proof — "12 of your fellow [city] accounts have already placed their first order" — and re-link the claim button. This email often outperforms the first in click rate because it reaches people who were busy the first time.</p>
+
+<p><strong>Email 3 — Day 7 (Last call):</strong> Short, direct. "Your account is set up and ready. Here's what you're missing." Link to the portal. Offer to walk them through it via a 10-minute call if they have questions. Some clients just need human reassurance that nothing is going to break.</p>
+
+<h2>Step 3: The Claim Flow</h2>
+
+<p>The claim flow is the moment a client clicks your invite link and sets up their access. This needs to be as short as possible. Every additional field is drop-off risk.</p>
+
+<p>The minimum viable claim flow:</p>
+
+<ol>
+  <li>Client lands on the portal login page with their account pre-identified (the link should carry a token that pre-fills their email)</li>
+  <li>They set a password (or log in with Google if SSO is available)</li>
+  <li>They see their account dashboard with their catalog and pricing already configured</li>
+</ol>
+
+<p>Do not ask them to re-enter their business information. Do not make them verify their phone number. Do not show them a setup wizard with 6 steps. The goal is to get them to the catalog in under 60 seconds.</p>
+
+<h2>Step 4: Training Materials That Don't Get Ignored</h2>
+
+<p>A PDF manual will not be read. A 30-minute webinar will not be attended. The training materials that actually work are short, specific, and embedded in the flow where they're needed.</p>
+
+<p>What works:</p>
+
+<ul>
+  <li><strong>A 2-minute screen recording</strong> showing exactly how to place an order, from login to confirmation. Send this in Email 1 as a secondary link below the main CTA</li>
+  <li><strong>Tooltip overlays</strong> in the portal on first login — one tooltip on the catalog, one on the cart, one on order confirmation. Each tooltip is one sentence. They disappear after the client dismisses them</li>
+  <li><strong>A one-page quick reference</strong> (PDF, 1 page max) covering: how to browse the catalog, how to reorder from history, and how to contact support. This is useful for clients who want something to print</li>
+</ul>
+
+<p>The goal is not comprehensive training. The goal is getting the client to their first successful order, which is the real activation event. Once they've placed one order successfully, they'll use the portal again.</p>
+
+<h2>Step 5: The First-Order Incentive</h2>
+
+<p>A first-order incentive drives activation faster than any amount of follow-up. The incentive doesn't need to be large — it needs to be specific and tied to placing a digital order.</p>
+
+<p>Options that work well:</p>
+
+<ul>
+  <li><strong>Free delivery on first portal order</strong> (if you normally charge delivery or have a minimum): Low cost to you, tangible value to the client</li>
+  <li><strong>5–10% discount on first portal order</strong>: Simple, universal, effective</li>
+  <li><strong>Bonus product with first order over $X</strong>: Works particularly well for food and beverage distributors where a sample of a new product adds value</li>
+</ul>
+
+<p>The incentive should be mentioned in your invite email, visible on the portal dashboard before the first order, and removed automatically after the first order is placed. This makes the incentive feel earned and time-bounded, which increases its motivational effect.</p>
+
+<h2>Handling Resistant Clients</h2>
+
+<p>Some clients will not activate regardless of how smooth the onboarding is. Usually these fall into a few categories:</p>
+
+<ul>
+  <li><strong>Low-tech clients</strong> who genuinely struggle with digital tools: Assign these to your rep for continued phone ordering, but keep the account in the portal so the order still gets logged digitally on your end</li>
+  <li><strong>High-value clients who like the personal touch</strong>: Don't force them. Have your rep offer a 10-minute walkthrough and frame the portal as a backup option for when they need to order outside business hours</li>
+  <li><strong>Clients who tried and had a bad experience</strong>: Find out what broke and fix it. A client who tried and failed is one support interaction away from being a portal user</li>
+</ul>
+
+<p>A realistic target is 70–80% of accounts using the portal for at least some of their orders within 90 days of launch. Trying to hit 100% creates friction and resentment. Give clients the option; make it the default; let adoption happen at its own pace for the resistant minority.</p>
+
+<h2>Measuring Success</h2>
+
+<p>Track three metrics during onboarding:</p>
+
+<ul>
+  <li><strong>Claim rate</strong>: % of invited accounts that have claimed their portal access</li>
+  <li><strong>First-order rate</strong>: % of claimed accounts that have placed at least one order</li>
+  <li><strong>Digital order share</strong>: % of total orders coming through the portal vs. phone/email</li>
+</ul>
+
+<p>A healthy benchmark at 30 days post-launch: 65% claim rate, 50% first-order rate, 40% digital order share. At 90 days: 80% claim rate, 70% first-order rate, 60%+ digital order share.</p>
+
+<p>For more context on the value the portal delivers once clients are using it, see our guide on <a href="/blog/food-beverage-distribution-wholesale-ordering-portal" style="color: #2563EB; text-decoration: underline;">wholesale ordering portals for food and beverage distributors</a> and our <a href="/blog/wholesale-ordering-software-complete-guide" style="color: #2563EB; text-decoration: underline;">complete guide to wholesale ordering software</a>.</p>
+
+<div class="cta-block">
+  <h3>Ready to see this in your business?</h3>
+  <p>Get a live demo built with your branding in under 5 minutes.</p>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "how-to-set-wholesale-pricing-tiers",
+    title: "How to Set Wholesale Pricing Tiers That Reward Your Best Clients",
+    excerpt:
+      "Tiered wholesale pricing increases average order value, reduces churn, and rewards the clients who drive the most revenue. Here's how to build a tier structure that works — and how your portal enforces it automatically.",
+    publishedAt: "2026-03-05",
+    category: "Finance",
+    readTime: 7,
+    author: {
+      name: "Wholesail Team",
+      title: "Distribution Operations",
+    },
+    seo: {
+      title: "How to Set Wholesale Pricing Tiers That Reward Your Best Clients | Wholesail",
+      description:
+        "Tiered wholesale pricing increases average order value by 23% and cuts churn on top accounts by 3x. Here's how to structure Bronze/Silver/Gold tiers, set volume thresholds, and enforce them automatically.",
+      keywords: [
+        "wholesale pricing tiers",
+        "tiered wholesale pricing",
+        "b2b pricing structure distributor",
+        "volume discount wholesale",
+        "wholesale client pricing strategy",
+      ],
+    },
+    content: `
+<p class="lead">Most distribution companies have informal tiered pricing — their biggest clients get a better rate because someone negotiated it years ago, or because the rep likes them, or because they threatened to leave. That's not a pricing strategy. It's a series of one-off exceptions with no structure behind them.</p>
+
+<p>A real tiered pricing system rewards volume, loyalty, and growth consistently — and it does so automatically, without requiring a manager to approve every exception. Vendavo research shows that <strong>tiered pricing increases average order value by 23%</strong> in B2B distribution environments. And clients on the highest tier churn at roughly <strong>one-third the rate</strong> of standard-tier clients, because they have something concrete to lose by switching distributors.</p>
+
+<h2>The Case for Explicit Tiers</h2>
+
+<p>When pricing is negotiated ad-hoc, a few things happen that hurt your business:</p>
+
+<ul>
+  <li>Clients find out each other's prices and feel cheated if someone else got a better deal</li>
+  <li>Reps give away margin inconsistently, making your cost of sales unpredictable</li>
+  <li>You have no mechanism to move clients up a tier as they grow — the relationship just stays where it is</li>
+  <li>Clients who are close to a volume threshold have no incentive to cross it because they don't know the threshold exists</li>
+</ul>
+
+<p>Explicit, published tiers solve all of these problems. When a client knows they're at the Silver tier and $2,000/month away from Gold, they have a clear reason to grow their orders with you. The incentive structure works for you, not just for them.</p>
+
+<h2>A Concrete Tier Structure</h2>
+
+<p>Here's a starting framework for a regional specialty food or beverage distributor. Adjust the thresholds and discounts based on your margins and average order values.</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+  <thead>
+    <tr style="background: #f3f4f6;">
+      <th style="padding: 10px 14px; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Tier</th>
+      <th style="padding: 10px 14px; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Monthly Volume</th>
+      <th style="padding: 10px 14px; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Base Discount</th>
+      <th style="padding: 10px 14px; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Category Perks</th>
+      <th style="padding: 10px 14px; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Other Benefits</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb; font-weight: 600;">Bronze</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">$0 – $2,499/mo</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Standard pricing</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">None</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Portal access, order history</td>
+    </tr>
+    <tr style="background: #fafafa;">
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb; font-weight: 600;">Silver</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">$2,500 – $4,999/mo</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">5% off all orders</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Extra 3% on featured category</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Priority fulfillment, dedicated rep check-in</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb; font-weight: 600;">Gold</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">$5,000+/mo</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">10% off all orders</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Extra 5% on featured category</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Early access to new products, monthly call with ops lead</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>A few notes on this structure: The "featured category" perk allows you to drive volume in specific product lines without giving a blanket discount. You might offer an extra 3% on imported cheeses in Q4, or an extra 5% on a new supplier's line you're trying to move. This gives you a lever for inventory management while the tier discount stays consistent.</p>
+
+<h2>Setting the Right Thresholds</h2>
+
+<p>The thresholds above are examples. To set the right thresholds for your business, start with your actual account distribution:</p>
+
+<ul>
+  <li>What does your median account spend per month?</li>
+  <li>What does your top 20% spend?</li>
+  <li>What does your top 5% spend?</li>
+</ul>
+
+<p>You want the Gold tier to apply to roughly your top 10–15% of accounts — the ones who represent 40–50% of your revenue. Silver should capture the next 20–25%. Bronze is everyone else.</p>
+
+<p>If your median account spends $1,200/month and your top accounts spend $8,000+, your thresholds might be: Bronze under $1,500, Silver $1,500–$3,500, Gold $3,500+. The specific numbers matter less than the logic: the tiers should feel achievable to clients in the tier below and worth defending to clients in the tier above.</p>
+
+<h2>Margin Protection: What to Watch</h2>
+
+<p>The risk of tiered pricing is giving away margin to clients who would have paid full price anyway. To protect against this:</p>
+
+<ul>
+  <li>Build your tier discounts off a base price that already incorporates your target margin — don't start from cost</li>
+  <li>Apply category-level minimums: if your margin on a specific product category is already thin, exclude it from the tier discount</li>
+  <li>Review tier assignments quarterly — if a client drops in volume, they should drop in tier at the next review period</li>
+  <li>Set minimum order values for free delivery so that tier discounts don't make small orders unprofitable</li>
+</ul>
+
+<h2>How the Portal Enforces Tiers Automatically</h2>
+
+<p>Manual tier enforcement is where most programs break down. If a rep has to remember which tier each account is on, the pricing will be inconsistent. If a manager has to approve every order, it slows everything down.</p>
+
+<p>A properly configured ordering portal handles this automatically:</p>
+
+<ul>
+  <li>Each account is assigned a pricing tier when it's created or imported</li>
+  <li>When a client logs into their portal, they see prices at their tier level — they never see prices they're not entitled to</li>
+  <li>Tier upgrades or downgrades are made by an admin and take effect immediately on the next login</li>
+  <li>Category-level discounts can be configured as time-limited promotions that apply automatically to eligible accounts</li>
+</ul>
+
+<p>This removes the human error and the awkward conversation when a rep accidentally quotes the wrong price. The portal is the authority on pricing, and it's always correct.</p>
+
+<h2>Communicating Tiers to Clients</h2>
+
+<p>Clients should know what tier they're on and what the next tier offers. This visibility is what makes the tier structure motivating rather than opaque. Include tier information in the client's portal dashboard: "You're at the Silver tier (5% discount). $1,800 more this month reaches Gold (10% discount)."</p>
+
+<p>This kind of progress indicator is one of the simplest behavioral nudges in B2B commerce. Clients who can see the next threshold will often make an incremental purchase specifically to reach it.</p>
+
+<p>For context on how billing terms interact with pricing tiers, see our post on <a href="/blog/how-to-set-up-net-30-billing-for-wholesale-clients" style="color: #2563EB; text-decoration: underline;">how to set up Net-30 billing for wholesale clients</a>. And if you're thinking about replacing your invoicing and accounting stack to support tiered pricing, our post on <a href="/blog/replace-quickbooks-spreadsheets-with-ordering-portal" style="color: #2563EB; text-decoration: underline;">replacing QuickBooks and spreadsheets with an ordering portal</a> covers the integration path.</p>
+
+<div class="cta-block">
+  <h3>Ready to see this in your business?</h3>
+  <p>Get a live demo built with your branding in under 5 minutes.</p>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "handshake-faire-vs-custom-wholesale-portal",
+    title: "Handshake, Faire, and Orderchamp vs. a Custom Wholesale Portal: What Distributors Should Know",
+    excerpt:
+      "Marketplaces like Faire and Orderchamp promise distribution reach but take 15–25% in commissions and own your client relationships. Here's what distributors need to know before choosing a platform.",
+    publishedAt: "2026-03-05",
+    category: "Buying Guide",
+    readTime: 9,
+    author: {
+      name: "Wholesail Team",
+      title: "Distribution Operations",
+    },
+    seo: {
+      title: "Handshake vs Faire vs Custom Wholesale Portal: What Distributors Should Know | Wholesail",
+      description:
+        "Handshake shut down in May 2024. Faire charges 15% commission. Orderchamp serves European markets. Here's a complete comparison for distributors choosing between marketplaces and a custom portal.",
+      keywords: [
+        "Faire vs wholesale portal",
+        "Handshake alternative distributor",
+        "wholesale marketplace vs custom portal",
+        "Faire commission distributor",
+        "Orderchamp alternative",
+      ],
+    },
+    content: `
+<p class="lead">If you've been evaluating wholesale ordering platforms, you've probably encountered the same landscape: marketplaces that promise retailer access in exchange for a percentage of every sale, and custom portal options that cost more upfront but keep your margins and your client relationships intact. The choice matters more than most distributors realize, and a few things have changed recently that are worth knowing before you decide.</p>
+
+<h2>First: Handshake Is Gone</h2>
+
+<p>Handshake, Shopify's wholesale marketplace, <strong>shut down in May 2024</strong>. Distributors who built their ordering workflow on Handshake had to scramble to find alternatives. This is worth noting not just as history but as a strategic lesson: when your wholesale ordering runs through a third-party marketplace, you're dependent on that company's business decisions. If they pivot, price up, or shut down, your clients' ordering experience goes with them.</p>
+
+<p>The Handshake shutdown displaced a significant number of small and mid-size distributors. Many of them are now looking at the remaining marketplace options or considering a custom portal for the first time.</p>
+
+<h2>The Marketplace Options That Remain</h2>
+
+<h3>Faire</h3>
+
+<p>Faire is the dominant wholesale marketplace in the U.S., particularly strong in gift, home, and specialty food. Faire connects brands and distributors with independent retailers and handles payment terms (they offer Net 60 to retailers and pay distributors within a few days).</p>
+
+<p>The cost structure is significant: <strong>Faire charges 15% commission on orders from new retailer accounts, plus $0.15 per transaction</strong> (per their published pricing). On established accounts that were introduced to Faire by the brand, the rate drops to around 3%, but the ongoing discovery benefit comes at 15% of every new account's purchases indefinitely.</p>
+
+<p>Marketplace sellers report losing <strong>18–22% in margin</strong> when accounting for commissions, transaction fees, and the competitive pressure of being listed alongside alternatives. On a $500 order to a new account, you're paying $75 in commission before you've covered a single cost of goods or delivery.</p>
+
+<p>Faire also owns the retailer relationship in a meaningful sense: if a retailer discovers you through Faire, they may reorder through Faire even after you've established a direct relationship, continuing to trigger the commission. Faire's terms give them significant leverage over that relationship.</p>
+
+<h3>Orderchamp</h3>
+
+<p>Orderchamp is a European wholesale marketplace based in the Netherlands, primarily serving European brands and retailers. It's not a meaningful competitor in the U.S. market for most distributors, but it appears in comparison searches and is sometimes evaluated by U.S. brands with European distribution ambitions.</p>
+
+<p>The business model is similar to Faire: marketplace discovery, commission-based pricing, payment facilitation. The commission structure varies by category and contract but follows the same general logic. If you're a U.S.-focused distributor, Orderchamp is not a practical option.</p>
+
+<h2>The Custom Portal Alternative</h2>
+
+<p>A custom wholesale ordering portal — like what Wholesail builds — works differently from a marketplace at every level:</p>
+
+<table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+  <thead>
+    <tr style="background: #f3f4f6;">
+      <th style="padding: 10px 14px; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Factor</th>
+      <th style="padding: 10px 14px; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Faire</th>
+      <th style="padding: 10px 14px; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Orderchamp</th>
+      <th style="padding: 10px 14px; text-align: left; border: 1px solid #e5e7eb; font-weight: 600;">Custom Portal (Wholesail)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb; font-weight: 600;">Commission on orders</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">15% (new accounts) + $0.15/transaction</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Variable, similar range</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">$0 — flat monthly fee only</td>
+    </tr>
+    <tr style="background: #fafafa;">
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb; font-weight: 600;">Client relationship ownership</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Shared with marketplace</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Shared with marketplace</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">100% yours</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb; font-weight: 600;">Client data ownership</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Marketplace owns it</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Marketplace owns it</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">You own it</td>
+    </tr>
+    <tr style="background: #fafafa;">
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb; font-weight: 600;">Branding</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Faire-branded storefront</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Orderchamp-branded</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Your brand, your domain</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb; font-weight: 600;">Retailer discovery</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Yes — marketplace reach</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Yes (Europe)</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">No — for existing client base</td>
+    </tr>
+    <tr style="background: #fafafa;">
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb; font-weight: 600;">Pricing control</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Visible to all marketplace buyers</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Visible to all marketplace buyers</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Private, per-account tiers</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb; font-weight: 600;">Platform risk</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Dependent on Faire's business</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">Dependent on Orderchamp</td>
+      <td style="padding: 10px 14px; border: 1px solid #e5e7eb;">You own the infrastructure</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>The Commission Math at Scale</h2>
+
+<p>The 15% commission on new accounts sounds manageable for a small distributor. It becomes a structural problem as you grow.</p>
+
+<p>A distributor with $50,000/month in GMV through Faire — not a large operation by any measure — is paying $7,500/month in commissions just to new accounts. At $500,000/month, which is a realistic scale for a regional distributor, the commission burden on new accounts alone is $75,000/month. That's $900,000/year in fees to a marketplace that owns your client relationships.</p>
+
+<p>Contrast this with a flat monthly fee for a custom portal, where the cost is fixed regardless of order volume. At $50,000/month in orders, the economics of a custom portal are competitive. At $200,000/month, the custom portal pays for itself many times over compared to marketplace commissions.</p>
+
+<h2>When Marketplaces Make Sense</h2>
+
+<p>Marketplaces are not always the wrong choice. There are situations where they genuinely make sense:</p>
+
+<ul>
+  <li><strong>You're launching into a new market</strong> and need discovery to find your first accounts. Faire's retailer network is real and valuable for new brand introductions</li>
+  <li><strong>You have a consumer brand with retail ambitions</strong> and want access to boutique retailers who actively browse Faire for new products</li>
+  <li><strong>You're testing demand</strong> for a new product category before investing in direct sales infrastructure</li>
+</ul>
+
+<p>For established distributors with an existing account base, the case for a marketplace is much weaker. You're paying 15% to maintain relationships with accounts you already have.</p>
+
+<h2>The Data Ownership Question</h2>
+
+<p>The most underappreciated risk of marketplace dependency is data ownership. When your clients order through a marketplace, the marketplace has visibility into your order history, your client list, and your pricing. That data is an asset — your most valuable sales intelligence. On a marketplace, it's also their data.</p>
+
+<p>Handshake's shutdown in May 2024 was a reminder that a marketplace can take that data access away from you at any time. A custom portal means you own the order history, the client contacts, and the purchasing patterns — permanently, regardless of what any third party decides to do.</p>
+
+<p>For more on the Shopify B2B question specifically — since many Handshake refugees are evaluating Shopify's wholesale features — see our comparison of <a href="/blog/shopify-b2b-vs-custom-wholesale-portal" style="color: #2563EB; text-decoration: underline;">Shopify B2B vs. a custom wholesale portal</a>.</p>
+
+<p>And if you're evaluating CRM platforms as part of this decision, our post on <a href="/blog/hubspot-salesforce-distribution-alternatives" style="color: #2563EB; text-decoration: underline;">HubSpot and Salesforce alternatives for distributors</a> is worth reading alongside this one.</p>
+
+<h2>The Bottom Line</h2>
+
+<p>Marketplaces trade discovery for margin and data. If you need discovery, that trade can make sense. If you have an established client base, you're paying 15% for a service you don't need.</p>
+
+<p>The Handshake shutdown is a concrete example of platform risk that the wholesale industry watched play out in real time. Building your ordering infrastructure on a platform you don't control is a risk that compounds the more dependent you become on it.</p>
+
+<p>A custom portal costs more to set up. But at any meaningful order volume, the commission savings cover the cost within months — and you keep the client relationships, the data, and the pricing control permanently.</p>
+
+<div class="cta-block">
+  <h3>Ready to see this in your business?</h3>
+  <p>Get a live demo built with your branding in under 5 minutes.</p>
+  <a href="/#demo">See the Platform Demo</a>
 </div>
 `,
   },

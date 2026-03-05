@@ -261,6 +261,39 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* PORTAL CTA */}
+      <section className="py-16 sm:py-20 border-t border-[#E5E1DB] bg-[#0A0A0A]">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-5">
+              Built With Wholesail
+            </p>
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#F9F7F4] mb-4 leading-tight">
+              Want a portal like this built for your distribution business?
+            </h2>
+            <p className="text-[#F9F7F4]/55 text-sm leading-relaxed mb-8 max-w-lg">
+              Wholesail builds custom B2B wholesale ordering portals for distributors — fully
+              branded, deployed in under 2 weeks, and built to own. See the platform or start
+              your intake to get a quote.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Link
+                href="/#demo"
+                className="inline-flex items-center justify-center h-12 px-8 text-sm font-medium bg-[#F9F7F4] text-[#0A0A0A] hover:bg-[#E5E1DB] transition-colors"
+              >
+                See the Platform Demo
+              </Link>
+              <Link
+                href="/#intake-form"
+                className="inline-flex items-center justify-center h-12 px-8 text-sm font-medium border border-[#F9F7F4]/30 text-[#F9F7F4] hover:bg-[#F9F7F4]/10 transition-colors"
+              >
+                Get a Quote <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FOOTER */}
       <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

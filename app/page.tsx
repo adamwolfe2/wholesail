@@ -268,16 +268,97 @@ const BEFORE_AFTER = [
   },
 ];
 
+/* ── Testimonials ─────────────────────────────────────────────────────── */
+const TESTIMONIALS = [
+  {
+    quote:
+      "We were running everything through text messages and a shared Google Sheet. Our rep would spend Sunday nights entering orders for Monday delivery. Now clients order themselves and we just fulfill. I wish we had done this two years ago.",
+    name: "Marcus T.",
+    company: "Fresh Coast Specialty Foods",
+    industry: "Food & Beverage Distribution",
+  },
+  {
+    quote:
+      "The invoice chasing alone was worth the price. We used to have 30–40 day collection cycles because someone had to manually follow up. Now reminders go out automatically and our average collection is down to 18 days.",
+    name: "Elena V.",
+    company: "Pacific Rim Wine Imports",
+    industry: "Wine & Spirits Distribution",
+  },
+  {
+    quote:
+      "I was skeptical because I've tried software before and it always required months of setup and training. This was live in 11 days. My top 20 accounts were placing orders through the portal within the first week.",
+    name: "Dave K.",
+    company: "Central States Industrial Supply",
+    industry: "Industrial Distribution",
+  },
+];
+
+/* ── FAQ Schema ────────────────────────────────────────────────────────── */
+const FAQ_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "How long does a portal build take?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Most portals are fully built and deployed within 10–14 business days from our first call. The intake form and consultation help us move fast — we already know your products, workflow, and feature needs before we start building.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What does the demo show?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The demo is a live version of the actual portal platform with sample data — not a mockup. When you enter your website, we scrape your logo and brand colors and apply them to the demo so you can see exactly what your clients will experience.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How much does a portal build cost?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Wholesail builds are high-ticket, white-glove engagements. Pricing depends on the features you need, number of product SKUs, integrations, and customization level. We scope everything on the consultation call and provide a clear investment estimate before you commit.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Do I own the code?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, completely. Your portal is deployed to your own Vercel account, connected to your own database, Stripe account, and domain. You own everything. We also provide full documentation so your team (or any developer) can maintain and extend it.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can my existing wholesale clients use this?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Absolutely. The portal includes a client claim flow where existing clients can claim their account by verifying their email or phone number. We also support bulk client import from spreadsheets, and automated invitation emails. Most distributors onboard their first 10–20 clients within the first week.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How does text message ordering work?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Clients send a text with what they need. The system matches those items to your product catalog, sends back a confirmation with the order total, and the client replies YES to confirm. The order flows directly into your admin panel — no phone call required.",
+      },
+    },
+  ],
+};
+
 /* ── Industries ───────────────────────────────────────────────────────── */
 const INDUSTRIES = [
-  { icon: Utensils, name: "Food & Beverage", desc: "Specialty foods, produce, dairy" },
-  { icon: GlassWater, name: "Wine & Spirits", desc: "Importers and distributors" },
-  { icon: Wrench, name: "Industrial Supply", desc: "MRO and safety equipment" },
-  { icon: Sparkles, name: "Beauty & Cosmetics", desc: "Salon and retail wholesale" },
-  { icon: ChefHat, name: "Restaurant Supply", desc: "Foodservice distribution" },
-  { icon: Package, name: "Specialty Goods", desc: "Artisan and niche products" },
-  { icon: Building2, name: "Building Materials", desc: "Trade and contractor supply" },
-  { icon: Heart, name: "Medical Supply", desc: "Healthcare distribution" },
+  { icon: Utensils, name: "Food & Beverage", desc: "Specialty foods, produce, dairy", href: "/food-beverage" },
+  { icon: GlassWater, name: "Wine & Spirits", desc: "Importers and distributors", href: "/wine-spirits" },
+  { icon: Wrench, name: "Industrial Supply", desc: "MRO and safety equipment", href: "/industrial-supply" },
+  { icon: Sparkles, name: "Beauty & Cosmetics", desc: "Salon and retail wholesale", href: null },
+  { icon: ChefHat, name: "Restaurant Supply", desc: "Foodservice distribution", href: null },
+  { icon: Package, name: "Specialty Goods", desc: "Artisan and niche products", href: null },
+  { icon: Building2, name: "Building Materials", desc: "Trade and contractor supply", href: null },
+  { icon: Heart, name: "Medical Supply", desc: "Healthcare distribution", href: null },
 ];
 
 export default function WholesailPage() {
@@ -520,6 +601,69 @@ export default function WholesailPage() {
         </div>
       </section>
 
+      {/* ── Testimonials ─────────────────────────────────────────── */}
+      <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="mb-10">
+          <span
+            className="font-mono text-xs uppercase tracking-widest mb-4 block"
+            style={{ color: "var(--text-muted)" }}
+          >
+            From the Field
+          </span>
+          <h2
+            className="text-3xl md:text-4xl font-serif font-normal"
+            style={{ color: "var(--text-headline)" }}
+          >
+            What distribution owners say.
+          </h2>
+        </div>
+        <div
+          className="grid grid-cols-1 lg:grid-cols-3 gap-0"
+          style={{ border: "1px solid var(--border-strong)" }}
+        >
+          {TESTIMONIALS.map((t, i) => (
+            <div
+              key={t.name}
+              className={`p-8 ${i < TESTIMONIALS.length - 1 ? "border-b lg:border-b-0 lg:border-r" : ""}`}
+              style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-white)" }}
+            >
+              <p
+                className="font-serif text-4xl leading-none mb-6 select-none"
+                style={{ color: "var(--border-strong)" }}
+              >
+                &ldquo;
+              </p>
+              <p
+                className="font-mono text-xs leading-relaxed mb-8"
+                style={{ color: "var(--text-body)" }}
+              >
+                {t.quote}
+              </p>
+              <div>
+                <div
+                  className="font-mono text-[11px] font-semibold"
+                  style={{ color: "var(--text-headline)" }}
+                >
+                  {t.name}
+                </div>
+                <div
+                  className="font-mono text-[10px]"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {t.company}
+                </div>
+                <div
+                  className="font-mono text-[9px] uppercase tracking-wider mt-1"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {t.industry}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ── Explore Platform Demo ────────────────────────────────── */}
       <section className="py-16" id="demo" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="max-w-2xl mx-auto text-center mb-10">
@@ -587,15 +731,18 @@ export default function WholesailPage() {
         >
           {INDUSTRIES.map((industry, i) => {
             const Icon = industry.icon;
+            const Tag = industry.href ? "a" : "div";
             return (
-              <div
+              <Tag
                 key={industry.name}
-                className={`p-4 flex flex-col items-center text-center ${
+                {...(industry.href ? { href: industry.href } : {})}
+                className={`p-4 flex flex-col items-center text-center transition-colors ${
                   i < INDUSTRIES.length - 1 ? "border-b sm:border-b-0 sm:border-r" : ""
-                }`}
+                } ${industry.href ? "hover:opacity-80 cursor-pointer" : ""}`}
                 style={{
                   borderColor: "var(--border-strong)",
                   backgroundColor: "var(--bg-white)",
+                  textDecoration: "none",
                 }}
               >
                 <Icon
@@ -615,7 +762,12 @@ export default function WholesailPage() {
                 >
                   {industry.desc}
                 </div>
-              </div>
+                {industry.href && (
+                  <div className="font-mono text-[7px] uppercase tracking-wider mt-1" style={{ color: "var(--blue)" }}>
+                    Learn more →
+                  </div>
+                )}
+              </Tag>
             );
           })}
         </div>
@@ -1226,6 +1378,10 @@ export default function WholesailPage() {
       </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────── */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }}
+      />
       <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
         <div className="mb-10 text-center">
           <span

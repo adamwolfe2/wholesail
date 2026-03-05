@@ -76,5 +76,54 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: `${BASE_URL}/blog/produce-distribution-ordering-portal`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/blog/craft-beverage-beer-distributor-portal`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/blog/how-to-onboard-wholesale-clients-to-an-ordering-portal`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    {
+      url: `${BASE_URL}/blog/how-to-set-wholesale-pricing-tiers`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/blog/handshake-faire-vs-custom-wholesale-portal`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.85,
+    },
+    // Industry landing pages
+    {
+      url: `${BASE_URL}/food-beverage`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/wine-spirits`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE_URL}/industrial-supply`,
+      lastModified: new Date("2026-03-05"),
+      changeFrequency: "monthly",
+      priority: 0.9,
+    },
   ];
 }
