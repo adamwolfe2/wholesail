@@ -32,6 +32,7 @@ import {
   Palette,
   FileText,
   Search,
+  CalendarCheck,
 } from "lucide-react";
 import { IntakeActions } from "./intake-actions";
 import { WebsiteIntelligence } from "./website-intelligence";
@@ -121,14 +122,22 @@ export default async function AdminIntakeDetailPage({
 
       <div>
         <h2 className="font-serif text-3xl font-normal">{intake.companyName}</h2>
-        <p className="text-sm text-[#0A0A0A]/50 mt-1">
-          Submitted{" "}
-          {new Date(intake.createdAt).toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })}
-        </p>
+        <div className="flex items-center gap-3 mt-1 flex-wrap">
+          <p className="text-sm text-[#0A0A0A]/50">
+            Submitted{" "}
+            {new Date(intake.createdAt).toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </p>
+          {intake.calBooked && (
+            <span className="inline-flex items-center gap-1 text-xs font-mono text-green-700 bg-green-50 border border-green-200 px-2 py-0.5">
+              <CalendarCheck className="h-3 w-3" />
+              Call booked
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">

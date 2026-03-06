@@ -893,7 +893,7 @@ function Step3({
 }
 
 // ── Cal.com Embed ────────────────────────────────────────────────────────
-function CalEmbed() {
+function CalEmbed({ name, email }: { name?: string; email?: string }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -948,6 +948,7 @@ function CalEmbed() {
         layout: "month_view",
         useSlotsViewOnSmallScreen: "true",
         theme: "light",
+        ...(name || email ? { prefill: { name: name ?? "", email: email ?? "" } } : {}),
       },
       calLink: "adamwolfe/wholesail",
     });
@@ -1057,7 +1058,7 @@ function Step4({ step1, step2, step3 }: { step1: Step1Data; step2: Step2Data; st
           Select a time to speak with our team
         </div>
         <div className="border bg-white overflow-hidden" style={{ borderColor: "var(--border-strong)", borderRadius: "8px" }}>
-          <CalEmbed />
+          <CalEmbed name={step1.contactName} email={step1.contactEmail} />
         </div>
       </div>
     </div>

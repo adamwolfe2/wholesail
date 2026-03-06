@@ -386,6 +386,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
           metadata: { source: 'ai_assistant_bulk' },
         })),
       })
+      await invalidateToolCache('tool:get_action_items')
       return {
         confirmed: orders.length,
         orders: orders.map(o => ({ orderNumber: o.orderNumber, link: `/admin/orders/${o.id}` })),
@@ -407,6 +408,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
     await prisma.auditEvent.create({
       data: { entityType: 'Order', entityId: order.id, action: 'admin_confirmed', userId: ctx.userId, metadata: { source: 'ai_assistant' } },
     })
+    await invalidateToolCache('tool:get_action_items')
     return { success: true, orderNumber: order.orderNumber, link: `/admin/orders/${order.id}` }
   },
 
@@ -430,7 +432,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
 
     const updated = await updateOrderStatus(order.id, newStatus as OrderStatus, ctx.userId)
     // Invalidate caches affected by order status change
-    await invalidateToolCache('tool:get_platform_summary', 'tool:get_revenue_report:this_month', 'tool:get_revenue_report:today')
+    await invalidateToolCache('tool:get_platform_summary', 'tool:get_revenue_report:this_month', 'tool:get_revenue_report:today', 'tool:get_action_items', 'tool:get_order_trends')
     return {
       success: true,
       orderNumber: order.orderNumber,
@@ -712,6 +714,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
 
   get_lapsed_clients: async (input) => {
     const daysSince = Number(input.daysSince ?? 30)
+    return cachedTool(`tool:get_lapsed_clients:${daysSince}`, 900, async () => {
     const cutoff = new Date(Date.now() - daysSince * 24 * 60 * 60 * 1000)
 
     const orgs = await prisma.organization.findMany({
@@ -753,6 +756,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
         link: `/admin/clients/${o.id}`,
       })),
     }
+    }) // end cachedTool
   },
 
   get_top_products: async (input) => {
@@ -806,6 +810,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
   },
 
   get_order_trends: async () => {
+    return cachedTool('tool:get_order_trends', 300, async () => {
     const now = new Date()
     const startThisMonth = new Date(now.getFullYear(), now.getMonth(), 1)
     const startLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
@@ -838,6 +843,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       lastWeek: { revenue: `$${lwRev.toFixed(2)}`, orders: lastWeek._count },
       weekOverWeek: { revenue: pct(twRev, lwRev), orders: pct(thisWeek._count, lastWeek._count) },
     }
+    }) // end cachedTool
   },
 
   get_client_lifetime_value: async (input) => {
@@ -963,6 +969,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       orgName = org?.name ?? null
     }
 
+    await invalidateToolCache('tool:get_action_items')
     return {
       success: true, taskId: task.id, title: task.title,
       dueDate: dueDate?.toISOString().split('T')[0] ?? null,
@@ -997,6 +1004,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
   },
 
   get_action_items: async () => {
+    return cachedTool('tool:get_action_items', 120, async () => {
     const [
       pendingOrders,
       ordersNeedingConfirm,
@@ -1046,6 +1054,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
         ? 'Platform is in great shape — no urgent items or setup gaps!'
         : `${urgent.length} urgent item${urgent.length !== 1 ? 's' : ''}, ${setup.length} setup gap${setup.length !== 1 ? 's' : ''} found.`,
     }
+    }) // end cachedTool
   },
 
   // ── HEALTH & GROWTH TOOLS ─────────────────────────────────────────────────
@@ -1056,6 +1065,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
     const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000)
 
     if (orgId) {
+      return cachedTool(`tool:get_client_health:${orgId}`, 300, async () => {
       // Single client health breakdown
       const [org, orders90d, totalOrders, revenue] = await Promise.all([
         prisma.organization.findUnique({ where: { id: orgId }, select: { id: true, name: true, tier: true, loyaltyPoints: true, createdAt: true } }),
@@ -1072,9 +1082,11 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       const score = recencyScore + freqScore + revScore
       const badge = score >= 80 ? 'Champion' : score >= 60 ? 'Healthy' : score >= 30 ? 'At Risk' : 'Dormant'
       return { name: org.name, score, badge, tier: org.tier, loyaltyPoints: org.loyaltyPoints, totalOrders, orders90d, totalRevenue: Number(revenue._sum.total ?? 0), daysSinceLast }
+      }) // end cachedTool
     }
 
-    // Portfolio health summary
+    // Portfolio health summary — 60 min TTL (expensive N+1 across all orgs)
+    return cachedTool('tool:get_client_health:portfolio', 3600, async () => {
     const orgs = await prisma.organization.findMany({
       where: { isWholesaler: true },
       select: { id: true, name: true, tier: true },
@@ -1097,6 +1109,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
     scores.forEach(s => { buckets[s.badge as keyof typeof buckets]++ })
     const atRisk = scores.filter(s => s.badge === 'At Risk' || s.badge === 'Dormant').slice(0, 5)
     return { total: orgs.length, buckets, atRiskClients: atRisk }
+    }) // end cachedTool
   },
 
   get_loyalty_summary: async (input) => {

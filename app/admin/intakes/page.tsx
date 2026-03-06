@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FileInput } from "lucide-react";
+import { FileInput, CalendarCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/empty-state";
@@ -145,6 +145,9 @@ export default async function AdminIntakesPage({
                     <th className="text-left py-3 pr-4 font-medium text-[#0A0A0A]/50 font-normal">
                       Submitted
                     </th>
+                    <th className="text-left py-3 pr-4 font-medium text-[#0A0A0A]/50 font-normal hidden sm:table-cell">
+                      Call
+                    </th>
                     <th className="text-left py-3 font-medium text-[#0A0A0A]/50 font-normal">
                       Status
                     </th>
@@ -181,6 +184,16 @@ export default async function AdminIntakesPage({
                           day: "numeric",
                           year: "numeric",
                         })}
+                      </td>
+                      <td className="py-3 pr-4 hidden sm:table-cell">
+                        {intake.calBooked ? (
+                          <span className="inline-flex items-center gap-1 text-xs font-mono text-green-700 bg-green-50 border border-green-200 px-1.5 py-0.5">
+                            <CalendarCheck className="h-3 w-3" />
+                            Booked
+                          </span>
+                        ) : (
+                          <span className="text-xs text-[#0A0A0A]/30 font-mono">—</span>
+                        )}
                       </td>
                       <td className="py-3">
                         <Link href={`/admin/intakes/${intake.id}`}>
