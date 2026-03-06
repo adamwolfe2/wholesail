@@ -87,7 +87,7 @@ function primaryForeground(hex: string): string {
 }
 
 export async function POST(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   if (!process.env.ANTHROPIC_API_KEY) {
@@ -101,11 +101,21 @@ export async function POST(
   if (error) return error;
 
   const { id } = await params;
+  const force = req.nextUrl.searchParams.get("force") === "true";
 
   try {
     const intake = await getIntakeSubmissionById(id);
     if (!intake) {
       return NextResponse.json({ error: "Not found" }, { status: 404 });
+    }
+
+    // Return cached config if available (unless ?force=true)
+    if (!force && intake.project?.generatedConfig) {
+      return NextResponse.json({
+        config: intake.project.generatedConfig,
+        cached: true,
+        configGeneratedAt: intake.project.configGeneratedAt,
+      });
     }
 
     const defaults =
@@ -223,7 +233,16 @@ Return ONLY the complete TypeScript file content. Start with the import statemen
     const config =
       message.content[0].type === "text" ? message.content[0].text : "";
 
-    return NextResponse.json({ config });
+    // Persist to project if one exists (prevents re-generation on next call)
+    if (intake.project) {
+      const { prisma } = await import("@/lib/db");
+      await prisma.project.update({
+        where: { id: intake.project.id },
+        data: { generatedConfig: config, configGeneratedAt: new Date() },
+      });
+    }
+
+    return NextResponse.json({ config, cached: false });
   } catch (err) {
     console.error("[POST /api/admin/intakes/[id]/generate-config]", err);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });

@@ -161,6 +161,13 @@ export async function POST(
     }
 
     // ── STEP 1: Generate portal.config.ts via Claude Haiku ─────────────────
+    // Reuse existing config if already generated (prevents duplicate API calls)
+    if (!buildChecklist.configGenerated && project.generatedConfig) {
+      buildChecklist.configGenerated = true;
+      appendLog("Config reused from prior generation (skipped Claude call)");
+      await saveProgress();
+    }
+
     if (!buildChecklist.configGenerated) {
       const defaults =
         INDUSTRY_DEFAULTS[intake.industry] ?? INDUSTRY_DEFAULTS["General Distribution"];
@@ -231,7 +238,7 @@ export async function POST(
         tokensUsed = message.usage.input_tokens + message.usage.output_tokens;
       }
 
-      await prisma.project.update({ where: { id: projectId }, data: { generatedConfig } });
+      await prisma.project.update({ where: { id: projectId }, data: { generatedConfig, configGeneratedAt: new Date() } });
 
       if (process.env.ANTHROPIC_API_KEY && tokensUsed > 0) {
         await logCost(projectId, {

@@ -164,6 +164,9 @@ model IntakeSubmission {
   // Firecrawl scrape data (if website was scraped during demo)
   scrapeData Json?
 
+  // Cal.com booking tracking
+  calBooked Boolean @default(false)
+
   // Lifecycle
   reviewedAt DateTime?
   archivedAt DateTime?
@@ -225,9 +228,10 @@ model Project {
   callNotes String?
 
   // Build automation (Phase 1 — pipeline automation)
-  generatedConfig  String?    // full portal.config.ts content (auto-generated on build-start)
-  buildLog         String[]   // sequential build step log entries (timestamps + messages)
-  buildChecklist   Json?      // { configGenerated, githubRepoCreated, vercelCreated, ... }
+  generatedConfig    String?    // full portal.config.ts content (auto-generated on build-start)
+  configGeneratedAt  DateTime?  // when generatedConfig was last created
+  buildLog           String[]   // sequential build step log entries (timestamps + messages)
+  buildChecklist     Json?      // { configGenerated, githubRepoCreated, vercelCreated, ... }
 
   // Vercel Storage — one Postgres DB + one KV store per client (tracked for cost auditing)
   neonStoreId    String?  // Vercel Postgres store ID — query /v1/storage/stores/{id} for usage + cost
@@ -295,6 +299,21 @@ model ProjectTask {
 
   @@index([projectId])
   @@index([phase])
+}
+
+// ============================================================
+// EMAIL SUBSCRIBER (blog/industry page capture)
+// ============================================================
+
+model EmailSubscriber {
+  id                String   @id @default(cuid())
+  email             String   @unique
+  source            String   @default("blog") // "blog" | "industry" | "intake"
+  subscribedAt      DateTime @default(now())
+  cursiveContactId  String?  // returned by Cursive after push
+
+  @@index([email])
+  @@index([subscribedAt])
 }
 
 // ============================================================

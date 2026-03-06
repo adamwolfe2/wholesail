@@ -1066,47 +1066,82 @@ function Step4({ step1, step2, step3 }: { step1: Step1Data; step2: Step2Data; st
 
 // ── Main Wizard ──────────────────────────────────────────────────────────
 const STEPS = ["Company", "Distribution", "Features", "Book Call"];
+const DRAFT_KEY = "wholesail_intake_draft";
+const DRAFT_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
+
+const STEP1_DEFAULT: Step1Data = {
+  companyName: "", shortName: "", website: "", location: "",
+  contactName: "", contactEmail: "", contactPhone: "",
+  role: "", revenue: "", targetDomain: "", goLiveTimeline: "",
+};
+const STEP2_DEFAULT: Step2Data = {
+  industry: "", productCategories: "", skuCount: "", coldChain: "",
+  currentOrdering: [], activeClients: "", avgOrderValue: "",
+  paymentTerms: [], deliveryCoverage: "", minimumOrderValue: "",
+};
+const STEP3_DEFAULT: Step3Data = {
+  features: [], primaryColor: "", hasBrandGuidelines: "",
+  additionalNotes: "", logoUrl: "", brandSecondaryColor: "", inspirationUrls: [],
+};
+
+function loadDraft(): { step: number; step1: Step1Data; step2: Step2Data; step3: Step3Data } | null {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return null;
+    const draft = JSON.parse(raw);
+    if (!draft?.savedAt || Date.now() - draft.savedAt > DRAFT_TTL_MS) {
+      localStorage.removeItem(DRAFT_KEY);
+      return null;
+    }
+    return draft;
+  } catch {
+    return null;
+  }
+}
 
 export function IntakeWizard() {
   const [currentStep, setCurrentStep] = useState(0);
-
-  const [step1, setStep1] = useState<Step1Data>({
-    companyName: "",
-    shortName: "",
-    website: "",
-    location: "",
-    contactName: "",
-    contactEmail: "",
-    contactPhone: "",
-    role: "",
-    revenue: "",
-    targetDomain: "",
-    goLiveTimeline: "",
-  });
-  const [step2, setStep2] = useState<Step2Data>({
-    industry: "",
-    productCategories: "",
-    skuCount: "",
-    coldChain: "",
-    currentOrdering: [],
-    activeClients: "",
-    avgOrderValue: "",
-    paymentTerms: [],
-    deliveryCoverage: "",
-    minimumOrderValue: "",
-  });
-  const [step3, setStep3] = useState<Step3Data>({
-    features: [],
-    primaryColor: "",
-    hasBrandGuidelines: "",
-    additionalNotes: "",
-    logoUrl: "",
-    brandSecondaryColor: "",
-    inspirationUrls: [],
-  });
-
+  const [step1, setStep1] = useState<Step1Data>(STEP1_DEFAULT);
+  const [step2, setStep2] = useState<Step2Data>(STEP2_DEFAULT);
+  const [step3, setStep3] = useState<Step3Data>(STEP3_DEFAULT);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [draft, setDraft] = useState<ReturnType<typeof loadDraft>>(null);
+  const [draftChecked, setDraftChecked] = useState(false);
+
+  // Check for saved draft on mount (client-only)
+  useEffect(() => {
+    const saved = loadDraft();
+    if (saved && saved.step1.companyName) {
+      setDraft(saved);
+    }
+    setDraftChecked(true);
+  }, []);
+
+  // Persist to localStorage on every change (steps 0-2 only)
+  useEffect(() => {
+    if (!draftChecked || submitted || currentStep === 3) return;
+    if (!step1.companyName && !step1.contactEmail) return; // Don't save empty forms
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({
+        step: currentStep, step1, step2, step3, savedAt: Date.now(),
+      }));
+    } catch { /* quota exceeded or SSR — ignore */ }
+  }, [currentStep, step1, step2, step3, submitted, draftChecked]);
+
+  function handleResumeDraft() {
+    if (!draft) return;
+    setStep1(draft.step1);
+    setStep2(draft.step2);
+    setStep3(draft.step3);
+    setCurrentStep(draft.step);
+    setDraft(null);
+  }
+
+  function handleDiscardDraft() {
+    try { localStorage.removeItem(DRAFT_KEY); } catch { /* ignore */ }
+    setDraft(null);
+  }
 
   const canProceed = () => {
     if (currentStep === 0)
@@ -1161,12 +1196,12 @@ export function IntakeWizard() {
         });
         if (res.ok) {
           setSubmitted(true);
+          // Clear saved draft on successful submission
+          try { localStorage.removeItem(DRAFT_KEY); } catch { /* ignore */ }
         } else {
-          // API may not be configured yet — still proceed to booking
           console.warn("Intake API returned", res.status, "— proceeding to booking");
         }
       } catch {
-        // API endpoint may not be available — still let them book a call
         console.warn("Intake API unavailable — proceeding to booking");
       } finally {
         setSubmitting(false);
@@ -1177,6 +1212,37 @@ export function IntakeWizard() {
 
   return (
     <div className="border bg-white" style={{ borderColor: "var(--border-strong)", borderRadius: "8px", overflow: "hidden" }}>
+      {/* Resume draft banner */}
+      {draft && (
+        <div
+          className="px-6 py-3 flex items-center justify-between gap-4"
+          style={{ backgroundColor: "var(--blue-light)", borderBottom: "1px solid var(--border-strong)" }}
+        >
+          <p className="font-mono text-xs" style={{ color: "var(--blue)" }}>
+            Welcome back — continue your application
+            {draft.step1.companyName ? ` for ${draft.step1.companyName}` : ""}?
+          </p>
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              type="button"
+              onClick={handleResumeDraft}
+              className="font-mono text-xs font-semibold underline underline-offset-2"
+              style={{ color: "var(--blue)" }}
+            >
+              Resume
+            </button>
+            <button
+              type="button"
+              onClick={handleDiscardDraft}
+              className="font-mono text-xs"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Start over
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Progress bar */}
       <div className="border-b" style={{ borderColor: "var(--border-strong)" }}>
         <div className="flex">

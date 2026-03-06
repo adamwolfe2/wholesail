@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { GitBranch, Globe, AlertCircle, Layers, ExternalLink, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { getPhaseName } from "@/lib/build/phases";
 
 export type PipelineItem = {
   id: string;
@@ -23,6 +24,9 @@ export type PipelineItem = {
   vercelUrl?: string | null;
   customDomain?: string | null;
   buildChecklist?: Record<string, boolean> | null;
+  // cost health
+  contractValue?: number;     // dollars
+  totalSpentCents?: number;   // sum of ProjectCost.amountCents
 };
 
 function daysAgo(isoString: string): number {
@@ -130,11 +134,30 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
               />
             </div>
             <span className="text-[9px] font-mono text-[#0A0A0A]/40">
-              {item.currentPhase}/15
+              {item.currentPhase} · {getPhaseName(item.currentPhase)}
             </span>
           </div>
         )}
       </div>
+
+      {/* Budget health bar */}
+      {item.contractValue !== undefined && item.contractValue > 0 && item.totalSpentCents !== undefined && (() => {
+        const budgetPct = Math.round((item.totalSpentCents / 100 / item.contractValue) * 100);
+        const barColor = budgetPct > 85 ? "#dc2626" : budgetPct > 60 ? "#d97706" : "#16a34a";
+        if (budgetPct === 0) return null;
+        return (
+          <div>
+            <div className="h-[3px] w-full bg-[#E5E1DB]">
+              <div className="h-full transition-all" style={{ width: `${Math.min(budgetPct, 100)}%`, backgroundColor: barColor }} />
+            </div>
+            {budgetPct > 60 && (
+              <span className="text-[8px] font-mono" style={{ color: barColor }}>
+                {budgetPct}% of budget
+              </span>
+            )}
+          </div>
+        );
+      })()}
 
       {/* Infra badges */}
       {(item.githubRepo || item.vercelUrl) && (

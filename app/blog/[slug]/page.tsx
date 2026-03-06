@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Clock, Calendar } from "lucide-react";
 import { getPostBySlug, getAllPosts, type BlogPost } from "@/lib/blog/posts";
+import { EmailSubscribeForm } from "@/components/email-subscribe-form";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -295,6 +296,11 @@ export default async function BlogPostPage({ params }: Props) {
                 See the platform <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
+          </div>
+
+          {/* Newsletter capture */}
+          <div className="mb-16">
+            <EmailSubscribeForm source="blog-article" tagline="More insights like this, monthly." />
           </div>
 
           {/* Related posts */}

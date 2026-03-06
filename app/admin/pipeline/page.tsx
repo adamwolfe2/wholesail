@@ -27,9 +27,11 @@ export default async function AdminPipelinePage() {
         githubRepo: true,
         buildChecklist: true,
         enabledFeatures: true,
+        contractValue: true,
         createdAt: true,
         updatedAt: true,
         intake: { select: { id: true } },
+        costs: { select: { amountCents: true } },
       },
       orderBy: { updatedAt: "desc" },
     }).catch(() => []),
@@ -61,6 +63,10 @@ export default async function AdminPipelinePage() {
     }));
 
   // Intakes that have a project but are in ONBOARDING/BUILDING
+  function totalSpent(p: { costs: { amountCents: number }[] }): number {
+    return p.costs.reduce((s, c) => s + c.amountCents, 0);
+  }
+
   const buildingItems: PipelineItem[] = projects
     .filter((p) => p.status === "ONBOARDING" || p.status === "BUILDING")
     .map((p) => ({
@@ -80,7 +86,15 @@ export default async function AdminPipelinePage() {
         p.buildChecklist && typeof p.buildChecklist === "object"
           ? (p.buildChecklist as Record<string, boolean>)
           : null,
-    }));
+      contractValue: p.contractValue,
+      totalSpentCents: totalSpent(p),
+    }))
+    // Sort at-risk (>85% budget) to top
+    .sort((a, b) => {
+      const aPct = a.contractValue ? (a.totalSpentCents ?? 0) / 100 / a.contractValue : 0;
+      const bPct = b.contractValue ? (b.totalSpentCents ?? 0) / 100 / b.contractValue : 0;
+      return bPct - aPct;
+    });
 
   const reviewItems: PipelineItem[] = projects
     .filter((p) => p.status === "REVIEW")
@@ -95,6 +109,8 @@ export default async function AdminPipelinePage() {
       currentPhase: p.currentPhase,
       enabledFeatures: p.enabledFeatures,
       vercelUrl: p.vercelUrl,
+      contractValue: p.contractValue,
+      totalSpentCents: totalSpent(p),
     }));
 
   const stagingItems: PipelineItem[] = projects
@@ -119,6 +135,8 @@ export default async function AdminPipelinePage() {
       enabledFeatures: p.enabledFeatures,
       vercelUrl: p.vercelUrl,
       customDomain: p.customDomain,
+      contractValue: p.contractValue,
+      totalSpentCents: totalSpent(p),
     }));
 
   const liveItems: PipelineItem[] = projects
@@ -135,6 +153,8 @@ export default async function AdminPipelinePage() {
       enabledFeatures: p.enabledFeatures,
       vercelUrl: p.vercelUrl,
       customDomain: p.customDomain,
+      contractValue: p.contractValue,
+      totalSpentCents: totalSpent(p),
     }));
 
   const columns: PipelineColumn[] = [

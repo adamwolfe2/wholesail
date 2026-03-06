@@ -38,7 +38,7 @@ export async function GET() {
         },
       }),
 
-      // All order items for top products — include order date for recency
+      // All order items for top products — cap at 500 to avoid OOM
       prisma.orderItem.findMany({
         where: { order: { organizationId: orgId, status: { not: "CANCELLED" } } },
         select: {
@@ -54,6 +54,7 @@ export async function GET() {
         orderBy: {
           order: { createdAt: "desc" },
         },
+        take: 500,
       }),
 
       // All orders for monthly revenue (last 7 months)

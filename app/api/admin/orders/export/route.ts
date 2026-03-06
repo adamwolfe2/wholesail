@@ -10,54 +10,70 @@ function csvEscape(value: string | number): string {
   return `"${sanitized.replace(/"/g, '""')}"`;
 }
 
+const HEADERS = ["Order Number", "Date", "Client", "Status", "Items", "Subtotal", "Tax", "Total"];
+const BATCH_SIZE = 1000;
+
 export async function GET() {
   const { error } = await requireAdmin();
   if (error) return error;
 
-  try {
-    const orders = await prisma.order.findMany({
-      include: {
-        organization: { select: { name: true } },
-        items: { select: { name: true, quantity: true, unitPrice: true, total: true } },
-      },
-      orderBy: { createdAt: "desc" },
-    });
+  const encoder = new TextEncoder();
 
-    const headers = [
-      "Order Number",
-      "Date",
-      "Client",
-      "Status",
-      "Items",
-      "Subtotal",
-      "Tax",
-      "Total",
-    ];
+  const stream = new ReadableStream({
+    async start(controller) {
+      try {
+        // Write CSV header
+        controller.enqueue(encoder.encode(HEADERS.map(csvEscape).join(",") + "\n"));
 
-    const rows = orders.map((o) => [
-      csvEscape(o.orderNumber),
-      csvEscape(new Date(o.createdAt).toISOString().split("T")[0]),
-      csvEscape(o.organization.name),
-      csvEscape(o.status),
-      csvEscape(o.items.length),
-      csvEscape(Number(o.subtotal).toFixed(2)),
-      csvEscape(Number(o.tax).toFixed(2)),
-      csvEscape(Number(o.total).toFixed(2)),
-    ]);
+        // Stream rows in cursor-based batches to avoid OOM
+        let cursor: string | undefined;
+        let hasMore = true;
 
-    const csv = [headers.map(csvEscape).join(","), ...rows.map((r) => r.join(","))].join("\n");
+        while (hasMore) {
+          const orders = await prisma.order.findMany({
+            take: BATCH_SIZE,
+            ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
+            include: {
+              organization: { select: { name: true } },
+              items: { select: { name: true, quantity: true, unitPrice: true, total: true } },
+            },
+            orderBy: { id: "asc" },
+          });
 
-    return new NextResponse(csv, {
-      headers: {
-        "Content-Type": "text/csv",
-        "Content-Disposition": `attachment; filename="orders-export-${new Date().toISOString().split("T")[0]}.csv"`,
-      },
-    });
-  } catch (err) {
-    console.error("Error exporting orders:", err);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
-  }
+          for (const o of orders) {
+            const row = [
+              csvEscape(o.orderNumber),
+              csvEscape(new Date(o.createdAt).toISOString().split("T")[0]),
+              csvEscape(o.organization.name),
+              csvEscape(o.status),
+              csvEscape(o.items.length),
+              csvEscape(Number(o.subtotal).toFixed(2)),
+              csvEscape(Number(o.tax).toFixed(2)),
+              csvEscape(Number(o.total).toFixed(2)),
+            ];
+            controller.enqueue(encoder.encode(row.join(",") + "\n"));
+          }
+
+          if (orders.length < BATCH_SIZE) {
+            hasMore = false;
+          } else {
+            cursor = orders[orders.length - 1].id;
+          }
+        }
+
+        controller.close();
+      } catch (err) {
+        console.error("Error exporting orders:", err);
+        controller.error(err);
+      }
+    },
+  });
+
+  return new NextResponse(stream, {
+    headers: {
+      "Content-Type": "text/csv",
+      "Content-Disposition": `attachment; filename="orders-export-${new Date().toISOString().split("T")[0]}.csv"`,
+      "Transfer-Encoding": "chunked",
+    },
+  });
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getAllPosts } from "@/lib/blog/posts";
 import { ArrowRight, Clock, BookOpen } from "lucide-react";
+import { EmailSubscribeForm } from "@/components/email-subscribe-form";
 
 export const metadata: Metadata = {
   title: "Blog — Wholesail | Distribution Operations & Wholesale Ordering",
@@ -156,6 +157,11 @@ export default function BlogIndexPage() {
             </article>
           </Link>
         )}
+
+        {/* Newsletter capture */}
+        <div className="mb-12">
+          <EmailSubscribeForm source="blog" />
+        </div>
 
         {/* Remaining posts grid */}
         {rest.length > 0 && (

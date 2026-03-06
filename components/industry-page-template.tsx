@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, X } from "lucide-react";
 import { IntakeWizard } from "@/components/intake-wizard";
+import { EmailSubscribeForm } from "@/components/email-subscribe-form";
 
 export interface IndustryConfig {
   slug: string;
@@ -201,6 +202,11 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
               <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>{config.testimonial.company}</div>
               <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>{config.testimonial.industry}</div>
             </div>
+          </div>
+
+          {/* Newsletter capture — after testimonial */}
+          <div className="mt-8">
+            <EmailSubscribeForm source="industry" tagline="Distribution insights, monthly." />
           </div>
         </section>
 

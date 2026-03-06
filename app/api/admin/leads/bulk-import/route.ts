@@ -51,27 +51,37 @@ export async function POST(req: NextRequest) {
   let skipped = 0
   const errors: string[] = []
 
+  // Normalize all rows first to collect valid emails
+  const parsedRows: Array<{ first_name: string; email: string; company: string; website?: string }> = []
+  const parseErrors: string[] = []
+
   for (const rawRow of parsed.data.leads) {
     const normalized = normalizeRow(rawRow)
     const rowParsed = rowSchema.safeParse(normalized)
-
     if (!rowParsed.success) {
       failed++
-      const msg = `Invalid row (email: ${normalized.email || 'missing'}): ${rowParsed.error.issues[0]?.message}`
-      errors.push(msg)
-      continue
+      parseErrors.push(`Invalid row (email: ${normalized.email || 'missing'}): ${rowParsed.error.issues[0]?.message}`)
+    } else {
+      parsedRows.push({ ...rowParsed.data, email: rowParsed.data.email.toLowerCase().trim() })
     }
+  }
+  errors.push(...parseErrors)
 
-    const { first_name, email, company, website } = rowParsed.data
-    const emailLower = email.toLowerCase().trim()
+  // Pre-fetch all existing emails in one query to avoid N+1
+  const incomingEmails = parsedRows.map(r => r.email)
+  const existingEmails = new Set(
+    incomingEmails.length > 0
+      ? (await prisma.lead.findMany({
+          where: { email: { in: incomingEmails } },
+          select: { email: true },
+        })).map(l => l.email)
+      : []
+  )
 
+  for (const { first_name, email: emailLower, company, website } of parsedRows) {
     try {
-      // Skip duplicates already in DB
-      const existing = await prisma.lead.findFirst({
-        where: { email: emailLower },
-        select: { id: true },
-      })
-      if (existing) {
+      // Skip duplicates
+      if (existingEmails.has(emailLower)) {
         skipped++
         continue
       }

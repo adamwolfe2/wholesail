@@ -1,6 +1,7 @@
 import type { Tool } from '@anthropic-ai/sdk/resources/messages'
 import type { OrderStatus, Prisma } from '@prisma/client'
 import { prisma } from '@/lib/db'
+import { cachedTool, invalidateToolCache } from '@/lib/ai/tool-cache'
 import { updateOrderStatus } from '@/lib/db/orders'
 import {
   sendWelcomePartnerEmail,
@@ -19,33 +20,35 @@ type ToolContext = { userId: string }
 
 export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) => Promise<unknown>> = {
   get_platform_summary: async () => {
-    const now = new Date()
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
-    const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
+    return cachedTool('tool:get_platform_summary', 300, async () => {
+      const now = new Date()
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+      const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000)
 
-    const [totalOrgs, totalOrders, pendingOrders, revenueMonth, revenueAll, pendingInv, overdueInv, recentOrders, partners, distributors] =
-      await Promise.all([
-        prisma.organization.count(),
-        prisma.order.count(),
-        prisma.order.count({ where: { status: 'PENDING' } }),
-        prisma.order.aggregate({ where: { createdAt: { gte: startOfMonth }, status: { not: 'CANCELLED' } }, _sum: { total: true } }),
-        prisma.order.aggregate({ where: { status: { not: 'CANCELLED' } }, _sum: { total: true } }),
-        prisma.invoice.count({ where: { status: 'PENDING' } }),
-        prisma.invoice.count({ where: { status: 'OVERDUE' } }),
-        prisma.order.count({ where: { createdAt: { gte: thirtyDaysAgo } } }),
-        prisma.organization.count({ where: { isWholesaler: true } }),
-        prisma.organization.count({ where: { isDistributor: true } }),
-      ])
+      const [totalOrgs, totalOrders, pendingOrders, revenueMonth, revenueAll, pendingInv, overdueInv, recentOrders, partners, distributors] =
+        await Promise.all([
+          prisma.organization.count(),
+          prisma.order.count(),
+          prisma.order.count({ where: { status: 'PENDING' } }),
+          prisma.order.aggregate({ where: { createdAt: { gte: startOfMonth }, status: { not: 'CANCELLED' } }, _sum: { total: true } }),
+          prisma.order.aggregate({ where: { status: { not: 'CANCELLED' } }, _sum: { total: true } }),
+          prisma.invoice.count({ where: { status: 'PENDING' } }),
+          prisma.invoice.count({ where: { status: 'OVERDUE' } }),
+          prisma.order.count({ where: { createdAt: { gte: thirtyDaysAgo } } }),
+          prisma.organization.count({ where: { isWholesaler: true } }),
+          prisma.organization.count({ where: { isDistributor: true } }),
+        ])
 
-    return {
-      clients: { total: totalOrgs, partners, distributors },
-      orders: { total: totalOrders, last30Days: recentOrders, pending: pendingOrders },
-      revenue: {
-        thisMonth: `$${Number(revenueMonth._sum.total ?? 0).toFixed(2)}`,
-        allTime: `$${Number(revenueAll._sum.total ?? 0).toFixed(2)}`,
-      },
-      invoices: { pending: pendingInv, overdue: overdueInv },
-    }
+      return {
+        clients: { total: totalOrgs, partners, distributors },
+        orders: { total: totalOrders, last30Days: recentOrders, pending: pendingOrders },
+        revenue: {
+          thisMonth: `$${Number(revenueMonth._sum.total ?? 0).toFixed(2)}`,
+          allTime: `$${Number(revenueAll._sum.total ?? 0).toFixed(2)}`,
+        },
+        invoices: { pending: pendingInv, overdue: overdueInv },
+      }
+    })
   },
 
   search_clients: async (input) => {
@@ -178,86 +181,91 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
 
   get_revenue_report: async (input) => {
     const period = String(input.period ?? 'this_month')
-    const now = new Date()
-    let startDate: Date
+    // Cache all_time for 30min, other periods for 5min
+    const ttl = period === 'all_time' ? 1800 : 300
+    return cachedTool(`tool:get_revenue_report:${period}`, ttl, async () => {
+      const now = new Date()
+      let startDate: Date
 
-    switch (period) {
-      case 'today': startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()); break
-      case 'this_week': startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000); break
-      case 'this_month': startDate = new Date(now.getFullYear(), now.getMonth(), 1); break
-      case 'last_month': startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1); break
-      case 'this_year': startDate = new Date(now.getFullYear(), 0, 1); break
-      default: startDate = new Date(0)
-    }
+      switch (period) {
+        case 'today': startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()); break
+        case 'this_week': startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000); break
+        case 'this_month': startDate = new Date(now.getFullYear(), now.getMonth(), 1); break
+        case 'last_month': startDate = new Date(now.getFullYear(), now.getMonth() - 1, 1); break
+        case 'this_year': startDate = new Date(now.getFullYear(), 0, 1); break
+        default: startDate = new Date(0)
+      }
 
-    const endDate = period === 'last_month' ? new Date(now.getFullYear(), now.getMonth(), 0) : now
+      const endDate = period === 'last_month' ? new Date(now.getFullYear(), now.getMonth(), 0) : now
 
-    const [agg, topOrgs] = await Promise.all([
-      prisma.order.aggregate({
-        where: { createdAt: { gte: startDate, lte: endDate }, status: { not: 'CANCELLED' } },
-        _sum: { total: true }, _count: true,
-      }),
-      prisma.order.groupBy({
-        by: ['organizationId'],
-        where: { createdAt: { gte: startDate, lte: endDate }, status: { not: 'CANCELLED' } },
-        _sum: { total: true }, _count: true,
-        orderBy: { _sum: { total: 'desc' } },
-        take: 5,
-      }),
-    ])
+      const [agg, topOrgs] = await Promise.all([
+        prisma.order.aggregate({
+          where: { createdAt: { gte: startDate, lte: endDate }, status: { not: 'CANCELLED' } },
+          _sum: { total: true }, _count: true,
+        }),
+        prisma.order.groupBy({
+          by: ['organizationId'],
+          where: { createdAt: { gte: startDate, lte: endDate }, status: { not: 'CANCELLED' } },
+          _sum: { total: true }, _count: true,
+          orderBy: { _sum: { total: 'desc' } },
+          take: 5,
+        }),
+      ])
 
-    const orgIds = topOrgs.map(o => o.organizationId)
-    const orgs = await prisma.organization.findMany({ where: { id: { in: orgIds } }, select: { id: true, name: true } })
-    const orgMap = Object.fromEntries(orgs.map(o => [o.id, o.name]))
+      const orgIds = topOrgs.map(o => o.organizationId)
+      const orgs = await prisma.organization.findMany({ where: { id: { in: orgIds } }, select: { id: true, name: true } })
+      const orgMap = Object.fromEntries(orgs.map(o => [o.id, o.name]))
 
-    const total = Number(agg._sum.total ?? 0)
-    const count = agg._count
+      const total = Number(agg._sum.total ?? 0)
+      const count = agg._count
 
-    return {
-      period, revenue: `$${total.toFixed(2)}`, orderCount: count,
-      avgOrderValue: count > 0 ? `$${(total / count).toFixed(2)}` : '$0.00',
-      topClients: topOrgs.map(o => ({
-        name: orgMap[o.organizationId] ?? 'Unknown',
-        orders: o._count,
-        revenue: `$${Number(o._sum.total ?? 0).toFixed(2)}`,
-        link: `/admin/clients/${o.organizationId}`,
-      })),
-    }
+      return {
+        period, revenue: `$${total.toFixed(2)}`, orderCount: count,
+        avgOrderValue: count > 0 ? `$${(total / count).toFixed(2)}` : '$0.00',
+        topClients: topOrgs.map(o => ({
+          name: orgMap[o.organizationId] ?? 'Unknown',
+          orders: o._count,
+          revenue: `$${Number(o._sum.total ?? 0).toFixed(2)}`,
+          link: `/admin/clients/${o.organizationId}`,
+        })),
+      }
+    })
   },
 
   get_outstanding_invoices: async (input) => {
     const status = String(input.status ?? 'both')
     const limit = Number(input.limit ?? 20)
+    return cachedTool(`tool:get_outstanding_invoices:${status}`, 300, async () => {
+      const invoices = await prisma.invoice.findMany({
+        where: status === 'both' ? { status: { in: ['PENDING', 'OVERDUE'] } } : { status: status as 'PENDING' | 'OVERDUE' },
+        include: {
+          organization: { select: { name: true, email: true, phone: true } },
+          order: { select: { orderNumber: true } },
+        },
+        orderBy: { dueDate: 'asc' },
+        take: limit,
+      })
 
-    const invoices = await prisma.invoice.findMany({
-      where: status === 'both' ? { status: { in: ['PENDING', 'OVERDUE'] } } : { status: status as 'PENDING' | 'OVERDUE' },
-      include: {
-        organization: { select: { name: true, email: true, phone: true } },
-        order: { select: { orderNumber: true } },
-      },
-      orderBy: { dueDate: 'asc' },
-      take: limit,
+      const totalAmt = invoices.reduce((s, i) => s + Number(i.total), 0)
+
+      return {
+        count: invoices.length,
+        totalOutstanding: `$${totalAmt.toFixed(2)}`,
+        invoices: invoices.map(i => ({
+          invoiceNumber: i.invoiceNumber,
+          orderNumber: i.order.orderNumber,
+          client: i.organization.name,
+          email: i.organization.email,
+          phone: i.organization.phone,
+          total: `$${Number(i.total).toFixed(2)}`,
+          status: i.status,
+          dueDate: i.dueDate.toISOString().split('T')[0],
+          daysOverdue: i.status === 'OVERDUE'
+            ? Math.floor((Date.now() - i.dueDate.getTime()) / (1000 * 60 * 60 * 24))
+            : 0,
+        })),
+      }
     })
-
-    const totalAmt = invoices.reduce((s, i) => s + Number(i.total), 0)
-
-    return {
-      count: invoices.length,
-      totalOutstanding: `$${totalAmt.toFixed(2)}`,
-      invoices: invoices.map(i => ({
-        invoiceNumber: i.invoiceNumber,
-        orderNumber: i.order.orderNumber,
-        client: i.organization.name,
-        email: i.organization.email,
-        phone: i.organization.phone,
-        total: `$${Number(i.total).toFixed(2)}`,
-        status: i.status,
-        dueDate: i.dueDate.toISOString().split('T')[0],
-        daysOverdue: i.status === 'OVERDUE'
-          ? Math.floor((Date.now() - i.dueDate.getTime()) / (1000 * 60 * 60 * 24))
-          : 0,
-      })),
-    }
   },
 
   get_products: async (input) => {
@@ -288,21 +296,29 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
   },
 
   get_low_stock_alerts: async () => {
-    const levels = await prisma.inventoryLevel.findMany({
-      include: { product: { select: { name: true, category: true, id: true } } },
-      orderBy: { quantityOnHand: 'asc' },
+    return cachedTool('tool:get_low_stock_alerts', 600, async () => {
+      // Use raw SQL — Prisma can't compare two columns in a WHERE clause
+      const low = await prisma.$queryRaw<Array<{
+        id: string; quantityOnHand: number; quantityReserved: number; lowStockThreshold: number;
+        name: string; category: string; productId: string;
+      }>>`
+        SELECT il.id, il."quantityOnHand", il."quantityReserved", il."lowStockThreshold",
+               p.name, p.category, p.id AS "productId"
+        FROM "InventoryLevel" il
+        JOIN "Product" p ON p.id = il."productId"
+        WHERE il."quantityOnHand" <= il."lowStockThreshold"
+        ORDER BY il."quantityOnHand" ASC
+      `
+
+      return {
+        count: low.length,
+        items: low.map(l => ({
+          product: l.name, category: l.category,
+          onHand: l.quantityOnHand, reserved: l.quantityReserved, threshold: l.lowStockThreshold,
+          link: `/admin/products/${l.productId}`,
+        })),
+      }
     })
-
-    const low = levels.filter(l => l.quantityOnHand < l.lowStockThreshold)
-
-    return {
-      count: low.length,
-      items: low.map(l => ({
-        product: l.product.name, category: l.product.category,
-        onHand: l.quantityOnHand, reserved: l.quantityReserved, threshold: l.lowStockThreshold,
-        link: `/admin/products/${l.product.id}`,
-      })),
-    }
   },
 
   get_wholesale_applications: async (input) => {
@@ -413,6 +429,8 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
     if (order.status === newStatus) return { message: `${order.orderNumber} is already ${newStatus}` }
 
     const updated = await updateOrderStatus(order.id, newStatus as OrderStatus, ctx.userId)
+    // Invalidate caches affected by order status change
+    await invalidateToolCache('tool:get_platform_summary', 'tool:get_revenue_report:this_month', 'tool:get_revenue_report:today')
     return {
       success: true,
       orderNumber: order.orderNumber,
@@ -631,6 +649,9 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       }).catch(() => {})
     }
 
+    // Invalidate invoice-related caches
+    await invalidateToolCache('tool:get_outstanding_invoices:both', 'tool:get_outstanding_invoices:PENDING', 'tool:get_platform_summary')
+
     return {
       success: true, invoiceNumber, orderNumber: order.orderNumber,
       total: `$${Number(order.total).toFixed(2)}`, dueDate: dueDate.toISOString().split('T')[0],
@@ -737,49 +758,51 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
   get_top_products: async (input) => {
     const limit = Number(input.limit ?? 10)
     const metric = String(input.metric ?? 'revenue')
-    const now = new Date()
-    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
+    return cachedTool(`tool:get_top_products:${metric}`, 900, async () => {
+      const now = new Date()
+      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 
-    const allTimeRaw = await prisma.orderItem.groupBy({
-      by: ['productId'],
-      where: { order: { status: { not: 'CANCELLED' } } },
-      _sum: { total: true, quantity: true },
-      orderBy: metric === 'volume' ? { _sum: { quantity: 'desc' } } : { _sum: { total: 'desc' } },
-      take: limit,
+      const allTimeRaw = await prisma.orderItem.groupBy({
+        by: ['productId'],
+        where: { order: { status: { not: 'CANCELLED' } } },
+        _sum: { total: true, quantity: true },
+        orderBy: metric === 'volume' ? { _sum: { quantity: 'desc' } } : { _sum: { total: 'desc' } },
+        take: limit,
+      })
+
+      const thisMonthRaw = await prisma.orderItem.groupBy({
+        by: ['productId'],
+        where: { order: { status: { not: 'CANCELLED' }, createdAt: { gte: startOfMonth } } },
+        _sum: { total: true, quantity: true },
+        orderBy: metric === 'volume' ? { _sum: { quantity: 'desc' } } : { _sum: { total: 'desc' } },
+        take: limit,
+      })
+
+      const allIds = [...new Set([...allTimeRaw.map(p => p.productId), ...thisMonthRaw.map(p => p.productId)])]
+      const products = await prisma.product.findMany({
+        where: { id: { in: allIds } },
+        select: { id: true, name: true, category: true },
+      })
+      const productMap = Object.fromEntries(products.map(p => [p.id, p]))
+
+      return {
+        metric,
+        allTime: allTimeRaw.map((p, i) => ({
+          rank: i + 1,
+          name: productMap[p.productId]?.name ?? 'Unknown',
+          category: productMap[p.productId]?.category ?? null,
+          revenue: `$${Number(p._sum.total ?? 0).toFixed(2)}`,
+          unitsSold: p._sum.quantity ?? 0,
+        })),
+        thisMonth: thisMonthRaw.map((p, i) => ({
+          rank: i + 1,
+          name: productMap[p.productId]?.name ?? 'Unknown',
+          category: productMap[p.productId]?.category ?? null,
+          revenue: `$${Number(p._sum.total ?? 0).toFixed(2)}`,
+          unitsSold: p._sum.quantity ?? 0,
+        })),
+      }
     })
-
-    const thisMonthRaw = await prisma.orderItem.groupBy({
-      by: ['productId'],
-      where: { order: { status: { not: 'CANCELLED' }, createdAt: { gte: startOfMonth } } },
-      _sum: { total: true, quantity: true },
-      orderBy: metric === 'volume' ? { _sum: { quantity: 'desc' } } : { _sum: { total: 'desc' } },
-      take: limit,
-    })
-
-    const allIds = [...new Set([...allTimeRaw.map(p => p.productId), ...thisMonthRaw.map(p => p.productId)])]
-    const products = await prisma.product.findMany({
-      where: { id: { in: allIds } },
-      select: { id: true, name: true, category: true },
-    })
-    const productMap = Object.fromEntries(products.map(p => [p.id, p]))
-
-    return {
-      metric,
-      allTime: allTimeRaw.map((p, i) => ({
-        rank: i + 1,
-        name: productMap[p.productId]?.name ?? 'Unknown',
-        category: productMap[p.productId]?.category ?? null,
-        revenue: `$${Number(p._sum.total ?? 0).toFixed(2)}`,
-        unitsSold: p._sum.quantity ?? 0,
-      })),
-      thisMonth: thisMonthRaw.map((p, i) => ({
-        rank: i + 1,
-        name: productMap[p.productId]?.name ?? 'Unknown',
-        category: productMap[p.productId]?.category ?? null,
-        revenue: `$${Number(p._sum.total ?? 0).toFixed(2)}`,
-        unitsSold: p._sum.quantity ?? 0,
-      })),
-    }
   },
 
   get_order_trends: async () => {

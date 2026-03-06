@@ -37,6 +37,32 @@ export async function POST(req: NextRequest) {
     let updated = 0
     const errors: string[] = []
 
+    // Pre-fetch all existing phones in one query to avoid N+1
+    const allPhoneDigits = clients
+      .map(c => c.phone.replace(/\D/g, ''))
+      .filter(d => d.length >= 10)
+
+    const existingOrgs = allPhoneDigits.length > 0
+      ? await prisma.organization.findMany({
+          where: {
+            OR: allPhoneDigits.flatMap(d => [
+              { phone: d },
+              { phone: `+1${d}` },
+              { phone: `1${d}` },
+            ]),
+          },
+          select: { id: true, phone: true },
+        })
+      : []
+
+    // Build a lookup map from digit-normalized phone → org id
+    const phoneToOrgId = new Map<string, string>()
+    for (const org of existingOrgs) {
+      const digits = org.phone.replace(/\D/g, '')
+      phoneToOrgId.set(digits, org.id)
+      phoneToOrgId.set(digits.replace(/^1/, ''), org.id) // strip leading country code
+    }
+
     for (const client of clients) {
       try {
         // Normalize phone for lookup — strip all non-digits for comparison
@@ -46,18 +72,9 @@ export async function POST(req: NextRequest) {
           continue
         }
 
-        // Find existing org by phone (match on digits to handle formatting variants)
-        const existing = await prisma.organization.findFirst({
-          where: {
-            OR: [
-              { phone: client.phone },
-              { phone: phoneDigits },
-              { phone: `+1${phoneDigits}` },
-              { phone: `1${phoneDigits}` },
-            ],
-          },
-          select: { id: true },
-        })
+        // Find existing org by pre-fetched phone map
+        const existingId = phoneToOrgId.get(phoneDigits) ?? phoneToOrgId.get(phoneDigits.replace(/^1/, ''))
+        const existing = existingId ? { id: existingId } : null
 
         if (existing) {
           // Update existing org
