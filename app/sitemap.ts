@@ -1042,5 +1042,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE_URL}/blog/how-to-onboard-wholesale-accounts-faster`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/wholesale-distributor-cash-flow-problems`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE_URL}/blog/b2b-portal-vs-edi-for-distributors`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/how-to-price-wholesale-products`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/b2b-ecommerce-for-distributors`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/how-to-handle-short-ships-in-distribution`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/wholesale-sales-rep-commission-structures`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/distributor-customer-portal-benefits`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
   ];
 }
