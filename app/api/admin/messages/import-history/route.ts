@@ -56,6 +56,7 @@ export async function POST() {
     const orgs = await prisma.organization.findMany({
       where: { phone: { not: '' } },
       select: { id: true, name: true, phone: true },
+      take: 2000,
     })
 
     let imported = 0
