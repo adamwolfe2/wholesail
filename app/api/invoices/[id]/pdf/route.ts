@@ -6,6 +6,8 @@ import { getOrganizationByUserId } from "@/lib/db/organizations"
 import React from "react"
 import { NextResponse } from "next/server"
 
+const ADMIN_ROLES = ["ADMIN", "OPS"] as const
+
 export async function GET(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -15,8 +17,18 @@ export async function GET(
 
   const { id } = await params
 
-  // Fetch user's org for access control (admins have no org — they get full access)
-  const userOrg = await getOrganizationByUserId(userId).catch(() => null)
+  // Fetch user's org + role for access control
+  const [userOrg, dbUser] = await Promise.all([
+    getOrganizationByUserId(userId).catch(() => null),
+    prisma.user.findUnique({ where: { id: userId }, select: { role: true } }),
+  ])
+
+  const isAdmin = dbUser && (ADMIN_ROLES as readonly string[]).includes(dbUser.role)
+
+  // If user has no org AND is not an admin, deny access entirely
+  if (!userOrg && !isAdmin) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+  }
 
   const invoice = await prisma.invoice.findUnique({
     where: { id },

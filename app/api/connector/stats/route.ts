@@ -111,10 +111,10 @@ export async function GET(req: NextRequest) {
   };
 
   const buildCosts = {
-    totalAllTimeCents: costsAllTime._sum.amountCents ?? 0,
-    mtdCents: costsMtd._sum.amountCents ?? 0,
+    totalAllTimeCents: Number(costsAllTime._sum.amountCents ?? 0),
+    mtdCents: Number(costsMtd._sum.amountCents ?? 0),
     byService: Object.fromEntries(
-      costsByService.map((r) => [r.service, r._sum.amountCents ?? 0])
+      costsByService.map((r) => [r.service, Number(r._sum.amountCents ?? 0)])
     ),
   };
 

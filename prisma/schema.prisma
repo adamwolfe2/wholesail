@@ -259,7 +259,7 @@ model ProjectCost {
   projectId   String
   project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   service     String   // "anthropic" | "vercel" | "firecrawl" | "neon" | "clerk" | "resend"
-  amountCents Int      @default(0)
+  amountCents Decimal  @default(0) @db.Decimal(10, 4)
   description String
   tokens      Int?     // for LLM API calls
   metadata    Json?

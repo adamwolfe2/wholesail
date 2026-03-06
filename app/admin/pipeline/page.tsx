@@ -65,8 +65,8 @@ export default async function AdminPipelinePage() {
     }));
 
   // Intakes that have a project but are in ONBOARDING/BUILDING
-  function totalSpent(p: { costs: { amountCents: number }[] }): number {
-    return p.costs.reduce((s, c) => s + c.amountCents, 0);
+  function totalSpent(p: { costs: { amountCents: { toNumber?: () => number } | number }[] }): number {
+    return p.costs.reduce((s, c) => s + Number(c.amountCents), 0);
   }
 
   function getBuildingNextAction(checklist: Record<string, boolean> | null): string {

@@ -34,6 +34,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Could not fetch user" }, { status: 500 });
   }
 
+  // Idempotency: only allow bootstrap if no admin exists, or if caller is already admin
+  const existingAdmins = await prisma.user.count({ where: { role: "ADMIN" } });
+  if (existingAdmins > 0) {
+    const callerIsAdmin = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { role: true },
+    });
+    if (callerIsAdmin?.role !== "ADMIN") {
+      return NextResponse.json(
+        { error: "Bootstrap already completed. Contact an existing admin." },
+        { status: 409 }
+      );
+    }
+  }
+
   const email =
     clerkUser.emailAddresses[0]?.emailAddress ?? `${userId}@unknown.com`;
   const name =

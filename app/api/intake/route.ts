@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { createIntakeSubmission } from "@/lib/db/intake";
 import {
@@ -7,6 +7,7 @@ import {
 } from "@/lib/email/notifications";
 import { scrapeIntakeWebsite } from "@/lib/build/firecrawl";
 import * as slackIntegration from "@/lib/integrations/slack";
+import { publicSignupLimiter, checkRateLimit, getIp } from "@/lib/rate-limit";
 
 const intakeSchema = z.object({
   // Step 1
@@ -35,11 +36,11 @@ const intakeSchema = z.object({
   selectedFeatures: z.array(z.string()).default([]),
   primaryColor: z.string().optional(),
   hasBrandGuidelines: z.string().optional(),
-  additionalNotes: z.string().optional(),
+  additionalNotes: z.string().max(5000).optional(),
 
   // New intake fields (Phase 1 — pipeline automation)
   targetDomain: z.string().optional(),
-  inspirationUrls: z.array(z.string()).default([]),
+  inspirationUrls: z.array(z.string().url()).max(5).default([]),
   logoUrl: z.string().optional(),
   brandSecondaryColor: z.string().optional(),
   minimumOrderValue: z.string().optional(),
@@ -49,7 +50,16 @@ const intakeSchema = z.object({
   scrapeData: z.any().optional(),
 });
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
+  // Rate limit: 5 submissions per IP per hour
+  const { allowed } = await checkRateLimit(publicSignupLimiter, getIp(req));
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Too many requests. Please try again later." },
+      { status: 429 }
+    );
+  }
+
   try {
     const body = await req.json();
     const data = intakeSchema.parse(body);

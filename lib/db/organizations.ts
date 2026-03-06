@@ -38,6 +38,7 @@ export async function getAllOrganizations() {
       _count: { select: { orders: true, members: true } },
     },
     orderBy: { name: "asc" },
+    take: 1000,
   });
 }
 

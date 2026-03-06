@@ -50,15 +50,27 @@ export async function GET(req: NextRequest) {
     let skipped = 0
     const errors: string[] = []
 
+    // Batch-check for recent orders to avoid N+1
+    const userIds = abandonedCarts.map((c) => c.userId)
+    const recentOrders = await prisma.order.findMany({
+      where: {
+        userId: { in: userIds },
+        createdAt: { gt: twoHoursAgo },
+      },
+      select: { userId: true, createdAt: true },
+    })
+    const recentOrderByUser = new Map<string, Date>()
+    for (const o of recentOrders) {
+      const existing = recentOrderByUser.get(o.userId)
+      if (!existing || o.createdAt > existing) {
+        recentOrderByUser.set(o.userId, o.createdAt)
+      }
+    }
+
     for (const cart of abandonedCarts) {
       // Skip if user has placed an order more recently than the cart was last updated
-      const recentOrder = await prisma.order.findFirst({
-        where: {
-          userId: cart.userId,
-          createdAt: { gt: cart.updatedAt },
-        },
-        select: { id: true },
-      })
+      const latestOrder = recentOrderByUser.get(cart.userId)
+      const recentOrder = latestOrder && latestOrder > cart.updatedAt ? { id: true } : null
 
       if (recentOrder) {
         // User checked out after this cart was saved — clear the stale cart silently

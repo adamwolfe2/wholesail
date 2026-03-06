@@ -14,7 +14,7 @@ const ClientSchema = z.object({
 })
 
 const BodySchema = z.object({
-  clients: z.array(ClientSchema).min(1, 'clients array must not be empty'),
+  clients: z.array(ClientSchema).min(1, 'clients array must not be empty').max(5000, 'Maximum 5000 clients per import'),
 })
 
 // POST /api/admin/clients/bulk-import — upsert organizations from a CSV import

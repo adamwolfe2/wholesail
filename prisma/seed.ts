@@ -1,5 +1,9 @@
 import { PrismaClient, ProjectStatus, NoteType } from "@prisma/client";
 
+if (process.env.NODE_ENV === "production") {
+  throw new Error("Seed script must not run in production. Aborting.");
+}
+
 const prisma = new PrismaClient();
 
 const SEED_PROJECTS = [

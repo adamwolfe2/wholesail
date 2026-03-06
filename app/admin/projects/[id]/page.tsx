@@ -98,7 +98,7 @@ export default async function AdminProjectDetailPage({
       ? (project.envVars as Record<string, string>)
       : {};
 
-  const totalCostCents = costs.reduce((sum, c) => sum + c.amountCents, 0);
+  const totalCostCents = costs.reduce((sum, c) => sum + Number(c.amountCents), 0);
   const totalCostDollars = (totalCostCents / 100).toFixed(2);
   const marginPct =
     project.contractValue > 0
@@ -379,7 +379,7 @@ export default async function AdminProjectDetailPage({
                         </p>
                       </div>
                       <p className="font-mono text-xs text-[#0A0A0A] shrink-0">
-                        ${(cost.amountCents / 100).toFixed(2)}
+                        ${(Number(cost.amountCents) / 100).toFixed(2)}
                       </p>
                     </div>
                   ))}
