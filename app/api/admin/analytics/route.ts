@@ -22,7 +22,7 @@ export async function GET() {
       createdAt: { gte: twelveMonthsAgo },
     },
     select: { total: true, createdAt: true },
-    take: 50000,
+    take: 5000, // safety cap; date filter is the primary bound
   });
 
   const monthMap = new Map<string, number>();
@@ -85,6 +85,8 @@ export async function GET() {
     by: ["productId"],
     where: { order: { status: { not: "CANCELLED" } } },
     _sum: { total: true },
+    orderBy: { _sum: { total: "desc" } },
+    take: 200, // top 200 products; more than enough for category rollup
   });
 
   const allProductIds = itemGroups.map((g) => g.productId);

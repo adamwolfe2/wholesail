@@ -48,6 +48,7 @@ export default async function AdminPipelinePage() {
       industry: i.industry,
       createdAt: i.createdAt.toISOString(),
       intakeId: i.id,
+      nextAction: "Review intake",
     }));
 
   const scopingItems: PipelineItem[] = intakes
@@ -60,6 +61,7 @@ export default async function AdminPipelinePage() {
       createdAt: i.createdAt.toISOString(),
       intakeId: i.id,
       reviewedAt: i.reviewedAt?.toISOString() ?? null,
+      nextAction: "Convert to project",
     }));
 
   // Intakes that have a project but are in ONBOARDING/BUILDING
@@ -67,28 +69,40 @@ export default async function AdminPipelinePage() {
     return p.costs.reduce((s, c) => s + c.amountCents, 0);
   }
 
+  function getBuildingNextAction(checklist: Record<string, boolean> | null): string {
+    if (!checklist?.configGenerated) return "Generate config";
+    if (!checklist?.githubRepoCreated) return "Start build";
+    if (!checklist?.clerkSetup) return "Set up Clerk";
+    if (!checklist?.stripeConfigured) return "Configure Stripe";
+    return "In progress";
+  }
+
   const buildingItems: PipelineItem[] = projects
     .filter((p) => p.status === "ONBOARDING" || p.status === "BUILDING")
-    .map((p) => ({
-      id: p.id,
-      column: "building",
-      company: p.company,
-      industry: p.industry,
-      createdAt: p.createdAt.toISOString(),
-      intakeId: p.intake?.id,
-      projectId: p.id,
-      projectStatus: p.status,
-      currentPhase: p.currentPhase,
-      enabledFeatures: p.enabledFeatures,
-      githubRepo: p.githubRepo,
-      vercelUrl: p.vercelUrl,
-      buildChecklist:
+    .map((p) => {
+      const checklist =
         p.buildChecklist && typeof p.buildChecklist === "object"
           ? (p.buildChecklist as Record<string, boolean>)
-          : null,
-      contractValue: p.contractValue,
-      totalSpentCents: totalSpent(p),
-    }))
+          : null;
+      return {
+        id: p.id,
+        column: "building",
+        company: p.company,
+        industry: p.industry,
+        createdAt: p.createdAt.toISOString(),
+        intakeId: p.intake?.id,
+        projectId: p.id,
+        projectStatus: p.status,
+        currentPhase: p.currentPhase,
+        enabledFeatures: p.enabledFeatures,
+        githubRepo: p.githubRepo,
+        vercelUrl: p.vercelUrl,
+        buildChecklist: checklist,
+        contractValue: p.contractValue,
+        totalSpentCents: totalSpent(p),
+        nextAction: getBuildingNextAction(checklist),
+      };
+    })
     // Sort at-risk (>85% budget) to top
     .sort((a, b) => {
       const aPct = a.contractValue ? (a.totalSpentCents ?? 0) / 100 / a.contractValue : 0;
@@ -111,6 +125,7 @@ export default async function AdminPipelinePage() {
       vercelUrl: p.vercelUrl,
       contractValue: p.contractValue,
       totalSpentCents: totalSpent(p),
+      nextAction: "Internal review pending",
     }));
 
   const stagingItems: PipelineItem[] = projects
@@ -137,6 +152,7 @@ export default async function AdminPipelinePage() {
       customDomain: p.customDomain,
       contractValue: p.contractValue,
       totalSpentCents: totalSpent(p),
+      nextAction: "Connect domain",
     }));
 
   const liveItems: PipelineItem[] = projects
@@ -155,6 +171,7 @@ export default async function AdminPipelinePage() {
       customDomain: p.customDomain,
       contractValue: p.contractValue,
       totalSpentCents: totalSpent(p),
+      nextAction: "Live",
     }));
 
   const columns: PipelineColumn[] = [

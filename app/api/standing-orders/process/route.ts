@@ -56,7 +56,7 @@ export async function GET(req: Request) {
             product: { select: { id: true, name: true, price: true, distributorOrgId: true } },
           },
         },
-        organization: { select: { phone: true, name: true, email: true } },
+        organization: { select: { phone: true, name: true, email: true, contactPerson: true } },
       },
     })
 
@@ -93,8 +93,25 @@ export async function GET(req: Request) {
         }))
 
         const subtotal = lineItems.reduce((sum, i) => sum + i.total, 0)
-        const orderNumber = await generateOrderNumber()
         const nextRunDate = getNextRunDate(so.frequency, today)
+
+        // Optimistic lock: atomically advance nextRunDate only if it hasn't been
+        // advanced yet. If another cron run beat us here, count === 0 → skip.
+        const claimed = await prisma.standingOrder.updateMany({
+          where: { id: so.id, isActive: true, nextRunDate: { lte: today } },
+          data: { nextRunDate },
+        })
+        if (claimed.count === 0) {
+          results.push({
+            standingOrderId: so.id,
+            standingOrderName: so.name,
+            status: 'skipped',
+            error: 'Already processed by concurrent run',
+          })
+          continue
+        }
+
+        const orderNumber = await generateOrderNumber()
 
         const order = await prisma.order.create({
           data: {
@@ -109,11 +126,6 @@ export async function GET(req: Request) {
             notes: `Auto-generated from standing order: ${so.name}`,
             items: { create: lineItems },
           },
-        })
-
-        await prisma.standingOrder.update({
-          where: { id: so.id },
-          data: { nextRunDate },
         })
 
         notifyDistributorsForOrder({
@@ -138,6 +150,25 @@ export async function GET(req: Request) {
             },
           },
         })
+
+        // Email confirmation to client (fire-and-forget)
+        if (so.organization?.email) {
+          const { sendOrderConfirmation } = await import('@/lib/email')
+          sendOrderConfirmation({
+            orderNumber,
+            orderId: order.id,
+            customerName: so.organization?.contactPerson ?? so.organization?.name ?? 'Valued Client',
+            customerEmail: so.organization.email,
+            items: lineItems.map(i => ({
+              name: i.name,
+              quantity: i.quantity,
+              unitPrice: i.unitPrice,
+              total: i.total,
+            })),
+            subtotal,
+            total: subtotal,
+          }).catch((err: unknown) => console.error('Standing order confirmation email failed:', err))
+        }
 
         // SMS confirmation to client
         const orgPhone = so.organization?.phone

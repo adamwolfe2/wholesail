@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = await req.json();
+    const body = await req.json().catch(() => ({}));
     const parsed = checkoutSchema.safeParse(body);
 
     if (!parsed.success) {
@@ -111,6 +111,26 @@ export async function POST(req: NextRequest) {
       if (creditStatus.isNearLimit) {
         creditWarning = 'You are approaching your credit limit'
       }
+
+      // Dunning block — check most recent dunning event; lifted suspensions allow checkout
+      const latestDunningEvent = await prisma.auditEvent.findFirst({
+        where: {
+          entityType: 'Organization',
+          entityId: org.id,
+          action: { in: ['dunning_suspended', 'dunning_suspension_lifted'] },
+        },
+        orderBy: { createdAt: 'desc' },
+        select: { action: true },
+      })
+      if (latestDunningEvent?.action === 'dunning_suspended') {
+        return NextResponse.json(
+          {
+            error: 'Account on hold — you have an invoice more than 45 days past due. Please contact your account rep to resolve.',
+            code: 'ACCOUNT_SUSPENDED_DUNNING',
+          },
+          { status: 402 }
+        )
+      }
     }
 
     // Referral credit to apply
@@ -126,16 +146,24 @@ export async function POST(req: NextRequest) {
     const creditToApply = referralCreditToApply + loyaltyDollarDiscount;
 
     // Resolve product IDs — support both CUID (from DB) and slug (legacy cart items)
+    // IMPORTANT: always use server-side prices, never trust client-supplied unitPrice
     const resolvedItems = await Promise.all(
       data.items.map(async (item) => {
         const product = await prisma.product.findFirst({
           where: { OR: [{ id: item.productId }, { slug: item.productId }] },
-          select: { id: true },
+          select: { id: true, price: true, available: true },
         });
         if (!product) {
           throw Object.assign(new Error(`Product not found: ${item.productId}`), { statusCode: 400 });
         }
-        return { ...item, productId: product.id };
+        if (!product.available) {
+          throw Object.assign(new Error(`Product is no longer available: ${item.productId}`), { statusCode: 400 });
+        }
+        return {
+          ...item,
+          productId: product.id,
+          unitPrice: Number(product.price), // server-authoritative price
+        };
       })
     );
 
@@ -234,14 +262,23 @@ export async function POST(req: NextRequest) {
     const appUrl = getSiteUrl();
     const successUrl = `${appUrl}/confirmation?order=${order.orderNumber}`;
     const cancelUrl = `${appUrl}/checkout?cancelled=true`;
-    const session = await createCheckoutSession({
-      orderId: order.id,
-      orderNumber: order.orderNumber,
-      items: data.items,
-      customerEmail: data.email,
-      successUrl,
-      cancelUrl,
-    });
+
+    let session: Awaited<ReturnType<typeof createCheckoutSession>>;
+    try {
+      session = await createCheckoutSession({
+        orderId: order.id,
+        orderNumber: order.orderNumber,
+        items: resolvedItems, // use server-validated items with DB prices
+        customerEmail: data.email,
+        successUrl,
+        cancelUrl,
+      });
+    } catch (stripeErr) {
+      // Cancel the order so it doesn't sit as an orphaned PENDING record
+      await updateOrderStatus(order.id, "CANCELLED").catch(() => {});
+      console.error("Stripe session creation failed — order cancelled:", order.orderNumber, stripeErr);
+      return NextResponse.json({ error: "Payment session could not be created. Please try again." }, { status: 502 });
+    }
 
     await updateOrderStripeIds(order.id, {
       stripeSessionId: session.id,

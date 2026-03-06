@@ -53,6 +53,10 @@ export default function ClientOrdersPage() {
   const { isSignedIn, isLoaded } = useUser()
   const [orders, setOrders] = useState<Order[]>([])
   const [loading, setLoading] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [fetchError, setFetchError] = useState(false)
+  const [hasMore, setHasMore] = useState(false)
+  const [nextCursor, setNextCursor] = useState<string | null>(null)
 
   useEffect(() => {
     if (!isLoaded) return
@@ -68,9 +72,13 @@ export default function ClientOrdersPage() {
         if (res.ok) {
           const data = await res.json()
           setOrders(data.orders || [])
+          setHasMore(data.hasMore ?? false)
+          setNextCursor(data.nextCursor ?? null)
+        } else if (res.status >= 500) {
+          setFetchError(true)
         }
       } catch {
-        // silently fail — empty state shows
+        setFetchError(true)
       } finally {
         setLoading(false)
       }
@@ -79,9 +87,33 @@ export default function ClientOrdersPage() {
     fetchOrders()
   }, [isLoaded, isSignedIn])
 
+  async function loadMore() {
+    if (loadingMore || !hasMore || !nextCursor) return
+    setLoadingMore(true)
+    try {
+      const res = await fetch(`/api/client/orders?cursor=${nextCursor}`)
+      if (res.ok) {
+        const data = await res.json()
+        setOrders(prev => [...prev, ...(data.orders || [])])
+        setHasMore(data.hasMore ?? false)
+        setNextCursor(data.nextCursor ?? null)
+      }
+    } catch {
+      // silently fail — user can retry
+    } finally {
+      setLoadingMore(false)
+    }
+  }
+
   return (
     <PortalLayout>
       <div>
+        {fetchError && (
+          <div className="mb-6 flex items-center gap-3 border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            <span className="shrink-0">&#9888;</span>
+            Some order data couldn&apos;t be loaded. Please refresh in a moment or contact support if this persists.
+          </div>
+        )}
         <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Orders</h1>
@@ -126,6 +158,10 @@ export default function ClientOrdersPage() {
               </div>
             ) : (
               <>
+                <p className="text-xs text-[#0A0A0A]/40 mb-4">
+                  Showing <span className="font-medium text-[#0A0A0A]/70">{orders.length}</span> orders
+                </p>
+
                 {/* Desktop table */}
                 <div className="overflow-x-auto hidden sm:block">
                   <Table>
@@ -183,6 +219,24 @@ export default function ClientOrdersPage() {
                     </TableBody>
                   </Table>
                 </div>
+
+                {/* Load More */}
+                {hasMore && (
+                  <div className="mt-4 flex justify-center">
+                    <Button
+                      variant="outline"
+                      onClick={loadMore}
+                      disabled={loadingMore}
+                      className="border-[#C8C0B4] text-[#0A0A0A] hover:bg-[#C8C0B4]/20 min-h-[44px] min-w-[140px]"
+                    >
+                      {loadingMore ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        'Load More Orders'
+                      )}
+                    </Button>
+                  </div>
+                )}
 
                 {/* Mobile card list */}
                 <div className="sm:hidden space-y-3">

@@ -6,6 +6,7 @@ import {
   sendIntakeConfirmation,
 } from "@/lib/email/notifications";
 import { scrapeIntakeWebsite } from "@/lib/build/firecrawl";
+import * as slackIntegration from "@/lib/integrations/slack";
 
 const intakeSchema = z.object({
   // Step 1
@@ -68,6 +69,15 @@ export async function POST(req: Request) {
       industry: data.industry,
       featureCount: data.selectedFeatures.length,
     });
+
+    slackIntegration.notifyNewIntake({
+      companyName: data.companyName,
+      contactName: data.contactName,
+      contactEmail: data.contactEmail,
+      industry: data.industry,
+      featureCount: data.selectedFeatures.length,
+      intakeId: submission.id,
+    }).catch(console.error);
 
     sendIntakeConfirmation({
       contactName: data.contactName,

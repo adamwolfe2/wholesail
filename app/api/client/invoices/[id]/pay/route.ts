@@ -63,6 +63,7 @@ export async function POST(
     const appUrl = getSiteUrl();
 
     const stripe = getStripeClient();
+    // Idempotency key scoped to invoice — prevents duplicate sessions on concurrent requests
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       customer_email: user.email,
@@ -88,6 +89,8 @@ export async function POST(
       },
       success_url: `${appUrl}/client-portal/invoices?paid=${invoice.invoiceNumber}`,
       cancel_url: `${appUrl}/client-portal/invoices`,
+    }, {
+      idempotencyKey: `invoice-pay-${invoice.id}`,
     });
 
     return NextResponse.json({ checkoutUrl: session.url });

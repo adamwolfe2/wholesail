@@ -30,7 +30,7 @@ export async function GET() {
     const orgs = await prisma.organization.findMany({
       select: { id: true, name: true },
       orderBy: { name: 'asc' },
-      take: 5000,
+      take: 1000, // safety cap; realistic for any wholesale business
     })
 
     if (orgs.length === 0) {

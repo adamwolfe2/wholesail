@@ -78,6 +78,7 @@ export async function GET(req: NextRequest) {
         contactPerson: true,
         notificationPrefs: true,
       },
+      take: 200, // safety cap; weekly digest shouldn't exceed this
     })
 
     // Get new drops from the last week (available in the next week or dropped recently)
@@ -104,6 +105,51 @@ export async function GET(req: NextRequest) {
       dropDate: d.dropDate.toISOString(),
     }))
 
+    // ── Batch all per-org queries before the loop — 3 queries instead of 3N ─
+    const activeOrgIds = activeOrgs.map((o) => o.id)
+
+    // 1. Month-to-date orders for all active orgs
+    const allMonthOrders = await prisma.order.findMany({
+      where: {
+        organizationId: { in: activeOrgIds },
+        status: { not: 'CANCELLED' },
+        createdAt: { gte: startOfMonth },
+      },
+      select: {
+        organizationId: true,
+        total: true,
+        items: { select: { name: true, quantity: true } },
+      },
+    })
+    const monthOrdersByOrg = new Map<string, typeof allMonthOrders>()
+    for (const order of allMonthOrders) {
+      if (!monthOrdersByOrg.has(order.organizationId)) monthOrdersByOrg.set(order.organizationId, [])
+      monthOrdersByOrg.get(order.organizationId)!.push(order)
+    }
+
+    // 2. Last order date per org (single groupBy)
+    const lastOrderGroups = await prisma.order.groupBy({
+      by: ['organizationId'],
+      where: { organizationId: { in: activeOrgIds }, status: { not: 'CANCELLED' } },
+      _max: { createdAt: true },
+    })
+    const lastOrderAtByOrg = new Map(lastOrderGroups.map((g) => [g.organizationId, g._max.createdAt]))
+
+    // 3. All-time order items for all active orgs (for reorder suggestions)
+    const allOrgItems = await prisma.orderItem.findMany({
+      where: {
+        order: { organizationId: { in: activeOrgIds }, status: { not: 'CANCELLED' } },
+      },
+      select: { name: true, quantity: true, order: { select: { organizationId: true } } },
+    })
+    const orgItemQtyMap = new Map<string, Map<string, number>>()
+    for (const item of allOrgItems) {
+      const orgId = item.order.organizationId
+      if (!orgItemQtyMap.has(orgId)) orgItemQtyMap.set(orgId, new Map())
+      const m = orgItemQtyMap.get(orgId)!
+      m.set(item.name, (m.get(item.name) ?? 0) + item.quantity)
+    }
+
     for (const org of activeOrgs) {
       try {
         // Check notification preferences — skip if emailWeeklyDigest is false
@@ -117,36 +163,16 @@ export async function GET(req: NextRequest) {
 
         const firstName = org.contactPerson?.split(' ')[0] || org.name
 
-        // Month-to-date orders
-        const monthOrders = await prisma.order.findMany({
-          where: {
-            organizationId: org.id,
-            status: { not: 'CANCELLED' },
-            createdAt: { gte: startOfMonth },
-          },
-          select: {
-            total: true,
-            createdAt: true,
-            items: {
-              select: { name: true, quantity: true },
-            },
-          },
-        })
-
+        // Month-to-date orders (pre-fetched)
+        const monthOrders = monthOrdersByOrg.get(org.id) ?? []
         const totalOrdersThisMonth = monthOrders.length
-        const totalSpentThisMonth = monthOrders.reduce(
-          (sum, o) => sum + Number(o.total),
-          0
-        )
+        const totalSpentThisMonth = monthOrders.reduce((sum, o) => sum + Number(o.total), 0)
 
         // Top products this month by quantity
         const productQtyMap = new Map<string, number>()
         for (const order of monthOrders) {
           for (const item of order.items) {
-            productQtyMap.set(
-              item.name,
-              (productQtyMap.get(item.name) || 0) + item.quantity
-            )
+            productQtyMap.set(item.name, (productQtyMap.get(item.name) || 0) + item.quantity)
           }
         }
         const topProductsThisWeek = Array.from(productQtyMap.entries())
@@ -154,39 +180,22 @@ export async function GET(req: NextRequest) {
           .slice(0, 5)
           .map(([name, qty]) => ({ name, qty }))
 
-        // Check if they haven't ordered in 7+ days — suggest reorder items
-        const lastOrder = await prisma.order.findFirst({
-          where: {
-            organizationId: org.id,
-            status: { not: 'CANCELLED' },
-          },
-          orderBy: { createdAt: 'desc' },
-          select: { createdAt: true },
-        })
-
-        const daysSinceLast = lastOrder
-          ? Math.floor(
-              (now.getTime() - lastOrder.createdAt.getTime()) /
-                (1000 * 60 * 60 * 24)
-            )
+        // Last order date (pre-fetched)
+        const lastOrderAt = lastOrderAtByOrg.get(org.id) ?? null
+        const daysSinceLast = lastOrderAt
+          ? Math.floor((now.getTime() - lastOrderAt.getTime()) / (1000 * 60 * 60 * 24))
           : 999
 
+        // Reorder suggestions from pre-fetched items
         let reorderSuggestions: string[] = []
         if (daysSinceLast >= 7) {
-          // Get their top all-time products as reorder suggestions
-          const topItems = await prisma.orderItem.groupBy({
-            by: ['name'],
-            where: {
-              order: {
-                organizationId: org.id,
-                status: { not: 'CANCELLED' },
-              },
-            },
-            _sum: { quantity: true },
-            orderBy: { _sum: { quantity: 'desc' } },
-            take: 5,
-          })
-          reorderSuggestions = topItems.map((i) => i.name)
+          const itemMap = orgItemQtyMap.get(org.id)
+          if (itemMap) {
+            reorderSuggestions = Array.from(itemMap.entries())
+              .sort((a, b) => b[1] - a[1])
+              .slice(0, 5)
+              .map(([name]) => name)
+          }
         }
 
         // Send the digest

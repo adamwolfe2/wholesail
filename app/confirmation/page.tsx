@@ -60,19 +60,34 @@ function ConfirmationContent() {
     }
 
     async function fetchOrder() {
-      try {
-        const res = await fetch(`/api/client/orders/${orderNumber}`)
-        if (res.ok) {
-          const data = await res.json()
-          setOrderData(data.order)
-        } else {
+      // Retry up to 3 times with 1.5s delay — the Stripe webhook may not have
+      // processed yet when Stripe redirects here immediately after payment.
+      const MAX_ATTEMPTS = 3
+      const DELAY_MS = 1500
+      for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+        try {
+          const res = await fetch(`/api/client/orders/${orderNumber}`)
+          if (res.ok) {
+            const data = await res.json()
+            setOrderData(data.order)
+            setLoading(false)
+            return
+          }
+          // If not found and we have retries left, wait before trying again
+          if (res.status === 404 && attempt < MAX_ATTEMPTS) {
+            await new Promise(resolve => setTimeout(resolve, DELAY_MS))
+            continue
+          }
+          setError(true)
+        } catch {
+          if (attempt < MAX_ATTEMPTS) {
+            await new Promise(resolve => setTimeout(resolve, DELAY_MS))
+            continue
+          }
           setError(true)
         }
-      } catch {
-        setError(true)
-      } finally {
-        setLoading(false)
       }
+      setLoading(false)
     }
 
     if (isSignedIn) {

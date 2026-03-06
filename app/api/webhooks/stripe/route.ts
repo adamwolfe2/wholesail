@@ -273,7 +273,10 @@ export async function POST(req: NextRequest) {
 
         if (existing?.stripeSessionId === session.id) {
           // Session already recorded — guard against partial failure where
-          // stripeSessionId was saved but payment.create crashed before completing
+          // stripeSessionId was saved but payment.create or status update crashed
+          if (existing.status !== "CONFIRMED") {
+            await updateOrderStatus(orderId, "CONFIRMED");
+          }
           const existingPayment = await prisma.payment.findFirst({
             where: { orderId, status: "COMPLETED" },
           });
@@ -371,6 +374,8 @@ export async function POST(req: NextRequest) {
         const session = event.data.object;
         const orderId = session.metadata?.orderId;
         if (orderId) {
+          // Cancel the orphaned PENDING order so it doesn't sit in limbo
+          await updateOrderStatus(orderId, "CANCELLED").catch(() => {});
           await prisma.auditEvent.create({
             data: {
               entityType: "Order",
@@ -451,6 +456,12 @@ export async function POST(req: NextRequest) {
         });
         if (existingInv) break;
 
+        // Get the invoice to find organizationId for dunning check
+        const paidInvoice = await prisma.invoice.findFirst({
+          where: { orderId },
+          select: { organizationId: true },
+        });
+
         await prisma.$transaction([
           prisma.invoice.updateMany({
             where: { orderId },
@@ -477,6 +488,32 @@ export async function POST(req: NextRequest) {
             },
           }),
         ]);
+
+        // Lift dunning suspension if org has no remaining overdue invoices
+        if (paidInvoice?.organizationId) {
+          const orgId = paidInvoice.organizationId;
+          const wasSuspended = await prisma.auditEvent.findFirst({
+            where: { entityType: "Organization", entityId: orgId, action: "dunning_suspended" },
+            orderBy: { createdAt: "desc" },
+            select: { id: true },
+          });
+          if (wasSuspended) {
+            const remainingOverdue = await prisma.invoice.count({
+              where: { organizationId: orgId, status: "OVERDUE" },
+            });
+            if (remainingOverdue === 0) {
+              await prisma.auditEvent.create({
+                data: {
+                  entityType: "Organization",
+                  entityId: orgId,
+                  action: "dunning_suspension_lifted",
+                  metadata: { reason: "All overdue invoices resolved", triggeredBy: "invoice_paid" },
+                },
+              });
+              console.info(`Dunning suspension lifted for org ${orgId}`);
+            }
+          }
+        }
 
         console.info(`Invoice paid for order ${orderId} via Stripe`);
         break;

@@ -11,16 +11,22 @@ export interface OverdueReorder {
 }
 
 export async function getOverdueReorders(): Promise<OverdueReorder[]> {
-  // Fetch recent non-cancelled orders (capped to last 200 per analysis window)
+  // Cap to 2 years — older orders don't meaningfully affect cadence calculation
+  const twoYearsAgo = new Date()
+  twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2)
+
   const orders = await prisma.order.findMany({
-    where: { status: { not: 'CANCELLED' } },
+    where: {
+      status: { not: 'CANCELLED' },
+      createdAt: { gte: twoYearsAgo },
+    },
     select: {
       organizationId: true,
       createdAt: true,
       organization: { select: { name: true } },
     },
-    orderBy: { createdAt: 'desc' },
-    take: 200,
+    orderBy: { createdAt: 'asc' },
+    take: 2000, // safety cap; date filter is the primary bound
   })
 
   // Group orders by org
@@ -40,12 +46,9 @@ export async function getOverdueReorders(): Promise<OverdueReorder[]> {
   const now = new Date()
   const results: OverdueReorder[] = []
 
-  for (const [orgId, { name, dates: rawDates }] of orgOrders) {
+  for (const [orgId, { name, dates }] of orgOrders) {
     // Need at least 3 orders to compute a meaningful cadence
-    if (rawDates.length < 3) continue
-
-    // Sort ascending (needed since we fetch orders DESC for recency)
-    const dates = rawDates.slice().sort((a, b) => a.getTime() - b.getTime())
+    if (dates.length < 3) continue
 
     // Compute gaps between consecutive orders (in days)
     const gaps: number[] = []
@@ -78,28 +81,40 @@ export async function getOverdueReorders(): Promise<OverdueReorder[]> {
 
   if (results.length === 0) return []
 
-  // Fetch top products for ALL overdue orgs in one raw query (avoid N+1 per-org groupBy)
+  // Fetch top products per overdue org — single batched query instead of N+1 loop
   const overdueOrgIds = results.map((r) => r.orgId)
   const orgItemMap = new Map<string, string[]>()
 
-  const perOrgItems = await prisma.$queryRaw<Array<{ organizationId: string; name: string; totalQty: bigint }>>`
-    SELECT oi.name, o."organizationId", SUM(oi.quantity)::bigint AS "totalQty"
-    FROM "OrderItem" oi
-    JOIN "Order" o ON o.id = oi."orderId"
-    WHERE o."organizationId" = ANY(${overdueOrgIds}::text[])
-      AND o.status != 'CANCELLED'
-    GROUP BY o."organizationId", oi.name
-    ORDER BY o."organizationId", "totalQty" DESC
-  `
+  const allOrgItems = await prisma.orderItem.findMany({
+    where: {
+      order: {
+        organizationId: { in: overdueOrgIds },
+        status: { not: 'CANCELLED' },
+      },
+    },
+    select: {
+      name: true,
+      quantity: true,
+      order: { select: { organizationId: true } },
+    },
+  })
 
-  // Partition per org, keep top 3
-  for (const row of perOrgItems) {
-    const existing = orgItemMap.get(row.organizationId)
-    if (!existing) {
-      orgItemMap.set(row.organizationId, [row.name])
-    } else if (existing.length < 3) {
-      existing.push(row.name)
-    }
+  // Group by orgId + product name in memory, then take top 3 by quantity
+  const orgProductTotals = new Map<string, Map<string, number>>()
+  for (const item of allOrgItems) {
+    const orgId = item.order.organizationId
+    if (!orgProductTotals.has(orgId)) orgProductTotals.set(orgId, new Map())
+    const productMap = orgProductTotals.get(orgId)!
+    productMap.set(item.name, (productMap.get(item.name) ?? 0) + item.quantity)
+  }
+  for (const [orgId, productMap] of orgProductTotals) {
+    orgItemMap.set(
+      orgId,
+      Array.from(productMap.entries())
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([name]) => name)
+    )
   }
 
   // Attach top products and sort by overdueDays desc

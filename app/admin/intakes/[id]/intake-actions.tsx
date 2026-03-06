@@ -23,7 +23,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { CheckCircle, Circle, ArrowRight, Loader2, Copy, Download } from "lucide-react";
+import { CheckCircle, Circle, ArrowRight, Loader2, Copy, Download, Link2 } from "lucide-react";
 
 interface SerializedIntake {
   id: string;
@@ -54,6 +54,17 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
   const [configContent, setConfigContent] = useState<string | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
+
+  const [isBuildStarting, setIsBuildStarting] = useState(false);
+  const [buildError, setBuildError] = useState<string | null>(null);
+  const [buildResult, setBuildResult] = useState<{
+    pendingManualActions: string[];
+    githubRepo: string;
+    vercelUrl: string;
+  } | null>(null);
+  const [buildSheetOpen, setBuildSheetOpen] = useState(false);
+
+  const [statusCopySuccess, setStatusCopySuccess] = useState(false);
 
   async function handleConvert() {
     setIsConverting(true);
@@ -155,6 +166,34 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
     URL.revokeObjectURL(url);
   }
 
+  async function handleStartBuild() {
+    setIsBuildStarting(true);
+    setBuildError(null);
+    try {
+      const res = await fetch(`/api/admin/intakes/${intake.id}/build-start`, {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setBuildError(data.error ?? "Failed to start build");
+        return;
+      }
+      setBuildResult(data);
+      setBuildSheetOpen(true);
+    } catch {
+      setBuildError("Network error — please try again");
+    } finally {
+      setIsBuildStarting(false);
+    }
+  }
+
+  async function handleCopyStatusLink() {
+    const url = `${window.location.origin}/status?email=${encodeURIComponent(intake.contactEmail)}`;
+    await navigator.clipboard.writeText(url);
+    setStatusCopySuccess(true);
+    setTimeout(() => setStatusCopySuccess(false), 2000);
+  }
+
   const isConverted = !!projectId;
   const isReviewed = !!reviewedAt;
 
@@ -192,17 +231,40 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
           <div className="border-t border-[#E5E1DB] pt-4 space-y-2">
             {/* Convert to Project */}
             {isConverted ? (
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full justify-between"
-                asChild
-              >
-                <Link href={`/admin/projects/${projectId}`}>
-                  View Project
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full justify-between"
+                  asChild
+                >
+                  <Link href={`/admin/projects/${projectId}`}>
+                    View Project
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+                <Button
+                  size="sm"
+                  className="w-full bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 justify-between"
+                  onClick={handleStartBuild}
+                  disabled={isBuildStarting}
+                >
+                  {isBuildStarting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                      Starting...
+                    </>
+                  ) : (
+                    <>
+                      Start Build →
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+                {buildError && (
+                  <p className="text-xs text-red-600">{buildError}</p>
+                )}
+              </>
             ) : (
               <Button
                 size="sm"
@@ -301,6 +363,17 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+
+            {/* Copy Status Link */}
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full text-[#0A0A0A]/50 hover:text-[#0A0A0A] flex items-center gap-2"
+              onClick={handleCopyStatusLink}
+            >
+              <Link2 className="h-4 w-4" />
+              {statusCopySuccess ? "Copied!" : "Copy Status Link"}
+            </Button>
           </div>
         </CardContent>
       </Card>
@@ -339,6 +412,53 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
               <Download className="h-4 w-4" />
               Download portal.config.ts
             </Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+
+      {/* Build Sheet */}
+      <Sheet open={buildSheetOpen} onOpenChange={setBuildSheetOpen}>
+        <SheetContent className="w-full sm:max-w-lg flex flex-col">
+          <SheetHeader>
+            <SheetTitle className="font-serif font-normal">
+              Build started — {intake.companyName}
+            </SheetTitle>
+          </SheetHeader>
+
+          <div className="flex-1 overflow-y-auto mt-4 space-y-3">
+            {buildResult?.pendingManualActions && buildResult.pendingManualActions.length > 0 ? (
+              <>
+                <p className="text-xs text-[#0A0A0A]/50 font-mono">Pending manual steps:</p>
+                {buildResult.pendingManualActions.map((action, i) => (
+                  <div key={i} className="flex items-center gap-2 text-sm">
+                    <Circle className="h-4 w-4 text-[#0A0A0A]/30 shrink-0" />
+                    <span>{action}</span>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <p className="text-sm text-[#0A0A0A]/50">No manual steps required.</p>
+            )}
+          </div>
+
+          <SheetFooter className="mt-4">
+            {buildResult?.githubRepo || buildResult?.vercelUrl ? (
+              <div className="flex flex-col gap-2 w-full text-xs font-mono text-[#0A0A0A]/60">
+                {buildResult.githubRepo && (
+                  <p>Repo: {buildResult.githubRepo}</p>
+                )}
+                {buildResult.vercelUrl && (
+                  <p>Staging: {buildResult.vercelUrl}</p>
+                )}
+              </div>
+            ) : null}
+            {projectId && (
+              <Button variant="outline" size="sm" asChild>
+                <Link href={`/admin/projects/${projectId}`}>
+                  View project →
+                </Link>
+              </Button>
+            )}
           </SheetFooter>
         </SheetContent>
       </Sheet>

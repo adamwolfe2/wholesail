@@ -3,7 +3,7 @@
 import type { Product } from '@/lib/products'
 import { useCart } from '@/lib/cart-context'
 import { SignInButton } from '@clerk/nextjs'
-import { ShoppingCart, Check, Snowflake, TrendingUp, CreditCard } from 'lucide-react'
+import { ShoppingCart, Check, Snowflake, TrendingUp, CreditCard, Heart } from 'lucide-react'
 import { useState } from 'react'
 
 interface ProductCardProps {
@@ -11,9 +11,11 @@ interface ProductCardProps {
   isSignedIn?: boolean
   featured?: boolean
   quantityOnHand?: number | null  // from InventoryLevel — show badge if low
+  isFavorited?: boolean
+  onToggleFavorite?: (productId: string) => void
 }
 
-export function ProductCard({ product, isSignedIn = false, featured = false, quantityOnHand }: ProductCardProps) {
+export function ProductCard({ product, isSignedIn = false, featured = false, quantityOnHand, isFavorited, onToggleFavorite }: ProductCardProps) {
   const { addItem } = useCart()
   const [added, setAdded] = useState(false)
 
@@ -40,10 +42,21 @@ export function ProductCard({ product, isSignedIn = false, featured = false, qua
     >
       {/* Body */}
       <div className="flex flex-col flex-1 p-4 sm:p-5">
-        {/* Category */}
-        <p className="text-[9px] tracking-[0.18em] uppercase text-[#C8C0B4] mb-1.5">
-          {product.category}
-        </p>
+        {/* Category + Favorite */}
+        <div className="flex items-center justify-between mb-1.5">
+          <p className="text-[9px] tracking-[0.18em] uppercase text-[#C8C0B4]">
+            {product.category}
+          </p>
+          {isSignedIn && onToggleFavorite !== undefined && (
+            <button
+              onClick={(e) => { e.preventDefault(); onToggleFavorite(product.id) }}
+              className="p-0.5 -mr-0.5 text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors"
+              aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
+            >
+              <Heart className={`h-3.5 w-3.5 ${isFavorited ? 'fill-[#0A0A0A] text-[#0A0A0A]' : ''}`} />
+            </button>
+          )}
+        </div>
 
         {/* Name */}
         <h3

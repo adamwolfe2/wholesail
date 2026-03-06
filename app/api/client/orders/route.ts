@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 50;
 
 export async function GET(req: NextRequest) {
   try {

@@ -361,6 +361,8 @@ model Organization {
   loyaltyPoints        Int  @default(0)
   lifetimeLoyaltyPoints Int @default(0)
   notificationPrefs Json?
+  onboardingStep   Int       @default(0)  // 0=not started, 1=day0 sent, 2=day1 sent, 3=day3 sent, 4=done
+  approvedAt       DateTime?             // when the wholesale application was approved
   accountManagerId String?
   accountManager   User?    @relation("AccountManager", fields: [accountManagerId], references: [id])
   members          User[]   @relation("OrgMembers")
@@ -380,6 +382,10 @@ model Organization {
   distributorInventory DistributorInventory[] @relation("DistributorStock")
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
+
+  @@index([tier])
+  @@index([isWholesaler])
+  @@index([createdAt(sort: Desc)])
 }
 
 model Address {
@@ -493,6 +499,7 @@ model OrderItem {
   distributorFulfilledAt DateTime?
 
   @@index([orderId])
+  @@index([productId])
   @@index([distributorOrgId])
   @@index([distributorFulfilledAt])
 }
@@ -530,6 +537,7 @@ model Invoice {
 
   @@index([status, dueDate])
   @@index([organizationId])
+  @@index([organizationId, status])
 }
 
 model AuditEvent {
@@ -544,6 +552,7 @@ model AuditEvent {
 
   @@index([entityType, entityId])
   @@index([userId])
+  @@index([action])
   @@index([createdAt(sort: Desc)])
 }
 
@@ -833,6 +842,23 @@ model DropAlert {
 
   @@unique([dropId, email])
   @@index([dropId])
+}
+
+// ============================================================
+// PRODUCT NOTIFY ALERTS
+// ============================================================
+
+model ProductNotifyAlert {
+  id          String    @id @default(cuid())
+  productSlug String
+  email       String
+  name        String?
+  notifiedAt  DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@unique([productSlug, email])
+  @@index([productSlug])
+  @@index([email])
 }
 
 // ============================================================

@@ -219,10 +219,10 @@ export function DemoLauncher() {
 
   return (
     <div
-      className="border bg-white"
+      className="relative border bg-white"
       style={{ borderColor: "var(--border-strong)", borderRadius: "8px", overflow: "hidden" }}
     >
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         {/* ── Input Phase ────────────────────────────────────────── */}
         {phase === "input" && (
           <motion.div

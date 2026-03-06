@@ -27,6 +27,8 @@ export type PipelineItem = {
   // cost health
   contractValue?: number;     // dollars
   totalSpentCents?: number;   // sum of ProjectCost.amountCents
+  // next action label
+  nextAction?: string;
 };
 
 function daysAgo(isoString: string): number {
@@ -275,6 +277,15 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
           </a>
         )}
       </div>
+
+      {/* Next action badge */}
+      {item.nextAction && (
+        <div className="pt-1">
+          <span className="text-[9px] font-mono bg-[#F9F7F4] text-[#0A0A0A]/50 border border-[#E5E1DB] px-1.5 py-0.5">
+            {item.nextAction}
+          </span>
+        </div>
+      )}
     </div>
   );
 }

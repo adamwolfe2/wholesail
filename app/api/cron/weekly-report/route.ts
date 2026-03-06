@@ -113,24 +113,33 @@ export async function GET(req: NextRequest) {
       .map(([name, revenue]) => ({ name, revenue }))
 
     // --- At-risk clients (no order in 45+ days) ---
+    // Batched: 2 queries instead of 1 + N per wholesaler
     const allWholesalers = await prisma.organization.findMany({
       where: { isWholesaler: true },
       select: { id: true, name: true, email: true },
+      take: 500,
+    })
+
+    const wholesalerIds = allWholesalers.map((o) => o.id)
+    const orgMap = new Map(allWholesalers.map((o) => [o.id, o]))
+
+    const lastOrderByOrg = await prisma.order.groupBy({
+      by: ['organizationId'],
+      where: {
+        organizationId: { in: wholesalerIds },
+        status: { not: 'CANCELLED' },
+      },
+      _max: { createdAt: true },
     })
 
     const atRiskOrgs: { name: string; email: string; daysSince: number }[] = []
-    for (const org of allWholesalers) {
-      const lastOrder = await prisma.order.findFirst({
-        where: {
-          organizationId: org.id,
-          status: { not: 'CANCELLED' },
-        },
-        orderBy: { createdAt: 'desc' },
-        select: { createdAt: true },
-      })
-      if (!lastOrder) continue
+    for (const group of lastOrderByOrg) {
+      const lastOrderAt = group._max.createdAt
+      if (!lastOrderAt) continue
+      const org = orgMap.get(group.organizationId)
+      if (!org) continue
       const daysSince = Math.floor(
-        (now.getTime() - lastOrder.createdAt.getTime()) / (1000 * 60 * 60 * 24)
+        (now.getTime() - lastOrderAt.getTime()) / (1000 * 60 * 60 * 24)
       )
       if (daysSince >= 45) {
         atRiskOrgs.push({ name: org.name, email: org.email, daysSince })

@@ -52,19 +52,47 @@ export async function POST(req: NextRequest) {
 
     const data = parsed.data;
 
-    // Create organization as NEW tier
-    try {
-      const org = await prisma.organization.create({
-        data: {
-          name: data.businessName,
-          contactPerson: data.contactName,
-          email: data.email,
-          phone: data.phone,
-          website: data.website || null,
-          tier: "NEW",
-          paymentTerms: "COD",
-        },
+    // Idempotency check — if this email already has a WholesaleApplication,
+    // return success without creating a duplicate org or application.
+    const existingApp = await prisma.wholesaleApplication.findFirst({
+      where: { email: data.email.toLowerCase() },
+      select: { id: true },
+    });
+    if (existingApp) {
+      return NextResponse.json({
+        success: true,
+        message: "Application already submitted",
       });
+    }
+
+    // Create organization as NEW tier (or reuse if one already exists for this email)
+    try {
+      const existingOrg = await prisma.organization.findFirst({
+        where: { email: data.email.toLowerCase() },
+        select: { id: true },
+      });
+
+      const org = existingOrg
+        ? await prisma.organization.update({
+            where: { id: existingOrg.id },
+            data: {
+              name: data.businessName,
+              contactPerson: data.contactName,
+              phone: data.phone,
+              website: data.website || null,
+            },
+          })
+        : await prisma.organization.create({
+            data: {
+              name: data.businessName,
+              contactPerson: data.contactName,
+              email: data.email.toLowerCase(),
+              phone: data.phone,
+              website: data.website || null,
+              tier: "NEW",
+              paymentTerms: "COD",
+            },
+          });
 
       // Create shipping address if provided
       if (data.deliveryAddress && data.city && data.state && data.zip) {
@@ -157,12 +185,14 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      // Send welcome email (fire-and-forget)
-      sendWelcomePartnerEmail({
-        name: data.contactName,
-        email: data.email,
-        businessName: data.businessName,
-      }).catch((err) => console.error("Welcome email error:", err));
+      // Send welcome email only for brand-new orgs (fire-and-forget)
+      if (!existingOrg) {
+        sendWelcomePartnerEmail({
+          name: data.contactName,
+          email: data.email,
+          businessName: data.businessName,
+        }).catch((err) => console.error("Welcome email error:", err));
+      }
 
       return NextResponse.json({
         success: true,

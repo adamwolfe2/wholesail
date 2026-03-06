@@ -950,7 +950,7 @@ function CalEmbed({ name, email }: { name?: string; email?: string }) {
         theme: "light",
         ...(name || email ? { prefill: { name: name ?? "", email: email ?? "" } } : {}),
       },
-      calLink: "adamwolfe/wholesail",
+      calLink: process.env.NEXT_PUBLIC_CAL_LINK ?? "adamwolfe/wholesail",
     });
     Cal.ns.wholesail("ui", {
       theme: "light",
