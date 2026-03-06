@@ -67,7 +67,7 @@ export function PortalNav() {
         {/* Wordmark */}
         <div className="flex items-center h-16 px-5 border-b border-[#E5E1DB]">
           <Link href="/" className="flex flex-col min-w-0">
-            <span className="font-serif font-bold text-xl text-[#0A0A0A] tracking-tight leading-tight">Wholesail</span>
+            <span className="font-serif font-bold text-lg sm:text-xl text-[#0A0A0A] tracking-tight leading-tight">Wholesail</span>
             <span className="font-serif italic text-sm text-[#C8C0B4] leading-tight">Portal</span>
           </Link>
         </div>
@@ -115,7 +115,7 @@ export function PortalNav() {
       <header className="sticky top-0 z-50 border-b border-[#E5E1DB] bg-[#F9F7F4]/95 backdrop-blur supports-[backdrop-filter]:bg-[#F9F7F4]/80 lg:hidden">
         <div className="flex h-14 items-center justify-between px-4">
           <Link href="/" className="flex flex-col min-w-0">
-            <span className="font-serif font-bold text-base text-[#0A0A0A] leading-tight">Wholesail</span>
+            <span className="font-serif font-bold text-sm sm:text-base text-[#0A0A0A] leading-tight">Wholesail</span>
             <span className="font-serif italic text-[10px] text-[#C8C0B4] leading-tight">Portal</span>
           </Link>
           <div className="flex items-center gap-1">

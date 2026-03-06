@@ -111,7 +111,7 @@ export function CatalogClient({
               <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-4">
                 Wholesale Catalog
               </p>
-              <h1 className="font-serif text-5xl sm:text-6xl font-bold leading-[1.05] text-[#0A0A0A]">
+              <h1 className="font-serif text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.05] text-[#0A0A0A]">
                 The Full Catalog.
               </h1>
               {!isSignedIn && (
@@ -129,17 +129,7 @@ export function CatalogClient({
                 </p>
               )}
             </div>
-            <div className="flex items-center gap-3 shrink-0">
-              {isSignedIn && (
-                <button
-                  onClick={() => setAiParserOpen(true)}
-                  className="h-10 px-4 flex items-center gap-2 border border-[#0A0A0A] text-[#0A0A0A] text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors whitespace-nowrap"
-                >
-                  <Wand2 className="h-3.5 w-3.5" />
-                  AI Parse Order
-                </button>
-              )}
-              {isSignedIn && <CartSidebar />}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
               <div className="relative w-full sm:w-64">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#C8C0B4]" />
                 <Input
@@ -151,6 +141,18 @@ export function CatalogClient({
                   suppressHydrationWarning
                 />
               </div>
+              {isSignedIn && (
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => setAiParserOpen(true)}
+                    className="flex-1 sm:flex-none h-10 px-4 flex items-center justify-center gap-2 border border-[#0A0A0A] text-[#0A0A0A] text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors whitespace-nowrap"
+                  >
+                    <Wand2 className="h-3.5 w-3.5" />
+                    AI Parse Order
+                  </button>
+                  <CartSidebar />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -160,10 +162,10 @@ export function CatalogClient({
       <section className="py-10 sm:py-14">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs defaultValue="all" value={selectedCategory} onValueChange={setSelectedCategory}>
-            <TabsList className="mb-6 flex flex-nowrap overflow-x-auto h-auto gap-1.5 bg-transparent p-0 pb-1">
+            <TabsList className="mb-6 flex flex-nowrap overflow-x-auto h-auto gap-1.5 bg-transparent p-0 pb-2 scrollbar-none">
               <TabsTrigger
                 value="all"
-                className="text-[11px] tracking-wide rounded-none border border-[#E5E1DB] px-4 py-2 data-[state=active]:bg-[#0A0A0A] data-[state=active]:text-[#F9F7F4] data-[state=active]:border-[#0A0A0A] transition-all"
+                className="text-xs sm:text-[11px] tracking-wide rounded-none border border-[#E5E1DB] px-3 py-1.5 sm:px-4 sm:py-2 data-[state=active]:bg-[#0A0A0A] data-[state=active]:text-[#F9F7F4] data-[state=active]:border-[#0A0A0A] transition-all whitespace-nowrap shrink-0"
               >
                 All
               </TabsTrigger>
@@ -171,7 +173,7 @@ export function CatalogClient({
                 <TabsTrigger
                   key={cat}
                   value={cat}
-                  className="text-[11px] tracking-wide rounded-none border border-[#E5E1DB] px-4 py-2 data-[state=active]:bg-[#0A0A0A] data-[state=active]:text-[#F9F7F4] data-[state=active]:border-[#0A0A0A] transition-all"
+                  className="text-xs sm:text-[11px] tracking-wide rounded-none border border-[#E5E1DB] px-3 py-1.5 sm:px-4 sm:py-2 data-[state=active]:bg-[#0A0A0A] data-[state=active]:text-[#F9F7F4] data-[state=active]:border-[#0A0A0A] transition-all whitespace-nowrap shrink-0"
                 >
                   {cat}
                 </TabsTrigger>
@@ -209,7 +211,7 @@ export function CatalogClient({
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-[#E5E1DB]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-[#E5E1DB]">
                   {filteredProducts.map(product => (
                     <div key={product.id} className="bg-[#F9F7F4]">
                       <ProductCard
@@ -244,7 +246,7 @@ export function CatalogClient({
             </p>
             <Link
               href="/partner"
-              className="inline-flex items-center gap-2 border border-[#F9F7F4]/30 text-[#F9F7F4] px-7 py-3.5 text-sm font-medium hover:bg-[#F9F7F4] hover:text-[#0A0A0A] transition-colors"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-[#F9F7F4]/30 text-[#F9F7F4] px-7 py-3.5 text-sm font-medium hover:bg-[#F9F7F4] hover:text-[#0A0A0A] transition-colors"
             >
               Apply for Wholesale
             </Link>

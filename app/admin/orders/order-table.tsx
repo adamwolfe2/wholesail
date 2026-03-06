@@ -166,11 +166,11 @@ export function OrderTable({ orders }: { orders: OrderRow[] }) {
       </div>
 
       {selected.size > 0 && (
-        <div className="flex flex-wrap items-center gap-2 mb-4 p-3 bg-muted/50 rounded-lg border">
+        <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2 mb-4 p-3 bg-muted/50 rounded-lg border">
           <span className="text-sm font-medium shrink-0">
             {selected.size} order{selected.size > 1 ? "s" : ""} selected
           </span>
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2">
             <Button
               variant="outline"
               size="sm"
@@ -223,7 +223,7 @@ export function OrderTable({ orders }: { orders: OrderRow[] }) {
             variant="ghost"
             size="sm"
             onClick={() => setSelected(new Set())}
-            className="ml-auto"
+            className="sm:ml-auto"
           >
             Clear
           </Button>

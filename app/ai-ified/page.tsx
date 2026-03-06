@@ -337,7 +337,7 @@ export default function AIifiedPage() {
               // AI-ified
             </span>
             <h1
-              className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.08] mb-6 max-w-4xl"
+              className="font-serif text-2xl sm:text-4xl lg:text-5xl font-normal leading-[1.08] mb-6 max-w-4xl"
               style={{ color: "var(--text-headline)" }}
             >
               What does it mean to be{" "}
@@ -392,7 +392,7 @@ export default function AIifiedPage() {
                   The Moment
                 </span>
                 <h2
-                  className="font-serif text-3xl font-normal mb-5"
+                  className="font-serif text-xl sm:text-2xl md:text-3xl font-normal mb-5"
                   style={{ color: "var(--text-headline)" }}
                 >
                   The distributor who automates first wins.
@@ -411,7 +411,7 @@ export default function AIifiedPage() {
                 </p>
               </div>
               <div
-                className="p-8"
+                className="p-4 sm:p-6 lg:p-8"
                 style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
               >
                 {[
@@ -424,7 +424,7 @@ export default function AIifiedPage() {
                     className="py-5"
                     style={{ borderBottom: i < 2 ? "1px solid var(--border)" : "none" }}
                   >
-                    <div className="font-serif text-3xl mb-1" style={{ color: "var(--text-headline)" }}>
+                    <div className="font-serif text-xl sm:text-2xl lg:text-3xl mb-1" style={{ color: "var(--text-headline)" }}>
                       {s.stat}
                     </div>
                     <p className="font-mono text-[11px] leading-relaxed mb-1" style={{ color: "var(--text-body)" }}>
@@ -472,7 +472,7 @@ export default function AIifiedPage() {
                       </span>
                     </div>
                     <h2
-                      className="font-serif text-3xl font-normal mb-4"
+                      className="font-serif text-xl sm:text-2xl md:text-3xl font-normal mb-4"
                       style={{ color: "var(--text-headline)" }}
                     >
                       {f.h3}
@@ -503,7 +503,7 @@ export default function AIifiedPage() {
                 The bigger picture
               </span>
               <h2
-                className="font-serif text-3xl sm:text-4xl font-normal mb-5"
+                className="font-serif text-xl sm:text-2xl md:text-4xl font-normal mb-5"
                 style={{ color: "var(--text-headline)" }}
               >
                 What will you do with the 4 hours a day you get back?
@@ -527,7 +527,7 @@ export default function AIifiedPage() {
               style={{ border: "1px solid var(--border-strong)" }}
             >
               <div
-                className="p-8 border-b lg:border-b-0 lg:border-r"
+                className="p-4 sm:p-6 lg:p-8 border-b lg:border-b-0 lg:border-r"
                 style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-white)" }}
               >
                 <div
@@ -558,7 +558,7 @@ export default function AIifiedPage() {
                   ))}
                 </div>
               </div>
-              <div className="p-8" style={{ backgroundColor: "var(--bg-blue)" }}>
+              <div className="p-4 sm:p-6 lg:p-8" style={{ backgroundColor: "var(--bg-blue)" }}>
                 <div
                   className="font-mono text-[9px] uppercase tracking-widest mb-6"
                   style={{ color: "rgba(255,255,255,0.4)" }}
@@ -604,7 +604,7 @@ export default function AIifiedPage() {
                   Try It Now
                 </span>
                 <h2
-                  className="font-serif text-3xl font-normal mb-4"
+                  className="font-serif text-xl sm:text-2xl md:text-3xl font-normal mb-4"
                   style={{ color: "var(--text-headline)" }}
                 >
                   See your portal{" "}
@@ -647,7 +647,7 @@ export default function AIifiedPage() {
               Ready to Be AI-ified?
             </span>
             <h2
-              className="font-serif text-3xl font-normal mb-3"
+              className="font-serif text-xl sm:text-2xl md:text-3xl font-normal mb-3"
               style={{ color: "var(--text-headline)" }}
             >
               Tell us about your distribution business.

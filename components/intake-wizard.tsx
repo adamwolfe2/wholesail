@@ -1216,7 +1216,7 @@ export function IntakeWizard() {
       {/* Resume draft banner */}
       {draft && (
         <div
-          className="px-6 py-3 flex items-center justify-between gap-4"
+          className="px-4 sm:px-6 py-3 flex items-center justify-between gap-3 flex-wrap"
           style={{ backgroundColor: "var(--blue-light)", borderBottom: "1px solid var(--border-strong)" }}
         >
           <p className="font-mono text-xs" style={{ color: "var(--blue)" }}>
@@ -1269,8 +1269,8 @@ export function IntakeWizard() {
       </div>
 
       {/* Step heading */}
-      <div className="border-b px-6 py-5" style={{ borderColor: "var(--border)" }}>
-        <h3 className="font-serif text-xl font-normal" style={{ color: "var(--text-headline)" }}>
+      <div className="border-b px-4 sm:px-6 py-4 sm:py-5" style={{ borderColor: "var(--border)" }}>
+        <h3 className="font-serif text-lg sm:text-xl font-normal" style={{ color: "var(--text-headline)" }}>
           {currentStep === 0 && "Tell us about your company"}
           {currentStep === 1 && "Tell us about your distribution business"}
           {currentStep === 2 && "What features does your portal need?"}
@@ -1289,7 +1289,7 @@ export function IntakeWizard() {
       </div>
 
       {/* Step content */}
-      <div className="px-6 py-6">
+      <div className="px-3 sm:px-6 py-4 sm:py-6">
         {currentStep === 0 && (
           <Step1 data={step1} onChange={(d) => setStep1((p) => ({ ...p, ...d }))} />
         )}
@@ -1306,7 +1306,7 @@ export function IntakeWizard() {
 
       {/* Navigation */}
       {currentStep < 3 && (
-        <div className="px-6 py-4 border-t flex items-center justify-between" style={{ borderColor: "var(--border)" }}>
+        <div className="px-4 sm:px-6 py-4 border-t flex items-center justify-between gap-3" style={{ borderColor: "var(--border)" }}>
           <button
             type="button"
             onClick={() => setCurrentStep((p) => p - 1)}
@@ -1320,7 +1320,7 @@ export function IntakeWizard() {
             type="button"
             onClick={handleNext}
             disabled={!canProceed() || submitting}
-            className="flex items-center gap-2 text-white px-6 py-3 font-mono text-xs font-semibold tracking-wide disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center justify-center gap-2 text-white px-5 py-3 font-mono text-xs font-semibold tracking-wide disabled:opacity-40 disabled:cursor-not-allowed transition-colors w-full sm:w-auto"
             style={{ backgroundColor: "var(--blue)", borderRadius: "6px" }}
           >
             {submitting ? "Submitting..." : currentStep === 2 ? "Book My Call" : "Continue"}{" "}

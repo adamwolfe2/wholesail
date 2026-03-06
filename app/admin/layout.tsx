@@ -99,6 +99,7 @@ export default async function AdminLayout({
         <header className="border-b border-[#E5E1DB] px-4 md:px-6 py-3 flex items-center justify-between bg-[#F9F7F4]">
           <div className="flex items-center gap-3">
             <AdminMobileNav navBadges={navBadges} />
+            <span className="font-serif font-bold text-base text-[#0A0A0A] md:hidden">Wholesail</span>
             <span className="font-serif font-bold text-lg text-[#0A0A0A] hidden md:block">Wholesail Admin</span>
           </div>
           <AdminSearchBar />
@@ -107,7 +108,7 @@ export default async function AdminLayout({
             <UserButton />
           </div>
         </header>
-        <main id="main-content" className="flex-1 p-4 md:p-6 animate-fade-in bg-[#F9F7F4]">{children}</main>
+        <main id="main-content" className="flex-1 p-3 sm:p-4 md:p-6 animate-fade-in bg-[#F9F7F4]">{children}</main>
       </div>
     </div>
   );

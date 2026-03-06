@@ -2,7 +2,12 @@
 
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 function SailLogo({ className = "w-5 h-5" }: { className?: string }) {
   return (
@@ -177,13 +182,24 @@ function CardGridButton({
   );
 }
 
+/** Flat list of nav items for the mobile sheet */
+const MOBILE_NAV_LINKS: NavItem[] = [
+  { label: "Platform",  href: "/#demo" },
+  { label: "Pricing",   href: "/#pricing" },
+  { label: "Blog",      href: "/blog" },
+  { label: "About",     href: "/about" },
+];
+
 export function NavBar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
     <nav
       className="sticky top-0 z-50 w-full"
       style={{ backgroundColor: "var(--bg-primary)", borderBottom: "1px solid var(--border)" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+        {/* Logo */}
         <Link href="/" className="flex items-center gap-2" style={{ textDecoration: "none" }}>
           <SailLogo className="w-5 h-5" />
           <span className="font-serif text-lg font-bold tracking-[0.05em]" style={{ color: "var(--text-headline)" }}>
@@ -191,6 +207,7 @@ export function NavBar() {
           </span>
         </Link>
 
+        {/* Desktop nav — hidden on mobile */}
         <div className="hidden md:flex items-center gap-5">
           <Link href="/#demo" className="font-mono text-[13px] link-body">
             Platform
@@ -220,13 +237,115 @@ export function NavBar() {
           />
         </div>
 
-        <Link
-          href="/#intake-form"
-          className="font-mono text-[13px] font-semibold btn-blue"
-          style={{ padding: "9px 20px", borderRadius: "6px" }}
-        >
-          Get Started
-        </Link>
+        {/* Right side: CTA + mobile hamburger */}
+        <div className="flex items-center gap-3">
+          <Link
+            href="/#intake-form"
+            className="font-mono text-[13px] font-semibold btn-blue"
+            style={{ padding: "9px 20px", borderRadius: "6px" }}
+          >
+            Get Started
+          </Link>
+
+          {/* Mobile hamburger — only visible below md */}
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <button
+                className="md:hidden flex items-center justify-center w-9 h-9"
+                aria-label="Open navigation menu"
+                style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-headline)" }}
+              >
+                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </SheetTrigger>
+
+            <SheetContent side="right" className="w-72 p-0" style={{ backgroundColor: "var(--bg-primary)" }}>
+              {/* Sheet header */}
+              <div
+                className="flex items-center gap-2 px-5 py-4"
+                style={{ borderBottom: "1px solid var(--border)" }}
+              >
+                <SailLogo className="w-4 h-4" />
+                <span className="font-serif text-base font-bold tracking-[0.05em]" style={{ color: "var(--text-headline)" }}>
+                  WHOLESAIL
+                </span>
+              </div>
+
+              {/* Mobile nav links */}
+              <nav className="flex flex-col px-3 py-3">
+                {MOBILE_NAV_LINKS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="font-mono text-[13px] link-body flex items-center min-h-[48px] px-3"
+                    style={{ textDecoration: "none", borderBottom: "1px solid var(--border)" }}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+
+                {/* Industries group heading */}
+                <div
+                  className="font-mono text-[9px] uppercase tracking-widest px-3 pt-4 pb-2"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  Industries
+                </div>
+                {ALL_INDUSTRIES.slice(0, 8).map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="font-mono text-[12px] link-body flex items-center min-h-[44px] px-3"
+                    style={{ textDecoration: "none", borderBottom: "1px solid var(--border)" }}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+                <Link
+                  href="/industries"
+                  onClick={() => setMobileOpen(false)}
+                  className="font-mono text-[11px] flex items-center min-h-[44px] px-3"
+                  style={{ textDecoration: "none", color: "var(--blue)" }}
+                >
+                  View all industries →
+                </Link>
+
+                {/* Resources group heading */}
+                <div
+                  className="font-mono text-[9px] uppercase tracking-widest px-3 pt-4 pb-2"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  Resources
+                </div>
+                {MORE_ITEMS.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="font-mono text-[12px] link-body flex items-center min-h-[44px] px-3"
+                    style={{ textDecoration: "none", borderBottom: "1px solid var(--border)" }}
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </nav>
+
+              {/* Sheet CTA */}
+              <div className="px-5 py-4" style={{ borderTop: "1px solid var(--border)" }}>
+                <Link
+                  href="/#intake-form"
+                  onClick={() => setMobileOpen(false)}
+                  className="font-mono text-[13px] font-semibold btn-blue flex items-center justify-center w-full min-h-[48px]"
+                  style={{ borderRadius: "6px", textDecoration: "none" }}
+                >
+                  Get Started
+                </Link>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
       </div>
     </nav>
   );

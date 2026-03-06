@@ -121,7 +121,7 @@ export default async function AdminIntakeDetailPage({
       </Breadcrumb>
 
       <div>
-        <h2 className="font-serif text-3xl font-normal">{intake.companyName}</h2>
+        <h2 className="font-serif text-2xl sm:text-3xl font-normal">{intake.companyName}</h2>
         <div className="flex items-center gap-3 mt-1 flex-wrap">
           <p className="text-sm text-[#0A0A0A]/50">
             Submitted{" "}

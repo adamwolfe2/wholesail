@@ -68,7 +68,7 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
             {config.eyebrow}
           </span>
           <h1
-            className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.1] mb-6 max-w-3xl"
+            className="font-serif text-2xl sm:text-4xl lg:text-5xl font-normal leading-[1.1] mb-6 max-w-3xl"
             style={{ color: "var(--text-headline)" }}
           >
             {config.h1Line1}
@@ -118,7 +118,7 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
             The Transformation
           </span>
           <h2
-            className="font-serif text-3xl font-normal mb-10"
+            className="font-serif text-xl sm:text-2xl md:text-3xl font-normal mb-10"
             style={{ color: "var(--text-headline)" }}
           >
             {config.sectionTitle}
@@ -128,7 +128,7 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
             style={{ border: "1px solid var(--border-strong)" }}
           >
             <div
-              className="p-8 border-b lg:border-b-0 lg:border-r"
+              className="p-4 sm:p-6 lg:p-8 border-b lg:border-b-0 lg:border-r"
               style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-white)" }}
             >
               <div className="font-mono text-[9px] uppercase tracking-widest mb-6" style={{ color: "var(--text-muted)" }}>
@@ -143,7 +143,7 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
                 ))}
               </div>
             </div>
-            <div className="p-8" style={{ backgroundColor: "var(--bg-blue)" }}>
+            <div className="p-4 sm:p-6 lg:p-8" style={{ backgroundColor: "var(--bg-blue)" }}>
               <div className="font-mono text-[9px] uppercase tracking-widest mb-6" style={{ color: "rgba(255,255,255,0.4)" }}>
                 After Wholesail
               </div>
@@ -164,7 +164,7 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
           <span className="font-mono text-xs uppercase tracking-widest mb-6 block" style={{ color: "var(--text-muted)" }}>
             What&apos;s Included
           </span>
-          <h2 className="font-serif text-3xl font-normal mb-10" style={{ color: "var(--text-headline)" }}>
+          <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-normal mb-10" style={{ color: "var(--text-headline)" }}>
             {config.featuresTitle ?? `Everything a ${config.eyebrow.replace("For ", "").toLowerCase()} needs.`}
           </h2>
           <div
@@ -187,7 +187,7 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
         {/* TESTIMONIAL */}
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
           <div
-            className="p-8 sm:p-12"
+            className="p-4 sm:p-8 lg:p-12"
             style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
           >
             <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
@@ -216,10 +216,10 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
             {stats.map((s, i) => (
               <div
                 key={i}
-                className={`p-8 ${i < 2 ? "border-b sm:border-b-0 sm:border-r" : ""}`}
+                className={`p-4 sm:p-6 lg:p-8 ${i < 2 ? "border-b sm:border-b-0 sm:border-r" : ""}`}
                 style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-white)" }}
               >
-                <div className="text-4xl font-serif font-normal mb-2" style={{ color: "var(--text-headline)" }}>{s.stat}</div>
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-serif font-normal mb-2" style={{ color: "var(--text-headline)" }}>{s.stat}</div>
                 <p className="font-mono text-[11px] leading-relaxed mb-2" style={{ color: "var(--text-body)" }}>{s.label}</p>
                 <div className="font-mono text-[9px] uppercase tracking-wider" style={{ color: "var(--text-muted)" }}>{s.source}</div>
               </div>
@@ -232,7 +232,7 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
           <span className="font-mono text-xs uppercase tracking-widest mb-4 block" style={{ color: "var(--text-muted)" }}>
             Start Your Build
           </span>
-          <h2 className="font-serif text-3xl font-normal mb-3" style={{ color: "var(--text-headline)" }}>
+          <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-normal mb-3" style={{ color: "var(--text-headline)" }}>
             Tell us about your distribution business.
           </h2>
           <p className="font-mono text-sm max-w-xl leading-relaxed mb-10" style={{ color: "var(--text-body)" }}>

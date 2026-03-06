@@ -50,7 +50,7 @@ export function ProductCard({ product, isSignedIn = false, featured = false, qua
           {isSignedIn && onToggleFavorite !== undefined && (
             <button
               onClick={(e) => { e.preventDefault(); onToggleFavorite(product.id) }}
-              className="p-0.5 -mr-0.5 text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors"
+              className="h-9 w-9 sm:h-10 sm:w-10 -mr-1 flex items-center justify-center text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors"
               aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
             >
               <Heart className={`h-3.5 w-3.5 ${isFavorited ? 'fill-[#0A0A0A] text-[#0A0A0A]' : ''}`} />

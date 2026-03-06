@@ -1,5 +1,31 @@
 @import "tailwindcss";
 
+/* Mobile device support */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Safe area insets for notched iPhones */
+body {
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Minimum touch targets */
+@media (pointer: coarse) {
+  button, [role="button"], a, input[type="checkbox"], input[type="radio"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Override for icon-only inline elements that shouldn't be 44px tall */
+  .touch-target-sm {
+    min-height: 36px;
+    min-width: 36px;
+  }
+}
+
 @theme {
   --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo,

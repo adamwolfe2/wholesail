@@ -12,7 +12,7 @@ export function PipelineBoard({ columns }: { columns: PipelineColumn[] }) {
   return (
     <div
       className="grid gap-4"
-      style={{ gridTemplateColumns: `repeat(${columns.length}, minmax(200px, 1fr))` }}
+      style={{ gridTemplateColumns: `repeat(${columns.length}, minmax(160px, 1fr))` }}
     >
       {columns.map((col) => (
         <div key={col.id} className="min-w-0">

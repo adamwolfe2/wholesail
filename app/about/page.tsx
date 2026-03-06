@@ -32,7 +32,7 @@ export default function AboutPage() {
               About Wholesail
             </span>
             <h1
-              className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal leading-[1.08] mb-6 max-w-3xl"
+              className="font-serif text-2xl sm:text-4xl lg:text-5xl font-normal leading-[1.08] mb-6 max-w-3xl"
               style={{ color: "var(--text-headline)" }}
             >
               We build the infrastructure
@@ -74,7 +74,7 @@ export default function AboutPage() {
               Why We Exist
             </span>
             <h2
-              className="font-serif text-3xl font-normal mb-8 max-w-2xl"
+              className="font-serif text-xl sm:text-2xl md:text-3xl font-normal mb-8 max-w-2xl"
               style={{ color: "var(--text-headline)" }}
             >
               The wholesale distribution industry runs on antiquated systems.
@@ -103,7 +103,7 @@ export default function AboutPage() {
                 </p>
               </div>
               <div
-                className="p-8"
+                className="p-4 sm:p-6 lg:p-8"
                 style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
               >
                 <div
@@ -139,7 +139,7 @@ export default function AboutPage() {
           {/* OUR BELIEF */}
           <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
             <div
-              className="p-8 sm:p-12"
+              className="p-4 sm:p-8 lg:p-12"
               style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-blue)" }}
             >
               <span
@@ -149,7 +149,7 @@ export default function AboutPage() {
                 Our belief
               </span>
               <p
-                className="font-serif text-2xl sm:text-3xl leading-snug mb-6 max-w-3xl"
+                className="font-serif text-lg sm:text-2xl leading-snug mb-6 max-w-3xl"
                 style={{ color: "rgba(255,255,255,0.95)" }}
               >
                 &ldquo;Every distributor should be focused on their partnerships, their lead
@@ -174,7 +174,7 @@ export default function AboutPage() {
               What We Build
             </span>
             <h2
-              className="font-serif text-3xl font-normal mb-10"
+              className="font-serif text-xl sm:text-2xl md:text-3xl font-normal mb-10"
               style={{ color: "var(--text-headline)" }}
             >
               Three portals. One seamless platform.
@@ -202,7 +202,7 @@ export default function AboutPage() {
               ].map((col, i) => (
                 <div
                   key={col.title}
-                  className={`p-8 ${i < 2 ? "border-b lg:border-b-0 lg:border-r" : ""}`}
+                  className={`p-4 sm:p-6 lg:p-8 ${i < 2 ? "border-b lg:border-b-0 lg:border-r" : ""}`}
                   style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-white)" }}
                 >
                   <div
@@ -246,7 +246,7 @@ export default function AboutPage() {
                   Who We Build For
                 </span>
                 <h2
-                  className="font-serif text-3xl font-normal mb-5"
+                  className="font-serif text-xl sm:text-2xl md:text-3xl font-normal mb-5"
                   style={{ color: "var(--text-headline)" }}
                 >
                   Built for the independent distributor.
@@ -266,7 +266,7 @@ export default function AboutPage() {
                 </p>
               </div>
               <div
-                className="p-8"
+                className="p-4 sm:p-6 lg:p-8"
                 style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
               >
                 <div
@@ -311,7 +311,7 @@ export default function AboutPage() {
               Work With Us
             </span>
             <h2
-              className="font-serif text-3xl font-normal mb-3"
+              className="font-serif text-xl sm:text-2xl md:text-3xl font-normal mb-3"
               style={{ color: "var(--text-headline)" }}
             >
               Ready to build your portal?

@@ -131,7 +131,7 @@ export default async function AdminProjectDetailPage({
 
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="font-serif text-3xl font-normal">{project.company}</h2>
+          <h2 className="font-serif text-2xl sm:text-3xl font-normal">{project.company}</h2>
           <p className="text-sm text-[#0A0A0A]/50 mt-1 font-mono">
             {project.shortName} &middot; {project.industry}
           </p>

@@ -201,8 +201,11 @@ export default async function AdminPipelinePage() {
         </div>
       </div>
 
-      <div className="overflow-x-auto -mx-4 md:-mx-6 px-4 md:px-6 pb-4">
-        <div className="min-w-[900px]">
+      <div
+        className="overflow-x-auto -mx-4 md:-mx-6 px-4 md:px-6 pb-4 touch-pan-x"
+        style={{ WebkitOverflowScrolling: "touch" }}
+      >
+        <div className="min-w-[640px]">
           <PipelineBoard columns={columns} />
         </div>
       </div>

@@ -388,7 +388,7 @@ export default function WholesailPage() {
               For wholesale distributors doing $1M–$20M
             </span>
             <h1
-              className="text-4xl md:text-5xl lg:text-[3.25rem] font-normal leading-[1.08] tracking-tight font-serif mb-7"
+              className="text-2xl sm:text-3xl md:text-5xl lg:text-[3.25rem] font-normal leading-[1.08] tracking-tight font-serif mb-7"
               style={{ color: "var(--text-headline)" }}
             >
               Your Entire Wholesale Business
@@ -462,7 +462,7 @@ export default function WholesailPage() {
                 strokeWidth={1.5}
               />
               <div
-                className="text-4xl font-serif font-normal mb-2"
+                className="text-2xl sm:text-3xl lg:text-4xl font-serif font-normal mb-2"
                 style={{ color: "var(--text-headline)" }}
               >
                 {item.stat}
@@ -494,7 +494,7 @@ export default function WholesailPage() {
             The Transformation
           </span>
           <h2
-            className="text-3xl md:text-4xl font-serif font-normal"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal"
             style={{ color: "var(--text-headline)" }}
           >
             What changes when you go live.
@@ -506,7 +506,7 @@ export default function WholesailPage() {
         >
           {/* Before column */}
           <div
-            className="p-8 border-b lg:border-b-0 lg:border-r"
+            className="p-4 sm:p-6 lg:p-8 border-b lg:border-b-0 lg:border-r"
             style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-white)" }}
           >
             <div
@@ -535,7 +535,7 @@ export default function WholesailPage() {
           </div>
           {/* After column */}
           <div
-            className="p-8"
+            className="p-4 sm:p-6 lg:p-8"
             style={{ backgroundColor: "var(--bg-blue)" }}
           >
             <div
@@ -575,7 +575,7 @@ export default function WholesailPage() {
             The Alternative
           </span>
           <h2
-            className="text-3xl md:text-4xl font-serif font-normal mb-4 max-w-2xl"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal mb-4 max-w-2xl"
             style={{ color: "var(--text-headline)" }}
           >
             You&apos;ve been quoted $75K and told to wait a year.
@@ -616,7 +616,7 @@ export default function WholesailPage() {
           ].map((item) => (
             <div
               key={item.label}
-              className="p-8"
+              className="p-4 sm:p-6 lg:p-8"
               style={{
                 backgroundColor: item.dark ? "var(--bg-blue)" : "var(--bg-white)",
               }}
@@ -630,7 +630,7 @@ export default function WholesailPage() {
               <div className="grid grid-cols-2 gap-6">
                 <div>
                   <div
-                    className="font-serif text-4xl mb-1"
+                    className="font-serif text-2xl sm:text-3xl lg:text-4xl mb-1"
                     style={{ color: item.dark ? "rgba(255,255,255,0.9)" : "var(--text-headline)" }}
                   >
                     {item.stat}
@@ -644,7 +644,7 @@ export default function WholesailPage() {
                 </div>
                 <div>
                   <div
-                    className="font-serif text-4xl mb-1"
+                    className="font-serif text-2xl sm:text-3xl lg:text-4xl mb-1"
                     style={{ color: item.dark ? "rgba(255,255,255,0.9)" : "var(--text-headline)" }}
                   >
                     {item.cost}
@@ -672,7 +672,7 @@ export default function WholesailPage() {
             From the Field
           </span>
           <h2
-            className="text-3xl md:text-4xl font-serif font-normal"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal"
             style={{ color: "var(--text-headline)" }}
           >
             What distribution owners say.
@@ -685,7 +685,7 @@ export default function WholesailPage() {
           {TESTIMONIALS.map((t, i) => (
             <div
               key={t.name}
-              className={`p-8 ${i < TESTIMONIALS.length - 1 ? "border-b lg:border-b-0 lg:border-r" : ""}`}
+              className={`p-4 sm:p-6 lg:p-8 ${i < TESTIMONIALS.length - 1 ? "border-b lg:border-b-0 lg:border-r" : ""}`}
               style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-white)" }}
             >
               <div
@@ -699,7 +699,7 @@ export default function WholesailPage() {
                 {t.beforeContext}
               </div>
               <p
-                className="font-serif text-4xl leading-none mb-4 select-none"
+                className="font-serif text-3xl sm:text-4xl leading-none mb-4 select-none"
                 style={{ color: "var(--border-strong)" }}
               >
                 &ldquo;
@@ -747,7 +747,7 @@ export default function WholesailPage() {
               Try Before You Buy
             </span>
             <h2
-              className="text-3xl md:text-4xl font-serif font-normal mb-6"
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal mb-6"
               style={{ color: "var(--text-headline)" }}
             >
               See the platform with{" "}
@@ -801,7 +801,7 @@ export default function WholesailPage() {
               The Amazon Effect
             </span>
             <h2
-              className="text-3xl md:text-4xl font-serif font-normal mb-4"
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal mb-4"
               style={{ color: "var(--text-headline)" }}
             >
               83% of your clients now prefer to order online.
@@ -827,7 +827,7 @@ export default function WholesailPage() {
             </p>
           </div>
           <div
-            className="p-8"
+            className="p-4 sm:p-6 lg:p-8"
             style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
           >
             {[
@@ -940,7 +940,7 @@ export default function WholesailPage() {
             See the Real Cost
           </span>
           <h2
-            className="text-3xl md:text-4xl font-serif font-normal mb-3"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal mb-3"
             style={{ color: "var(--text-headline)" }}
           >
             What&apos;s your biggest challenge right now?
@@ -966,7 +966,7 @@ export default function WholesailPage() {
             Platform Capabilities
           </span>
           <h2
-            className="text-3xl md:text-4xl font-serif font-normal"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal"
             style={{ color: "var(--text-headline)" }}
           >
             Everything your distribution business needs.
@@ -1037,7 +1037,7 @@ export default function WholesailPage() {
             Full Feature Breakdown
           </span>
           <h2
-            className="text-3xl md:text-4xl font-serif font-normal"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal"
             style={{ color: "var(--text-headline)" }}
           >
             Three parts. One platform. Everything your distribution business runs on.
@@ -1102,7 +1102,7 @@ export default function WholesailPage() {
             Your Investment
           </span>
           <h2
-            className="text-3xl md:text-4xl font-serif font-normal mb-3"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal mb-3"
             style={{ color: "var(--text-headline)" }}
           >
             One build. One retainer.
@@ -1124,7 +1124,7 @@ export default function WholesailPage() {
         >
           {/* Build */}
           <div
-            className="p-8 border-b md:border-b-0 md:border-r"
+            className="p-4 sm:p-6 lg:p-8 border-b md:border-b-0 md:border-r"
             style={{
               borderColor: "var(--border-strong)",
               backgroundColor: "var(--bg-blue)",
@@ -1137,7 +1137,7 @@ export default function WholesailPage() {
             >
               One-Time Build
             </div>
-            <div className="font-serif text-4xl mb-1">Starting at $25K</div>
+            <div className="font-serif text-2xl sm:text-3xl lg:text-4xl mb-1">Starting at $25K</div>
             <p
               className="font-mono text-[11px] leading-relaxed mb-6"
               style={{ color: "rgba(255,255,255,0.6)" }}
@@ -1168,7 +1168,7 @@ export default function WholesailPage() {
           </div>
           {/* Retainer */}
           <div
-            className="p-8"
+            className="p-4 sm:p-6 lg:p-8"
             style={{ backgroundColor: "var(--bg-white)" }}
           >
             <div
@@ -1178,7 +1178,7 @@ export default function WholesailPage() {
               Monthly Retainer
             </div>
             <div
-              className="font-serif text-4xl mb-1"
+              className="font-serif text-2xl sm:text-3xl lg:text-4xl mb-1"
               style={{ color: "var(--text-headline)" }}
             >
               Starting at $5K
@@ -1338,7 +1338,7 @@ export default function WholesailPage() {
             Also Available
           </span>
           <h2
-            className="text-3xl md:text-4xl font-serif font-normal mb-3"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal mb-3"
             style={{ color: "var(--text-headline)" }}
           >
             Want more clients?
@@ -1460,7 +1460,7 @@ export default function WholesailPage() {
             Process
           </span>
           <h2
-            className="text-3xl md:text-4xl font-serif font-normal"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal"
             style={{ color: "var(--text-headline)" }}
           >
             From intake to live portal in under 2 weeks.
@@ -1522,7 +1522,7 @@ export default function WholesailPage() {
             Also Included
           </span>
           <h2
-            className="text-3xl md:text-4xl font-serif font-normal"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal"
             style={{ color: "var(--text-headline)" }}
           >
             Every feature a modern distributor needs.
@@ -1587,7 +1587,7 @@ export default function WholesailPage() {
             Questions
           </span>
           <h2
-            className="text-3xl md:text-4xl font-serif font-normal"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal"
             style={{ color: "var(--text-headline)" }}
           >
             Frequently asked questions.
@@ -1609,7 +1609,7 @@ export default function WholesailPage() {
             Ready to modernize your wholesale ordering?
           </span>
           <h2
-            className="text-3xl md:text-5xl font-serif font-normal mb-6 leading-tight"
+            className="text-xl sm:text-2xl md:text-4xl lg:text-5xl font-serif font-normal mb-6 leading-tight"
             style={{ color: "var(--text-on-blue)" }}
           >
             Your clients get a portal.
@@ -1665,7 +1665,7 @@ export default function WholesailPage() {
             Start Your Build
           </span>
           <h2
-            className="text-3xl md:text-4xl font-serif font-normal mb-3"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal mb-3"
             style={{ color: "var(--text-headline)" }}
           >
             Tell us about your distribution business.
