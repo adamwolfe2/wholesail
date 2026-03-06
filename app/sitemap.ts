@@ -280,6 +280,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    // ── Geographic Pages (March 2026) ─────────────────────────────────────────
+    { url: `${BASE_URL}/michigan`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/pennsylvania`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/arizona`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/north-carolina`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/washington`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/colorado`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    // ── Industry Pages (March 2026) ───────────────────────────────────────────
+    { url: `${BASE_URL}/flooring-distributor`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE_URL}/sporting-goods-distributor`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE_URL}/safety-equipment-distributor`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE_URL}/dairy-distributor`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE_URL}/toy-distributor`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.85 },
     // ── Feature Landing Pages ─────────────────────────────────────────────────
     {
       url: `${BASE_URL}/features/standing-orders`,
@@ -311,6 +324,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.85,
     },
+    // ── Feature Pages (March 2026) ────────────────────────────────────────────
+    { url: `${BASE_URL}/features/route-management`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE_URL}/features/order-history`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE_URL}/features/catalog-management`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE_URL}/features/mobile-ordering`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE_URL}/features/wholesale-onboarding`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${BASE_URL}/features/wholesale-order-management`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE_URL}/features/b2b-ordering-portal`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.9 },
+    { url: `${BASE_URL}/features/distributor-client-portal`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.9 },
     // ── Blog Posts ────────────────────────────────────────────────────────────
     {
       url: `${BASE_URL}/blog/why-distribution-companies-are-replacing-spreadsheets-with-ordering-portals`,
@@ -1004,5 +1026,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    // ── Blog Posts (March 2026) ───────────────────────────────────────────────
+    { url: `${BASE_URL}/blog/how-to-set-up-wholesale-account-credit-limits`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/distribution-business-kpis`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/how-to-get-more-wholesale-accounts`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/wholesale-distributor-profit-margins`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/how-to-write-wholesale-terms-and-conditions`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/route-delivery-software-for-distributors`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/how-to-manage-a-distribution-warehouse`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/digital-transformation-for-distributors`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/wholesale-distributor-insurance`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/how-to-reduce-wholesale-order-cancellations`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/food-distributor-software`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/wholesale-net-terms-guide`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/how-to-onboard-wholesale-accounts-faster`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/wholesale-distributor-cash-flow-problems`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE_URL}/blog/b2b-portal-vs-edi-for-distributors`, lastModified: new Date("2026-03-06"), changeFrequency: "monthly", priority: 0.8 },
   ];
 }

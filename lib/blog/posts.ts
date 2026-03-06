@@ -6747,6 +6747,1099 @@ If you are offering any form of geographic or category exclusivity, define it pr
 </div>
 `,
   },
+  {
+    slug: "how-to-set-up-wholesale-account-credit-limits",
+    title: "How to Set Wholesale Account Credit Limits (Without Destroying Customer Relationships)",
+    excerpt: "A practical guide to setting credit limits that protect your cash flow while keeping accounts happy — including how to assess creditworthiness, typical formulas, and how to communicate limits professionally.",
+    publishedAt: "2026-03-05",
+    category: "Finance",
+    readTime: 8,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "How to Set Wholesale Account Credit Limits | Wholesail",
+      description: "Learn how to set wholesale credit limits that protect cash flow without losing accounts. Covers creditworthiness assessment, the 2x monthly order formula, prepay vs. net terms, and communication strategies.",
+      keywords: ["wholesale credit limits", "how to set credit limits wholesale", "wholesale account credit policy", "net terms wholesale", "wholesale creditworthiness"],
+    },
+    content: `
+<p class="lead">Credit limits are one of the most uncomfortable conversations in distribution. Set them too low and you slow down your best accounts. Set them too high and you're financing customers who may never pay. Get the communication wrong and a routine policy decision turns into a lost account. Most distributors either avoid the conversation entirely — extending unlimited credit to anyone who asks — or handle it so bluntly that accounts feel like they're being accused of something. There's a better way.</p>
+
+<h2>Why Credit Limits Matter More Than You Think</h2>
+
+<p>The average small distributor carries 30 to 45 days of accounts receivable on the books at any given time. For a business doing $2 million in annual revenue, that's $165,000 to $247,000 tied up in unpaid invoices. When one or two accounts stretch to 60 or 90 days — or go dark entirely — the cash flow impact is immediate and painful. A $40,000 bad debt write-off can wipe out six months of net profit for a business operating on 3% margins.</p>
+
+<p>Credit limits aren't about distrust. They're about managing risk exposure to any single account the same way a bank manages loan exposure to any single borrower. Framing it this way — internally and externally — changes the entire nature of the conversation.</p>
+
+<h2>How to Assess Creditworthiness</h2>
+
+<p>Before you set a limit, you need information. For new accounts, that means a credit application. A basic credit application should collect: business legal name, years in operation, three trade references (suppliers they currently buy from on terms), banking information (bank name and account type — you don't need the account number), and authorization to run a business credit check.</p>
+
+<p>For business credit checks, the main sources are Dun & Bradstreet (D&B PAYDEX score), Experian Business, and Equifax Business. D&B is the most widely used in distribution. A PAYDEX score above 80 indicates the business pays on time. Below 70 is a yellow flag. Below 50 is a red flag that warrants either a lower limit or prepay terms until a payment history is established.</p>
+
+<p>For existing accounts, your own payment history is the best data you have. An account that has paid every invoice within terms for 24 months has demonstrated creditworthiness through behavior. An account that regularly stretches to 45 days on a net-30 agreement is already showing you what to expect at higher exposure.</p>
+
+<h2>Credit Limit Formulas That Work</h2>
+
+<p>The most common formula used by distributors is the <strong>2x monthly average order</strong> rule: calculate the account's average monthly order volume over the past 3 to 6 months, then set the credit limit at 2x that number. This gives the account enough room to place orders and have invoices outstanding simultaneously without hitting the limit under normal operating conditions, while capping your exposure at roughly 60 days of their purchase volume.</p>
+
+<p>Example: An account places $8,000 in orders per month on average. Their credit limit is set at $16,000. At any given time, they might have one invoice from 30 days ago ($8,000) and a new order being processed ($8,000). They're at their limit, which means a new order triggers a payment conversation before it ships — exactly what you want.</p>
+
+<p>For new accounts with no history, start conservative: $2,500 to $5,000 depending on your average order size, with a clear path to a higher limit after 90 days of on-time payment. Communicate this explicitly: "We start new accounts at $5,000 and review for increases after the first quarter based on payment history."</p>
+
+<p>A second formula used by larger distributors is <strong>10% of the account's annual revenue</strong> — the idea being that no single supplier should represent more than 10% of a business's annual purchasing, so your credit exposure should be proportional to their size. This requires knowing or estimating the account's revenue, which is feasible for established businesses but difficult for smaller or newer accounts.</p>
+
+<h2>When to Require Prepay Instead of Terms</h2>
+
+<p>Some accounts shouldn't get net terms at all, at least initially. Require prepay when any of the following are true:</p>
+
+<ul>
+<li>The business has been open less than 12 months</li>
+<li>The credit application reveals no trade references or references that don't check out</li>
+<li>A credit check shows a PAYDEX score below 50 or significant derogatory payment history</li>
+<li>The account has previously gone delinquent with you or another distributor</li>
+<li>The order is for an unusually large one-time purchase with no established relationship</li>
+</ul>
+
+<p>Prepay is not a punishment — frame it as a starting point. "We require prepayment for first orders from new accounts while we establish a credit history together. After 90 days of activity, we'll review for a credit line." This is standard practice at major distributors and most professional buyers understand it.</p>
+
+<h2>How to Communicate Limits Without Losing Accounts</h2>
+
+<p>The communication matters as much as the decision. Three principles:</p>
+
+<p><strong>1. Be proactive, not reactive.</strong> Tell accounts what their limit is when you set it — don't wait for an order to be declined. Send a short note when an account is approved: "Your account has been set up with a $10,000 credit line on Net 30 terms. Orders that would exceed this limit will require partial prepayment or payment of outstanding invoices before release." No surprises means no anger.</p>
+
+<p><strong>2. Give accounts agency.</strong> If an account wants a higher limit, have a process: updated credit application, 90 days of payment history with you, or a personal guarantee for smaller businesses. Framing it as "here's how you qualify for more" is far better than "no."</p>
+
+<p><strong>3. Separate the credit conversation from the relationship conversation.</strong> When an account hits their limit, have your accounting team make the call — not the sales rep. The rep's job is to protect the relationship. The accounting team's job is to collect. Mixing these roles creates awkward conversations that damage both.</p>
+
+<h2>Building Credit Limits Into Your Ordering System</h2>
+
+<p>A B2B ordering portal can enforce credit limits automatically: when an account's outstanding balance plus their pending order exceeds their limit, the portal flags it before the order is submitted — not after it hits your warehouse. The account sees a clear message ("Your current balance is $9,200. Adding this $1,500 order would exceed your $10,000 credit limit. Please pay outstanding invoices or contact us to adjust your limit.") rather than placing an order that gets silently held.</p>
+
+<p>This removes the most uncomfortable part of the conversation — catching the situation early, in the system, before product has been picked — and turns a potential conflict into a routine administrative step.</p>
+
+<div class="cta-block">
+  <h3>Wholesail's B2B ordering portal enforces credit limits automatically, so your team isn't chasing down held orders.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "distribution-business-kpis",
+    title: "12 KPIs Every Distribution Business Should Track Monthly",
+    excerpt: "The metrics that actually tell you whether your distribution business is healthy — from order error rate to days sales outstanding to gross margin per route.",
+    publishedAt: "2026-03-05",
+    category: "Operations",
+    readTime: 9,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "12 Distribution Business KPIs to Track Monthly | Wholesail",
+      description: "The 12 key performance indicators every wholesale distributor should monitor monthly, including order error rate, on-time delivery, DSO, fill rate, and gross margin per route.",
+      keywords: ["distribution business KPIs", "wholesale distributor metrics", "distribution company performance indicators", "wholesale KPIs", "distributor operations metrics"],
+    },
+    content: `
+<p class="lead">Most distribution businesses track revenue and not much else. Revenue goes up, you feel good. Revenue dips, you get worried. But revenue is a lagging indicator — it tells you what happened, not why, and not what's about to happen. The distributors who run tight operations track a handful of metrics that give them a clear picture of operational health, customer satisfaction, financial position, and growth trajectory, updated every month.</p>
+
+<p>Here are the 12 that matter most, why each one matters, and what benchmarks to aim for.</p>
+
+<h2>1. Revenue (Total and by Account Tier)</h2>
+
+<p>Track total revenue month-over-month and year-over-year, but also break it down by account tier (top 20%, mid-tier, new accounts). A business where total revenue is flat but the top-20% accounts are growing while mid-tier is declining has a concentration problem developing. Target: consistent growth in all tiers, with new account revenue representing 10-15% of monthly total.</p>
+
+<h2>2. Order Error Rate</h2>
+
+<p>Percentage of orders that involve a pick error, wrong quantity, wrong item, or damaged product. Calculate it as: (orders with errors / total orders shipped) x 100. Industry average for manual operations is 1-3%. Best-in-class operations run below 0.5%. Every error costs you an estimated $35-75 to resolve (redelivery, credit issuance, customer service time). At 500 orders per month and a 2% error rate, that's 10 errors costing $350-750 per month — before you count the relationship damage.</p>
+
+<h2>3. On-Time Delivery Percentage</h2>
+
+<p>Percentage of orders delivered on the date promised to the customer. Track it separately from carrier-caused delays if you use third-party freight. Your target should be 95%+ for routes you control directly. Below 90% means accounts are adjusting their ordering behavior to compensate — ordering earlier, over-ordering as buffer stock — which distorts your demand signal and strains your cash.</p>
+
+<h2>4. Accounts Receivable Aging</h2>
+
+<p>The single most important cash flow metric. Break your AR into buckets: current (within terms), 1-30 days past due, 31-60 days past due, 61-90 days, and 90+ days. Any balance in the 90+ bucket has a meaningful probability of becoming a write-off. Target: 80%+ of AR in the current bucket, less than 5% in the 60+ bucket. Review this weekly with your accounting team, monthly with ownership.</p>
+
+<h2>5. Average Order Value (AOV)</h2>
+
+<p>Total revenue divided by number of orders. Track this trend carefully — declining AOV often signals accounts are splitting orders, testing competitors for certain SKUs, or reducing purchasing due to their own business problems. Rising AOV signals growing wallet share. Target AOV varies by vertical, but watch for any month-over-month decline exceeding 5%.</p>
+
+<h2>6. Client Retention Rate</h2>
+
+<p>Percentage of accounts that placed at least one order in the current month that also placed an order in the prior month (or prior quarter for less frequent buyers). Calculate it as: (returning accounts / prior period active accounts) x 100. Healthy distribution businesses run 85-92% monthly retention. Below 80% means you're on a treadmill — replacing churned accounts just to stay flat. The cost to acquire a new wholesale account is 5-7x the cost to retain an existing one.</p>
+
+<h2>7. Fill Rate</h2>
+
+<p>Percentage of line items on customer orders that are shipped complete on the first attempt. A fill rate below 95% means accounts are regularly receiving incomplete orders and placing secondary orders or sourcing elsewhere for the difference. Fill rate is a direct function of your inventory management — if you're not carrying enough of the right SKUs, you're pushing customers to find the gap at a competitor.</p>
+
+<h2>8. Days Sales Outstanding (DSO)</h2>
+
+<p>How many days, on average, it takes to collect payment after an invoice is issued. Calculate it as: (accounts receivable / total credit sales) x number of days in the period. If you offer Net 30 terms and your DSO is 47 days, you're effectively offering Net 47 — and financing 17 days of your customers' cash flow for free. Target: DSO should be within 5-7 days of your stated payment terms. Net 30 terms should produce a DSO of 32-37 days.</p>
+
+<h2>9. New Account Acquisition Cost</h2>
+
+<p>Total sales and marketing spend divided by number of new accounts acquired in the period. This includes rep time, trade show costs, sample costs, and any marketing spend. If you spent $8,000 on sales activities in a month and acquired 4 new accounts, your CAC is $2,000. Compare this against each account's annual revenue and expected lifetime — a $2,000 acquisition cost on a $40,000/year account is excellent; on a $6,000/year account it's marginal.</p>
+
+<h2>10. Gross Margin Per Route</h2>
+
+<p>For distributors running delivery routes, this is critical: the gross margin generated by each route, after subtracting direct delivery costs (driver wages, fuel, vehicle). A route that generates $45,000 in monthly revenue but costs $12,000 to run has a route margin of $33,000. Compare routes to identify underperforming ones — often the problem is stop density (too few deliveries per mile), minimum order failures, or a concentration of low-margin accounts on one route.</p>
+
+<h2>11. Stock Turnover Rate</h2>
+
+<p>How many times you sell through your average inventory in a given period. Calculate it as: cost of goods sold / average inventory value. A distributor with $180,000 in annual COGS and $30,000 in average inventory has a turnover rate of 6x per year — meaning inventory turns over every 2 months. Higher turnover means less cash tied up in product. Industry benchmarks vary widely by category: perishables should turn 50+ times per year; durable goods may turn 4-8 times. Know your category benchmark and track against it.</p>
+
+<h2>12. Rep Productivity</h2>
+
+<p>Revenue and new accounts generated per sales rep, tracked monthly. In a well-run distribution operation, reps should be spending their time on relationship management, new account development, and upselling — not on order entry, invoice questions, and delivery problem resolution. If your reps are spending more than 30% of their time on administrative tasks, your systems are costing you sales capacity. Track revenue-per-rep and new-accounts-per-rep separately so you can distinguish between reps who are growing the book and reps who are managing existing accounts without expanding them.</p>
+
+<h2>Building a Monthly KPI Dashboard</h2>
+
+<p>These 12 metrics should live in a single dashboard reviewed by ownership and operations leadership every month. You don't need expensive BI software — a Google Sheet or Excel workbook with consistent data entry works fine at most distribution scales. What matters is consistency: the same metrics, calculated the same way, reviewed on the same schedule.</p>
+
+<p>The goal isn't to track everything. It's to catch problems early — a rising DSO before it becomes a cash crisis, a falling fill rate before accounts start sourcing elsewhere, a declining retention rate before revenue starts dropping. Monthly visibility into these 12 metrics gives you a 30-day lead time on most distribution problems. That's enough to act before things get serious.</p>
+
+<div class="cta-block">
+  <h3>Wholesail's dashboard gives you order, account, and revenue metrics in one place — no spreadsheets required.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "how-to-get-more-wholesale-accounts",
+    title: "How to Get More Wholesale Accounts: A Practical Field Guide",
+    excerpt: "Concrete strategies for growing your wholesale account base — from cold outreach and referral programs to trade shows, inbound from your website, and how to handle the first 90 days of a new account relationship.",
+    publishedAt: "2026-03-05",
+    category: "Guide",
+    readTime: 9,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "How to Get More Wholesale Accounts: A Field Guide | Wholesail",
+      description: "A practical guide to growing your wholesale account base. Covers cold outreach, referral programs, trade shows, inbound from your website, and the first 90 days of a new account relationship.",
+      keywords: ["how to get wholesale accounts", "grow wholesale customer base", "wholesale account acquisition", "wholesale sales strategy", "finding new wholesale customers"],
+    },
+    content: `
+<p class="lead">Growing a wholesale account base is not the same as growing a retail customer list. Wholesale accounts require trust before they commit, they expect service continuity, and they take months to develop into meaningful revenue. The tactics that work in B2C — ads, promotions, discounts — have limited impact in wholesale. What works is systematic relationship building, consistent follow-through, and positioning yourself as the easiest supplier to work with. Here's how to do it.</p>
+
+<h2>Cold Outreach: What Actually Works</h2>
+
+<p>Cold outreach in wholesale distribution is most effective when it's narrow, targeted, and personal. Generic "we'd love to supply your business" emails go straight to the trash. What gets a response is specificity: you've done research, you know what they carry, and you have a specific reason why your product line or service model is a fit for them.</p>
+
+<p>The most effective cold outreach sequence for distributors:</p>
+
+<ol>
+<li><strong>LinkedIn connection request</strong> to the buyer or owner — no pitch in the connection request</li>
+<li><strong>Day 3: LinkedIn message</strong> — one or two sentences, specific to their business: "I noticed you carry [X brand] — we distribute [Y and Z] which complement that range. Worth a quick call this week?"</li>
+<li><strong>Day 7: Email</strong> — slightly longer, include one specific differentiator (pricing structure, delivery frequency, no minimums on reorders, or whatever your actual advantage is)</li>
+<li><strong>Day 14: Call</strong> — direct, brief, reference the prior outreach</li>
+<li><strong>Day 30: Final follow-up</strong> — "I'll leave this with you. If timing changes, here's how to reach me."</li>
+</ol>
+
+<p>Five touches over 30 days is the standard. Most distributors give up after one. The accounts that convert on the fourth or fifth touch are often the most loyal — they didn't say no, they just weren't ready yet.</p>
+
+<h2>Referral Programs</h2>
+
+<p>Your best existing accounts know other businesses that could use your products. A structured referral program converts that knowledge into introductions. The mechanics are simple: for each new account that places their first order and cites a referral, the referring account gets a credit on their next invoice — typically 2-5% of the new account's first order value, or a fixed amount like $50-$100.</p>
+
+<p>The key is making it easy to refer: a simple form on your website or portal, a unique referral link per account, and a prompt reminder at the point when accounts are happiest (right after a smooth delivery, or when they've just complimented your service). Most distributors have the relationships to run a referral program but never ask. Asking turns passive goodwill into active introductions.</p>
+
+<h2>Trade Shows</h2>
+
+<p>Industry trade shows remain one of the highest-yield new account acquisition channels for distributors, particularly in food and beverage, specialty products, and branded goods. The key is working trade shows strategically, not just showing up.</p>
+
+<p>Before the show: research the exhibitor and attendee list, identify the 20-30 prospects you most want to meet, and schedule coffee or brief meetings in advance. At the show: prioritize those pre-scheduled conversations over booth traffic. After the show: follow up within 48 hours while the conversation is fresh, and reference something specific from your discussion — not a generic "great meeting you" email.</p>
+
+<p>The accounts you meet at trade shows have self-selected as serious buyers. They're not browsing — they're looking for suppliers. That makes trade show leads meaningfully warmer than cold outreach.</p>
+
+<h2>Inbound From Your Website</h2>
+
+<p>Most distribution websites are digital brochures that don't convert. A distributor's website should do three things: communicate what you carry and who you serve clearly, make it obvious how to inquire about becoming an account, and give prospects enough information to qualify themselves before they contact you.</p>
+
+<p>The highest-converting element you can add to a distribution website is a product catalog with account application built in. Not a PDF catalog — a browsable online catalog where a prospect can see what you carry, see approximate pricing tiers (or request pricing after submitting an inquiry), and submit a wholesale account application directly. Businesses that have already browsed your catalog and applied for an account before you speak to them are dramatically more likely to place a first order.</p>
+
+<p>SEO matters too. A buyer searching "wholesale [product category] distributor [your city]" is a high-intent prospect. If your website doesn't rank for those searches, you're invisible to that traffic. Basic local SEO — a complete Google Business Profile, location-specific pages on your site, and consistent NAP (name/address/phone) information across directories — is achievable without an agency and captures meaningful inbound traffic at the local level.</p>
+
+<h2>Social Proof</h2>
+
+<p>Wholesale buyers are risk-averse. Switching suppliers is a business disruption — if the new supplier fails to deliver, they're scrambling. Reducing perceived risk through social proof accelerates conversion significantly.</p>
+
+<p>Social proof for distributors includes: named customer testimonials (with the business name and buyer's title, not just a first name), case studies that show specific outcomes ("reduced order processing time by 40% after switching to portal-based ordering"), Google reviews from accounts, and logos of recognizable brands you supply. If you supply any regional chain, institution, or well-known brand, display it prominently.</p>
+
+<h2>The First 90 Days of a New Account Relationship</h2>
+
+<p>Acquisition is only half the job. An account that places one order and disappears is a failed acquisition. The first 90 days determine whether a new account becomes a long-term buyer or a one-time trial that never converted.</p>
+
+<p>The 90-day onboarding sequence:</p>
+
+<ul>
+<li><strong>Day 1:</strong> Welcome email with account access information, rep contact, and what to expect on the first delivery</li>
+<li><strong>Day 3-5:</strong> First order confirmation call — make sure they know how to order, confirm delivery preferences</li>
+<li><strong>After first delivery:</strong> Follow-up call or message — was everything correct? Any issues with the delivery?</li>
+<li><strong>Day 30:</strong> Check-in — are they happy with the product range? Anything they'd like to see added?</li>
+<li><strong>Day 60:</strong> Introduce them to one additional product category or promotion relevant to their business</li>
+<li><strong>Day 90:</strong> Review the relationship — are they on the right ordering frequency? Is their credit line appropriate? Do they know about all the ways they can order?</li>
+</ul>
+
+<p>Most distributors do the first order and then nothing until the next order comes in — or doesn't. A structured 90-day onboarding makes new accounts feel invested in by their supplier, which dramatically increases the probability of a second, third, and fourth order.</p>
+
+<div class="cta-block">
+  <h3>Make it easy for new accounts to find you, apply, and order with Wholesail's account application and B2B ordering portal.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "wholesale-distributor-profit-margins",
+    title: "Wholesale Distributor Profit Margins: What's Normal and How to Improve Yours",
+    excerpt: "Industry benchmarks by vertical, the difference between gross and net margin, how freight costs eat your profits, and practical strategies for improving distributor margins without losing accounts.",
+    publishedAt: "2026-03-05",
+    category: "Finance",
+    readTime: 8,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "Wholesale Distributor Profit Margins: Benchmarks and Improvement Strategies | Wholesail",
+      description: "Wholesale distributor profit margin benchmarks by vertical, gross vs. net margin explained, freight cost impact, pricing strategy, volume discounts, and how to reduce cost of goods.",
+      keywords: ["wholesale distributor profit margins", "distribution business margins", "wholesale margins by industry", "distributor gross margin", "how to improve wholesale margins"],
+    },
+    content: `
+<p class="lead">Distribution is a margin business. You buy for less than you sell, and the difference has to cover every truck, every warehouse square foot, every rep's salary, and every operational system you run — and still leave something for the owner. Understanding where your margins should be, why they are where they are, and what levers actually move them is the difference between running a profitable distribution business and running a high-revenue business that never quite makes money.</p>
+
+<h2>Gross Margin vs. Net Margin: The Distinction That Matters</h2>
+
+<p>Gross margin is revenue minus cost of goods sold (COGS), divided by revenue. It measures how much you retain after paying for the product itself — before warehouse, labor, delivery, and overhead. Net margin is what's left after all of those costs.</p>
+
+<p>Distributors frequently cite gross margin as their profitability metric and then are surprised when they're cash-poor. A 20% gross margin sounds healthy until you realize your delivery costs are 8%, warehouse is 4%, sales is 3%, and admin is 3% — leaving 2% net margin on a business doing $3 million in revenue, which is $60,000 in net income. Profitable on paper. Tight in practice.</p>
+
+<p>Both metrics matter, but net margin is what actually determines whether the business is worth running.</p>
+
+<h2>Industry Benchmarks by Vertical</h2>
+
+<p>Wholesale distributor margins vary significantly by what you're distributing:</p>
+
+<ul>
+<li><strong>Food and Beverage:</strong> Gross margin 12-20%, net margin 1-4%. Highly competitive, low barriers to entry, commodity pricing pressure on most SKUs.</li>
+<li><strong>Specialty/Premium Food:</strong> Gross margin 20-35%, net margin 4-8%. Branded, differentiated products with more pricing power.</li>
+<li><strong>Jan-San / Facility Supplies:</strong> Gross margin 18-28%, net margin 4-8%. Recurring consumable purchasing, decent pricing power on branded items.</li>
+<li><strong>Industrial Supplies:</strong> Gross margin 25-40%, net margin 5-12%. More technical products, less commoditization.</li>
+<li><strong>Foodservice Equipment:</strong> Gross margin 25-45%, net margin 6-15%. Higher ASP, more complex sales, significant installation and service components.</li>
+<li><strong>Health and Beauty / Personal Care:</strong> Gross margin 20-35%, net margin 5-10%.</li>
+<li><strong>Specialty Chemicals:</strong> Gross margin 30-50%, net margin 8-15%.</li>
+</ul>
+
+<p>If your margins are significantly below these benchmarks for your vertical, the problem is typically in one of four places: pricing, freight, account mix, or COGS.</p>
+
+<h2>The Freight Cost Problem</h2>
+
+<p>For distributors running their own delivery operations, freight is the margin killer that most owners underestimate. A route with 12 stops, 400 miles driven, and a driver earning $28/hour plus a truck at $0.65/mile fully loaded costs roughly $600-800 per day to operate. If that route generates $8,000 in daily revenue at a 20% gross margin ($1,600), freight is consuming 37-50% of gross profit.</p>
+
+<p>The way to improve route economics without raising prices: increase stop density (more deliveries per mile), increase average order size per stop (minimum order requirements and effective upselling), and eliminate unprofitable stops (accounts with small orders on inconvenient routes that never grow).</p>
+
+<p>For distributors using third-party carriers, the issue is freight pass-through. If you're absorbing freight costs rather than passing them through to accounts, you're subsidizing delivery for every account. Charging freight on orders below a minimum order threshold — and waiving it above — creates the right incentive structure: accounts that want free delivery need to order enough to justify the route stop.</p>
+
+<h2>Pricing Strategy</h2>
+
+<p>Most small distributors use cost-plus pricing: calculate your landed cost for a SKU, add a target margin percentage, and that's your price. This is simple and ensures you're not selling below cost, but it leaves margin on the table where the market would bear a higher price, and it doesn't account for competitive pressure where cost-plus produces a price above market.</p>
+
+<p>A better approach is a hybrid: use cost-plus as the floor, then validate against market pricing for each category. For commoditized SKUs where buyers price-shop, your margin is constrained by the market. For differentiated or specialty items, the market may support a premium. Knowing which of your SKUs are in which category lets you optimize margin across the portfolio rather than applying a uniform markup to everything.</p>
+
+<h2>Volume Discount Structures That Don't Destroy Margin</h2>
+
+<p>Volume discounts are a standard expectation in wholesale. The trap is structuring them without modeling the margin impact. A 5% volume discount at a 15% gross margin is not a 5% reduction in margin — it's a 33% reduction in margin dollars. At $100,000 in monthly revenue with 15% gross margin, you have $15,000 in gross profit. A 5% discount reduces revenue to $95,000 and gross profit (assuming the same COGS) to $10,000 — a 33% decline in profit dollars.</p>
+
+<p>Discount structures that work better: tiered discounts based on annual volume commitment (not per-order size), category-specific discounts (discounting high-margin categories to reward purchasing, not low-margin commodities where you have no room), and discount earned through payment behavior (a 1% discount for payment within 10 days — which also improves your DSO).</p>
+
+<h2>Reducing Cost of Goods</h2>
+
+<p>Your COGS is negotiated, not fixed. Strategies that work:</p>
+
+<ul>
+<li><strong>Consolidated purchasing:</strong> If you're buying from 8 vendors when 4 would cover the same categories, you're splitting volume that could be consolidated into higher purchase tiers with each supplier.</li>
+<li><strong>Annual purchase commitments:</strong> Committing to a minimum annual purchase volume in exchange for a lower wholesale price — only makes sense for your highest-velocity SKUs.</li>
+<li><strong>Early pay discounts from suppliers:</strong> Most manufacturers offer 1-2% for payment within 10 days. On $1 million in annual COGS, capturing those discounts consistently is $10,000-20,000 per year.</li>
+<li><strong>Reducing slow-moving SKUs:</strong> Every SKU you carry that moves fewer than 2-3 units per month is costing you carrying costs without contributing meaningfully to revenue. SKU rationalization — cutting the tail of slow-movers — improves inventory turnover and frees up cash for faster-moving product.</li>
+</ul>
+
+<div class="cta-block">
+  <h3>Wholesail gives you account-level margin visibility so you know which accounts are profitable and which aren't.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "how-to-write-wholesale-terms-and-conditions",
+    title: "How to Write Wholesale Terms & Conditions (With Examples)",
+    excerpt: "What to include in your wholesale terms and conditions — payment terms, return policy, minimum orders, delivery terms, and sample language for the clauses that matter most.",
+    publishedAt: "2026-03-05",
+    category: "Guide",
+    readTime: 8,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "How to Write Wholesale Terms & Conditions (With Examples) | Wholesail",
+      description: "A practical guide to writing wholesale terms and conditions, including what clauses to include, sample language for payment terms, returns, MOQs, and account termination.",
+      keywords: ["wholesale terms and conditions", "wholesale T&C template", "wholesale agreement clauses", "wholesale supplier terms", "how to write wholesale policy"],
+    },
+    content: `
+<p class="lead">Most small distributors operate without formal written terms and conditions. They have a general sense of their policies — net 30 terms, no returns after 7 days, $500 minimum order — but those policies live in people's heads, not in documents that buyers have agreed to in writing. This is fine until it isn't: a dispute over a damaged shipment, a buyer who claims they never agreed to your payment terms, or an account that wants to return product after 60 days and expects a full credit. A written T&C document doesn't prevent disputes, but it gives you a clear basis for resolving them.</p>
+
+<h2>What Your Wholesale Terms and Conditions Should Cover</h2>
+
+<p>A wholesale T&C document is not a legal contract that requires a lawyer to draft — though having legal counsel review it is worth doing at least once. For most distributors, a clear, plain-English document covering the following areas is sufficient:</p>
+
+<h2>1. Payment Terms</h2>
+
+<p>This is the most important section. Specify: what your standard terms are, when payment is due, acceptable payment methods, late payment fees, and credit hold procedures.</p>
+
+<p><strong>Sample language:</strong> "Payment is due within 30 days of invoice date (Net 30) unless otherwise agreed in writing. Accounts more than 15 days past due are subject to a 1.5% monthly service charge on the outstanding balance. Accounts 30 or more days past due will be placed on credit hold; no new orders will be processed until the overdue balance is paid in full. We accept ACH, check, and major credit cards. A 3% processing fee applies to credit card payments."</p>
+
+<h2>2. Return Policy</h2>
+
+<p>Specify what is returnable, the time window, who pays for return shipping, and how credits are issued. Different rules for damaged goods (where the distributor is responsible) versus buyer remorse or ordering errors (where the buyer is responsible) should be clearly distinguished.</p>
+
+<p><strong>Sample language:</strong> "Claims for damaged, defective, or short-shipped product must be reported within 5 business days of delivery. We will issue a credit memo or replacement shipment at our discretion. Product returned for buyer error (incorrect quantity ordered, change of mind) requires prior written authorization and is subject to a 15% restocking fee. Returns must be in original, unopened packaging. Perishable or temperature-sensitive products cannot be returned once delivered."</p>
+
+<h2>3. Minimum Order Requirements</h2>
+
+<p>State your minimum order value or quantity clearly, along with what happens when an order falls below the minimum — a small-order fee, a delivery surcharge, or the order being declined.</p>
+
+<p><strong>Sample language:</strong> "Minimum order for delivery is $250. Orders below $250 may be placed for will-call pickup only, or may be accepted with a $25 small-order surcharge. Minimums may vary by product category and will be noted in the product catalog."</p>
+
+<h2>4. Pricing and Price Change Notice</h2>
+
+<p>Price lists are subject to change. Specify how much notice you give, how accounts will be notified, and whether orders already submitted at old pricing will be honored.</p>
+
+<p><strong>Sample language:</strong> "Prices are subject to change with 14 days' notice. We will notify active accounts of price changes via email. Orders submitted before the effective date of a price change will be honored at the prior price. We reserve the right to adjust prices without notice in response to extraordinary cost increases."</p>
+
+<h2>5. Delivery Terms</h2>
+
+<p>Specify who owns the goods in transit, what happens when products are damaged in transit, delivery windows, and signature requirements.</p>
+
+<p><strong>Sample language:</strong> "Risk of loss passes to the buyer upon delivery. Delivered orders are FOB destination — we are responsible for goods damaged in transit if reported within the claims window specified above. Delivery windows are estimated and may vary due to weather, traffic, or operational factors. A signature may be required for orders exceeding $500. Unattended delivery is at the buyer's risk."</p>
+
+<h2>6. Account Termination</h2>
+
+<p>Reserve the right to terminate accounts for non-payment, fraudulent behavior, or other cause, and specify what happens to outstanding balances.</p>
+
+<p><strong>Sample language:</strong> "We reserve the right to suspend or terminate any account at our discretion, including for non-payment, fraudulent applications, or behavior that is abusive to our staff. Upon termination, all outstanding balances become immediately due. We will make reasonable efforts to fulfill orders already in process at time of termination."</p>
+
+<h2>7. Governing Law</h2>
+
+<p>Specify which state's law governs disputes and where any legal action must be filed.</p>
+
+<p><strong>Sample language:</strong> "These Terms are governed by the laws of the State of [Your State]. Any disputes arising from this agreement shall be subject to the exclusive jurisdiction of the courts of [Your County], [Your State]."</p>
+
+<h2>How to Get Accounts to Agree to Your Terms</h2>
+
+<p>A T&C document only protects you if accounts have agreed to it. The cleanest approach: include T&C acceptance as part of your account application. A checkbox statement — "I have read and agree to [Company Name]'s Wholesale Terms and Conditions" with a link to the full document — creates a clear record of agreement. Store the date of acceptance with the account record.</p>
+
+<p>If you're adding T&C to accounts that already exist, send an email announcing the new terms with an effective date 30 days out. For accounts using a B2B portal, require T&C acceptance at the next login. Any order placed after the effective date constitutes acceptance of the current terms.</p>
+
+<div class="cta-block">
+  <h3>Wholesail's account application includes built-in T&C acceptance so you have a documented agreement with every account.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "route-delivery-software-for-distributors",
+    title: "Route Delivery Software for Distributors: What to Look For in 2026",
+    excerpt: "A distributor's buying guide to route delivery software — the features that matter, how standalone route tools compare to integrated ordering platforms, and how to evaluate options for your operation.",
+    publishedAt: "2026-03-05",
+    category: "Buying Guide",
+    readTime: 7,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "Route Delivery Software for Distributors: 2026 Buying Guide | Wholesail",
+      description: "A buying guide to route delivery software for wholesale distributors. Key features, standalone vs. integrated options, and how to choose the right tool for your operation in 2026.",
+      keywords: ["route delivery software distributors", "distribution route optimization software", "delivery management software wholesale", "distributor routing software 2026", "route planning software distribution"],
+    },
+    content: `
+<p class="lead">Route delivery software ranges from simple map-based routing tools to comprehensive delivery management platforms that handle driver dispatch, real-time tracking, customer notifications, and proof of delivery — all integrated with your order management system. Figuring out what you actually need, versus what vendors want to sell you, requires a clear-eyed assessment of your operation's scale, the complexity of your routes, and what problems you're actually trying to solve.</p>
+
+<h2>The Core Problem Route Software Solves</h2>
+
+<p>Without software, route planning is typically done by someone who knows the territory — a dispatcher or operations manager who has driven the routes, knows which stops take longer, and can sequence a day's deliveries based on experience. This works until it doesn't: when that person is unavailable, when routes expand, when new accounts are added in unfamiliar areas, or when you need to measure route efficiency objectively.</p>
+
+<p>Route software replaces tribal knowledge with calculated optimization. Given a list of stops with time windows, vehicle capacities, and driver start/end locations, a good routing engine produces a sequence that minimizes total drive time or distance while respecting your constraints. For a distributor with 8 drivers running 10-15 stops each per day, better routing can meaningfully reduce fuel costs and driver hours — often paying for the software in the first few months.</p>
+
+<h2>Must-Have Features</h2>
+
+<p><strong>Route optimization:</strong> This should be the core capability — not just map display, but an algorithm that calculates the optimal stop sequence given your constraints (time windows, vehicle capacity, driver availability). Look for software that handles both static routes (the same stops on a regular schedule) and dynamic routes (daily routes that vary based on orders placed).</p>
+
+<p><strong>Driver mobile app:</strong> Drivers need a mobile interface that shows their route sequence, provides turn-by-turn navigation, and allows them to check off deliveries, log exceptions, and capture proof of delivery (signature or photo). A driver calling the dispatcher to ask for directions or report a failed delivery is a process failure. The app should handle it.</p>
+
+<p><strong>Proof of delivery (POD):</strong> Photo or signature capture at the point of delivery is essential for dispute resolution. When an account claims they didn't receive an order, you need timestamped, geolocated evidence. Paper delivery receipts go missing; app-captured PODs don't.</p>
+
+<p><strong>Customer notifications:</strong> Automated SMS or email notifications to accounts when their delivery is on the way — typically triggered when the driver is 1-2 stops away — reduce failed deliveries dramatically. Accounts that know their order is arriving in 30 minutes make sure someone is there to receive it.</p>
+
+<p><strong>Exception handling:</strong> Failed deliveries, refused orders, incorrect addresses — drivers need a way to log these in real time, and you need to see them immediately so you can resolve them before the driver leaves the area.</p>
+
+<h2>Nice-to-Have Features</h2>
+
+<p><strong>Live driver tracking:</strong> A web dashboard showing all drivers' real-time positions, completion status, and estimated arrival times. Useful for dispatchers and for answering customer "where's my order?" calls. Not essential at small scale.</p>
+
+<p><strong>Vehicle maintenance tracking:</strong> Logging mileage, service intervals, and maintenance events per vehicle. Useful if you're managing a fleet of 5+ vehicles without a separate fleet management system.</p>
+
+<p><strong>Analytics and reporting:</strong> Route efficiency reports, on-time delivery rates, stop dwell time analysis, fuel cost per stop. Valuable for operations managers at mid-size and larger distribution businesses. Less critical when you're running 2-3 routes a day.</p>
+
+<h2>Standalone Route Software vs. Integrated Ordering Platforms</h2>
+
+<p>The key question is whether your route software needs to integrate with your ordering system — and the answer is almost always yes, eventually. Here's why: if orders come in through your B2B portal and route software is a separate system, someone has to manually transfer the day's orders into the route software each morning. At 20 orders per day, that's manageable. At 100, it's a significant daily task that introduces errors.</p>
+
+<p>Standalone route tools (Route4Me, OptimoRoute, Circuit) are excellent for route optimization but require manual or API-based data import. They're a good fit when you need routing now and have time to build integration later, or when your order volume is low enough that daily manual transfer is not burdensome.</p>
+
+<p>Integrated platforms combine ordering, invoicing, and route management in one system. The order placed by an account in the portal flows directly into the route management module, which builds the delivery manifest without manual intervention. This is the cleaner architecture for growing operations — fewer systems to maintain, fewer failure points, and a single source of truth for order status from placement through delivery.</p>
+
+<h2>How to Evaluate Options for Your Operation</h2>
+
+<p>Before evaluating software, answer these questions:</p>
+
+<ol>
+<li>How many routes do you run per day, and how many stops per route?</li>
+<li>Do your routes change daily based on orders, or follow a fixed weekly schedule?</li>
+<li>Do you have time windows from accounts (must deliver between 8am-10am)?</li>
+<li>Do you need real-time driver tracking, or is end-of-day reporting sufficient?</li>
+<li>What system will route software need to pull orders from?</li>
+</ol>
+
+<p>For a distributor running 3-5 routes with 8-15 stops each on a fixed weekly schedule, a basic tool like Circuit or OptimoRoute at $40-100/month per driver handles the optimization problem cleanly. For a distributor running dynamic daily routes with 20+ stops based on daily order intake, you need either a more capable standalone tool with API integration to your ordering system, or a platform where those two functions are unified.</p>
+
+<div class="cta-block">
+  <h3>Wholesail's ordering platform connects order intake to delivery management, so your routes build themselves from confirmed orders.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "how-to-manage-a-distribution-warehouse",
+    title: "How to Manage a Distribution Warehouse: The Basics",
+    excerpt: "A practical introduction to distribution warehouse management — layout and slotting, pick path optimization, cycle counts, staging areas, and how to calculate safety stock.",
+    publishedAt: "2026-03-05",
+    category: "Operations",
+    readTime: 8,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "How to Manage a Distribution Warehouse: The Basics | Wholesail",
+      description: "A practical guide to managing a distribution warehouse, covering layout and slotting strategy, pick path optimization, cycle counts vs. full counts, staging areas, and safety stock calculations.",
+      keywords: ["distribution warehouse management", "warehouse management for distributors", "warehouse slotting strategy", "pick path optimization warehouse", "safety stock calculation distributor"],
+    },
+    content: `
+<p class="lead">A well-run distribution warehouse is one where a picker can walk in at 6am, know exactly where everything is, move through their pick list efficiently without backtracking, and stage completed orders clearly enough that the driver can load without assistance. A poorly run distribution warehouse is one where the operation runs on memory — the picker who knows where everything is because they put it there, and the manager who can't take a day off because everything breaks without them. Good warehouse management converts institutional knowledge into systems that work regardless of who's running them.</p>
+
+<h2>Layout and Slotting Strategy</h2>
+
+<p>The most important principle in warehouse layout for distribution is velocity-based slotting: your fastest-moving products should be closest to the staging area, and your slowest-moving products should be farthest away. This sounds obvious, but most warehouses that have grown organically violate it constantly — products are where they were put when they first arrived, not where they should be based on how often they move.</p>
+
+<p>Begin a slotting project by pulling 90 days of order data and ranking every SKU by pick frequency (how many times it appeared on an order, not just how many units were sold). Your top 20% of SKUs by pick frequency should occupy the "golden zone" — the storage locations nearest the staging/shipping area, at waist-to-shoulder height (the most ergonomic pick zone). This alone typically reduces total picker travel distance by 20-30%.</p>
+
+<p>Secondary slotting principles:</p>
+<ul>
+<li><strong>Weight:</strong> Heavier items should be picked first (staged at the bottom of a pallet or cart) and stored lower to reduce lifting injuries</li>
+<li><strong>Product affinity:</strong> Items that are frequently ordered together can be slotted near each other to reduce travel between picks on the same order</li>
+<li><strong>Temperature zones:</strong> Cold chain products require dedicated refrigerated storage with clear zone boundaries; cross-contamination of temperature-controlled products with ambient storage is a compliance issue</li>
+<li><strong>Hazardous materials:</strong> If you carry any regulated products (chemicals, certain food additives), they may require segregated storage per regulatory requirements</li>
+</ul>
+
+<h2>Pick Path Optimization</h2>
+
+<p>A pick path is the sequence in which a picker moves through the warehouse to collect all items on a pick list. An unoptimized pick path means the picker walks back and forth across the warehouse, often passing the same location multiple times. An optimized pick path sequences the items on the pick list in the order they should be collected based on their physical location — one direction through the warehouse, minimal backtracking.</p>
+
+<p>In a simple operation, this can be managed with a printed pick list where items are listed in the physical sequence they should be collected (organized by aisle and bin number). In a more complex operation, a warehouse management system (WMS) or even a basic spreadsheet-based system can generate pick lists in the correct sequence automatically.</p>
+
+<p>Batch picking — collecting items for multiple orders simultaneously, then sorting them into order-specific staging locations — increases picker efficiency significantly when orders share many of the same SKUs. For a distributor whose accounts regularly order similar products, batch picking is often more efficient than single-order picking.</p>
+
+<h2>Cycle Counts vs. Full Inventory Counts</h2>
+
+<p>A full physical inventory count — counting every SKU in the warehouse on a single day — is disruptive, time-consuming, and typically done once a year (often at fiscal year end). The problem with once-a-year counts is that inventory discrepancies can accumulate for 12 months before you catch them, leading to fill rate failures (you think you have 200 units, you actually have 160) and inventory valuation errors.</p>
+
+<p>Cycle counting is the alternative: instead of counting everything once a year, you count a subset of locations every day or every week, cycling through the entire warehouse over a defined period. The advantages: discrepancies are caught quickly, the count process doesn't shut down warehouse operations, and your team builds familiarity with accurate inventory processes over time.</p>
+
+<p>A practical cycle count schedule for a small distributor: count your top-20% velocity SKUs weekly, your mid-tier SKUs monthly, and your slow-movers quarterly. This keeps your most critical inventory accurate without requiring extensive daily counting effort.</p>
+
+<h2>Staging Areas</h2>
+
+<p>A staging area is the physical space where picked orders wait to be loaded onto delivery vehicles. A well-designed staging area is organized by route or delivery run — all orders for Route 1 in one zone, all orders for Route 2 in another. This allows drivers to load their vehicles in reverse delivery sequence (last stop loaded first, first stop loaded last) without having to sort through a mixed pile of orders.</p>
+
+<p>Clear labeling is essential: each staging location should be marked with the route or driver it's assigned to, and each picked order should have a clearly visible order label with the account name, delivery address, and order number. The test of a good staging area: a new driver should be able to figure out what to load without asking anyone.</p>
+
+<h2>Safety Stock Calculations</h2>
+
+<p>Safety stock is the buffer inventory you keep on hand above your expected demand to prevent stockouts during lead time variability. The basic formula:</p>
+
+<p><strong>Safety stock = Z × σ(lead time) × average daily demand</strong></p>
+
+<p>Where Z is the service level factor (1.65 for 95% service level, 2.05 for 98%), σ(lead time) is the standard deviation of your supplier lead time in days, and average daily demand is how many units you sell per day.</p>
+
+<p>For a more practical approach: track how often each high-velocity SKU has gone to zero or caused a backorder in the past 12 months. For any SKU that caused a stockout more than twice, increase your reorder point by 20-30%. For perishable goods, safety stock must be balanced against shelf life — excess safety stock that expires is worse than a stockout.</p>
+
+<div class="cta-block">
+  <h3>Wholesail's inventory tracking keeps your stock levels visible across every order, so you catch shortfalls before they become backorders.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "digital-transformation-for-distributors",
+    title: "Digital Transformation for Distributors: Where to Actually Start",
+    excerpt: "Not a buzzword piece — a practical guide for distributors on where digital transformation actually pays off, what order to tackle it in, and the mistakes to avoid.",
+    publishedAt: "2026-03-05",
+    category: "Guide",
+    readTime: 8,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "Digital Transformation for Distributors: Where to Start | Wholesail",
+      description: "A practical guide to digital transformation for wholesale distributors. Where to start, what order to tackle digitization in, and the common mistakes that waste money and slow everything down.",
+      keywords: ["digital transformation distributors", "wholesale distributor technology", "distribution business software", "digitize distribution operations", "distributor technology adoption"],
+    },
+    content: `
+<p class="lead">Every distribution business owner has heard "digital transformation" at this point — from consultants, software vendors, trade publications, and now AI companies offering to transform their operations. Most of it is noise. The actual work of making a distribution operation meaningfully more efficient through technology is less glamorous than the pitch: it's about eliminating specific manual processes that cost you time, money, and accuracy, in the order that produces the best return on your investment and attention.</p>
+
+<p>Here's where to actually start, and what to do after that.</p>
+
+<h2>Start With Ordering — The Highest ROI Transformation</h2>
+
+<p>The single highest-ROI digital change most distributors can make is moving order intake from phone and email to a B2B ordering portal. Here's why:</p>
+
+<p>Phone and email ordering is expensive in ways that don't show up as a line item: rep time spent on order calls (often 30-45 minutes per day per rep), data entry errors from transcribed orders (estimated at 1-3% of all manually entered orders), orders placed outside business hours that get missed, and accounts that order less frequently because the friction of calling is real. A portal eliminates all of these.</p>
+
+<p>The financial case is straightforward. A rep who spends 2 hours per day on order calls and order entry is spending 500 hours per year — roughly 25% of a full-time work year — on tasks a portal can handle for free. If that rep earns $60,000, you're spending $15,000 in rep time annually on order processing alone, not counting the cost of errors. A portal that costs $400/month ($4,800/year) pays for itself if it saves even 30% of that time.</p>
+
+<p>Beyond the internal cost: accounts that can order at 10pm when they're reviewing the next day's needs place more frequent orders. Accounts that can see real-time availability don't call to check stock. Accounts that can download their invoice from the portal don't call to ask for a copy. Every self-service action an account takes through the portal is a call your team didn't have to field.</p>
+
+<h2>Second: Invoicing and Accounts Receivable</h2>
+
+<p>After ordering, the next friction point is invoicing. Distributors who mail paper invoices are dealing with mail delays, lost invoices, and accounts who claim they never received the invoice as a reason for late payment. Distributors who email PDF invoices are doing better, but still dealing with a manual process.</p>
+
+<p>Electronic invoicing — sending invoices automatically when orders ship, with a payment link embedded — compresses the invoice-to-payment cycle. Accounts can pay online immediately. You get fewer "I'll put a check in the mail" conversations and more same-day payments. If you offer a 1% early pay discount for payment within 10 days, make it visible and easy to take advantage of through the portal.</p>
+
+<p>Automated payment reminders — sent at net-10, net-25, and day-of-due for unpaid invoices — replace the uncomfortable collection call with an impersonal system nudge. Most late payments are not malicious; they're accounts that haven't gotten around to it. A reminder at the right time is all they need.</p>
+
+<h2>Third: Inventory Tracking</h2>
+
+<p>Moving inventory tracking from spreadsheets or mental models to a real system is the third priority — after ordering and invoicing are working. The reason for this order: an inventory system is only as good as the data going into it, and data quality is highest when orders and receipts are being entered consistently. If ordering is still manual, inventory data will be inconsistent regardless of what system you use.</p>
+
+<p>For small distributors (under 500 SKUs, under $3M revenue), a simple inventory tracking system that connects to your ordering platform is sufficient. You need: current quantity on hand per SKU, reorder points that trigger when stock falls below a threshold, and incoming inventory tracking when you receive from suppliers. You do not need a full warehouse management system at this scale.</p>
+
+<h2>Fourth: Analytics</h2>
+
+<p>Once ordering, invoicing, and inventory are generating consistent data, you have the inputs for meaningful analytics. Which accounts are growing vs. declining? Which SKUs are becoming more or less popular? Which routes are most profitable? What's your fill rate by product category?</p>
+
+<p>These questions are answerable from your operational data once that data is being captured systematically. Most distribution-focused platforms include basic reporting. For custom analysis, exporting data to a Google Sheet or connecting to a simple BI tool is sufficient for most distributors at this stage.</p>
+
+<h2>Common Mistakes to Avoid</h2>
+
+<p><strong>Trying to automate everything at once.</strong> Implementing ordering, invoicing, inventory, route management, CRM, and analytics simultaneously is a recipe for failed adoption. Your team can absorb one major change at a time. Pick the highest-value change and get it working before adding the next layer.</p>
+
+<p><strong>Buying enterprise software for a 50-client business.</strong> An ERP system designed for a $50M distributor with 300 accounts and 5 warehouses has far more capability than a $3M distributor with 60 accounts needs — and far more complexity, training burden, and ongoing cost. Right-size your technology to your actual scale. Simple, purpose-built tools beat complex, generic tools at SMB scale.</p>
+
+<p><strong>Digitizing broken processes.</strong> If your ordering process is chaotic because you lack clear policies (MOQs, credit terms, delivery windows), adding a portal to the chaos just makes it digital chaos. Fix the process first, then automate it.</p>
+
+<p><strong>Underinvesting in adoption.</strong> Technology only produces value if your team uses it and your accounts use it. Budget time for training, for white-glove account onboarding to the portal, and for internal process documentation. A portal that 20% of your accounts use is not a transformation.</p>
+
+<div class="cta-block">
+  <h3>Wholesail is built for distributors who want to start with ordering — the highest-ROI place to begin.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "wholesale-distributor-insurance",
+    title: "What Insurance Does a Wholesale Distributor Need?",
+    excerpt: "A practical overview of the insurance coverages wholesale distributors need — from general liability and product liability to cargo insurance and workers' comp — and how coverage amounts scale with revenue.",
+    publishedAt: "2026-03-05",
+    category: "Guide",
+    readTime: 7,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "What Insurance Does a Wholesale Distributor Need? | Wholesail",
+      description: "A complete guide to insurance for wholesale distributors, including general liability, product liability, commercial auto, cargo/transit insurance, workers' comp, and umbrella policies.",
+      keywords: ["wholesale distributor insurance", "distribution business insurance", "product liability insurance distributor", "cargo insurance wholesale", "insurance for wholesale businesses"],
+    },
+    content: `
+<p class="lead">Insurance is one of those topics that distribution business owners tend to address reactively — after a claim, after a customer requires proof of coverage as a condition of doing business, or after a conversation with a lawyer or accountant who asks what coverage they have. Getting it right proactively is considerably less expensive than getting it wrong retroactively. Here's what coverage a wholesale distributor actually needs, why each type matters, and how to think about coverage limits as your business grows.</p>
+
+<h2>General Liability Insurance</h2>
+
+<p>General liability (GL) covers bodily injury and property damage claims arising from your business operations. If a customer slips and falls at your warehouse during a pickup, if a delivery causes property damage at an account's location, or if someone is injured during a product demonstration — GL is what responds.</p>
+
+<p>For wholesale distributors, GL is the baseline coverage that every vendor, buyer, and landlord will ask to see proof of. Most commercial leases require $1 million per occurrence / $2 million aggregate at minimum. Many larger retail and foodservice accounts require the same as a condition of doing business with you.</p>
+
+<p>Coverage levels by revenue: Under $2M revenue — $1M/$2M is typically sufficient. $2M-$10M — $1M/$2M remains appropriate for most risks, with an umbrella policy extending coverage. Over $10M — $2M/$4M underlying coverage with a $5M+ umbrella is more appropriate.</p>
+
+<h2>Product Liability Insurance</h2>
+
+<p>Product liability covers claims arising from products you distribute causing harm — bodily injury from a product defect or contamination, property damage caused by a faulty product, or financial loss attributable to a product problem. This is distinct from GL: GL covers your operations; product liability covers what you sell.</p>
+
+<p>For food and beverage distributors, product liability is particularly critical. A contamination event that causes illness in multiple accounts — even if the contamination originated with the manufacturer — can result in claims against every party in the distribution chain. Courts have held distributors liable for defective products they distributed even when they had no hand in manufacturing them.</p>
+
+<p>Product liability is often bundled with GL in a commercial general liability (CGL) policy. Confirm with your broker that your policy includes product/completed operations coverage — not all GL policies include it by default.</p>
+
+<h2>Commercial Auto Insurance</h2>
+
+<p>If you operate any vehicles — delivery trucks, cargo vans, company cars for reps — you need commercial auto coverage. Personal auto insurance explicitly excludes vehicles used for business purposes. An accident in a delivery van covered by a personal auto policy is likely to result in a denied claim.</p>
+
+<p>Commercial auto covers liability for accidents your drivers cause, physical damage to your vehicles, and medical payments. Coverage should include all vehicles titled in the business name and any personally-owned vehicles used regularly for business purposes (hired and non-owned auto coverage).</p>
+
+<h2>Cargo and Transit Insurance</h2>
+
+<p>Cargo insurance (also called inland marine or transit coverage) protects the goods you're transporting while they're in motion — on your trucks, in a common carrier's hands, or temporarily stored at a third-party location. Standard commercial auto insurance covers the vehicle; it does not cover the value of the products loaded on it.</p>
+
+<p>For a distributor moving $500,000 in product per month, the exposure during any given day is significant. A total loss of a loaded delivery truck (accident, theft) could represent $30,000-100,000 in product value. Cargo insurance covers that loss.</p>
+
+<p>If you use third-party carriers for some or all deliveries, standard carrier liability ($0.50-$2.00 per pound under most domestic tariffs) is typically far less than the actual value of the goods. Separate cargo insurance fills that gap.</p>
+
+<h2>Workers' Compensation Insurance</h2>
+
+<p>Workers' comp covers medical expenses and lost wages for employees injured on the job — warehouse workers hurt during lifting, drivers injured in accidents, delivery personnel with repetitive motion injuries. In most states, workers' comp is legally required for any business with employees. The penalties for operating without it (and having a claim) include personal liability for the full cost of the claim plus regulatory fines.</p>
+
+<p>Workers' comp premiums are based on payroll and job classification. Warehouse and delivery roles have higher rates than clerical roles due to injury risk. As a benchmark, expect workers' comp premiums in the range of 3-6% of payroll for warehouse/delivery employees in most states.</p>
+
+<h2>Commercial Umbrella / Excess Liability</h2>
+
+<p>An umbrella policy provides additional liability coverage above the limits of your underlying GL, commercial auto, and employer's liability policies. If a claim exceeds your underlying coverage limit — a serious accident that results in a $2.5M judgment against a $1M/$2M GL policy — the umbrella covers the gap up to its own limit.</p>
+
+<p>For distributors, a $1M-$5M umbrella policy is typically inexpensive relative to the coverage provided — often $1,500-$5,000/year. The value is in catastrophic event protection: the rare but devastating claim that would otherwise be paid out of business assets or result in bankruptcy.</p>
+
+<h2>When to Revisit Your Coverage</h2>
+
+<p>Insurance needs change as your business grows. Review your coverage annually, and immediately when:</p>
+<ul>
+<li>Revenue increases more than 25% — your product liability exposure scales with revenue</li>
+<li>You add new product categories, especially food, chemicals, or regulated items</li>
+<li>You add vehicles or increase fleet size</li>
+<li>You hire your first employees or grow your headcount significantly</li>
+<li>You sign a new large account that requires proof of specific coverage limits</li>
+<li>You lease a new warehouse space (landlord will specify minimum coverage requirements)</li>
+</ul>
+
+<div class="cta-block">
+  <h3>Wholesail helps distributors manage operations, accounts, and documentation — so you're running a tighter, more professionally managed business.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "how-to-reduce-wholesale-order-cancellations",
+    title: "How to Reduce Wholesale Order Cancellations and Keep Accounts Committed",
+    excerpt: "The root causes of wholesale order cancellations — and the process and technology changes that prevent them before they cost you revenue and account relationships.",
+    publishedAt: "2026-03-05",
+    category: "Operations",
+    readTime: 7,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "How to Reduce Wholesale Order Cancellations | Wholesail",
+      description: "Wholesale order cancellations are usually preventable. Learn the root causes — unavailable products, price surprises, slow confirmation — and the solutions that keep accounts committed.",
+      keywords: ["reduce wholesale order cancellations", "wholesale order cancellation prevention", "wholesale order management", "B2B order cancellations", "wholesale customer retention"],
+    },
+    content: `
+<p class="lead">A cancelled wholesale order is not just lost revenue — it's a signal. An account that cancels an order is telling you that something in your process failed between the time they intended to buy and the time the order was supposed to ship. Sometimes the failure is unavoidable (the product truly isn't available). More often, it's a process problem that you can systematically eliminate: a confirmation that took too long, a price that didn't match expectations, a delivery window that didn't work for their schedule. Each of these has a solution.</p>
+
+<h2>Root Cause #1: Unavailable Products</h2>
+
+<p>The most common reason for order cancellations in distribution is product unavailability — the account ordered something, it's not in stock, and they find out when they get a call from your team (or don't hear anything at all until delivery day). By that point, they've made plans around receiving that product, they can't find it elsewhere in time, and they're frustrated.</p>
+
+<p>The solution is real-time inventory visibility at the point of ordering. When an account places an order through a phone call or email, they have no way to know whether what they're ordering is actually available. When they place an order through a portal with live inventory data, they know immediately — before they submit the order — that an item is out of stock or low. They can substitute, adjust quantities, or make an informed decision about whether to back-order.</p>
+
+<p>The operational discipline required: your inventory data must actually be accurate and current. A portal showing "50 units in stock" for a product you sold out of yesterday creates a different problem. Inventory accuracy is the prerequisite for inventory visibility.</p>
+
+<h2>Root Cause #2: Price Surprises</h2>
+
+<p>An account who ordered at a price they expected, then received an invoice at a different price, is an account that will cancel the order or dispute the invoice — and may not order again. Price surprises happen when accounts have outdated price lists, when reps quote verbally without checking current pricing, or when pricing tiers aren't communicated clearly.</p>
+
+<p>The solution is account-specific pricing displayed at the point of ordering. When an account logs into a portal and sees exactly what they'll be invoiced for each item before they submit, there are no surprises at invoice time. The price on the order confirmation matches the price on the invoice. If you update pricing, the portal reflects the new price immediately — accounts are not working from a PDF price list that's six months out of date.</p>
+
+<h2>Root Cause #3: Slow or Absent Order Confirmation</h2>
+
+<p>An account that places an order by phone or email and doesn't receive a confirmation within a reasonable time will either call back to check (a cost to your team), place a duplicate order (a fulfillment problem), or cancel and try a competitor. The absence of a confirmation creates uncertainty — they don't know if the order was received, when it will ship, or what to expect.</p>
+
+<p>The standard should be: every order receives an automatic confirmation within minutes of being placed. The confirmation should include: the items ordered and quantities, the expected ship or delivery date, the total, and a contact for questions. In a phone-based system, this requires someone to manually send a confirmation email after every call — which doesn't always happen. In a portal-based system, the confirmation is automatic and immediate.</p>
+
+<h2>Root Cause #4: Delivery Windows That Don't Work</h2>
+
+<p>An account that orders for Monday delivery then has a conflict on Monday — a facility inspection, a closed loading dock, a key staff member out — needs to change the delivery date. If they can't do that easily, they cancel the order. If changing a delivery requires calling during business hours, waiting for a callback, and hoping there's an available slot, many accounts will cancel rather than navigate the friction.</p>
+
+<p>Self-service delivery scheduling — where accounts can select from available delivery windows at the time of ordering, and modify their delivery date before cutoff through the portal — eliminates this as a cancellation trigger. The account controls their schedule; they're not waiting for you to accommodate them.</p>
+
+<h2>The Account Follow-Up Sequence</h2>
+
+<p>For accounts that cancel an order, a structured follow-up sequence recovers more of that business than no follow-up at all. The sequence:</p>
+
+<ol>
+<li><strong>Immediate acknowledgment:</strong> "We've cancelled your order per your request. Is there anything we can do to get you what you need through a different arrangement?" — sent automatically or by your team within the hour</li>
+<li><strong>Root cause inquiry:</strong> Within 24 hours, a rep contacts the account to understand why they cancelled. Not to argue or reverse the decision — just to understand. The information is valuable regardless of the outcome.</li>
+<li><strong>Recovery offer (if appropriate):</strong> If the cancellation was due to a service failure on your end, a make-good — priority scheduling, a discount on the next order — is worth offering. Not as a blanket policy, but as a targeted gesture for accounts that cancelled because you dropped the ball.</li>
+</ol>
+
+<p>Accounts that cancel without any follow-up from their distributor interpret the silence as indifference and are significantly more likely to try a competitor for their next order. A prompt, professional follow-up signals that you noticed, you care, and you want to keep the relationship.</p>
+
+<div class="cta-block">
+  <h3>Wholesail's portal shows real-time availability, account-specific pricing, and automatic order confirmations — eliminating the most common cancellation triggers.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "food-distributor-software",
+    title: "Food Distributor Software: What You Actually Need vs What Vendors Want to Sell You",
+    excerpt: "A clear-eyed buying guide for food and beverage distribution software — must-haves, nice-to-haves, and what's unnecessary at SMB scale.",
+    publishedAt: "2026-03-05",
+    category: "Buying Guide",
+    readTime: 8,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "Food Distributor Software: What You Actually Need | Wholesail",
+      description: "A no-nonsense buying guide for food and beverage distribution software. What you need vs. what vendors push — covering B2B ordering, invoicing, delivery scheduling, and when to avoid full ERPs.",
+      keywords: ["food distributor software", "food distribution software", "beverage distributor software", "food wholesale software", "food distribution ordering system"],
+    },
+    content: `
+<p class="lead">If you've spent any time evaluating software for a food distribution business, you've encountered the ERP pitch. Enterprise vendors will walk you through a platform with 200 modules, comprehensive warehouse management, multi-entity accounting, MRP, and manufacturing integration — for a monthly cost that exceeds your current marketing budget. The pitch is compelling until you realize you have 80 accounts, one warehouse, and three delivery trucks. You don't need MRP. You need a way to take orders, invoice accounts, and get the right product on the right truck.</p>
+
+<p>Here's what food distributors actually need, what's genuinely nice to have, and what you should ignore until you're significantly larger.</p>
+
+<h2>Must-Haves for Food and Beverage Distributors</h2>
+
+<p><strong>B2B Ordering Portal.</strong> The most valuable technology investment most food distributors can make. A portal where accounts log in, see your current catalog with account-specific pricing, check product availability, and place orders without calling your team. The economic case: phone orders cost you 5-10 minutes of rep or admin time each. A portal reduces that to zero. For a distributor taking 50 orders per week, that's 250-500 minutes per week — over 200 hours per year — recaptured.</p>
+
+<p>For food specifically, the portal should handle: perishable product availability (knowing that items near their code date are marked clearly), catch weight items (products sold by weight rather than case), and substitute item suggestions when a product is out of stock. Standing orders are essential for food accounts — a restaurant that orders the same produce, proteins, and dry goods every Monday should not have to rebuild that order from scratch each week.</p>
+
+<p><strong>Invoicing and Accounts Receivable.</strong> Automated invoice generation tied to order fulfillment, electronic delivery (email or portal download), and online payment processing. For food distribution specifically: the ability to adjust invoices at delivery (for catch-weight items, short ships, or substitutions) and to issue credit memos quickly when an account receives a product that doesn't meet quality standards.</p>
+
+<p>AR aging visibility is essential. Knowing which accounts are 30, 60, or 90 days past due — and having automated payment reminders that go out at defined intervals — is the difference between a business with healthy cash flow and one constantly chasing receivables.</p>
+
+<p><strong>Delivery Scheduling and Route Management.</strong> Food distribution is route-based. You need to know what orders need to be delivered on which day, by which driver, to which locations, in what sequence. At minimum, this means a daily route manifest — a printed or digital pick list organized by route and delivery stop — that tells your driver exactly what goes on the truck and in what order to make deliveries.</p>
+
+<p>For perishable products, delivery timing matters: a restaurant receiving produce at 2pm instead of 6am when they needed it for lunch service is a service failure. Reliable delivery windows, communicated clearly to accounts, are a competitive differentiator in food distribution.</p>
+
+<p><strong>Product Catalog with Pricing Tiers.</strong> A structured product catalog where you can set account-specific pricing — different rates for your largest restaurant group versus your smallest cafe — without manually building a custom price list for every account. Category-level pricing with per-account overrides is the standard approach: set a base price per SKU, then apply percentage adjustments for account tiers (volume discount for accounts over $5,000/month) with individual overrides for specific accounts with negotiated rates.</p>
+
+<h2>Nice-to-Haves</h2>
+
+<p><strong>Route Optimization Software.</strong> A tool that calculates the most efficient delivery sequence for each day's orders. Genuinely valuable when you have multiple drivers running routes with 10+ stops. Less critical if you're running 2 trucks on routes your drivers know cold. If you add it, make sure it integrates with your ordering system so routes build from confirmed orders automatically.</p>
+
+<p><strong>CRM / Account Management.</strong> A simple system to track account contacts, notes from sales calls, and account activity. At under 100 accounts, this can be managed in a spreadsheet or a basic CRM (HubSpot Free, for example). It becomes more valuable as you grow and need to ensure account activity doesn't fall through the cracks when reps change territories.</p>
+
+<p><strong>Inventory Forecasting.</strong> Predicting what you'll need to purchase and when, based on historical order patterns. For perishable goods, buying too much is as problematic as buying too little. A forecasting tool helps — but it requires 6-12 months of clean order data to work reliably. Implement it after your ordering data is being captured consistently.</p>
+
+<h2>What You Don't Need at SMB Scale</h2>
+
+<p><strong>Full ERP Systems.</strong> NetSuite, SAP, Oracle, Epicor — these are built for complexity that most SMB distributors don't have: multi-entity accounting, intercompany transactions, multi-warehouse inventory, sophisticated manufacturing integration. At under $10M in revenue with a single warehouse, a purpose-built distribution platform handles 95% of what you need at a fraction of the cost and implementation burden.</p>
+
+<p><strong>Full Warehouse Management Systems.</strong> A WMS is designed for complex picking operations with barcode scanning, multiple pick zones, directed putaway, and labor management. It's appropriate for a distributor running a 50,000+ square foot warehouse with 10+ warehouse workers. For a distributor with 5,000 square feet and 2 warehouse employees, a WMS adds complexity without meaningful benefit.</p>
+
+<p><strong>Transportation Management Systems.</strong> TMS platforms are built for distributors managing complex freight relationships: negotiating carrier rates, managing LTL vs. FTL decisions, tracking cross-country shipments. If you run your own local delivery routes, basic route optimization software is what you need — not a TMS.</p>
+
+<div class="cta-block">
+  <h3>Wholesail is built specifically for food and beverage distributors — ordering, invoicing, and delivery management without the ERP overhead.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "wholesale-net-terms-guide",
+    title: "Net 30, Net 60, Net 90: A Distributor's Complete Guide to Wholesale Payment Terms",
+    excerpt: "What each payment term means, when to offer each, how to qualify accounts, how to enforce payment, and what to do when accounts don't pay on time.",
+    publishedAt: "2026-03-05",
+    category: "Finance",
+    readTime: 8,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "Net 30, Net 60, Net 90: Wholesale Payment Terms Guide | Wholesail",
+      description: "A complete guide to wholesale payment terms for distributors. Covers Net 30/60/90, when to offer each, how to qualify accounts, enforcement, factoring, late fees, and credit hold procedures.",
+      keywords: ["wholesale net terms", "net 30 net 60 net 90 wholesale", "wholesale payment terms guide", "distributor payment terms", "how to offer net terms wholesale"],
+    },
+    content: `
+<p class="lead">Payment terms are the contractual arrangement between you and your accounts about when invoices get paid. They're also one of the primary competitive factors in wholesale distribution — accounts with purchasing scale use their leverage to push for longer terms, and distributors who want those accounts have to decide how much financing they're willing to provide. Getting this right is a balance between the competitive pressure to offer terms and the operational reality that extended terms cost you real money.</p>
+
+<h2>What Each Term Actually Means</h2>
+
+<p><strong>Net 30:</strong> The invoice is due in full 30 days from the invoice date. This is the standard in most wholesale distribution verticals. An invoice dated March 1st is due March 31st. If it's not paid by then, it's past due.</p>
+
+<p><strong>Net 60:</strong> Due in 60 days. Common in industries where buyers have longer payment cycles — large institutional accounts, government entities, and some retail accounts. Offering Net 60 on a $10,000 monthly account means you're carrying an average of $20,000 in accounts receivable from that account at any given time (this month's invoice plus last month's). Factor that into the relationship economics.</p>
+
+<p><strong>Net 90:</strong> Due in 90 days. Primarily used by large national chains and retail buyers who have significant purchasing leverage. For most SMB distributors, Net 90 means you're financing three months of an account's purchases at any given time. At $15,000/month, that's $45,000 in outstanding receivables from one account — a significant cash flow commitment.</p>
+
+<p><strong>2/10 Net 30:</strong> A discount term — the buyer can take a 2% discount if they pay within 10 days, otherwise the full amount is due in 30 days. The annualized cost of this discount to you is approximately 36% — but capturing early payment significantly improves your cash flow and reduces collection risk. Many distributors find this trade-off worthwhile.</p>
+
+<p><strong>COD (Cash on Delivery):</strong> Payment due at the time of delivery. Appropriate for new accounts with no established credit history, accounts that have previously gone past due, or accounts you have some concern about. COD eliminates AR risk but can create operational friction (driver collecting payment at delivery).</p>
+
+<p><strong>Prepay:</strong> Payment due before the order ships. The safest option for new accounts or high-risk accounts. Can be done via ACH, check, or credit card before the order is processed.</p>
+
+<h2>When to Offer Each Term</h2>
+
+<p>The decision framework:</p>
+
+<ul>
+<li><strong>New accounts, no credit history:</strong> Prepay or COD for the first 1-3 orders, then evaluate for Net 30 after a payment track record is established</li>
+<li><strong>Established accounts, good payment history:</strong> Net 30 is standard. Offer Net 60 only when the account has negotiating leverage and the volume justifies the financing cost</li>
+<li><strong>Large chains and institutional buyers:</strong> They will likely request Net 60 or Net 90. Evaluate based on the account's credit quality and whether the volume justifies your extended AR exposure</li>
+<li><strong>Accounts with poor payment history:</strong> Downgrade to COD or prepay. Do not extend additional credit to chronically late payers</li>
+</ul>
+
+<h2>How to Qualify Accounts for Terms</h2>
+
+<p>A credit application is the starting point. Collect: business name and legal structure, years in business, owner information, 3 trade references (suppliers they currently buy from on terms), bank reference (bank name, account type — not the account number), and authorization for a credit check.</p>
+
+<p>Run a business credit check (D&B, Experian Business, or Equifax Business). A PAYDEX score of 80+ means the business pays within terms. 70-79 is acceptable with a lower credit limit. Below 70 warrants either prepay terms or a very conservative credit limit.</p>
+
+<p>Call at least 2 of the 3 trade references. Ask specifically: "Do they pay within terms? Have they ever been past due? Would you extend credit to them again?" A trade reference that pauses before answering "yes" is telling you something.</p>
+
+<h2>Enforcing Payment and Late Fees</h2>
+
+<p>Your T&C should specify late payment fees — typically 1.5% per month on overdue balances (18% annualized). This needs to be disclosed upfront in your terms and agreed to by the account. When invoices go past due:</p>
+
+<ul>
+<li><strong>Day 31 (Net 30):</strong> Automated payment reminder — friendly, factual</li>
+<li><strong>Day 38:</strong> Second reminder — note that a service charge will be applied if payment is not received</li>
+<li><strong>Day 45:</strong> Personal call from accounting — not from the sales rep</li>
+<li><strong>Day 60:</strong> Credit hold — no new orders processed until the balance is paid</li>
+<li><strong>Day 90:</strong> Escalation — formal demand letter, consider engaging a collections firm or attorney</li>
+</ul>
+
+<h2>Factoring as a Cash Flow Tool</h2>
+
+<p>Invoice factoring allows you to sell your receivables to a third party (a factor) at a discount (typically 2-5% of invoice value) in exchange for immediate cash — often within 24-48 hours of invoicing. This eliminates AR risk and converts Net 30/60 receivables into same-day cash.</p>
+
+<p>Factoring makes sense when: your growth is constrained by cash flow tied up in AR, you offer Net 60+ terms to large accounts, or you lack the banking relationships to get a traditional line of credit sufficient to cover your AR gap. The cost (2-5% of revenue factored) is significant, but for a growing distributor whose alternative is turning down large accounts due to cash constraints, it can be a viable tool.</p>
+
+<h2>Credit Hold Procedures</h2>
+
+<p>A credit hold should be automatic when an account's AR aging exceeds a defined threshold — typically when any invoice is 30+ days past due, or when the total outstanding balance exceeds their credit limit. The account should be notified immediately: no new orders will be processed until the overdue balance is resolved.</p>
+
+<p>The communication matters: "We've placed your account on hold due to an outstanding balance of $X. We'd like to get this resolved quickly so we can continue serving you. Please contact [accounting contact] to arrange payment." Firm, professional, and offering a path forward.</p>
+
+<div class="cta-block">
+  <h3>Wholesail manages payment terms, AR aging, and automated payment reminders — so you can offer terms confidently without losing track of what's owed.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "how-to-onboard-wholesale-accounts-faster",
+    title: "How to Onboard New Wholesale Accounts in 24 Hours (Not 3 Weeks)",
+    excerpt: "The traditional onboarding bottleneck versus the modern process — how to get new accounts from application to first order in under a day, and why it matters for account acquisition.",
+    publishedAt: "2026-03-05",
+    category: "Guide",
+    readTime: 7,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "How to Onboard New Wholesale Accounts in 24 Hours | Wholesail",
+      description: "Learn how to cut wholesale account onboarding from weeks to hours with an online application, automated approval workflow, and instant portal access. Real impact on account acquisition.",
+      keywords: ["wholesale account onboarding", "how to onboard wholesale customers", "wholesale account setup process", "B2B account onboarding", "wholesale customer onboarding process"],
+    },
+    content: `
+<p class="lead">The average time from a new account expressing interest to placing their first order at a traditionally-operated distribution business is 10-21 days. Paper credit application. Manual credit review. Someone types up the account in the system. Someone else sends login credentials. Someone follows up to make sure the login works. Every step is either waiting for someone to have time, or waiting for the mail, or waiting for a callback. By day 10, the prospect has already placed their first order with a competitor who made it easy to get started.</p>
+
+<p>This problem is solvable. The technology exists to bring account onboarding from 3 weeks to 24 hours without sacrificing credit quality or compliance. Here's how the two approaches compare and what you need to build the faster one.</p>
+
+<h2>The Traditional Onboarding Bottleneck</h2>
+
+<p>The traditional wholesale account onboarding process typically looks like this:</p>
+
+<ol>
+<li>Sales rep meets prospect at a trade show, on a cold call, or through a referral</li>
+<li>Rep sends a PDF credit application via email</li>
+<li>Prospect fills out paper form (or types into a PDF) and returns it — if they remember, if they get around to it</li>
+<li>Someone in accounting receives the application, checks it for completeness, and manually calls 2-3 trade references</li>
+<li>A credit decision is made — often after several days, after the credit manager has time to review</li>
+<li>Account is manually entered into the ordering system (or accounting software, or a spreadsheet)</li>
+<li>Someone creates a customer record with their pricing tier and credit limit</li>
+<li>Login credentials or an ordering guide is emailed to the account</li>
+<li>A follow-up call is made to make sure they can log in</li>
+</ol>
+
+<p>Every one of these steps involves human handoffs and waiting time. The entire process depends on multiple people having attention for a new account at the same time. In a busy distribution operation, new accounts are not always the top priority — existing account management, delivery problems, and supplier issues take precedence. New account onboarding falls to the bottom of the stack.</p>
+
+<h2>The Modern Process: Application to First Order in 24 Hours</h2>
+
+<p>Here's what the 24-hour onboarding process looks like with the right infrastructure:</p>
+
+<p><strong>Hour 0: Online application submitted.</strong> The prospect fills out a digital application on your website or portal — business name, contact information, tax ID, intended purchase categories, and authorization for a credit check. Takes them 5 minutes. No PDF, no email, no phone call required.</p>
+
+<p><strong>Hour 0-1: Automated pre-screening.</strong> The system automatically checks the business against a credit bureau (D&B or Experian Business), verifies the business address, and flags any issues (derogatory marks, insufficient credit history, or missing information). Accounts that pass pre-screening automatically advance to approval. Accounts that need manual review are flagged for your team with the relevant information already collected.</p>
+
+<p><strong>Hour 1-4: Credit decision.</strong> For auto-approved accounts (clean credit, established business), portal access is granted immediately with a starting credit limit based on your standard formula. For manual-review accounts, your team has everything they need in one place — no chasing paper or calling trade references from scratch. A credit decision that would have taken 3 days now takes 2-4 hours because the information is already organized.</p>
+
+<p><strong>Hour 4: Automatic account setup.</strong> Once approved, the account record is created in your ordering system automatically: contact information populated, pricing tier assigned, credit limit set, and login credentials generated. No manual data entry.</p>
+
+<p><strong>Hour 4-5: Welcome email with portal access.</strong> An automated welcome email delivers login credentials, a link to the product catalog, and a brief guide to placing their first order. A personal note from their rep is added before sending — automated but still personal.</p>
+
+<p><strong>Hour 5-24: First order placed.</strong> The account logs in, browses the catalog, and places their first order — on their timeline, without waiting for a callback. For accounts that need hand-holding, a rep calls to walk them through the portal. Either way, they can order by the next business morning.</p>
+
+<h2>What This Requires to Build</h2>
+
+<p>The 24-hour onboarding process requires three things: an online credit application connected to a credit bureau API (or a manual-but-fast credit review process), an ordering portal that can automatically provision new account access, and automated workflow to connect the two.</p>
+
+<p>For most distributors, the biggest bottleneck is the credit review step — particularly trade reference calls, which require reaching human beings during business hours. Two practical approaches: skip trade references for small starting credit limits ($2,500-5,000), treating the first 90 days as a probationary period, or replace trade reference calls with automated credit bureau checks that provide equivalent information faster.</p>
+
+<h2>The Impact on Account Acquisition</h2>
+
+<p>Faster onboarding is not just a convenience improvement — it has a measurable impact on account acquisition rate. Prospects who can complete an application and receive portal access the same day convert at significantly higher rates than prospects who are asked to wait. The behavioral reality: buying intent peaks at the moment of contact. A prospect who wants to switch distributors today is motivated today. Ask them to wait two weeks and you're asking them to maintain motivation against the inertia of their current supplier relationship. Most won't.</p>
+
+<p>Distributors who have moved to 24-hour onboarding consistently report that the simplest metric improves: the percentage of prospects who apply who actually place a first order increases, because fewer of them lose momentum during a long onboarding process.</p>
+
+<div class="cta-block">
+  <h3>Wholesail's account application and instant portal provisioning gets new accounts ordering in hours, not weeks.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "wholesale-distributor-cash-flow-problems",
+    title: "The 4 Cash Flow Problems That Kill Distribution Businesses (And How to Fix Them)",
+    excerpt: "Slow AR, over-investment in inventory, thin margins on high-volume accounts, and seasonal demand mismatch — the four cash flow traps that take down distribution businesses, and how to get out of each one.",
+    publishedAt: "2026-03-05",
+    category: "Finance",
+    readTime: 8,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "4 Cash Flow Problems That Kill Distribution Businesses | Wholesail",
+      description: "The four cash flow problems most likely to kill a distribution business: slow AR, inventory overinvestment, thin margins, and seasonal mismatch. Diagnosis and solutions for each.",
+      keywords: ["distribution business cash flow", "wholesale distributor cash flow problems", "distribution cash flow management", "wholesale business financial problems", "distributor cash flow issues"],
+    },
+    content: `
+<p class="lead">Distribution is a business where you can be growing, profitable on paper, and still run out of cash. The mechanics are straightforward: you buy product from suppliers on 30-60 day terms, sell to accounts on 30-60 day terms, and the gap between cash out and cash in has to be funded somehow. When the gaps widen — due to slow-paying accounts, over-stocked inventory, thin margins, or seasonal imbalances — that gap becomes a crisis. Here are the four most common cash flow problems in distribution and how to systematically address each one.</p>
+
+<h2>Problem 1: Slow Accounts Receivable Collection</h2>
+
+<p><strong>What it looks like:</strong> Your DSO (days sales outstanding) is 50, 60, or 70 days on Net 30 terms. You invoice regularly, revenue looks healthy, but you're constantly short on operating cash because 45-60 days of revenue is sitting in unpaid invoices.</p>
+
+<p><strong>Why it happens:</strong> Accounts develop habits. An account that paid Net 35 last month will pay Net 37 next month and Net 40 the month after — not because they intend to be slow payers, but because no one is enforcing the terms and the drift continues unchecked. Without automated reminders and clear consequences for late payment, accounts optimize for their own cash flow at the expense of yours.</p>
+
+<p><strong>How to fix it:</strong></p>
+<ul>
+<li>Implement automated payment reminders at day 25, 32, and 45 — before invoices go far past due</li>
+<li>Add a clear late payment fee (1.5%/month) to your terms and actually apply it</li>
+<li>Implement credit holds at 30 days past due — no new orders ship until the balance is resolved</li>
+<li>Offer a 1-2% early pay discount for payment within 10 days, making it easy to take advantage of via ACH or online payment</li>
+<li>Review AR aging weekly as a leadership discipline — not monthly</li>
+</ul>
+
+<p>For a business doing $2M in revenue, reducing average DSO from 55 days to 38 days frees up approximately $94,000 in operating cash — the equivalent of a significant line of credit, at zero cost.</p>
+
+<h2>Problem 2: Over-Investment in Inventory</h2>
+
+<p><strong>What it looks like:</strong> Your warehouse is full, product is moving, but you're constantly tapping your line of credit to cover operating expenses because too much capital is sitting in slow-moving SKUs.</p>
+
+<p><strong>Why it happens:</strong> Distributors buy more than they need for several reasons: taking advantage of supplier promotions (buying 6 months of supply at a discount), ordering conservatively large to avoid stockouts, and maintaining a long SKU tail of slow-moving items that represent customer requests that never materialized into significant demand.</p>
+
+<p><strong>How to fix it:</strong></p>
+<ul>
+<li>Calculate inventory turnover by SKU — products turning fewer than 4x per year deserve scrutiny</li>
+<li>Establish a clear liquidation process for slow-moving inventory: promotional pricing, bundle offers to accounts, or return to supplier if your agreement permits</li>
+<li>Stop buying based on gut or supplier incentives — calculate actual reorder points based on lead time and average daily demand, and buy to those points rather than to intuition</li>
+<li>For perishables: tighter safety stock, more frequent smaller orders, supplier relationships that allow short-notice procurement</li>
+</ul>
+
+<p>Reducing average inventory by 20% at a business carrying $400,000 in inventory frees up $80,000 in cash — money that was sitting on shelves instead of in the bank.</p>
+
+<h2>Problem 3: Thin Margins on High-Volume Accounts</h2>
+
+<p><strong>What it looks like:</strong> Revenue is strong and growing, but net income is flat or declining. Your largest accounts are demanding — they call frequently, require customized service, have exacting delivery requirements — and the margin you're earning on them doesn't justify the cost of serving them.</p>
+
+<p><strong>Why it happens:</strong> Large accounts gain volume discounts over time through negotiation, while the cost to serve them (delivery frequency, account management time, custom invoicing requirements) increases. The result is a margin squeeze: as the account grows, their price goes down and your service cost goes up, until the account is marginally profitable or even negative after allocating all costs.</p>
+
+<p><strong>How to fix it:</strong></p>
+<ul>
+<li>Calculate true margin per account: revenue minus COGS minus an allocation of direct serving costs (delivery, account management time, special handling)</li>
+<li>For accounts with clearly negative or sub-1% net margin after allocation, have a frank conversation about pricing adjustments — or make a deliberate decision that the volume relationship is worth the subsidy for strategic reasons</li>
+<li>Stop providing services (delivery frequency, customization, credit terms) that you're not charging for — or start charging for them</li>
+<li>Use volume discounts that decrease rather than increase as an account becomes more demanding (standard pricing for standard service, premium pricing for premium service requirements)</li>
+</ul>
+
+<h2>Problem 4: Seasonal Demand Mismatch</h2>
+
+<p><strong>What it looks like:</strong> Cash is plentiful in peak season and extremely tight in the off-season. You're profitable on an annual basis but spend 3-4 months per year in a cash crunch that feels like the business might not survive to the next busy period.</p>
+
+<p><strong>Why it happens:</strong> Seasonal businesses have fixed operating costs (payroll, rent, insurance) that don't scale down when revenue drops. They also often over-invest in inventory before peak season (good) but carry too much labor into the slow season (bad). The cash position that looks comfortable in October is devastated by February.</p>
+
+<p><strong>How to fix it:</strong></p>
+<ul>
+<li>Model your cash flow 6 months forward, not just current month — seasonal businesses need longer cash visibility than year-round operations</li>
+<li>Establish a seasonal line of credit during your high-cash period, not when you're desperate — banks lend based on your financial position, not your need</li>
+<li>Reduce fixed costs in the off-season: contract labor rather than full-time employees for peak-specific roles, lease flexibility for storage space</li>
+<li>Offer pre-season programs to accounts — a discount on orders placed and paid before the season starts, converting future revenue into current cash</li>
+</ul>
+
+<div class="cta-block">
+  <h3>Wholesail gives you AR visibility, automated payment reminders, and order data that helps you manage inventory more precisely.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
+  {
+    slug: "b2b-portal-vs-edi-for-distributors",
+    title: "B2B Ordering Portal vs EDI: Which Is Right for Your Distribution Business?",
+    excerpt: "A clear-headed comparison of EDI and B2B web portals for distributors — when each makes sense, the real cost and complexity of EDI, and why most SMB distributors are better served by a portal.",
+    publishedAt: "2026-03-05",
+    category: "Comparison",
+    readTime: 7,
+    author: { name: "Adam Wolfe", title: "Wholesail" },
+    seo: {
+      title: "B2B Portal vs EDI for Distributors: Which Is Right for You? | Wholesail",
+      description: "EDI vs. B2B ordering portal comparison for wholesale distributors. Cost, complexity, use cases, and which solution fits SMB distribution businesses versus large retailer integrations.",
+      keywords: ["EDI vs B2B portal", "EDI for distributors", "B2B ordering portal vs EDI", "wholesale ordering system comparison", "distributor EDI alternative"],
+    },
+    content: `
+<p class="lead">If you distribute to large grocery chains, big-box retailers, or national foodservice operators, you've heard about EDI. Your buyer contacts might have mentioned it as a requirement, or you're seeing it listed on vendor qualification questionnaires. On the other hand, if most of your accounts are independent restaurants, regional grocery stores, specialty retailers, or smaller commercial buyers, EDI is probably overkill — and a B2B ordering portal is likely a better fit. Understanding the actual difference helps you make the right decision without over-investing in infrastructure your accounts won't use.</p>
+
+<h2>What EDI Actually Is</h2>
+
+<p>Electronic Data Interchange (EDI) is a standardized format for exchanging business documents — purchase orders, invoices, advance ship notices, inventory feeds — between computer systems. Instead of a buyer logging into your portal and placing an order manually, their procurement software automatically generates a purchase order in a standardized EDI format (usually X12 or EDIFACT) and transmits it directly to your system.</p>
+
+<p>EDI is powerful for high-volume, highly automated procurement at scale. A Walmart or Kroger is processing thousands of vendor orders per day. Having buyers manually log into each vendor's portal is not operationally viable at that scale. EDI automates the entire transaction: PO out, acknowledgment back, invoice back, payment confirmation, all without a human touching a keyboard on either end.</p>
+
+<h2>The Real Cost and Complexity of EDI</h2>
+
+<p>EDI sounds like a clean technical solution, but the operational reality for a supplier trying to set it up is considerably messier. The cost components:</p>
+
+<ul>
+<li><strong>EDI translation software or service:</strong> $200-1,500/month depending on transaction volume and whether you use a VAN (Value Added Network) or direct AS2 connection</li>
+<li><strong>Setup and integration fees:</strong> $500-5,000+ per trading partner, depending on complexity</li>
+<li><strong>IT resources:</strong> EDI requires mapping your data formats to the trading partner's specifications — each large retailer has its own requirements. Either you hire IT capable of managing this or you pay an EDI service provider</li>
+<li><strong>Compliance testing:</strong> Most large retailers require a certification process before you can go live with EDI. This takes weeks to months</li>
+<li><strong>Chargebacks:</strong> Large retailers issue chargebacks for EDI errors — a missing ASN (advance ship notice), incorrect label format, or late EDI acknowledgment can result in fines of $250-500 per incident</li>
+</ul>
+
+<p>For a distributor doing $5 million in annual revenue with 3 EDI trading partners, total EDI costs including setup, monthly fees, and compliance management can run $15,000-40,000 per year. That cost is justified if those 3 accounts represent $2-3 million in revenue. It is not justified if they represent $200,000.</p>
+
+<h2>What a B2B Ordering Portal Is</h2>
+
+<p>A B2B ordering portal is a private, account-controlled website where your wholesale buyers log in, browse your catalog at their account-specific pricing, and place orders directly. It's the online ordering experience buyers are already familiar with — similar to shopping on an e-commerce site — but designed for wholesale: minimum orders, case quantities, net terms, account-specific pricing, order history, and invoice management.</p>
+
+<p>The buyer experience is simple enough that accounts require minimal training. The implementation is far simpler than EDI — no mapping specifications, no trading partner certification, no chargeback risk. Setup time is days to weeks, not months.</p>
+
+<h2>When EDI Makes Sense</h2>
+
+<p>EDI is the right choice when:</p>
+
+<ul>
+<li>A large chain or retailer explicitly requires it as a condition of doing business with them</li>
+<li>The account represents enough volume to justify the setup cost and ongoing complexity</li>
+<li>Your order volume with that account is high enough that manual portal ordering would be genuinely burdensome</li>
+<li>You have IT resources to manage ongoing EDI compliance and troubleshooting</li>
+</ul>
+
+<p>If you're a food manufacturer or brand owner selling to national grocery chains, EDI is non-negotiable. If you're a regional food distributor selling to 80 independent restaurants and specialty retailers, EDI is not your problem.</p>
+
+<h2>When a B2B Portal Makes More Sense</h2>
+
+<p>A B2B ordering portal is the right choice when:</p>
+
+<ul>
+<li>Your accounts are independent businesses, regional chains, or SMB buyers who manually approve their own orders</li>
+<li>You have 20-500 accounts, each placing orders on their own schedule</li>
+<li>You want to give accounts self-service access to order history, invoices, and product catalog</li>
+<li>You're looking to reduce phone and email order volume and give your team time back</li>
+<li>You can't justify $15,000+ in EDI infrastructure for accounts that could just as easily use a website</li>
+</ul>
+
+<p>The vast majority of distribution businesses — regional food distributors, specialty goods distributors, jan-san distributors, beverage distributors — serve SMB accounts that will never require EDI. For these businesses, a B2B portal delivers 90% of the operational benefit of EDI at a fraction of the cost and complexity.</p>
+
+<h2>Can You Have Both?</h2>
+
+<p>Yes, and many mid-size distributors do. They use EDI for the handful of large chain accounts that require it, and a B2B portal for the rest of their account base. The systems don't need to be the same platform — your EDI transactions go through your EDI provider, and your independent accounts use the portal. What matters is that both feed into the same back-office system (your ERP or order management system) so your team sees all orders in one place regardless of how they were submitted.</p>
+
+<div class="cta-block">
+  <h3>Wholesail is the B2B ordering portal built for SMB distributors — without the EDI complexity or cost.</h3>
+  <a href="/#demo">See the Platform Demo</a>
+</div>
+`,
+  },
 ];
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
