@@ -1164,52 +1164,45 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
 
   get_smart_reorder_alerts: async (input) => {
     const { limit = 10 } = input as { limit?: number }
+    // Delegate to the optimised lib/smart-reorder.ts which uses a single $queryRaw
+    // for the per-org top-products aggregation instead of N+1 per org.
+    const { getOverdueReorders } = await import('@/lib/smart-reorder')
+    const overdue = await getOverdueReorders()
     const now = new Date()
-    const orgs = await prisma.organization.findMany({
-      where: { isWholesaler: true },
-      select: { id: true, name: true, email: true },
-      take: 100,
-    })
-    const alerts: { client: string; email: string; avgCadenceDays: number; daysSinceLastOrder: number; daysOverdue: number; link: string }[] = []
-
-    for (const org of orgs) {
-      const orders = await prisma.order.findMany({
-        where: { organizationId: org.id, status: { not: 'CANCELLED' } },
-        orderBy: { createdAt: 'desc' },
-        take: 5,
-        select: { createdAt: true },
-      })
-      if (orders.length < 2) continue
-      const gaps: number[] = []
-      for (let i = 0; i < orders.length - 1; i++) {
-        gaps.push(Math.floor((orders[i].createdAt.getTime() - orders[i + 1].createdAt.getTime()) / 86400000))
-      }
-      const avgCadence = Math.round(gaps.reduce((a, b) => a + b, 0) / gaps.length)
-      const daysSinceLast = Math.floor((now.getTime() - orders[0].createdAt.getTime()) / 86400000)
-      if (daysSinceLast > avgCadence * 1.25) {
-        alerts.push({ client: org.name, email: org.email, avgCadenceDays: avgCadence, daysSinceLastOrder: daysSinceLast, daysOverdue: daysSinceLast - avgCadence, link: `/admin/clients/${org.id}` })
-      }
-    }
-    alerts.sort((a, b) => b.daysOverdue - a.daysOverdue)
-    return { count: alerts.length, alerts: alerts.slice(0, limit) }
+    const alerts = overdue.slice(0, limit).map((r) => ({
+      client: r.orgName,
+      email: '',  // getOverdueReorders doesn't return email; safe default
+      avgCadenceDays: r.avgCadenceDays,
+      daysSinceLastOrder: r.daysSinceLastOrder,
+      daysOverdue: r.overdueDays,
+      topProducts: r.topProducts,
+      link: `/admin/clients/${r.orgId}`,
+    }))
+    return { count: alerts.length, alerts }
   },
 
   get_credit_utilization: async (input) => {
     const { threshold = 80 } = input as { threshold?: number }
-    const orgs = await prisma.organization.findMany({
-      where: { creditLimit: { not: null } },
-      select: { id: true, name: true, creditLimit: true, email: true, contactPerson: true },
-    })
-    const results = await Promise.all(orgs.map(async (org) => {
-      const outstanding = await prisma.invoice.aggregate({
-        where: { organizationId: org.id, status: { in: ['PENDING', 'OVERDUE'] } },
-        _sum: { total: true },
-      })
-      const limit = Number(org.creditLimit)
-      const used = Number(outstanding._sum?.total ?? 0)
+    // Single query: join orgs with credit limits to their outstanding invoice totals
+    // using a raw SQL GROUP BY to avoid N+1 per org.
+    type UtilRow = { id: string; name: string; email: string; creditLimit: string; outstanding: string }
+    const rows = await prisma.$queryRaw<UtilRow[]>`
+      SELECT o.id, o.name, o.email,
+             o."creditLimit"::text AS "creditLimit",
+             COALESCE(SUM(i.total), 0)::text AS outstanding
+      FROM "Organization" o
+      LEFT JOIN "Invoice" i
+        ON i."organizationId" = o.id
+        AND i.status IN ('PENDING', 'OVERDUE')
+      WHERE o."creditLimit" IS NOT NULL
+      GROUP BY o.id, o.name, o.email, o."creditLimit"
+    `
+    const results = rows.map((r) => {
+      const limit = Number(r.creditLimit)
+      const used = Number(r.outstanding)
       const pct = limit > 0 ? Math.round((used / limit) * 100) : 0
-      return { name: org.name, email: org.email, creditLimit: limit, outstanding: used, utilizationPct: pct, link: `/admin/clients/${org.id}` }
-    }))
+      return { name: r.name, email: r.email, creditLimit: limit, outstanding: used, utilizationPct: pct, link: `/admin/clients/${r.id}` }
+    })
     const flagged = results.filter(r => r.utilizationPct >= threshold).sort((a, b) => b.utilizationPct - a.utilizationPct)
     return { threshold, flaggedCount: flagged.length, clients: flagged }
   },

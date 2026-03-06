@@ -27,6 +27,7 @@ export async function getProjects(opts?: {
   return prisma.project.findMany({
     where,
     orderBy: { updatedAt: "desc" },
+    take: 200,
     include: {
       _count: { select: { notes: true, tasks: true } },
     },

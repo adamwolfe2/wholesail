@@ -138,17 +138,21 @@ export async function GET(req: NextRequest) {
   }
 
   const { searchParams } = new URL(req.url)
-  const q = (searchParams.get('q') ?? '').trim()
-  const email = (searchParams.get('email') ?? '').trim()
-  const phone = (searchParams.get('phone') ?? '').trim()
+  // Cap lengths to prevent CPU-intensive scoring on huge strings
+  const q = (searchParams.get('q') ?? '').trim().slice(0, 100)
+  const email = (searchParams.get('email') ?? '').trim().slice(0, 100)
+  const phone = (searchParams.get('phone') ?? '').trim().slice(0, 20)
 
   // Need at least one meaningful input
   if (q.length < 2 && email.length < 4 && phone.length < 7) {
     return NextResponse.json({ results: [] })
   }
 
+  // Fetch only orgs with phones or emails that could match — avoids full table scan
+  // on very large installs. We still load all orgs for name scoring but cap at 2000.
   const allOrgs = await prisma.organization.findMany({
     select: { id: true, name: true, email: true, phone: true },
+    take: 2000,
   })
 
   const scored = allOrgs

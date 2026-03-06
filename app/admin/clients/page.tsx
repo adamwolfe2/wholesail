@@ -73,5 +73,6 @@ async function getOrganizations() {
       _count: { select: { orders: true } },
     },
     orderBy: { name: "asc" },
+    take: 1000,
   });
 }

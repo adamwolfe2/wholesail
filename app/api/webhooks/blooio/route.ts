@@ -67,17 +67,20 @@ export async function POST(req: NextRequest) {
         const fromPhone = data.from;
         const messageText = data.text ?? data.parts?.find(p => p.type === "text")?.value ?? "";
 
-        // Find organization by matching phone number (last 10 digits, stripped)
+        // Find organization by matching phone number (last 10 digits, stripped).
+        // Use a raw SQL regex to avoid loading the entire org table.
         let org: { id: string; name: string; email: string } | null = null;
         if (fromPhone) {
           const digits = fromPhone.replace(/\D/g, "").slice(-10);
-          const allOrgs = await prisma.organization.findMany({
-            select: { id: true, name: true, email: true, phone: true },
-          });
-          const match = allOrgs.find(
-            (o) => o.phone && o.phone.replace(/\D/g, "").slice(-10) === digits
-          );
-          org = match ? { id: match.id, name: match.name, email: match.email } : null;
+          if (digits.length === 10) {
+            const rows = await prisma.$queryRaw<Array<{ id: string; name: string; email: string }>>`
+              SELECT id, name, email
+              FROM "Organization"
+              WHERE RIGHT(REGEXP_REPLACE(phone, '[^0-9]', '', 'g'), 10) = ${digits}
+              LIMIT 1
+            `;
+            org = rows[0] ?? null;
+          }
         }
 
         await prisma.auditEvent.create({

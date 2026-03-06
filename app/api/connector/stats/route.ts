@@ -16,98 +16,108 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  // All counts/aggregates via DB — no in-memory loops over full tables
   const [
-    intakes,
-    projects,
-    costs,
+    intakePending,
+    intakeScoping,
+    intakeConverted,
+    intakeArchived,
+    intakeTotal,
+    projectsByStatus,
+    contractValueAgg,
+    mrrAgg,
+    costsAllTime,
+    costsMtd,
+    costsByService,
     recentIntakes,
     recentProjects,
-    messages,
+    unreadMessages,
   ] = await Promise.all([
-    prisma.intakeSubmission.findMany({
-      select: {
-        id: true,
-        companyName: true,
-        reviewedAt: true,
-        archivedAt: true,
-        createdAt: true,
-        project: { select: { id: true } },
-      },
+    // Intakes: pending (not reviewed, not archived, no project)
+    prisma.intakeSubmission.count({
+      where: { reviewedAt: null, archivedAt: null, project: { is: null } },
     }),
-    prisma.project.findMany({
-      select: {
-        id: true,
-        company: true,
-        status: true,
-        contractValue: true,
-        retainer: true,
-        monthlyRevenue: true,
-        startDate: true,
-        launchDate: true,
-        createdAt: true,
-        updatedAt: true,
-      },
+    // Intakes: scoping (reviewed, no project)
+    prisma.intakeSubmission.count({
+      where: { reviewedAt: { not: null }, archivedAt: null, project: { is: null } },
     }),
-    prisma.projectCost.findMany({
-      select: {
-        service: true,
-        amountCents: true,
-        date: true,
-      },
+    // Intakes: converted (has project)
+    prisma.intakeSubmission.count({ where: { project: { isNot: null } } }),
+    // Intakes: archived
+    prisma.intakeSubmission.count({ where: { archivedAt: { not: null } } }),
+    // Intakes: total
+    prisma.intakeSubmission.count(),
+    // Projects grouped by status
+    prisma.project.groupBy({ by: ["status"], _count: { id: true } }),
+    // Total contract value across all projects
+    prisma.project.aggregate({ _sum: { contractValue: true } }),
+    // MRR: monthlyRevenue + retainer for LIVE projects
+    prisma.project.aggregate({
+      where: { status: "LIVE" },
+      _sum: { monthlyRevenue: true, retainer: true },
     }),
+    // Build costs: all-time total
+    prisma.projectCost.aggregate({ _sum: { amountCents: true } }),
+    // Build costs: month-to-date
+    prisma.projectCost.aggregate({
+      where: { date: { gte: startOfMonth } },
+      _sum: { amountCents: true },
+    }),
+    // Build costs: grouped by service
+    prisma.projectCost.groupBy({ by: ["service"], _sum: { amountCents: true } }),
+    // Recent intake activity
     prisma.intakeSubmission.findMany({
       orderBy: { createdAt: "desc" },
       take: 5,
       select: { id: true, companyName: true, createdAt: true },
     }),
+    // Recent project activity
     prisma.project.findMany({
       orderBy: { updatedAt: "desc" },
       take: 5,
       select: { id: true, company: true, status: true, updatedAt: true },
     }),
+    // Unread client messages
     prisma.message.count({ where: { senderRole: "client", readAt: null } }).catch(() => 0),
   ]);
 
-  // Pipeline counts
+  // Build status map from groupBy result
+  const statusMap: Record<string, number> = {};
+  for (const row of projectsByStatus) {
+    statusMap[row.status] = row._count.id;
+  }
+  const getCount = (s: string) => statusMap[s] ?? 0;
+
   const pipeline = {
-    new: intakes.filter((i) => !i.reviewedAt && !i.archivedAt && !i.project).length,
-    scoping: intakes.filter((i) => i.reviewedAt && !i.archivedAt && !i.project).length,
-    building: projects.filter((p) => p.status === "ONBOARDING" || p.status === "BUILDING").length,
-    review: projects.filter((p) => p.status === "REVIEW").length,
-    live: projects.filter((p) => p.status === "LIVE").length,
-    churned: projects.filter((p) => p.status === "CHURNED").length,
+    new: intakePending,
+    scoping: intakeScoping,
+    building: getCount("ONBOARDING") + getCount("BUILDING"),
+    review: getCount("REVIEW"),
+    live: getCount("LIVE"),
+    churned: getCount("CHURNED"),
   };
 
-  // Intake funnel
-  const intakeFunnel = {
-    pending: intakes.filter((i) => !i.reviewedAt && !i.archivedAt && !i.project).length,
-    reviewed: intakes.filter((i) => i.reviewedAt && !i.project).length,
-    converted: intakes.filter((i) => !!i.project).length,
-    archived: intakes.filter((i) => !!i.archivedAt).length,
-    total: intakes.length,
-  };
+  const activeCount =
+    getCount("INQUIRY") + getCount("ONBOARDING") + getCount("BUILDING") + getCount("REVIEW");
 
-  // Revenue
-  const activeProjects = projects.filter((p) => p.status === "LIVE" || p.status === "BUILDING" || p.status === "REVIEW" || p.status === "ONBOARDING");
   const revenue = {
-    totalContractValue: projects.reduce((s, p) => s + (p.contractValue ?? 0), 0),
-    totalMrr: projects.filter((p) => p.status === "LIVE").reduce((s, p) => s + (p.monthlyRevenue ?? 0) + (p.retainer ?? 0), 0),
-    activeProjectCount: activeProjects.length,
+    totalContractValue: contractValueAgg._sum.contractValue ?? 0,
+    totalMrr:
+      (mrrAgg._sum.monthlyRevenue ?? 0) + (mrrAgg._sum.retainer ?? 0),
+    activeProjectCount: activeCount,
   };
 
-  // Build costs
-  const now = new Date();
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   const buildCosts = {
-    totalAllTimeCents: costs.reduce((s, c) => s + c.amountCents, 0),
-    mtdCents: costs.filter((c) => new Date(c.date) >= startOfMonth).reduce((s, c) => s + c.amountCents, 0),
-    byService: costs.reduce<Record<string, number>>((acc, c) => {
-      acc[c.service] = (acc[c.service] ?? 0) + c.amountCents;
-      return acc;
-    }, {}),
+    totalAllTimeCents: costsAllTime._sum.amountCents ?? 0,
+    mtdCents: costsMtd._sum.amountCents ?? 0,
+    byService: Object.fromEntries(
+      costsByService.map((r) => [r.service, r._sum.amountCents ?? 0])
+    ),
   };
 
-  // Recent activity feed
   const activity = [
     ...recentIntakes.map((i) => ({
       type: "intake_submitted" as const,
@@ -126,25 +136,33 @@ export async function GET(req: NextRequest) {
     .sort((a, b) => new Date(b.ts).getTime() - new Date(a.ts).getTime())
     .slice(0, 10);
 
+  const totalProjects = Object.values(statusMap).reduce((s, n) => s + n, 0);
+
   return NextResponse.json({
     ts: new Date().toISOString(),
     pipeline,
-    intakes: intakeFunnel,
+    intakes: {
+      pending: intakePending,
+      reviewed: intakeScoping,
+      converted: intakeConverted,
+      archived: intakeArchived,
+      total: intakeTotal,
+    },
     projects: {
-      total: projects.length,
-      active: activeProjects.length,
+      total: totalProjects,
+      active: activeCount,
       byStatus: {
-        INQUIRY: projects.filter((p) => p.status === "INQUIRY").length,
-        ONBOARDING: projects.filter((p) => p.status === "ONBOARDING").length,
-        BUILDING: projects.filter((p) => p.status === "BUILDING").length,
-        REVIEW: projects.filter((p) => p.status === "REVIEW").length,
-        LIVE: projects.filter((p) => p.status === "LIVE").length,
-        CHURNED: projects.filter((p) => p.status === "CHURNED").length,
+        INQUIRY: getCount("INQUIRY"),
+        ONBOARDING: getCount("ONBOARDING"),
+        BUILDING: getCount("BUILDING"),
+        REVIEW: getCount("REVIEW"),
+        LIVE: getCount("LIVE"),
+        CHURNED: getCount("CHURNED"),
       },
     },
     revenue,
     buildCosts,
-    unreadMessages: messages,
+    unreadMessages,
     recentActivity: activity,
   });
 }

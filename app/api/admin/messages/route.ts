@@ -12,6 +12,7 @@ export async function GET() {
   try {
     const raw = await prisma.conversation.findMany({
       orderBy: { lastMessageAt: 'desc' },
+      take: 100,
       include: {
         organization: { select: { id: true, name: true } },
         messages: {

@@ -472,6 +472,7 @@ model Order {
   @@index([organizationId, createdAt(sort: Desc)])
   @@index([userId])
   @@index([status])
+  @@index([status, createdAt(sort: Desc)])
   @@index([orderNumber])
   @@index([stripeSessionId])
   @@index([distributorOrgId])

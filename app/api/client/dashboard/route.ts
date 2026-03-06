@@ -20,9 +20,14 @@ export async function GET() {
     }
 
     const orgId = user.organizationId;
+    const now = new Date();
 
-    // Fetch recent orders, all items (for top products), and monthly revenue in parallel
-    const [recentOrders, allItems, orders] = await Promise.all([
+    // Build timezone-safe month boundaries for last 7 months.
+    // Using new Date(year, month, 1) avoids the setMonth day-of-month overflow bug
+    // (e.g. Jan 31 - 1 month would land on Dec 31, not Dec 1).
+    const sevenMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 6, 1);
+
+    const [recentOrders, topProductsRaw, orders] = await Promise.all([
       // Recent orders (last 10)
       prisma.order.findMany({
         where: { organizationId: orgId },
@@ -38,100 +43,69 @@ export async function GET() {
         },
       }),
 
-      // All order items for top products — cap at 500 to avoid OOM
-      prisma.orderItem.findMany({
+      // Top products by revenue — aggregate at the DB level, no in-memory loop
+      prisma.orderItem.groupBy({
+        by: ["name"],
         where: { order: { organizationId: orgId, status: { not: "CANCELLED" } } },
-        select: {
-          name: true,
-          quantity: true,
-          total: true,
-          order: {
-            select: {
-              createdAt: true,
-            },
-          },
-        },
-        orderBy: {
-          order: { createdAt: "desc" },
-        },
-        take: 500,
+        _sum: { quantity: true, total: true },
+        orderBy: { _sum: { total: "desc" } },
+        take: 5,
       }),
 
-      // All orders for monthly revenue (last 7 months)
+      // Orders for monthly revenue chart (last 7 months)
       prisma.order.findMany({
         where: {
           organizationId: orgId,
           status: { not: "CANCELLED" },
-          createdAt: {
-            gte: new Date(new Date().setMonth(new Date().getMonth() - 7)),
-          },
+          createdAt: { gte: sevenMonthsAgo },
         },
-        select: {
-          total: true,
-          createdAt: true,
-        },
+        select: { total: true, createdAt: true },
       }),
     ]);
 
-    // Aggregate top products — track last order date and last quantity
-    const productMap = new Map<
-      string,
-      { orders: number; revenue: number; lastOrderedAt: Date; lastQuantity: number }
-    >();
-    for (const item of allItems) {
-      const existing = productMap.get(item.name);
-      const itemDate = new Date(item.order.createdAt);
-      if (!existing) {
-        productMap.set(item.name, {
-          orders: item.quantity,
-          revenue: Number(item.total),
-          lastOrderedAt: itemDate,
-          lastQuantity: item.quantity,
+    // Build top products — for lastOrderedAt we need one extra query per product.
+    // Since we only have 5 products, 5 queries is fine (and cached by the connection pool).
+    const topProducts = await Promise.all(
+      topProductsRaw.map(async (p) => {
+        const lastItem = await prisma.orderItem.findFirst({
+          where: {
+            name: p.name,
+            order: { organizationId: orgId, status: { not: "CANCELLED" } },
+          },
+          orderBy: { order: { createdAt: "desc" } },
+          select: { quantity: true, order: { select: { createdAt: true } } },
         });
-      } else {
-        existing.orders += item.quantity;
-        existing.revenue += Number(item.total);
-        // allItems is ordered by order.createdAt desc, so first occurrence = most recent
-        // We only update lastOrderedAt/lastQuantity if this is newer (shouldn't be needed but safe)
-        if (itemDate > existing.lastOrderedAt) {
-          existing.lastOrderedAt = itemDate;
-          existing.lastQuantity = item.quantity;
-        }
-      }
-    }
+        const MS_PER_DAY = 1000 * 60 * 60 * 24;
+        return {
+          name: p.name,
+          orders: p._sum.quantity ?? 0,
+          revenue: Math.round(Number(p._sum.total ?? 0)),
+          daysSinceLastOrder: lastItem
+            ? Math.floor((now.getTime() - lastItem.order.createdAt.getTime()) / MS_PER_DAY)
+            : null,
+          lastQuantity: lastItem?.quantity ?? null,
+        };
+      })
+    );
 
-    const now = new Date();
-    const MS_PER_DAY = 1000 * 60 * 60 * 24;
-
-    const topProducts = Array.from(productMap.entries())
-      .map(([name, data]) => ({
-        name,
-        orders: data.orders,
-        revenue: Math.round(data.revenue),
-        daysSinceLastOrder: Math.floor((now.getTime() - data.lastOrderedAt.getTime()) / MS_PER_DAY),
-        lastQuantity: data.lastQuantity,
-      }))
-      .sort((a, b) => b.revenue - a.revenue)
-      .slice(0, 5);
-
-    // Aggregate monthly revenue
+    // Aggregate monthly revenue using explicit year/month keys to avoid TZ issues
     const monthMap = new Map<string, number>();
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     for (const order of orders) {
-      const d = new Date(order.createdAt);
-      const key = `${months[d.getMonth()]} ${d.getFullYear()}`;
-      monthMap.set(key, (monthMap.get(key) || 0) + Number(order.total));
+      const d = order.createdAt;
+      // Key by "YYYY-MM" so the sort is unambiguous across year boundaries
+      const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, "0")}`;
+      monthMap.set(key, (monthMap.get(key) ?? 0) + Number(order.total));
     }
 
-    // Build ordered list of last 7 months
+    // Build ordered list of last 7 months using safe Date(year, month, 1) construction
     const monthlyRevenue: { month: string; revenue: number }[] = [];
     for (let i = 6; i >= 0; i--) {
-      const d = new Date();
-      d.setMonth(d.getMonth() - i);
-      const key = `${months[d.getMonth()]} ${d.getFullYear()}`;
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = `${d.getFullYear()}-${String(d.getMonth()).padStart(2, "0")}`;
       monthlyRevenue.push({
-        month: months[d.getMonth()],
-        revenue: Math.round(monthMap.get(key) || 0),
+        month: MONTH_NAMES[d.getMonth()],
+        revenue: Math.round(monthMap.get(key) ?? 0),
       });
     }
 

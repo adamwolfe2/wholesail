@@ -7,6 +7,7 @@ import {
   Sparkles,
   FileInput,
   Kanban,
+  Mail,
 } from "lucide-react";
 
 // badgeKey maps to a count fetched server-side in layout.tsx and passed as navBadges
@@ -19,6 +20,7 @@ export const adminNav = [
   // ── CRM ──────────────────────────────────────
   { href: "/admin/clients", label: "Clients", icon: Users },
   { href: "/admin/messages", label: "Messages", icon: MessageSquare, badgeKey: "unreadMessages" },
+  { href: "/admin/subscribers", label: "Subscribers", icon: Mail },
   // ── System ───────────────────────────────────
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
   { href: "/admin/settings", label: "Settings", icon: Settings },
