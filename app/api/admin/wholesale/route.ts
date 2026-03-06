@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
   const applications = await prisma.wholesaleApplication.findMany({
     where,
     orderBy: { createdAt: 'desc' },
+    take: 500,
   })
 
   return NextResponse.json({ applications })

@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
     const leads = await prisma.lead.findMany({
       where: status ? { status } : undefined,
       orderBy: { createdAt: 'desc' },
+      take: 500,
     })
     return NextResponse.json({ leads })
   } catch (err) {

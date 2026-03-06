@@ -17,6 +17,7 @@ export async function GET() {
 
   const items = await prisma.orderItem.findMany({
     where: { distributorOrgId: org.id },
+    take: 500,
     select: {
       id: true,
       name: true,

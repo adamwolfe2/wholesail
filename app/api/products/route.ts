@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
     }
 
     const [products, categories] = await Promise.all([
-      prisma.product.findMany({ where, orderBy }),
+      prisma.product.findMany({ where, orderBy, take: 5000 }),
       getCategories(),
     ]);
 

@@ -14,6 +14,7 @@ export async function GET() {
         _count: { select: { alerts: true } },
         product: { select: { slug: true, name: true } },
       },
+      take: 100,
     })
     return NextResponse.json({ drops })
   } catch (error) {

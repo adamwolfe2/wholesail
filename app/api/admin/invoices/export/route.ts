@@ -25,6 +25,7 @@ export async function GET(req: NextRequest) {
       organization: { select: { name: true, email: true } },
     },
     orderBy: { createdAt: "desc" },
+    take: 10000,
   });
 
   // Build CSV

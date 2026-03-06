@@ -30,6 +30,7 @@ export async function GET() {
     const orgs = await prisma.organization.findMany({
       select: { id: true, name: true },
       orderBy: { name: 'asc' },
+      take: 5000,
     })
 
     if (orgs.length === 0) {
@@ -38,23 +39,16 @@ export async function GET() {
 
     const orgIds = orgs.map((o) => o.id)
 
-    // ── Last order date per org (all time, non-cancelled) ──────────────────
-    const latestOrders = await prisma.order.findMany({
-      where: {
-        organizationId: { in: orgIds },
-        status: { not: 'CANCELLED' },
-      },
-      select: { organizationId: true, createdAt: true },
-      orderBy: { createdAt: 'desc' },
-    })
-
-    // Build map: orgId → most recent order date
-    const lastOrderMap = new Map<string, Date>()
-    for (const o of latestOrders) {
-      if (!lastOrderMap.has(o.organizationId)) {
-        lastOrderMap.set(o.organizationId, o.createdAt)
-      }
-    }
+    // ── Last order date per org — single DISTINCT ON query, no full table scan ─
+    type LastOrderRow = { organizationId: string; createdAt: Date }
+    const lastOrderRows = await prisma.$queryRaw<LastOrderRow[]>`
+      SELECT DISTINCT ON ("organizationId") "organizationId", "createdAt"
+      FROM "Order"
+      WHERE "organizationId" = ANY(${orgIds}::text[])
+        AND status != 'CANCELLED'
+      ORDER BY "organizationId", "createdAt" DESC
+    `
+    const lastOrderMap = new Map(lastOrderRows.map((r) => [r.organizationId, r.createdAt]))
 
     // ── Orders last 12 months per org ──────────────────────────────────────
     const recentOrderGroups = await prisma.order.groupBy({

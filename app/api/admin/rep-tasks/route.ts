@@ -36,6 +36,7 @@ export async function GET(req: NextRequest) {
         organization: { select: { id: true, name: true } },
       },
       orderBy: [{ priority: "desc" }, { dueDate: "asc" }, { createdAt: "desc" }],
+      take: 200,
     });
 
     return NextResponse.json({ tasks });

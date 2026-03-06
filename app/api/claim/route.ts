@@ -170,6 +170,7 @@ export async function POST(req: NextRequest) {
   // ---------------------------------------------------------------------------
   const allOrgs = await prisma.organization.findMany({
     select: { id: true, name: true, email: true, phone: true },
+    take: 5000,
   })
 
   let org: OrgRecord | null = null

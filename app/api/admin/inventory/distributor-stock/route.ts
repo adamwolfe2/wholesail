@@ -14,6 +14,7 @@ export async function GET() {
       product: { select: { id: true, name: true, category: true, unit: true } },
     },
     orderBy: [{ distributor: { name: 'asc' } }, { product: { name: 'asc' } }],
+    take: 2000,
   })
 
   // Group by distributor

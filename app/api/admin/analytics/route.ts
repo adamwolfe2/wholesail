@@ -22,6 +22,7 @@ export async function GET() {
       createdAt: { gte: twelveMonthsAgo },
     },
     select: { total: true, createdAt: true },
+    take: 50000,
   });
 
   const monthMap = new Map<string, number>();
@@ -31,10 +32,10 @@ export async function GET() {
     monthMap.set(key, (monthMap.get(key) ?? 0) + Number(order.total));
   }
 
+  // Build 12-month axis using safe date math (avoids setMonth day-overflow bug)
   const monthlyRevenue: { month: string; revenue: number }[] = [];
   for (let i = 11; i >= 0; i--) {
-    const d = new Date(now);
-    d.setMonth(d.getMonth() - i);
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
     const key = `${MONTH_LABELS[d.getMonth()]} ${d.getFullYear()}`;
     monthlyRevenue.push({
       month: key,
@@ -103,8 +104,33 @@ export async function GET() {
     .map(([category, revenue]) => ({ category, revenue: Math.round(revenue) }))
     .sort((a, b) => b.revenue - a.revenue);
 
+  // ── Subscriber growth (last 12 months) ───────────────────────────────────
+  let subscriberGrowth: { month: string; count: number }[] = monthlyRevenue.map((m) => ({
+    month: m.month,
+    count: 0,
+  }));
+  try {
+    const recentSubs = await prisma.emailSubscriber.findMany({
+      where: { subscribedAt: { gte: twelveMonthsAgo } },
+      select: { subscribedAt: true },
+      take: 10000,
+    });
+    const subMonthMap = new Map<string, number>();
+    for (const sub of recentSubs) {
+      const d = new Date(sub.subscribedAt);
+      const key = `${MONTH_LABELS[d.getMonth()]} ${d.getFullYear()}`;
+      subMonthMap.set(key, (subMonthMap.get(key) ?? 0) + 1);
+    }
+    subscriberGrowth = monthlyRevenue.map((m) => ({
+      month: m.month,
+      count: subMonthMap.get(m.month) ?? 0,
+    }));
+  } catch {
+    // EmailSubscriber table may not exist in older deployments
+  }
+
   return NextResponse.json(
-    { monthlyRevenue, topClients, orderStatusCounts, topCategories },
+    { monthlyRevenue, topClients, orderStatusCounts, topCategories, subscriberGrowth },
     { headers: { 'Cache-Control': 's-maxage=300, stale-while-revalidate=600' } }
   );
 }

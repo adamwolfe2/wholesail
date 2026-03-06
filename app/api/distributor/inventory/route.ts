@@ -18,6 +18,7 @@ export async function GET() {
   // All products assigned to this distributor
   const products = await prisma.product.findMany({
     where: { distributorOrgId: org.id, available: true },
+    take: 2000,
     select: {
       id: true,
       name: true,

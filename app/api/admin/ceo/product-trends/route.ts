@@ -57,6 +57,7 @@ export async function GET() {
         total: true,
         order: { select: { createdAt: true } },
       },
+      take: 10000,
     });
 
     // Step 3: Aggregate into { month: string, [productName]: number }[]

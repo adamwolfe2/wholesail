@@ -13,6 +13,7 @@ export async function GET() {
         _count: { select: { alerts: true } },
         product: { select: { name: true } },
       },
+      take: 200,
     })
     return NextResponse.json({ drops })
   } catch (err) {

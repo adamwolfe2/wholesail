@@ -6,6 +6,7 @@ export async function GET() {
     const levels = await prisma.inventoryLevel.findMany({
       select: { productId: true, quantityOnHand: true },
       where: { quantityOnHand: { lte: 5, gt: 0 } }, // only return low-stock items
+      take: 5000,
     })
     const map: Record<string, number> = {}
     for (const l of levels) {

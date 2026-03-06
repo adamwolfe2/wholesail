@@ -19,6 +19,7 @@ export async function GET() {
         contactPerson: true,
       },
       orderBy: { name: 'asc' },
+      take: 2000,
     })
 
     return NextResponse.json({ orgs })

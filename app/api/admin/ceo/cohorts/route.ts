@@ -26,18 +26,12 @@ export async function GET() {
     for (let i = 5; i >= 0; i--) {
       const monthStart = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const monthEnd = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
-      const thirtyDaysAfterMonthStart = new Date(monthStart);
-      thirtyDaysAfterMonthStart.setDate(thirtyDaysAfterMonthStart.getDate() + 30);
 
       // Count orgs created in this month
       const newOrgs = await prisma.organization.findMany({
-        where: {
-          createdAt: {
-            gte: monthStart,
-            lt: monthEnd,
-          },
-        },
+        where: { createdAt: { gte: monthStart, lt: monthEnd } },
         select: { id: true, createdAt: true },
+        take: 1000,
       });
 
       const newClientCount = newOrgs.length;
@@ -46,29 +40,19 @@ export async function GET() {
       if (newClientCount > 0) {
         const orgIds = newOrgs.map((o) => o.id);
 
-        // Count how many placed at least 1 order in the 30 days after they joined
-        const retainedOrgs = await Promise.all(
-          newOrgs.map(async (org) => {
-            const windowEnd = new Date(org.createdAt);
-            windowEnd.setDate(windowEnd.getDate() + 30);
-            const count = await prisma.order.count({
-              where: {
-                organizationId: org.id,
-                status: { not: "CANCELLED" },
-                createdAt: {
-                  gte: org.createdAt,
-                  lte: windowEnd,
-                },
-              },
-            });
-            return count > 0;
-          })
-        );
-
-        retained30d = retainedOrgs.filter(Boolean).length;
-
-        // Suppress the unused variable warning
-        void orgIds;
+        // Single SQL replaces N per-org order.count() calls:
+        // find distinct orgs that placed >= 1 order within 30 days of joining
+        type RetainedRow = { organizationId: string }
+        const retained = await prisma.$queryRaw<RetainedRow[]>`
+          SELECT DISTINCT ord."organizationId"
+          FROM "Order" ord
+          INNER JOIN "Organization" org ON org.id = ord."organizationId"
+          WHERE ord."organizationId" = ANY(${orgIds}::text[])
+            AND ord.status != 'CANCELLED'
+            AND ord."createdAt" >= org."createdAt"
+            AND ord."createdAt" <= org."createdAt" + INTERVAL '30 days'
+        `;
+        retained30d = retained.length;
       }
 
       const label = `${monthLabels[monthStart.getMonth()]} '${String(monthStart.getFullYear()).slice(2)}`;
