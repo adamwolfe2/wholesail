@@ -542,6 +542,44 @@ export async function POST(req: NextRequest) {
         break;
       }
 
+      // ─── Refunds ────────────────────────────────────────────────────────
+      case "charge.refunded": {
+        const charge = event.data.object;
+        const paymentIntentId = charge.payment_intent as string | null;
+
+        if (paymentIntentId) {
+          // Mark the Payment record as refunded
+          const payment = await prisma.payment.findFirst({
+            where: { stripePaymentId: paymentIntentId },
+            select: { id: true, orderId: true },
+          });
+
+          if (payment) {
+            await prisma.payment.update({
+              where: { id: payment.id },
+              data: { status: "REFUNDED" },
+            });
+
+            await prisma.auditEvent.create({
+              data: {
+                entityType: "Payment",
+                entityId: payment.orderId,
+                action: "charge_refunded",
+                metadata: {
+                  chargeId: charge.id,
+                  paymentIntentId,
+                  amountRefunded: charge.amount_refunded,
+                  fullyRefunded: charge.refunded,
+                },
+              },
+            });
+
+            console.info(`Refund recorded for charge ${charge.id}, order ${payment.orderId}`);
+          }
+        }
+        break;
+      }
+
       // ─── Disputes ───────────────────────────────────────────────────────
       case "charge.dispute.created": {
         const dispute = event.data.object;
