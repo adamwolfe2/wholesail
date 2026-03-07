@@ -15,8 +15,13 @@ export const metadata: Metadata = {
     "Wholesail builds custom ordering portals for distribution companies. Your clients order online, you manage everything in one place. Live in under 2 weeks.",
   metadataBase: new URL("https://wholesailhub.com"),
   icons: {
-    icon: "/favicon.svg",
-    apple: "/apple-icon.png",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180" }],
+    shortcut: "/favicon.svg",
   },
   openGraph: {
     title: "Wholesail — Wholesale Ordering Portals for Distribution Companies",
