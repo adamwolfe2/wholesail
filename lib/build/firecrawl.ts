@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { isAllowedUrl } from "@/lib/utils/ssrf-protection";
 
 export async function scrapeIntakeWebsite(
   intakeId: string,
@@ -10,6 +11,13 @@ export async function scrapeIntakeWebsite(
     console.log("[firecrawl] No API key, skipping scrape");
     return;
   }
+
+  if (!isAllowedUrl(url)) {
+    console.warn("[firecrawl] Blocked SSRF attempt for URL:", url);
+    return;
+  }
+
+  const MAX_CONTENT_BYTES = 100 * 1024; // 100KB
 
   try {
     // Scrape main website (markdown + extract formats)
@@ -37,9 +45,14 @@ export async function scrapeIntakeWebsite(
     });
     const websiteData = await websiteRes.json();
 
-    // Deduplicate and skip the main website URL before scraping inspirations
+    // Truncate website markdown to 100KB
+    if (websiteData?.data?.markdown && typeof websiteData.data.markdown === 'string') {
+      websiteData.data.markdown = websiteData.data.markdown.slice(0, MAX_CONTENT_BYTES)
+    }
+
+    // Deduplicate, skip the main website URL, and block private/internal URLs before scraping inspirations
     const uniqueInspirationUrls = [...new Set(
-      inspirationUrls.filter(u => u && u !== url)
+      inspirationUrls.filter(u => u && u !== url && isAllowedUrl(u))
     )].slice(0, 3)
 
     // Scrape up to 3 unique inspiration URLs in parallel
@@ -57,18 +70,25 @@ export async function scrapeIntakeWebsite(
       })
     );
 
+    // Build and size-cap the scrapeData payload
+    const inspirations = inspirationData
+      .map((r) => (r.status === "fulfilled" ? r.value : null))
+      .filter(Boolean);
+    const rawScrapeData = {
+      website: websiteData,
+      inspirations,
+      scrapedAt: new Date().toISOString(),
+    };
+    // If over 100KB, drop inspirations to stay under the limit
+    const scrapeData =
+      JSON.stringify(rawScrapeData).length <= MAX_CONTENT_BYTES
+        ? rawScrapeData
+        : { website: websiteData, inspirations: [], scrapedAt: rawScrapeData.scrapedAt };
+
     // Store in DB
     await prisma.intakeSubmission.update({
       where: { id: intakeId },
-      data: {
-        scrapeData: {
-          website: websiteData,
-          inspirations: inspirationData
-            .map((r) => (r.status === "fulfilled" ? r.value : null))
-            .filter(Boolean),
-          scrapedAt: new Date().toISOString(),
-        },
-      },
+      data: { scrapeData },
     });
   } catch (err) {
     console.error("[firecrawl] Scrape failed:", err);

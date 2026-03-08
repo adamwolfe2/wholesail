@@ -4,22 +4,12 @@ import Anthropic from '@anthropic-ai/sdk'
 import { anthropicTools, toolExecutors } from '@/lib/ai/ai-tools'
 import { PLATFORM_KNOWLEDGE } from '@/lib/ai/platform-knowledge'
 import { prisma } from '@/lib/db'
+import { aiCallLimiter, checkRateLimit } from '@/lib/rate-limit'
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
-// ---------------------------------------------------------------------------
-// Rate limit: 20 req/min per user
-// ---------------------------------------------------------------------------
-const rateLimitMap = new Map<string, number[]>()
-
-function isRateLimited(userId: string): boolean {
-  const now = Date.now()
-  const timestamps = (rateLimitMap.get(userId) ?? []).filter(ts => now - ts < 60_000)
-  if (timestamps.length >= 20) return true
-  timestamps.push(now)
-  rateLimitMap.set(userId, timestamps)
-  return false
-}
+const MAX_MESSAGE_BYTES = 10 * 1024   // 10KB per message
+const MAX_TOTAL_BYTES   = 100 * 1024  // 100KB total conversation
 
 // ---------------------------------------------------------------------------
 // Tool → friendly label for the streaming UI
@@ -78,7 +68,8 @@ export async function POST(req: NextRequest) {
   const { userId, error } = await requireAdmin()
   if (error) return error
 
-  if (isRateLimited(userId)) {
+  const rl = await checkRateLimit(aiCallLimiter, userId)
+  if (!rl.allowed) {
     return NextResponse.json({ error: 'Rate limit exceeded. Please wait a moment.' }, { status: 429 })
   }
 
@@ -92,6 +83,17 @@ export async function POST(req: NextRequest) {
   const { messages } = body
   if (!messages?.length) {
     return NextResponse.json({ error: 'No messages provided.' }, { status: 400 })
+  }
+
+  // Size caps: reject oversized payloads to prevent token bombing
+  for (const msg of messages) {
+    if (typeof msg.content === 'string' && msg.content.length > MAX_MESSAGE_BYTES) {
+      return NextResponse.json({ error: 'Message too large (max 10KB per message).' }, { status: 400 })
+    }
+  }
+  const totalSize = messages.reduce((acc, m) => acc + (typeof m.content === 'string' ? m.content.length : 0), 0)
+  if (totalSize > MAX_TOTAL_BYTES) {
+    return NextResponse.json({ error: 'Conversation too large (max 100KB total).' }, { status: 400 })
   }
 
   // Fetch admin name
@@ -173,7 +175,10 @@ ${PLATFORM_KNOWLEDGE}`
           if (response.stop_reason === 'tool_use') {
             conversationMessages.push({ role: 'assistant', content: response.content })
 
-            const toolCalls = response.content.filter((b): b is Anthropic.ToolUseBlock => b.type === 'tool_use')
+            // Cap tool calls to 5 per round to bound execution cost
+          const toolCalls = response.content
+            .filter((b): b is Anthropic.ToolUseBlock => b.type === 'tool_use')
+            .slice(0, 5)
 
             // Announce all tools starting (before parallel execution)
             for (const tc of toolCalls) {

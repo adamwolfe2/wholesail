@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
+import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
+import { isAllowedUrl } from "@/lib/utils/ssrf-protection";
 
 const enrichSchema = z.object({
   url: z.string().url(),
@@ -23,6 +26,11 @@ interface FirecrawlResponse {
 
 export async function POST(req: NextRequest) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await req.json();
     const parsed = enrichSchema.safeParse(body);
 
@@ -30,6 +38,21 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         { error: "Please provide a valid URL" },
         { status: 400 }
+      );
+    }
+
+    if (!isAllowedUrl(parsed.data.url)) {
+      return NextResponse.json(
+        { error: "URL not allowed" },
+        { status: 400 }
+      );
+    }
+
+    const rl = await checkRateLimit(aiCallLimiter, userId);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. Try again later." },
+        { status: 429 }
       );
     }
 

@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
+import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
+import { isAllowedUrl } from "@/lib/utils/ssrf-protection";
 
 // ── Types ──────────────────────────────────────────────────────────────
 
@@ -106,12 +109,29 @@ interface FirecrawlExtract {
  */
 export async function POST(req: NextRequest) {
   try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const { url } = await req.json();
 
     if (!url || typeof url !== "string") {
       return NextResponse.json(
         { error: "URL is required" },
         { status: 400 }
+      );
+    }
+
+    if (!isAllowedUrl(url)) {
+      return NextResponse.json({ error: "URL not allowed" }, { status: 400 });
+    }
+
+    const rl = await checkRateLimit(aiCallLimiter, userId);
+    if (!rl.allowed) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. Try again later." },
+        { status: 429 }
       );
     }
 

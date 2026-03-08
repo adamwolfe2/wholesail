@@ -131,6 +131,15 @@ export async function POST(req: NextRequest) {
       console.info(`User ${id} synced to DB${orgExists ? ` (linked to org ${organizationId})` : ""}`);
       break;
     }
+
+    case "user.deleted": {
+      const userId = event.data.id;
+      if (userId) {
+        await prisma.user.deleteMany({ where: { id: userId } });
+        console.info(`User ${userId} deleted from DB via Clerk webhook`);
+      }
+      break;
+    }
   }
 
   return NextResponse.json({ received: true });

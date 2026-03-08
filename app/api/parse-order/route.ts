@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { parseOrderText } from '@/lib/ai/order-parser'
+import { aiCallLimiter, checkRateLimit, getIp } from '@/lib/rate-limit'
 
 export async function POST(req: NextRequest) {
   const { userId } = await auth()
   if (!userId) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const rl = await checkRateLimit(aiCallLimiter, getIp(req))
+  if (!rl.allowed) {
+    return NextResponse.json({ error: 'Rate limit exceeded. Try again later.' }, { status: 429 })
   }
 
   const body = await req.json().catch(() => ({}))
