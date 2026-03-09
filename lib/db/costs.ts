@@ -23,9 +23,10 @@ export async function logCost(
   });
 }
 
-export async function getProjectCosts(projectId: string) {
+export async function getProjectCosts(projectId: string, take = 500) {
   return prisma.projectCost.findMany({
     where: { projectId },
     orderBy: { date: "desc" },
+    take,
   });
 }

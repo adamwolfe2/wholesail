@@ -4,8 +4,8 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
-const FROM = process.env.RESEND_FROM_EMAIL || "Wholesail <adam@wholesailhub.com>";
-const ADMIN_EMAIL = "adam@wholesailhub.com";
+const FROM = process.env.RESEND_FROM_EMAIL || "Wholesail <noreply@wholesailhub.com>";
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "adam@wholesailhub.com";
 
 function send(opts: { to: string; subject: string; html: string }) {
   if (!resend) {

@@ -51,6 +51,14 @@ export async function GET(req: Request) {
       day1Sent++;
     } catch (err) {
       console.error(`Onboarding Day 1 email failed for org ${org.id}:`, err);
+      await prisma.auditEvent.create({
+        data: {
+          action: "onboarding_drip_failed",
+          entityType: "Organization",
+          entityId: org.id,
+          metadata: { step: 1, error: String(err) },
+        },
+      }).catch(() => {});
     }
   }
 
@@ -79,6 +87,14 @@ export async function GET(req: Request) {
       day7Sent++;
     } catch (err) {
       console.error(`Onboarding Day 3 nudge failed for org ${org.id}:`, err);
+      await prisma.auditEvent.create({
+        data: {
+          action: "onboarding_drip_failed",
+          entityType: "Organization",
+          entityId: org.id,
+          metadata: { step: 3, error: String(err) },
+        },
+      }).catch(() => {});
     }
   }
 

@@ -482,6 +482,7 @@ model Order {
   @@index([orderNumber])
   @@index([stripeSessionId])
   @@index([distributorOrgId])
+  @@index([placedByRepId])
 }
 
 model OrderItem {
@@ -507,7 +508,7 @@ model OrderItem {
 model Payment {
   id              String        @id @default(cuid())
   orderId         String
-  order           Order         @relation(fields: [orderId], references: [id])
+  order           Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
   amount          Decimal       @db.Decimal(10, 2)
   method          PaymentMethod @default(CARD)
   status          PaymentStatus @default(PENDING)
@@ -604,12 +605,13 @@ model InventoryLevel {
 model InventoryRestock {
   id           String         @id @default(cuid())
   inventoryId  String
-  inventory    InventoryLevel @relation(fields: [inventoryId], references: [id])
+  inventory    InventoryLevel @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
   quantity     Int
   expectedDate DateTime
   arrivedAt    DateTime?
   notes        String?
   createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
 
   @@index([inventoryId])
   @@index([expectedDate])
@@ -644,12 +646,13 @@ model Shipment {
 model ShipmentEvent {
   id          String   @id @default(cuid())
   shipmentId  String
-  shipment    Shipment @relation(fields: [shipmentId], references: [id])
+  shipment    Shipment @relation(fields: [shipmentId], references: [id], onDelete: Cascade)
   status      String
   description String
   lat         Float?
   lng         Float?
   timestamp   DateTime @default(now())
+  createdAt   DateTime @default(now())
 
   @@index([shipmentId])
 }
@@ -774,6 +777,7 @@ model RepTask {
   completedAt    DateTime?
   priority       String        @default("NORMAL")
   createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 
   @@index([repId])
   @@index([organizationId])
@@ -825,6 +829,7 @@ model ProductDrop {
   featured       Boolean     @default(false)
   alerts         DropAlert[]
   createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
 
   @@index([dropDate])
   @@index([isPublic, dropDate])
@@ -833,7 +838,7 @@ model ProductDrop {
 model DropAlert {
   id        String      @id @default(cuid())
   dropId    String
-  drop      ProductDrop @relation(fields: [dropId], references: [id])
+  drop      ProductDrop @relation(fields: [dropId], references: [id], onDelete: Cascade)
   email     String
   name      String?
   phone     String?
@@ -882,7 +887,7 @@ model Supplier {
 model SupplierSubmission {
   id              String   @id @default(cuid())
   supplierId      String
-  supplier        Supplier @relation(fields: [supplierId], references: [id])
+  supplier        Supplier @relation(fields: [supplierId], references: [id], onDelete: Cascade)
   productName     String
   category        String
   quantity        Decimal  @db.Decimal(10, 2)

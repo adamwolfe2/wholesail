@@ -1,5 +1,5 @@
 const GITHUB_API = "https://api.github.com";
-const GITHUB_OWNER = "adamwolfe2";
+const GITHUB_OWNER = process.env.GITHUB_OWNER ?? "adamwolfe2";
 
 function headers() {
   const token = process.env.GITHUB_PAT;

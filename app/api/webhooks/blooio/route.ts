@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
         let org: { id: string; name: string; email: string } | null = null;
         if (fromPhone) {
           const digits = fromPhone.replace(/\D/g, "").slice(-10);
-          if (digits.length === 10) {
+          if (/^\d{10}$/.test(digits)) {
             const rows = await prisma.$queryRaw<Array<{ id: string; name: string; email: string }>>`
               SELECT id, name, email
               FROM "Organization"

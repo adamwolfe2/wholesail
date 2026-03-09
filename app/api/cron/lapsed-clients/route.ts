@@ -133,26 +133,30 @@ export async function GET(req: NextRequest) {
           errors.push(`Email failed for org ${org.id}: ${err instanceof Error ? err.message : 'unknown'}`)
         })
 
-        // Send SMS if phone is on file
+        // Send SMS if phone is on file (fire-and-forget, captured below)
         const phone = org.phone ? toE164(org.phone) : null
-        if (phone) {
-          sendMessage({
-            to: phone,
-            message: `Hey ${firstName}! It's been ${daysSince} days since your last Wholesail order — running low on anything? Text your order or visit wholesailhub.com/catalog`,
-          }).catch(err => {
-            errors.push(`SMS failed for org ${org.id}: ${err instanceof Error ? err.message : 'unknown'}`)
-          })
-        }
+        const smsPromise = phone
+          ? sendMessage({
+              to: phone,
+              message: `Hey ${firstName}! It's been ${daysSince} days since your last Wholesail order — running low on anything? Text your order or visit wholesailhub.com/catalog`,
+            }).catch(err => {
+              errors.push(`SMS failed for org ${org.id}: ${err instanceof Error ? err.message : 'unknown'}`)
+              return null
+            })
+          : Promise.resolve(null)
 
-        // Write audit event to prevent duplicate sends
+        await smsPromise
+
+        // Write audit event only after both channels have settled
         await prisma.auditEvent.create({
           data: {
-            action: 'lapsed_client_email_sent',
+            action: 'lapsed_client_contacted',
             entityType: 'Organization',
             entityId: org.id,
             metadata: {
               daysSinceLastOrder: daysSince,
               topProducts: topProducts.map(p => p.name),
+              smsAttempted: !!phone,
             },
           },
         })

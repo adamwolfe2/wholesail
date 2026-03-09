@@ -8,6 +8,8 @@ import {
 import { scrapeIntakeWebsite } from "@/lib/build/firecrawl";
 import * as slackIntegration from "@/lib/integrations/slack";
 import { publicSignupLimiter, checkRateLimit, getIp } from "@/lib/rate-limit";
+import { isAllowedUrl } from "@/lib/utils/ssrf-protection";
+import { prisma } from "@/lib/db";
 
 const intakeSchema = z.object({
   // Step 1
@@ -56,7 +58,7 @@ export async function POST(req: NextRequest) {
   if (!allowed) {
     return NextResponse.json(
       { error: "Too many requests. Please try again later." },
-      { status: 429 }
+      { status: 429, headers: { "Retry-After": "3600" } }
     );
   }
 
@@ -66,10 +68,20 @@ export async function POST(req: NextRequest) {
 
     const submission = await createIntakeSubmission(data);
 
-    // Fire-and-forget: scrape website + inspiration URLs in background
-    if (data.website) {
+    // Fire-and-forget: scrape website + inspiration URLs in background (SSRF-protected)
+    if (data.website && isAllowedUrl(data.website)) {
       void scrapeIntakeWebsite(submission.id, data.website, data.inspirationUrls ?? []);
     }
+
+    // Audit trail for intake submission
+    prisma.auditEvent.create({
+      data: {
+        action: "intake_submitted",
+        entityType: "IntakeSubmission",
+        entityId: submission.id,
+        metadata: { companyName: data.companyName, contactEmail: data.contactEmail },
+      },
+    }).catch(console.error);
 
     // Fire-and-forget email notifications
     notifyAdminNewIntake({
