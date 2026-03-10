@@ -36,6 +36,13 @@ const nextConfig = {
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "www.google.com" },
+      { protocol: "https", hostname: "img.clerk.com" },
+      { protocol: "https", hostname: "images.clerk.dev" },
+      { protocol: "https", hostname: "uploadthing.com" },
+      { protocol: "https", hostname: "utfs.io" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "*.googleusercontent.com" },
+      { protocol: "https", hostname: "avatars.githubusercontent.com" },
     ],
   },
 };

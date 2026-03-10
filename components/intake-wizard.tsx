@@ -291,10 +291,13 @@ function OptionButton({
 function Step1({
   data,
   onChange,
+  attempted,
 }: {
   data: Step1Data;
   onChange: (d: Partial<Step1Data>) => void;
+  attempted: boolean;
 }) {
+  const err = (val: string) => attempted && val.trim().length === 0;
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -307,8 +310,9 @@ function Step1({
             value={data.companyName}
             onChange={(e) => onChange({ companyName: e.target.value })}
             placeholder="Pacific Seafood Co."
-            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
+            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: err(data.companyName) ? "var(--destructive)" : "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
           />
+          {err(data.companyName) && <span className="font-mono text-[10px] mt-1 block" style={{ color: "var(--destructive)" }}>Required</span>}
         </div>
         <div>
           <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
@@ -395,8 +399,9 @@ function Step1({
             value={data.contactName}
             onChange={(e) => onChange({ contactName: e.target.value })}
             placeholder="John Smith"
-            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
+            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: err(data.contactName) ? "var(--destructive)" : "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
           />
+          {err(data.contactName) && <span className="font-mono text-[10px] mt-1 block" style={{ color: "var(--destructive)" }}>Required</span>}
         </div>
         <div>
           <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
@@ -407,8 +412,9 @@ function Step1({
             value={data.contactEmail}
             onChange={(e) => onChange({ contactEmail: e.target.value })}
             placeholder="john@pacificseafood.com"
-            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
+            className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none" style={{ borderColor: err(data.contactEmail) ? "var(--destructive)" : "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
           />
+          {err(data.contactEmail) && <span className="font-mono text-[10px] mt-1 block" style={{ color: "var(--destructive)" }}>Required</span>}
         </div>
         <div>
           <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
@@ -1107,6 +1113,7 @@ export function IntakeWizard() {
   const [step3, setStep3] = useState<Step3Data>(STEP3_DEFAULT);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [attempted, setAttempted] = useState(false);
   const [draft, setDraft] = useState<ReturnType<typeof loadDraft>>(null);
   const [draftChecked, setDraftChecked] = useState(false);
 
@@ -1156,6 +1163,11 @@ export function IntakeWizard() {
   };
 
   const handleNext = async () => {
+    if (!canProceed()) {
+      setAttempted(true);
+      return;
+    }
+    setAttempted(false);
     // On the final data step (step 2 → step 3), submit to API
     if (currentStep === 2 && !submitted) {
       setSubmitting(true);
@@ -1291,7 +1303,7 @@ export function IntakeWizard() {
       {/* Step content */}
       <div className="px-3 sm:px-6 py-4 sm:py-6">
         {currentStep === 0 && (
-          <Step1 data={step1} onChange={(d) => setStep1((p) => ({ ...p, ...d }))} />
+          <Step1 data={step1} onChange={(d) => setStep1((p) => ({ ...p, ...d }))} attempted={attempted} />
         )}
         {currentStep === 1 && (
           <Step2 data={step2} onChange={(d) => setStep2((p) => ({ ...p, ...d }))} />
@@ -1306,26 +1318,40 @@ export function IntakeWizard() {
 
       {/* Navigation */}
       {currentStep < 3 && (
-        <div className="px-4 sm:px-6 py-4 border-t flex items-center justify-between gap-3" style={{ borderColor: "var(--border)" }}>
-          <button
-            type="button"
-            onClick={() => setCurrentStep((p) => p - 1)}
-            disabled={currentStep === 0}
-            className="flex items-center gap-2 font-mono text-xs uppercase tracking-wide disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
-            style={{ color: "var(--text-body)" }}
-          >
-            <ArrowLeft className="w-3.5 h-3.5" /> Back
-          </button>
-          <button
-            type="button"
-            onClick={handleNext}
-            disabled={!canProceed() || submitting}
-            className="flex items-center justify-center gap-2 text-white px-5 py-3 font-mono text-xs font-semibold tracking-wide disabled:opacity-40 disabled:cursor-not-allowed transition-colors w-full sm:w-auto"
-            style={{ backgroundColor: "var(--blue)", borderRadius: "6px" }}
-          >
-            {submitting ? "Submitting..." : currentStep === 2 ? "Book My Call" : "Continue"}{" "}
-            {!submitting && <ArrowRight className="w-3.5 h-3.5" />}
-          </button>
+        <div className="px-4 sm:px-6 py-4 border-t" style={{ borderColor: "var(--border)" }}>
+          {currentStep === 2 && (
+            <p className="font-mono text-[10px] text-center mb-3" style={{ color: "var(--text-muted)" }}>
+              Typical build: 3–5 weeks · White-glove setup included
+            </p>
+          )}
+          <div className="flex items-center justify-between gap-3">
+            <button
+              type="button"
+              onClick={() => setCurrentStep((p) => p - 1)}
+              disabled={currentStep === 0}
+              className="flex items-center gap-2 font-mono text-xs uppercase tracking-wide disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              style={{ color: "var(--text-body)" }}
+            >
+              <ArrowLeft className="w-3.5 h-3.5" /> Back
+            </button>
+            <div className="flex flex-col items-end gap-1">
+              {attempted && !canProceed() && (
+                <span className="font-mono text-[10px]" style={{ color: "var(--destructive)" }}>
+                  Fill in the required fields above
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={handleNext}
+                disabled={submitting}
+                className="flex items-center justify-center gap-2 text-white px-5 py-3 font-mono text-xs font-semibold tracking-wide disabled:opacity-40 disabled:cursor-not-allowed transition-colors w-full sm:w-auto"
+                style={{ backgroundColor: "var(--blue)", borderRadius: "6px" }}
+              >
+                {submitting ? "Submitting..." : currentStep === 2 ? "Book My Call" : "Continue"}{" "}
+                {!submitting && <ArrowRight className="w-3.5 h-3.5" />}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
