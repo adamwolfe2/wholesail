@@ -81,6 +81,121 @@ export function sendIntakeConfirmation(data: {
   });
 }
 
+// ── Client: Intake nurture (Day 3 — no call booked yet) ─────────────────────
+
+export function sendIntakeNurtureDay3(data: {
+  contactName: string;
+  contactEmail: string;
+  companyName: string;
+}) {
+  const calLink = process.env.NEXT_PUBLIC_CAL_LINK ?? "adamwolfe/wholesail";
+  const bookingUrl = `https://app.cal.com/${calLink}`;
+  return send({
+    to: data.contactEmail,
+    subject: `Quick question about ${data.companyName}'s portal`,
+    html: `
+      <div style="font-family: monospace; font-size: 14px; color: #0F1523; max-width: 500px;">
+        <h2 style="margin: 0 0 8px;">Still interested, ${data.contactName}?</h2>
+        <p style="color: #3D4556; line-height: 1.6;">
+          A few days ago you submitted portal details for <strong>${data.companyName}</strong>.
+          We haven't seen a call booked yet — wanted to make sure this didn't fall through the cracks.
+        </p>
+        <p style="color: #3D4556; line-height: 1.6;">
+          It's a 20-minute call. We'll walk through your specific use case, answer questions,
+          and give you a realistic build timeline and cost estimate. No pitch, no pressure.
+        </p>
+        <p style="margin: 20px 0;">
+          <a href="${bookingUrl}" style="
+            display: inline-block;
+            background: #0A0A0A;
+            color: #FFFFFF;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-family: monospace;
+            font-size: 13px;
+          ">Book a 20-minute call →</a>
+        </p>
+        <p style="color: #8B92A5; font-size: 12px; margin-top: 24px;">
+          — Adam at Wholesail<br/>
+          <a href="https://wholesailhub.com" style="color: #8B92A5;">wholesailhub.com</a>
+        </p>
+      </div>
+    `,
+  });
+}
+
+// ── Client: Intake nurture (Day 7 — final follow-up) ────────────────────────
+
+export function sendIntakeNurtureDay7(data: {
+  contactName: string;
+  contactEmail: string;
+  companyName: string;
+}) {
+  const calLink = process.env.NEXT_PUBLIC_CAL_LINK ?? "adamwolfe/wholesail";
+  const bookingUrl = `https://app.cal.com/${calLink}`;
+  return send({
+    to: data.contactEmail,
+    subject: `Last note on ${data.companyName}'s portal`,
+    html: `
+      <div style="font-family: monospace; font-size: 14px; color: #0F1523; max-width: 500px;">
+        <h2 style="margin: 0 0 8px;">Last note from us.</h2>
+        <p style="color: #3D4556; line-height: 1.6;">
+          ${data.contactName} — I'll keep this short. You submitted portal details for
+          <strong>${data.companyName}</strong> about a week ago. I won't keep following up
+          after this, but if timing wasn't right or questions came up, I'm happy to reconnect.
+        </p>
+        <p style="color: #3D4556; line-height: 1.6;">
+          Most of our clients have their portal live within 3–5 weeks of this call.
+          If that's still on your radar, grab a time below.
+        </p>
+        <p style="margin: 20px 0;">
+          <a href="${bookingUrl}" style="
+            display: inline-block;
+            background: #0A0A0A;
+            color: #FFFFFF;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-family: monospace;
+            font-size: 13px;
+          ">Schedule the call →</a>
+        </p>
+        <p style="color: #8B92A5; font-size: 12px; margin-top: 24px;">
+          — Adam at Wholesail<br/>
+          <a href="https://wholesailhub.com" style="color: #8B92A5;">wholesailhub.com</a>
+        </p>
+      </div>
+    `,
+  });
+}
+
+// ── Admin: Cal.com call booked ───────────────────────────────────────────────
+
+export function notifyAdminCallBooked(data: {
+  companyName: string;
+  contactName: string;
+  contactEmail: string;
+  intakeId: string;
+}) {
+  return send({
+    to: ADMIN_EMAIL,
+    subject: `Call booked: ${data.companyName}`,
+    html: `
+      <div style="font-family: monospace; font-size: 14px; color: #0F1523;">
+        <h2 style="margin: 0 0 16px;">Consultation Call Booked</h2>
+        <table style="border-collapse: collapse;">
+          <tr><td style="padding: 4px 16px 4px 0; color: #8B92A5;">Company</td><td><strong>${data.companyName}</strong></td></tr>
+          <tr><td style="padding: 4px 16px 4px 0; color: #8B92A5;">Contact</td><td>${data.contactName} (${data.contactEmail})</td></tr>
+        </table>
+        <p style="margin-top: 20px;">
+          <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"}/admin/intakes/${data.intakeId}" style="color: #2A52BE;">
+            View intake in Admin →
+          </a>
+        </p>
+      </div>
+    `,
+  });
+}
+
 // ── Client: Status change notification ──────────────────────────────────────
 
 export function notifyClientStatusChange(data: {

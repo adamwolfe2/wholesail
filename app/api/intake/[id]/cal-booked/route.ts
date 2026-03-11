@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createHmac, timingSafeEqual } from "crypto";
 import { prisma } from "@/lib/db";
+import { notifyAdminCallBooked } from "@/lib/email/notifications";
 
 /**
  * POST /api/intake/[id]/cal-booked
@@ -39,7 +40,13 @@ export async function POST(
   try {
     const intake = await prisma.intakeSubmission.findUnique({
       where: { id },
-      select: { id: true },
+      select: {
+        id: true,
+        companyName: true,
+        contactName: true,
+        contactEmail: true,
+        calBooked: true,
+      },
     });
 
     if (!intake) {
@@ -50,6 +57,17 @@ export async function POST(
       where: { id },
       data: { calBooked: true },
     });
+
+    // Notify admin only on first booking (idempotent). Fire-and-forget — the
+    // send helper already swallows internal errors via its own .catch().
+    if (!intake.calBooked) {
+      void notifyAdminCallBooked({
+        companyName: intake.companyName,
+        contactName: intake.contactName,
+        contactEmail: intake.contactEmail,
+        intakeId: intake.id,
+      });
+    }
 
     return NextResponse.json({ ok: true });
   } catch (err) {

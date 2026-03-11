@@ -1842,51 +1842,6 @@ export async function sendQuoteToClientEmail(data: {
 }
 
 // ---------------------------------------------------------------------------
-// sendGiveawayConfirmationEmail — confirms a giveaway entry to the user
-// ---------------------------------------------------------------------------
-
-export async function sendGiveawayConfirmationEmail(email: string): Promise<void> {
-  const resend = getResend();
-  if (!resend) return;
-
-  const instagramUrl = "https://instagram.com/wholesailhub";
-
-  const html = buildBaseHtml({
-    headline: "You're entered.",
-    bodyHtml: `
-      <p style="margin:0 0 16px;color:#0A0A0A;font-size:15px;line-height:1.6;">
-        Your entry for this week's <strong>Wholesail Giveaway</strong> has been received.
-      </p>
-      <p style="margin:0 0 16px;color:#0A0A0A;font-size:15px;line-height:1.6;">
-        To complete your entry, follow <strong>@wholesailhub</strong> on Instagram. Winners are selected every Friday and notified by email.
-      </p>
-      <p style="margin:0;color:#C8C0B4;font-size:13px;">
-        Good luck — only one entry per week, per email.
-      </p>
-    `,
-    ctaText: "Follow @wholesailhub",
-    ctaUrl: instagramUrl,
-  });
-
-  const text = [
-    "You're entered — Wholesail Giveaway",
-    "",
-    "Your entry has been received. To complete it, follow @wholesailhub on Instagram.",
-    "Winners are selected every Friday and notified by email.",
-    "",
-    `Instagram: ${instagramUrl}`,
-  ].join("\n");
-
-  await resend.emails.send({
-    from: FROM_EMAIL,
-    to: email,
-    subject: "You're entered — Wholesail Weekly Giveaway",
-    html,
-    text,
-  });
-}
-
-// ---------------------------------------------------------------------------
 // sendDistributorOrderNotification
 // Sent to a distributor when an order contains one or more of their products.
 // Shows only their items. CCs their distributorCcEmail if set.

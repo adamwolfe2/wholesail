@@ -30,6 +30,30 @@ const securityHeaders = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    // These TBGC template pages were carried over from the distribution portal
+    // template and have luxury food distributor content that doesn't belong on
+    // wholesailhub.com (a B2B software platform). Redirect to homepage.
+    const tbgcPages = [
+      "/journal",
+      "/journal/:slug*",
+      "/provenance",
+      "/provenance/:slug*",
+      "/social",
+      "/guide",
+      "/seasonal",
+      "/drops",
+      "/drops/:slug*",
+      "/partner",
+      "/apply",
+      "/apply/:slug*",
+    ];
+    return tbgcPages.map((source) => ({
+      source,
+      destination: "/",
+      permanent: false,
+    }));
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },
