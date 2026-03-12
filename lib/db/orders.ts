@@ -87,7 +87,7 @@ export async function createOrder(input: CreateOrderInput) {
 
   // Calculate state-level sales tax on the subtotal
   const taxRate = getTaxRate(input.shippingState);
-  const tax = subtotal * taxRate;
+  const tax = Math.round(subtotal * taxRate * 100) / 100;
 
   const deliveryFee = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : STANDARD_DELIVERY_FEE;
   const creditApplied = Math.min(input.creditApplied ?? 0, subtotal + tax + deliveryFee);

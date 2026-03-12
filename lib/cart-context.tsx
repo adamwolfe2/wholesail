@@ -46,7 +46,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // Save cart to localStorage whenever it changes (only after hydration)
   useEffect(() => {
     if (isHydrated) {
-      localStorage.setItem('wholesail-cart', JSON.stringify(items))
+      try {
+        localStorage.setItem('wholesail-cart', JSON.stringify(items))
+      } catch { /* quota exceeded — ignore */ }
     }
   }, [items, isHydrated])
 

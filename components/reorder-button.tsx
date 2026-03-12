@@ -34,21 +34,29 @@ export function ReorderButton({
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [done, setDone] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   async function handleReorder() {
     setLoading(true)
+    setError(null)
     try {
       let orderItems = items
 
       // If items not provided, fetch them
       if (!orderItems) {
         const res = await fetch(`/api/client/orders/${orderNumber}`)
-        if (!res.ok) return
+        if (!res.ok) {
+          setError('Could not load order details')
+          return
+        }
         const data = await res.json()
         orderItems = data.order?.items || []
       }
 
-      if (!orderItems || orderItems.length === 0) return
+      if (!orderItems || orderItems.length === 0) {
+        setError('No items to reorder')
+        return
+      }
 
       for (const item of orderItems) {
         addItem({
@@ -66,13 +74,14 @@ export function ReorderButton({
         router.push('/checkout')
       }, 500)
     } catch {
-      // Error reordering
+      setError('Failed to reorder. Please try again.')
     } finally {
       setLoading(false)
     }
   }
 
   return (
+    <>
     <Button
       variant={variant}
       size={size}
@@ -88,5 +97,7 @@ export function ReorderButton({
       )}
       {done ? 'Added!' : 'Reorder'}
     </Button>
+    {error && <p className="text-xs text-destructive mt-1">{error}</p>}
+    </>
   )
 }

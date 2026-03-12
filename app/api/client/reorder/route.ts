@@ -60,18 +60,35 @@ export async function POST(request: Request) {
 
     const newOrderNumber = await generateOrderNumber()
 
-    const subtotal = sourceOrder.items.reduce(
-      (sum, item) => sum + Number(item.unitPrice) * item.quantity,
-      0
-    )
-
-    // Fetch distributor assignment for each product
+    // Fetch CURRENT prices and availability for all products (not stale prices from source order)
     const reorderProductIds = sourceOrder.items.map((i) => i.productId)
     const reorderProducts = await prisma.product.findMany({
       where: { id: { in: reorderProductIds } },
-      select: { id: true, distributorOrgId: true },
+      select: { id: true, name: true, price: true, available: true, distributorOrgId: true },
     })
-    const reorderDistributorMap = new Map(reorderProducts.map((p) => [p.id, p.distributorOrgId ?? null]))
+    const productMap = new Map(reorderProducts.map((p) => [p.id, p]))
+
+    // Filter out unavailable products
+    const unavailable = sourceOrder.items.filter((item) => {
+      const product = productMap.get(item.productId)
+      return !product || product.available === false
+    })
+    const availableItems = sourceOrder.items.filter((item) => {
+      const product = productMap.get(item.productId)
+      return product && product.available !== false
+    })
+
+    if (availableItems.length === 0) {
+      return NextResponse.json(
+        { error: 'All items from this order are currently unavailable', unavailable: unavailable.map((i) => i.name) },
+        { status: 422 }
+      )
+    }
+
+    const subtotal = availableItems.reduce((sum, item) => {
+      const product = productMap.get(item.productId)!
+      return sum + Number(product.price) * item.quantity
+    }, 0)
 
     const newOrder = await prisma.order.create({
       data: {
@@ -83,16 +100,21 @@ export async function POST(request: Request) {
         tax: 0,
         deliveryFee: 0,
         total: subtotal,
-        notes: `Reorder of ${sourceOrder.orderNumber}`,
+        notes: unavailable.length > 0
+          ? `Reorder of ${sourceOrder.orderNumber} (${unavailable.length} item(s) unavailable, omitted)`
+          : `Reorder of ${sourceOrder.orderNumber}`,
         items: {
-          create: sourceOrder.items.map((item) => ({
-            productId: item.productId,
-            name: item.name,
-            quantity: item.quantity,
-            unitPrice: item.unitPrice,
-            total: item.total,
-            distributorOrgId: reorderDistributorMap.get(item.productId) ?? null,
-          })),
+          create: availableItems.map((item) => {
+            const product = productMap.get(item.productId)!
+            return {
+              productId: item.productId,
+              name: product.name,
+              quantity: item.quantity,
+              unitPrice: product.price,
+              total: Number(product.price) * item.quantity,
+              distributorOrgId: product.distributorOrgId ?? null,
+            }
+          }),
         },
       },
     })

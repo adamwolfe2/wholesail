@@ -53,7 +53,7 @@ export async function GET(req: Request) {
       include: {
         items: {
           include: {
-            product: { select: { id: true, name: true, price: true, distributorOrgId: true } },
+            product: { select: { id: true, name: true, price: true, available: true, distributorOrgId: true } },
           },
         },
         organization: { select: { phone: true, name: true, email: true, contactPerson: true } },
@@ -83,7 +83,19 @@ export async function GET(req: Request) {
       }
 
       try {
-        const lineItems = so.items.map((item) => ({
+        // Filter out unavailable products
+        const availableItems = so.items.filter((item) => item.product && (item.product as { available?: boolean }).available !== false)
+        if (availableItems.length === 0) {
+          results.push({
+            standingOrderId: so.id,
+            standingOrderName: so.name,
+            status: 'skipped',
+            error: 'All products are currently unavailable',
+          })
+          continue
+        }
+
+        const lineItems = availableItems.map((item) => ({
           productId: item.productId,
           name: item.product.name,
           quantity: item.quantity,

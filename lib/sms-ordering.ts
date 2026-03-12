@@ -88,18 +88,31 @@ export async function convertDraftToOrder(
 ): Promise<{ orderNumber: string; orderId: string }> {
   const items = draft.items as DraftItem[]
 
-  const subtotal = items.reduce(
-    (sum, i) => sum + (i.marketRate ? 0 : i.unitPrice * i.quantity),
-    0
-  )
-
-  // Fetch distributor assignment for each product
+  // Fetch current product data including availability
   const smsProductIds = items.map((i) => i.productId)
   const smsProducts = await prisma.product.findMany({
     where: { id: { in: smsProductIds } },
-    select: { id: true, distributorOrgId: true },
+    select: { id: true, available: true, distributorOrgId: true },
   })
+  const smsProductMap = new Map(smsProducts.map((p) => [p.id, p]))
+
+  // Filter out unavailable products
+  const availableItems = items.filter((i) => {
+    const product = smsProductMap.get(i.productId)
+    return product && product.available !== false
+  })
+  if (availableItems.length === 0) {
+    // Clean up draft since we can't fulfill it
+    await prisma.smsOrderDraft.delete({ where: { id: draft.id } }).catch(() => {})
+    throw new Error("All requested products are currently unavailable")
+  }
+
   const smsDistributorMap = new Map(smsProducts.map((p) => [p.id, p.distributorOrgId ?? null]))
+
+  const subtotal = availableItems.reduce(
+    (sum, i) => sum + (i.marketRate ? 0 : i.unitPrice * i.quantity),
+    0
+  )
 
   // Generate order number with retry loop for unique constraint violations
   let order: Awaited<ReturnType<typeof prisma.order.create>> | null = null
@@ -121,7 +134,7 @@ export async function convertDraftToOrder(
           total: subtotal,
           notes: "Placed via iMessage/SMS — awaiting rep review",
           items: {
-            create: items.map((i) => ({
+            create: availableItems.map((i) => ({
               productId: i.productId,
               name: i.productName,
               quantity: i.quantity,
@@ -139,7 +152,11 @@ export async function convertDraftToOrder(
     }
   }
 
-  if (!order) throw new Error("Failed to create order after 5 attempts")
+  if (!order) {
+    // Clean up the draft on total failure so it doesn't hang around
+    await prisma.smsOrderDraft.delete({ where: { id: draft.id } }).catch(() => {})
+    throw new Error("Failed to create order after 5 attempts")
+  }
 
   notifyDistributorsForOrder({
     orderId: order.id,
@@ -162,8 +179,8 @@ export async function convertDraftToOrder(
   })
 
   // ── Notify ops team — email + SMS ──────────────────────────
-  const hasMarketRate = items.some((i) => i.marketRate)
-  const itemLines = items.map(
+  const hasMarketRate = availableItems.some((i) => i.marketRate)
+  const itemLines = availableItems.map(
     (i) =>
       `${i.quantity}× ${i.productName}${i.marketRate ? " (market rate)" : ` — $${(i.unitPrice * i.quantity).toFixed(2)}`}`
   )
@@ -174,7 +191,7 @@ export async function convertDraftToOrder(
     orderId: order.id,
     customerName: orgName,
     customerEmail: orgEmail,
-    items: items.map((i) => ({
+    items: availableItems.map((i) => ({
       name: i.productName,
       quantity: i.quantity,
       unitPrice: i.unitPrice,

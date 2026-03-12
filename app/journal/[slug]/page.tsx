@@ -4,6 +4,16 @@ import Link from "next/link"
 import { articles } from "@/lib/journal/articles"
 import { ChevronLeft } from "lucide-react"
 
+/** Strip dangerous HTML patterns as defense-in-depth for server-rendered content. */
+function sanitizeHtml(html: string): string {
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, "")
+    .replace(/on\w+\s*=\s*"[^"]*"/gi, "")
+    .replace(/on\w+\s*=\s*'[^']*'/gi, "")
+    .replace(/javascript\s*:/gi, "blocked:")
+}
+
 interface Props {
   params: Promise<{ slug: string }>
 }
@@ -91,7 +101,7 @@ export default async function ArticlePage({ params }: Props) {
             prose-li:text-foreground/80
             prose-strong:text-foreground prose-strong:font-semibold
             prose-a:text-foreground prose-a:underline"
-          dangerouslySetInnerHTML={{ __html: article.content }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }}
         />
 
         {/* CTA */}

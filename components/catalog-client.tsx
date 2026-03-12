@@ -45,7 +45,7 @@ export function CatalogClient({
       .then(data => {
         if (data?.favorites) setFavorites(new Set(data.favorites))
       })
-      .catch(() => {})
+      .catch((err) => console.error('Failed to load favorites:', err))
   }, [isSignedIn])
 
   async function handleToggleFavorite(productId: string) {
