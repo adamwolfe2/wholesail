@@ -52,8 +52,17 @@ function ToolCard({
     <div
       ref={cardRef}
       className="relative cursor-pointer group"
+      role="button"
+      tabIndex={0}
+      aria-pressed={isActive}
       onClick={onToggle}
       onMouseEnter={onToggle}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onToggle();
+        }
+      }}
     >
       {/* Card */}
       <div

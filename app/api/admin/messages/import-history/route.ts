@@ -31,7 +31,6 @@ async function fetchBlooMessages(e164Phone: string): Promise<BlooMessage[]> {
     })
     if (!res.ok) return []
     const data = await res.json()
-    // The API returns { messages: [...] } or just an array
     if (Array.isArray(data)) return data
     if (Array.isArray(data.messages)) return data.messages
     return []
@@ -62,60 +61,75 @@ export async function POST() {
     let imported = 0
     let orgsProcessed = 0
 
-    for (const org of orgs) {
-      const e164 = org.phone ? toE164(org.phone) : null
-      if (!e164) continue
+    // Filter orgs with valid e164 phone numbers
+    const orgsWithPhones = orgs
+      .map((org) => ({ ...org, e164: org.phone ? toE164(org.phone) : null }))
+      .filter((org): org is typeof org & { e164: string } => org.e164 !== null)
 
-      // Skip if already imported for this org
-      const existingImport = await prisma.conversation.findFirst({
-        where: {
-          organizationId: org.id,
-          subject: { startsWith: 'Imported history' },
-        },
-        select: { id: true },
-      })
-      if (existingImport) continue
+    // Batch dedup: find all orgs that already have imported conversations
+    const existingImports = await prisma.conversation.findMany({
+      where: {
+        organizationId: { in: orgsWithPhones.map((o) => o.id) },
+        subject: { startsWith: 'Imported history' },
+      },
+      select: { organizationId: true },
+    })
+    const alreadyImported = new Set(existingImports.map((e) => e.organizationId))
 
-      const messages = await fetchBlooMessages(e164)
-      if (messages.length === 0) continue
+    const orgsToProcess = orgsWithPhones.filter((org) => !alreadyImported.has(org.id))
 
-      orgsProcessed++
+    // Fetch messages in parallel batches of 5 to avoid overwhelming Bloo.io
+    const BATCH_SIZE = 5
+    for (let i = 0; i < orgsToProcess.length; i += BATCH_SIZE) {
+      const batch = orgsToProcess.slice(i, i + BATCH_SIZE)
+      const results = await Promise.allSettled(
+        batch.map(async (org) => {
+          const messages = await fetchBlooMessages(org.e164)
+          return { org, messages }
+        })
+      )
 
-      // Create conversation + messages in one transaction
-      await prisma.conversation.create({
-        data: {
-          subject: `Imported history — ${org.name}`,
-          organizationId: org.id,
-          isOpen: true,
-          lastMessageAt: new Date(),
-          messages: {
-            create: messages.map((msg) => {
-              // Normalize fields — Bloo.io API may vary
-              const content =
-                msg.text ?? msg.body ?? msg.content ?? ''
-              const createdAt =
-                msg.created_at ?? msg.timestamp ?? msg.sent_at
-                  ? new Date(
-                      msg.created_at ?? msg.timestamp ?? msg.sent_at ?? Date.now()
-                    )
-                  : new Date()
-              const senderRole: string =
-                msg.direction === 'inbound' ? 'client' : 'staff'
-              const senderName =
-                msg.direction === 'inbound' ? org.name : 'Wholesail Team'
+      for (const result of results) {
+        if (result.status !== 'fulfilled') continue
+        const { org, messages } = result.value
+        if (messages.length === 0) continue
 
-              return {
-                senderName,
-                senderRole,
-                content: content || '[No text]',
-                createdAt,
-              }
-            }),
+        orgsProcessed++
+
+        await prisma.conversation.create({
+          data: {
+            subject: `Imported history — ${org.name}`,
+            organizationId: org.id,
+            isOpen: true,
+            lastMessageAt: new Date(),
+            messages: {
+              create: messages.map((msg) => {
+                const content =
+                  msg.text ?? msg.body ?? msg.content ?? ''
+                const createdAt =
+                  msg.created_at ?? msg.timestamp ?? msg.sent_at
+                    ? new Date(
+                        msg.created_at ?? msg.timestamp ?? msg.sent_at ?? Date.now()
+                      )
+                    : new Date()
+                const senderRole: string =
+                  msg.direction === 'inbound' ? 'client' : 'staff'
+                const senderName =
+                  msg.direction === 'inbound' ? org.name : 'Wholesail Team'
+
+                return {
+                  senderName,
+                  senderRole,
+                  content: content || '[No text]',
+                  createdAt,
+                }
+              }),
+            },
           },
-        },
-      })
+        })
 
-      imported++
+        imported++
+      }
     }
 
     return NextResponse.json({ imported, orgs: orgsProcessed })

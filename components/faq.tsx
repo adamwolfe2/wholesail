@@ -52,7 +52,10 @@ export function FAQ() {
             style={{ borderColor: "var(--border-strong)" }}
           >
             <button
+              id={`faq-trigger-${i}`}
               onClick={() => setOpen(isOpen ? null : i)}
+              aria-expanded={isOpen}
+              aria-controls={`faq-answer-${i}`}
               className="w-full flex items-center justify-between px-6 py-4 text-left transition-colors"
               style={{ backgroundColor: isOpen ? "var(--bg-white)" : "transparent" }}
             >
@@ -67,6 +70,9 @@ export function FAQ() {
               />
             </button>
             <div
+              id={`faq-answer-${i}`}
+              role="region"
+              aria-labelledby={`faq-trigger-${i}`}
               className={`overflow-hidden transition-all duration-200 ${
                 isOpen ? "max-h-96" : "max-h-0"
               }`}

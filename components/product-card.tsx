@@ -4,7 +4,7 @@ import type { Product } from '@/lib/products'
 import { useCart } from '@/lib/cart-context'
 import { SignInButton } from '@clerk/nextjs'
 import { ShoppingCart, Check, Snowflake, TrendingUp, CreditCard, Heart } from 'lucide-react'
-import { useState } from 'react'
+import { memo, useState } from 'react'
 
 interface ProductCardProps {
   product: Product
@@ -15,7 +15,7 @@ interface ProductCardProps {
   onToggleFavorite?: (productId: string) => void
 }
 
-export function ProductCard({ product, isSignedIn = false, featured = false, quantityOnHand, isFavorited, onToggleFavorite }: ProductCardProps) {
+export const ProductCard = memo(function ProductCard({ product, isSignedIn = false, featured = false, quantityOnHand, isFavorited, onToggleFavorite }: ProductCardProps) {
   const { addItem } = useCart()
   const [added, setAdded] = useState(false)
 
@@ -164,4 +164,4 @@ export function ProductCard({ product, isSignedIn = false, featured = false, qua
       </div>
     </article>
   )
-}
+})

@@ -33,23 +33,37 @@ export async function POST(
     return NextResponse.json({ sent: 0, total: 0, message: "No subscribers to notify" });
   }
 
-  let sent = 0;
   const errors: string[] = [];
 
-  for (const email of emails) {
-    const result = await sendDropAlertEmail({
-      email,
-      dropTitle: drop.title,
-      dropDate: drop.dropDate.toISOString(),
-      description: drop.description,
-      category: drop.category,
-    });
-    if (result.success) {
-      sent++;
-    } else {
-      errors.push(email);
+  // Send emails in parallel batches of 10 to avoid overwhelming Resend
+  const BATCH_SIZE = 10;
+  const results: boolean[] = [];
+
+  for (let i = 0; i < emails.length; i += BATCH_SIZE) {
+    const batch = emails.slice(i, i + BATCH_SIZE);
+    const batchResults = await Promise.allSettled(
+      batch.map((email) =>
+        sendDropAlertEmail({
+          email,
+          dropTitle: drop.title,
+          dropDate: drop.dropDate.toISOString(),
+          description: drop.description,
+          category: drop.category,
+        })
+      )
+    );
+    for (let j = 0; j < batchResults.length; j++) {
+      const r = batchResults[j];
+      if (r.status === "fulfilled" && r.value.success) {
+        results.push(true);
+      } else {
+        results.push(false);
+        errors.push(batch[j]);
+      }
     }
   }
+
+  const sent = results.filter(Boolean).length;
 
   await prisma.auditEvent.create({
     data: {

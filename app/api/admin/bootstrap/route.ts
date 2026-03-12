@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
 
   const clerkUser = await currentUser();
   if (!clerkUser) {
+    console.error("[POST /api/admin/bootstrap] Could not fetch Clerk user for userId:", userId);
     return NextResponse.json({ error: "Could not fetch user" }, { status: 500 });
   }
 

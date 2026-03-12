@@ -803,7 +803,7 @@ model RepTask {
 model Lead {
   id             String     @id @default(cuid())
   name           String
-  email          String
+  email          String     @unique
   phone          String?
   restaurant     String?
   website        String?
@@ -817,7 +817,6 @@ model Lead {
   updatedAt      DateTime   @updatedAt
 
   @@index([status])
-  @@index([email])
   @@index([emailBisonId])
 }
 
@@ -959,7 +958,7 @@ model WholesaleApplication {
   id              String          @id @default(cuid())
   businessName    String
   contactName     String
-  email           String
+  email           String          @unique
   phone           String
   website         String?
   taxId           String?
@@ -976,7 +975,6 @@ model WholesaleApplication {
   updatedAt       DateTime        @updatedAt
 
   @@index([status, createdAt(sort: Desc)])
-  @@index([email])
 }
 
 // ============================================================

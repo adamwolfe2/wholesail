@@ -84,14 +84,23 @@ function CardGridButton({
     function handleClick(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape" && open) setOpen(false);
+    }
     document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, []);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [open]);
 
   return (
     <div ref={ref} className="relative">
       <button
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-haspopup="menu"
         className="font-mono text-[13px] flex items-center gap-1 cursor-pointer link-body"
         style={{ background: "none", border: "none", padding: 0 }}
       >
@@ -135,6 +144,7 @@ function CardGridButton({
 
           <div
             className="grid gap-1.5"
+            role="menu"
             style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
           >
             {items.map((item) => (

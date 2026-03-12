@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { pushContact, isConfigured } from "@/lib/integrations/emailbison";
+import { publicSignupLimiter, checkRateLimit, getIp } from "@/lib/rate-limit";
 
 export async function POST(req: NextRequest) {
+  const { allowed } = await checkRateLimit(publicSignupLimiter, getIp(req));
+  if (!allowed) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   let body: { email?: string; source?: string };
   try {
     body = await req.json();
