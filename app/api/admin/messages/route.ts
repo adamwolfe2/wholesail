@@ -11,7 +11,7 @@ export async function GET() {
 
   try {
     const raw = await prisma.conversation.findMany({
-      orderBy: { lastMessageAt: 'desc' },
+      orderBy: { updatedAt: 'desc' },
       take: 100,
       include: {
         organization: { select: { id: true, name: true } },
@@ -38,6 +38,7 @@ export async function GET() {
       lastMessage: c.messages[0]?.content ?? '',
       lastMessageAt: c.lastMessageAt.toISOString(),
       unreadCount: c._count.messages,
+      updatedAt: c.updatedAt.toISOString(),
       createdAt: c.createdAt.toISOString(),
       repClaimedAt: c.repClaimedAt?.toISOString() ?? null,
     }))

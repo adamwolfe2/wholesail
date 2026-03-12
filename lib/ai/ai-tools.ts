@@ -65,11 +65,19 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       },
       include: {
         _count: { select: { orders: true } },
-        orders: { where: { status: { not: 'CANCELLED' } }, select: { total: true } },
       },
       take: limit,
       orderBy: { createdAt: 'desc' },
     })
+
+    // Compute totalSpend via aggregate instead of loading all order rows
+    const orgIds = orgs.map(o => o.id)
+    const spendData = await prisma.order.groupBy({
+      by: ['organizationId'],
+      where: { organizationId: { in: orgIds }, status: { not: 'CANCELLED' } },
+      _sum: { total: true },
+    })
+    const spendMap = new Map(spendData.map(s => [s.organizationId, Number(s._sum.total ?? 0)]))
 
     return orgs.map(o => ({
       id: o.id,
@@ -82,7 +90,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       isDistributor: o.isDistributor,
       paymentTerms: o.paymentTerms,
       orderCount: o._count.orders,
-      totalSpend: `$${o.orders.reduce((s, ord) => s + Number(ord.total), 0).toFixed(2)}`,
+      totalSpend: `$${(spendMap.get(o.id) ?? 0).toFixed(2)}`,
       loyaltyPoints: o.loyaltyPoints,
       link: `/admin/clients/${o.id}`,
     }))

@@ -92,7 +92,8 @@ export async function GET() {
     });
 
     return NextResponse.json({ products: productNames, months, data });
-  } catch {
+  } catch (err) {
+    console.error("[admin/ceo/product-trends]", err);
     return NextResponse.json({ products: [], months, data: [] });
   }
 }

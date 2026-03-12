@@ -51,6 +51,15 @@ function formatDate(iso: string): string {
   });
 }
 
+/** Strip dangerous HTML patterns as defense-in-depth for server-rendered content. */
+function sanitizeHtml(html: string): string {
+  return html
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, "")
+    .replace(/\son\w+\s*=\s*["'][^"']*["']/gi, "")
+    .replace(/href\s*=\s*["']javascript:[^"']*["']/gi, 'href="#"');
+}
+
 function ArticleSchema({ post }: { post: BlogPost }) {
   const schema = {
     "@context": "https://schema.org",
@@ -259,7 +268,7 @@ export default async function BlogPostPage({ params }: Props) {
                 lineHeight: "1.8",
               } as React.CSSProperties
             }
-            dangerouslySetInnerHTML={{ __html: post.content }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
           />
 
           {/* CTA block styles injected via global CSS */}

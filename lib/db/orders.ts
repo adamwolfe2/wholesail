@@ -288,8 +288,12 @@ export async function getOrderByNumber(orderNumber: string) {
     include: {
       items: { include: { product: true } },
       payments: true,
-      organization: true,
-      user: true,
+      organization: {
+        select: { id: true, name: true, email: true, phone: true, contactPerson: true, tier: true },
+      },
+      user: {
+        select: { id: true, name: true, email: true },
+      },
       shipment: {
         include: {
           events: { orderBy: { timestamp: "desc" } },

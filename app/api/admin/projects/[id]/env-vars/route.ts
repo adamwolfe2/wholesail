@@ -17,7 +17,18 @@ export async function PATCH(
 
   const { id } = await params;
   const body = await req.json();
-  const { key, status } = schema.parse(body);
+
+  let data: z.infer<typeof schema>;
+  try {
+    data = schema.parse(body);
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return NextResponse.json({ error: "Validation failed", details: err.issues }, { status: 400 });
+    }
+    throw err;
+  }
+
+  const { key, status } = data;
 
   const project = await prisma.project.findUnique({
     where: { id },

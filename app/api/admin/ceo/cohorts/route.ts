@@ -66,8 +66,8 @@ export async function GET() {
             : 0,
       });
     }
-  } catch {
-    // Return empty data on error
+  } catch (err) {
+    console.error("[admin/ceo/cohorts]", err);
     return NextResponse.json([]);
   }
 

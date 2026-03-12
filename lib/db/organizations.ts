@@ -7,7 +7,9 @@ export const getOrganizationById = unstable_cache(
       where: { id },
       include: {
         addresses: true,
-        members: true,
+        members: {
+          select: { id: true, name: true, email: true, role: true },
+        },
       },
     }),
   ["org-by-id"],

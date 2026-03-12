@@ -127,8 +127,9 @@ export async function GET() {
       month: m.month,
       count: subMonthMap.get(m.month) ?? 0,
     }));
-  } catch {
+  } catch (err) {
     // EmailSubscriber table may not exist in older deployments
+    console.error("[admin/analytics] subscriber growth query failed:", err);
   }
 
   return NextResponse.json(

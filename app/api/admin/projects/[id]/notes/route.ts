@@ -18,7 +18,18 @@ export async function POST(
 
   const { id } = await params;
   const body = await req.json();
-  const { text, type } = schema.parse(body);
+
+  let data: z.infer<typeof schema>;
+  try {
+    data = schema.parse(body);
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      return NextResponse.json({ error: "Validation failed", details: err.issues }, { status: 400 });
+    }
+    throw err;
+  }
+
+  const { text, type } = data;
 
   const project = await prisma.project.findUnique({ where: { id } });
   if (!project) {

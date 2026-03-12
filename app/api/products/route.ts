@@ -11,6 +11,8 @@ export async function GET(req: NextRequest) {
     const category = searchParams.get("category") || undefined;
     const search = searchParams.get("search") || undefined;
     const sort = (searchParams.get("sort") as SortParam) || "featured";
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") || "100")));
 
     // Build where clause
     const where: Prisma.ProductWhereInput = { available: true };
@@ -38,13 +40,15 @@ export async function GET(req: NextRequest) {
         orderBy = { sortOrder: "asc" };
     }
 
-    const [products, categories] = await Promise.all([
-      prisma.product.findMany({ where, orderBy, take: 5000 }),
+    const [products, total, categories] = await Promise.all([
+      prisma.product.findMany({ where, orderBy, skip: (page - 1) * limit, take: limit }),
+      prisma.product.count({ where }),
       getCategories(),
     ]);
 
-    return NextResponse.json({ products, categories });
-  } catch {
+    return NextResponse.json({ products, total, page, limit, categories });
+  } catch (err) {
+    console.error("[api/products]", err);
     // DB not connected — return empty so frontend falls back to static data
     return NextResponse.json({ products: [], categories: [] });
   }
