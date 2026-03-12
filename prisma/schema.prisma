@@ -445,6 +445,7 @@ model Product {
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
 
+  @@index([name])
   @@index([category])
   @@index([available])
   @@index([distributorOrgId])

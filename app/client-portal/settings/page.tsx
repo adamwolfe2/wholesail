@@ -62,6 +62,7 @@ export default function SettingsPage() {
 
   const [showAddForm, setShowAddForm] = useState(false)
   const [addingAddress, setAddingAddress] = useState(false)
+  const [addressError, setAddressError] = useState('')
   const [newAddress, setNewAddress] = useState({
     street: '',
     city: '',
@@ -186,13 +187,16 @@ export default function SettingsPage() {
 
   async function handleDeleteAddress(id: string) {
     setDeletingId(id)
+    setAddressError('')
     try {
       const res = await fetch(`/api/client/addresses/${id}`, { method: 'DELETE' })
       if (res.ok) {
         setAddresses((prev) => prev.filter((a) => a.id !== id))
+      } else {
+        setAddressError('Failed to delete address')
       }
     } catch {
-      // silently fail
+      setAddressError('Network error — please try again')
     } finally {
       setDeletingId(null)
     }
@@ -200,6 +204,7 @@ export default function SettingsPage() {
 
   async function handleSetDefault(id: string) {
     setSettingDefaultId(id)
+    setAddressError('')
     try {
       const res = await fetch(`/api/client/addresses/${id}`, { method: 'PATCH' })
       if (res.ok) {
@@ -213,9 +218,11 @@ export default function SettingsPage() {
             )
           )
         }
+      } else {
+        setAddressError('Failed to set default address')
       }
     } catch {
-      // silently fail
+      setAddressError('Network error — please try again')
     } finally {
       setSettingDefaultId(null)
     }
@@ -224,6 +231,7 @@ export default function SettingsPage() {
   async function handleAddAddress(e: React.FormEvent) {
     e.preventDefault()
     setAddingAddress(true)
+    setAddressError('')
     try {
       const res = await fetch('/api/client/addresses', {
         method: 'POST',
@@ -235,9 +243,11 @@ export default function SettingsPage() {
         setAddresses((prev) => [...prev, data.address])
         setShowAddForm(false)
         setNewAddress({ street: '', city: '', state: '', zip: '', type: 'SHIPPING' })
+      } else {
+        setAddressError('Failed to add address')
       }
     } catch {
-      // silently fail
+      setAddressError('Network error — please try again')
     } finally {
       setAddingAddress(false)
     }
@@ -432,6 +442,9 @@ export default function SettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-5 space-y-4">
+            {addressError && (
+              <p className="text-xs text-destructive bg-destructive/10 px-3 py-2 border border-destructive/20">{addressError}</p>
+            )}
             {addressLoading ? (
               <div className="flex justify-center py-6">
                 <Loader2 className="h-5 w-5 animate-spin text-[#C8C0B4]" />

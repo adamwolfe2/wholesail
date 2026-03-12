@@ -30,18 +30,20 @@ function getTaxRate(state?: string): number {
   return STATE_TAX_RATES[state.trim().toUpperCase()] ?? 0;
 }
 
-// Generate order number: ORD-2026-0001. Offset is used for retry on P2002.
-async function generateOrderNumber(offset = 0): Promise<string> {
+// Generate order number: ORD-2026-0001.
+// Uses MAX existing number + 1 (more robust than COUNT under concurrent inserts).
+async function generateOrderNumber(attempt = 0): Promise<string> {
   const year = new Date().getFullYear();
-  const count = await prisma.order.count({
-    where: {
-      createdAt: {
-        gte: new Date(`${year}-01-01`),
-        lt: new Date(`${year + 1}-01-01`),
-      },
-    },
+  const prefix = `ORD-${year}-`;
+  const last = await prisma.order.findFirst({
+    where: { orderNumber: { startsWith: prefix } },
+    orderBy: { orderNumber: "desc" },
+    select: { orderNumber: true },
   });
-  return `ORD-${year}-${String(count + 1 + offset).padStart(4, "0")}`;
+  const lastNum = last ? parseInt(last.orderNumber.replace(prefix, ""), 10) : 0;
+  // On retry, add random offset to avoid collision with concurrent requests
+  const offset = attempt > 0 ? Math.floor(Math.random() * 100) + attempt : 0;
+  return `${prefix}${String(lastNum + 1 + offset).padStart(4, "0")}`;
 }
 
 interface CreateOrderInput {
@@ -93,7 +95,7 @@ export async function createOrder(input: CreateOrderInput) {
   const creditApplied = Math.min(input.creditApplied ?? 0, subtotal + tax + deliveryFee);
   const total = subtotal + tax + deliveryFee - creditApplied;
 
-  // Retry up to 5 times on unique constraint collision (concurrent order creation)
+  // Retry up to 10 times on unique constraint collision (concurrent order creation)
   type OrderResult = Prisma.OrderGetPayload<{
     include: {
       items: true;
@@ -105,7 +107,7 @@ export async function createOrder(input: CreateOrderInput) {
   let order!: OrderResult;
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   let orderNumber!: string;
-  for (let attempt = 0; attempt < 5; attempt++) {
+  for (let attempt = 0; attempt < 10; attempt++) {
     orderNumber = await generateOrderNumber(attempt);
     try {
       order = await prisma.$transaction(async (tx) => {
@@ -139,6 +141,23 @@ export async function createOrder(input: CreateOrderInput) {
           },
         });
 
+        // Reserve inventory (inside transaction — prevents overselling)
+        for (const item of pricedItems) {
+          await tx.inventoryLevel.updateMany({
+            where: {
+              productId: item.productId,
+              quantityOnHand: { gte: item.quantity }, // only if sufficient stock
+            },
+            data: {
+              quantityOnHand: { decrement: item.quantity },
+              quantityReserved: { increment: item.quantity },
+            },
+          });
+          // Note: if updateMany matches 0 rows (no inventory record or insufficient stock),
+          // the order still proceeds — inventory tracking is best-effort for products
+          // that don't have InventoryLevel records yet.
+        }
+
         // Audit event (inside transaction)
         await tx.auditEvent.create({
           data: {
@@ -163,7 +182,7 @@ export async function createOrder(input: CreateOrderInput) {
       if (
         err instanceof Prisma.PrismaClientKnownRequestError &&
         err.code === "P2002" &&
-        attempt < 4
+        attempt < 9
       ) {
         continue;
       }

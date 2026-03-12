@@ -9,17 +9,18 @@ const createInvoiceSchema = z.object({
 });
 
 // Generate invoice number: INV-2026-0001
-async function generateInvoiceNumber(): Promise<string> {
+// Uses MAX existing number + 1 (more robust than COUNT under concurrent inserts).
+async function generateInvoiceNumber(attempt = 0): Promise<string> {
   const year = new Date().getFullYear();
-  const count = await prisma.invoice.count({
-    where: {
-      createdAt: {
-        gte: new Date(`${year}-01-01`),
-        lt: new Date(`${year + 1}-01-01`),
-      },
-    },
+  const prefix = `INV-${year}-`;
+  const last = await prisma.invoice.findFirst({
+    where: { invoiceNumber: { startsWith: prefix } },
+    orderBy: { invoiceNumber: "desc" },
+    select: { invoiceNumber: true },
   });
-  return `INV-${year}-${String(count + 1).padStart(4, "0")}`;
+  const lastNum = last ? parseInt(last.invoiceNumber.replace(prefix, ""), 10) : 0;
+  const offset = attempt > 0 ? Math.floor(Math.random() * 100) + attempt : 0;
+  return `${prefix}${String(lastNum + 1 + offset).padStart(4, "0")}`;
 }
 
 export async function POST(req: NextRequest) {
@@ -55,20 +56,34 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const invoiceNumber = await generateInvoiceNumber();
+    // Retry up to 10 times on unique constraint collision
+    let invoice;
+    let invoiceNumber = "";
+    for (let attempt = 0; attempt < 10; attempt++) {
+      invoiceNumber = await generateInvoiceNumber(attempt);
+      try {
+        invoice = await prisma.invoice.create({
+          data: {
+            invoiceNumber,
+            orderId: order.id,
+            organizationId: order.organizationId,
+            dueDate: new Date(parsed.data.dueDate),
+            status: "PENDING",
+            subtotal: order.subtotal,
+            tax: order.tax,
+            total: order.total,
+          },
+        });
+        break;
+      } catch (err) {
+        if ((err as { code?: string }).code === "P2002" && attempt < 9) continue;
+        throw err;
+      }
+    }
 
-    const invoice = await prisma.invoice.create({
-      data: {
-        invoiceNumber,
-        orderId: order.id,
-        organizationId: order.organizationId,
-        dueDate: new Date(parsed.data.dueDate),
-        status: "PENDING",
-        subtotal: order.subtotal,
-        tax: order.tax,
-        total: order.total,
-      },
-    });
+    if (!invoice) {
+      return NextResponse.json({ error: "Failed to generate unique invoice number" }, { status: 500 });
+    }
 
     await prisma.auditEvent.create({
       data: {

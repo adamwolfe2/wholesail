@@ -147,25 +147,29 @@ export async function POST(req: NextRequest) {
 
     // Resolve product IDs — support both CUID (from DB) and slug (legacy cart items)
     // IMPORTANT: always use server-side prices, never trust client-supplied unitPrice
-    const resolvedItems = await Promise.all(
-      data.items.map(async (item) => {
-        const product = await prisma.product.findFirst({
-          where: { OR: [{ id: item.productId }, { slug: item.productId }] },
-          select: { id: true, price: true, available: true },
-        });
-        if (!product) {
-          throw Object.assign(new Error(`Product not found: ${item.productId}`), { statusCode: 400 });
-        }
-        if (!product.available) {
-          throw Object.assign(new Error(`Product is no longer available: ${item.productId}`), { statusCode: 400 });
-        }
-        return {
-          ...item,
-          productId: product.id,
-          unitPrice: Number(product.price), // server-authoritative price
-        };
-      })
-    );
+    // Batch lookup: single query instead of N individual queries
+    const productIds = data.items.map((item) => item.productId);
+    const products = await prisma.product.findMany({
+      where: { OR: [{ id: { in: productIds } }, { slug: { in: productIds } }] },
+      select: { id: true, slug: true, price: true, available: true },
+    });
+    const productById = new Map(products.map((p) => [p.id, p]));
+    const productBySlug = new Map(products.filter((p) => p.slug).map((p) => [p.slug!, p]));
+
+    const resolvedItems = data.items.map((item) => {
+      const product = productById.get(item.productId) ?? productBySlug.get(item.productId);
+      if (!product) {
+        throw Object.assign(new Error(`Product not found: ${item.productId}`), { statusCode: 400 });
+      }
+      if (!product.available) {
+        throw Object.assign(new Error(`Product is no longer available: ${item.productId}`), { statusCode: 400 });
+      }
+      return {
+        ...item,
+        productId: product.id,
+        unitPrice: Number(product.price), // server-authoritative price
+      };
+    });
 
     // Create the order (pass state for tax calculation + org ID for tier discount)
     const order = await createOrder({
