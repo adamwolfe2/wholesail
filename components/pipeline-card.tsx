@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { GitBranch, Globe, AlertCircle, Layers, ExternalLink, Loader2 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -45,6 +46,7 @@ function missingCount(item: PipelineItem): number {
 }
 
 export function PipelineCard({ item }: { item: PipelineItem }) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -64,8 +66,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
         const data = await res.json();
         setError(data.error ?? "Build failed");
       } else {
-        // Reload page to show updated column
-        window.location.reload();
+        router.refresh();
       }
     } catch {
       setError("Network error");
@@ -78,12 +79,18 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
     if (!item.projectId) return;
     setLoading(true);
     try {
-      await fetch(`/api/admin/projects/${item.projectId}/status`, {
+      const res = await fetch(`/api/admin/projects/${item.projectId}/status`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "LIVE" }),
       });
-      window.location.reload();
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        console.error("Failed to mark live:", data);
+        setError(data.error ?? "Failed to update status");
+        return;
+      }
+      router.refresh();
     } catch {
       setError("Failed to update status");
     } finally {

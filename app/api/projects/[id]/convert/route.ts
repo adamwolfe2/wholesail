@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
-import { getAuthUserId } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth/require-admin";
 import { convertIntakeToProject } from "@/lib/db/projects";
 
 export async function POST(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const userId = await getAuthUserId();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { error } = await requireAdmin();
+  if (error) return error;
 
   // The [id] here is the intake submission ID
   const { id: intakeId } = await params;

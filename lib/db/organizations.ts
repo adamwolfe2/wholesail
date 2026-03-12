@@ -71,9 +71,9 @@ export const getOrganizationStats = unstable_cache(
 export const getOrgTierProgress = unstable_cache(
   async (organizationId: string) => {
     const TIER_THRESHOLDS = {
-      NEW: { label: "NEW", min: 0, max: 2500 },
-      REPEAT: { label: "REPEAT", min: 2500, max: 10000 },
-      VIP: { label: "VIP", min: 10000, max: null },
+      NEW: { label: "NEW", min: 0, max: 5000 },
+      REPEAT: { label: "REPEAT", min: 5000, max: 50000 },
+      VIP: { label: "VIP", min: 50000, max: null },
     };
 
     const [org, spendResult] = await Promise.all([

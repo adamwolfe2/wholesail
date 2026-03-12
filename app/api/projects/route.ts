@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAuthUserId } from "@/lib/auth";
+import { requireAdmin } from "@/lib/auth/require-admin";
 import { z } from "zod";
 import { getProjects, createProject } from "@/lib/db/projects";
 import { getIntakeSubmissions } from "@/lib/db/intake";
 import type { ProjectStatus } from "@prisma/client";
 
 export async function GET(req: NextRequest) {
-  const userId = await getAuthUserId();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { error } = await requireAdmin();
+  if (error) return error;
 
   const status = req.nextUrl.searchParams.get("status") as ProjectStatus | null;
   const search = req.nextUrl.searchParams.get("search") || undefined;
@@ -42,8 +42,8 @@ const createProjectSchema = z.object({
 });
 
 export async function POST(req: Request) {
-  const userId = await getAuthUserId();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { error } = await requireAdmin();
+  if (error) return error;
 
   try {
     const body = await req.json();

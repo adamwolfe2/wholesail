@@ -88,11 +88,6 @@ export async function convertDraftToOrder(
 ): Promise<{ orderNumber: string; orderId: string }> {
   const items = draft.items as DraftItem[]
 
-  // Generate order number
-  const count = await prisma.order.count()
-  const year = new Date().getFullYear()
-  const orderNumber = `ORD-${year}-${String(count + 1).padStart(4, "0")}`
-
   const subtotal = items.reduce(
     (sum, i) => sum + (i.marketRate ? 0 : i.unitPrice * i.quantity),
     0
@@ -106,29 +101,45 @@ export async function convertDraftToOrder(
   })
   const smsDistributorMap = new Map(smsProducts.map((p) => [p.id, p.distributorOrgId ?? null]))
 
-  const order = await prisma.order.create({
-    data: {
-      orderNumber,
-      organizationId: draft.organizationId,
-      userId,
-      status: "PENDING",
-      subtotal,
-      tax: 0,
-      deliveryFee: 0,
-      total: subtotal,
-      notes: "Placed via iMessage/SMS — awaiting rep review",
-      items: {
-        create: items.map((i) => ({
-          productId: i.productId,
-          name: i.productName,
-          quantity: i.quantity,
-          unitPrice: i.unitPrice,
-          total: i.marketRate ? 0 : i.unitPrice * i.quantity,
-          distributorOrgId: smsDistributorMap.get(i.productId) ?? null,
-        })),
-      },
-    },
-  })
+  // Generate order number with retry loop for unique constraint violations
+  let order: Awaited<ReturnType<typeof prisma.order.create>> | null = null
+  let orderNumber = ""
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const count = await prisma.order.count()
+    const year = new Date().getFullYear()
+    orderNumber = `ORD-${year}-${String(count + 1 + attempt).padStart(4, "0")}`
+    try {
+      order = await prisma.order.create({
+        data: {
+          orderNumber,
+          organizationId: draft.organizationId,
+          userId,
+          status: "PENDING",
+          subtotal,
+          tax: 0,
+          deliveryFee: 0,
+          total: subtotal,
+          notes: "Placed via iMessage/SMS — awaiting rep review",
+          items: {
+            create: items.map((i) => ({
+              productId: i.productId,
+              name: i.productName,
+              quantity: i.quantity,
+              unitPrice: i.unitPrice,
+              total: i.marketRate ? 0 : i.unitPrice * i.quantity,
+              distributorOrgId: smsDistributorMap.get(i.productId) ?? null,
+            })),
+          },
+        },
+      })
+      break
+    } catch (err) {
+      if ((err as { code?: string }).code === "P2002" && attempt < 4) continue
+      throw err
+    }
+  }
+
+  if (!order) throw new Error("Failed to create order after 5 attempts")
 
   notifyDistributorsForOrder({
     orderId: order.id,

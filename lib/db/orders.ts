@@ -274,6 +274,7 @@ export async function getOrdersByOrganization(organizationId: string) {
     where: { organizationId },
     include: { items: { include: { product: true } } },
     orderBy: { createdAt: "desc" },
+    take: 200,
   });
 }
 

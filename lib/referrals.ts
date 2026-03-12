@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/db'
+import type { Prisma } from '@prisma/client'
 
 /**
  * Generate a unique referral code from org name.
@@ -71,49 +72,51 @@ export async function processReferralConversion(
   newOrgId: string,
   refereeEmail: string
 ): Promise<void> {
-  const referral = await prisma.referral.findFirst({
-    where: {
-      refereeEmail: refereeEmail.toLowerCase(),
-      status: 'PENDING',
-    },
-  })
-
-  if (!referral) return
-
-  const now = new Date()
-
-  // Update referral: CONVERTED then CREDITED (single update)
-  await prisma.referral.update({
-    where: { id: referral.id },
-    data: {
-      status: 'CREDITED',
-      refereeOrgId: newOrgId,
-      creditedAt: now,
-    },
-  })
-
-  // Add credit to referrer's balance
-  await prisma.organization.update({
-    where: { id: referral.referrerId },
-    data: {
-      referralCredits: {
-        increment: referral.creditAmount,
+  await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+    const referral = await tx.referral.findFirst({
+      where: {
+        refereeEmail: refereeEmail.toLowerCase(),
+        status: 'PENDING',
       },
-    },
-  })
+    })
 
-  // Log audit event
-  await prisma.auditEvent.create({
-    data: {
-      entityType: 'Referral',
-      entityId: referral.id,
-      action: 'referral_credited',
-      metadata: {
-        referrerId: referral.referrerId,
-        refereeEmail,
+    if (!referral) return
+
+    const now = new Date()
+
+    // Update referral: CONVERTED then CREDITED (single update)
+    await tx.referral.update({
+      where: { id: referral.id },
+      data: {
+        status: 'CREDITED',
         refereeOrgId: newOrgId,
-        creditAmount: Number(referral.creditAmount),
+        creditedAt: now,
       },
-    },
+    })
+
+    // Add credit to referrer's balance
+    await tx.organization.update({
+      where: { id: referral.referrerId },
+      data: {
+        referralCredits: {
+          increment: referral.creditAmount,
+        },
+      },
+    })
+
+    // Log audit event
+    await tx.auditEvent.create({
+      data: {
+        entityType: 'Referral',
+        entityId: referral.id,
+        action: 'referral_credited',
+        metadata: {
+          referrerId: referral.referrerId,
+          refereeEmail,
+          refereeOrgId: newOrgId,
+          creditAmount: Number(referral.creditAmount),
+        },
+      },
+    })
   })
 }

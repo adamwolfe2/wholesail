@@ -77,15 +77,20 @@ export async function POST(req: NextRequest) {
       ])
     } else {
       // Resolve product IDs — items from localStorage use slug or DB id
-      const resolvedItems = await Promise.all(
-        items.map(async (item) => {
-          const product = await prisma.product.findFirst({
-            where: { OR: [{ id: item.id }, { slug: item.id }] },
-            select: { id: true },
-          })
-          return { ...item, productId: product?.id ?? item.id }
-        })
-      )
+      const productIds = items.map((item) => item.id)
+      const products = await prisma.product.findMany({
+        where: { OR: [{ id: { in: productIds } }, { slug: { in: productIds } }] },
+        select: { id: true, slug: true },
+      })
+      const productByIdOrSlug = new Map<string, string>()
+      for (const p of products) {
+        productByIdOrSlug.set(p.id, p.id)
+        if (p.slug) productByIdOrSlug.set(p.slug, p.id)
+      }
+      const resolvedItems = items.map((item) => ({
+        ...item,
+        productId: productByIdOrSlug.get(item.id) ?? item.id,
+      }))
 
       await prisma.savedCart.create({
         data: {

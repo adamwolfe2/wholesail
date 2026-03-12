@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { getAuthUserId } from "@/lib/auth";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { z } from "zod";
 import { getProjectById, updateProject, deleteProject } from "@/lib/db/projects";
@@ -9,8 +8,8 @@ export async function GET(
   _req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const userId = await getAuthUserId();
-  if (!userId) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const { error } = await requireAdmin();
+  if (error) return error;
 
   const { id } = await params;
   const project = await getProjectById(id);

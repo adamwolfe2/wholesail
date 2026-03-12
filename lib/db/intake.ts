@@ -21,6 +21,7 @@ export async function getIntakeSubmissions(opts?: {
     },
     orderBy: { createdAt: "desc" },
     include: { project: { select: { id: true, status: true } } },
+    take: 200,
   });
 }
 

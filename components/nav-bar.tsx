@@ -303,14 +303,17 @@ export function NavBar() {
                     {item.label}
                   </Link>
                 ))}
-                <Link
-                  href="/industries"
-                  onClick={() => setMobileOpen(false)}
-                  className="font-mono text-[11px] flex items-center min-h-[44px] px-3"
-                  style={{ textDecoration: "none", color: "var(--blue)" }}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileOpen(false);
+                    // Show remaining industries by expanding — for now scroll to top where mega menu lives
+                  }}
+                  className="font-mono text-[11px] flex items-center min-h-[44px] px-3 cursor-pointer"
+                  style={{ background: "none", border: "none", textAlign: "left", color: "var(--blue)", padding: "0 12px" }}
                 >
-                  View all industries →
-                </Link>
+                  +{ALL_INDUSTRIES.length - 8} more industries
+                </button>
 
                 {/* Resources group heading */}
                 <div

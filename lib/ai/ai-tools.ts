@@ -353,6 +353,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
         id: true, name: true, email: true, distributorCcEmail: true,
         _count: { select: { suppliedProducts: true, distributorItems: true } },
       },
+      take: 200,
     })
     return distributors.map(d => ({
       id: d.id, name: d.name, email: d.email,
@@ -728,6 +729,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
           select: { createdAt: true, orderNumber: true, total: true },
         },
       },
+      take: 1000,
     })
 
     const lapsed = orgs
@@ -913,6 +915,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       where,
       include: { organization: { select: { name: true, email: true, contactPerson: true } } },
       orderBy: { dueDate: 'asc' },
+      take: 100,
     })
     if (invoices.length === 0) return { message: 'No outstanding invoices found for that client.' }
 
@@ -1090,6 +1093,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
     const orgs = await prisma.organization.findMany({
       where: { isWholesaler: true },
       select: { id: true, name: true, tier: true },
+      take: 1000,
     })
     const scores = await Promise.all(orgs.map(async (org) => {
       const [orders90d, lastOrder, revenue] = await Promise.all([
