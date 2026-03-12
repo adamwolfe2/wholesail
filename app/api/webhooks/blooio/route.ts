@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyWebhookSignature, sendMessage } from "@/lib/integrations/blooio";
 import { prisma } from "@/lib/db";
+import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
 
 // ============================================================
 // Bloo.io Webhook Handler
@@ -233,7 +234,13 @@ export async function POST(req: NextRequest) {
                 message: "Order cancelled. No problem! Let us know if you need anything else.",
               });
             } else if (isOrderIntent(messageText)) {
-              // Parse the order
+              // Parse the order — rate limit AI calls per phone number
+              const phoneKey = fromPhone.replace(/\D/g, "").slice(-10);
+              const { allowed: aiAllowed } = await checkRateLimit(aiCallLimiter, `blooio:${phoneKey}`);
+              if (!aiAllowed) {
+                console.warn(`AI rate limit hit for phone ${phoneKey} — skipping order parse`);
+                break;
+              }
               try {
                 const { parseOrderText } = await import("@/lib/ai/order-parser");
                 const parseResult = await parseOrderText(messageText);

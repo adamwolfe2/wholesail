@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminOrRep } from '@/lib/auth/require-admin'
 import { z } from 'zod'
+import { aiCallLimiter, checkRateLimit } from '@/lib/rate-limit'
 
 const schema = z.object({ website: z.string().url() })
 
@@ -20,8 +21,13 @@ interface FirecrawlResponse {
 }
 
 export async function POST(req: NextRequest) {
-  const { error } = await requireAdminOrRep()
+  const { userId, error } = await requireAdminOrRep()
   if (error) return error
+
+  const { allowed } = await checkRateLimit(aiCallLimiter, userId)
+  if (!allowed) {
+    return NextResponse.json({ error: 'Rate limited' }, { status: 429 })
+  }
 
   const body = await req.json().catch(() => ({}))
   const parsed = schema.safeParse(body)

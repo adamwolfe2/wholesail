@@ -41,20 +41,21 @@ export async function checkAndUpgradeTier(organizationId: string): Promise<void>
   // After the guard, newTier is guaranteed to be REPEAT or VIP
   const upgradedTier = newTier as "REPEAT" | "VIP"
 
-  // Update tier in DB
-  await prisma.organization.update({
-    where: { id: organizationId },
-    data: { tier: upgradedTier },
-  })
+  // Update tier + write audit event in a single transaction
+  await prisma.$transaction(async (tx) => {
+    await tx.organization.update({
+      where: { id: organizationId },
+      data: { tier: upgradedTier },
+    })
 
-  // Write audit event
-  await prisma.auditEvent.create({
-    data: {
-      entityType: "Organization",
-      entityId: organizationId,
-      action: "tier_upgraded",
-      metadata: { previousTier: org.tier, newTier, totalSpend },
-    },
+    await tx.auditEvent.create({
+      data: {
+        entityType: "Organization",
+        entityId: organizationId,
+        action: "tier_upgraded",
+        metadata: { previousTier: org.tier, newTier, totalSpend },
+      },
+    })
   })
 
   // Send congratulations email + SMS (fire-and-forget)

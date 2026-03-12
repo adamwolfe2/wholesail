@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/auth/require-admin";
 import { getIntakeSubmissionById } from "@/lib/db/intake";
 import Anthropic from "@anthropic-ai/sdk";
 import { INDUSTRY_DEFAULTS, CONFIG_SKELETON, primaryForeground } from "@/lib/build/config-template";
+import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(
   req: NextRequest,
@@ -15,8 +16,13 @@ export async function POST(
     );
   }
 
-  const { error } = await requireAdmin();
+  const { userId, error } = await requireAdmin();
   if (error) return error;
+
+  const { allowed } = await checkRateLimit(aiCallLimiter, userId);
+  if (!allowed) {
+    return NextResponse.json({ error: "Rate limited" }, { status: 429 });
+  }
 
   const { id } = await params;
   const force = req.nextUrl.searchParams.get("force") === "true";

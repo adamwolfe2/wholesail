@@ -3,13 +3,19 @@ import { requireAdmin } from "@/lib/auth/require-admin";
 import { getIntakeSubmissionById } from "@/lib/db/intake";
 import { scrapeIntakeWebsite } from "@/lib/build/firecrawl";
 import { prisma } from "@/lib/db";
+import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
 
 export async function POST(
   _req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdmin();
+  const { userId, error } = await requireAdmin();
   if (error) return error;
+
+  const { allowed } = await checkRateLimit(aiCallLimiter, userId);
+  if (!allowed) {
+    return NextResponse.json({ error: "Rate limited" }, { status: 429 });
+  }
 
   const { id } = await params;
 

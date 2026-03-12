@@ -6,6 +6,10 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer"
 
+const COMPANY_NAME = process.env.PORTAL_COMPANY_NAME || "Wholesail";
+const COMPANY_DOMAIN = process.env.PORTAL_COMPANY_DOMAIN || "wholesailhub.com";
+const COMPANY_EMAIL = process.env.PORTAL_COMPANY_EMAIL || process.env.RESEND_FROM_EMAIL || "orders@wholesailhub.com";
+
 const styles = StyleSheet.create({
   page: {
     fontFamily: "Helvetica",
@@ -216,10 +220,10 @@ export function InvoicePDF({
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={styles.brand}>Wholesail</Text>
-            <Text style={styles.brandSub}>Wholesail</Text>
-            <Text style={styles.brandSub}>wholesailhub.com</Text>
-            <Text style={styles.brandSub}>orders@wholesailhub.com</Text>
+            <Text style={styles.brand}>{COMPANY_NAME}</Text>
+            <Text style={styles.brandSub}>{COMPANY_NAME}</Text>
+            <Text style={styles.brandSub}>{COMPANY_DOMAIN}</Text>
+            <Text style={styles.brandSub}>{COMPANY_EMAIL}</Text>
           </View>
           <View>
             <Text style={styles.invoiceLabel}>INVOICE</Text>
@@ -293,7 +297,7 @@ export function InvoicePDF({
 
         {/* Footer */}
         <View style={styles.footer}>
-          <Text style={styles.footerText}>Wholesail · Los Angeles, CA</Text>
+          <Text style={styles.footerText}>{COMPANY_NAME} · Los Angeles, CA</Text>
           <Text style={styles.footerText}>Thank you for your business.</Text>
         </View>
       </Page>

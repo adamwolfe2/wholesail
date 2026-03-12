@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
+import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
 import { getIntakeSubmissionById } from "@/lib/db/intake";
 import { convertIntakeToProject } from "@/lib/db/projects";
 import { logCost } from "@/lib/db/costs";
@@ -149,23 +151,30 @@ export async function POST(
       let tokensUsed = 0;
 
       if (process.env.ANTHROPIC_API_KEY) {
-        const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-        const message = await anthropic.messages.create({
-          model: "claude-haiku-4-5-20251001",
-          max_tokens: 4096,
-          temperature: 0,
-          system:
-            "You are a portal configuration generator. Return ONLY valid TypeScript — a complete portal.config.ts file. No explanation, no markdown fences.",
-          messages: [
-            {
-              role: "user",
-              content: `Generate a complete portal.config.ts from this intake data.\n\nINTAKE DATA:\n${JSON.stringify(structuredData, null, 2)}\n\nCONFIG SKELETON:\n${CONFIG_SKELETON}\n\nReturn ONLY the TypeScript file content.`,
-            },
-          ],
-        });
-        generatedConfig =
-          message.content[0].type === "text" ? message.content[0].text : CONFIG_SKELETON;
-        tokensUsed = message.usage.input_tokens + message.usage.output_tokens;
+        const { userId: adminUserId } = await auth();
+        const { allowed: aiAllowed } = await checkRateLimit(aiCallLimiter, adminUserId ?? "build-start");
+        if (!aiAllowed) {
+          appendLog("AI rate limit hit — using config skeleton fallback");
+          await saveProgress();
+        } else {
+          const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+          const message = await anthropic.messages.create({
+            model: "claude-haiku-4-5-20251001",
+            max_tokens: 4096,
+            temperature: 0,
+            system:
+              "You are a portal configuration generator. Return ONLY valid TypeScript — a complete portal.config.ts file. No explanation, no markdown fences.",
+            messages: [
+              {
+                role: "user",
+                content: `Generate a complete portal.config.ts from this intake data.\n\nINTAKE DATA:\n${JSON.stringify(structuredData, null, 2)}\n\nCONFIG SKELETON:\n${CONFIG_SKELETON}\n\nReturn ONLY the TypeScript file content.`,
+              },
+            ],
+          });
+          generatedConfig =
+            message.content[0].type === "text" ? message.content[0].text : CONFIG_SKELETON;
+          tokensUsed = message.usage.input_tokens + message.usage.output_tokens;
+        }
       }
 
       await prisma.project.update({ where: { id: projectId }, data: { generatedConfig, configGeneratedAt: new Date() } });

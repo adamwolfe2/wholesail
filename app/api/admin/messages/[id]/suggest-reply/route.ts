@@ -1,13 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminOrRep } from '@/lib/auth/require-admin'
 import { prisma } from '@/lib/db'
+import { aiCallLimiter, checkRateLimit } from '@/lib/rate-limit'
 
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const { error } = await requireAdminOrRep()
+  const { userId, error } = await requireAdminOrRep()
   if (error) return error
+
+  const { allowed } = await checkRateLimit(aiCallLimiter, userId)
+  if (!allowed) {
+    return NextResponse.json({ error: 'Rate limited' }, { status: 429 })
+  }
 
   try {
     const { id } = await params

@@ -108,34 +108,55 @@ export async function createOrder(input: CreateOrderInput) {
   for (let attempt = 0; attempt < 5; attempt++) {
     orderNumber = await generateOrderNumber(attempt);
     try {
-      order = await prisma.order.create({
-        data: {
-          orderNumber,
-          organizationId: input.organizationId,
-          userId: input.userId,
-          subtotal,
-          tax,
-          deliveryFee,
-          creditApplied,
-          total,
-          shippingAddressId: input.shippingAddressId,
-          notes: input.notes,
-          items: {
-            create: pricedItems.map((item) => ({
-              productId: item.productId,
-              name: item.name,
-              quantity: item.quantity,
-              unitPrice: item.unitPrice,
-              total: item.unitPrice * item.quantity,
-              distributorOrgId: item.distributorOrgId,
-            })),
+      order = await prisma.$transaction(async (tx) => {
+        const created = await tx.order.create({
+          data: {
+            orderNumber,
+            organizationId: input.organizationId,
+            userId: input.userId,
+            subtotal,
+            tax,
+            deliveryFee,
+            creditApplied,
+            total,
+            shippingAddressId: input.shippingAddressId,
+            notes: input.notes,
+            items: {
+              create: pricedItems.map((item) => ({
+                productId: item.productId,
+                name: item.name,
+                quantity: item.quantity,
+                unitPrice: item.unitPrice,
+                total: item.unitPrice * item.quantity,
+                distributorOrgId: item.distributorOrgId,
+              })),
+            },
           },
-        },
-        include: {
-          items: true,
-          organization: { select: { name: true, email: true } },
-          shippingAddress: { select: { street: true, city: true, state: true, zip: true } },
-        },
+          include: {
+            items: true,
+            organization: { select: { name: true, email: true } },
+            shippingAddress: { select: { street: true, city: true, state: true, zip: true } },
+          },
+        });
+
+        // Audit event (inside transaction)
+        await tx.auditEvent.create({
+          data: {
+            entityType: "Order",
+            entityId: created.id,
+            action: "created",
+            userId: input.userId,
+            metadata: {
+              orderNumber,
+              total,
+              discountPct: discountPct > 0 ? discountPct : undefined,
+              taxRate: taxRate > 0 ? taxRate : undefined,
+              creditApplied: creditApplied > 0 ? creditApplied : undefined,
+            },
+          },
+        });
+
+        return created;
       });
       break;
     } catch (err) {
@@ -149,23 +170,6 @@ export async function createOrder(input: CreateOrderInput) {
       throw err;
     }
   }
-
-  // Audit event
-  await prisma.auditEvent.create({
-    data: {
-      entityType: "Order",
-      entityId: order.id,
-      action: "created",
-      userId: input.userId,
-      metadata: {
-        orderNumber,
-        total,
-        discountPct: discountPct > 0 ? discountPct : undefined,
-        taxRate: taxRate > 0 ? taxRate : undefined,
-        creditApplied: creditApplied > 0 ? creditApplied : undefined,
-      },
-    },
-  });
 
   // Notify each distributor about their items (fire-and-forget)
   const distributorIds = [...new Set(
@@ -301,24 +305,28 @@ export async function updateOrderStatus(
   userId?: string
 ) {
   const now = new Date();
-  const order = await prisma.order.update({
-    where: { id: orderId },
-    data: {
-      status,
-      ...(status === "CONFIRMED" ? { paidAt: now } : {}),
-      ...(status === "PACKED" ? { packedAt: now } : {}),
-      ...(status === "SHIPPED" ? { shippedAt: now } : {}),
-    },
-  });
+  const order = await prisma.$transaction(async (tx) => {
+    const updated = await tx.order.update({
+      where: { id: orderId },
+      data: {
+        status,
+        ...(status === "CONFIRMED" ? { paidAt: now } : {}),
+        ...(status === "PACKED" ? { packedAt: now } : {}),
+        ...(status === "SHIPPED" ? { shippedAt: now } : {}),
+      },
+    });
 
-  await prisma.auditEvent.create({
-    data: {
-      entityType: "Order",
-      entityId: orderId,
-      action: "status_changed",
-      userId,
-      metadata: { newStatus: status },
-    },
+    await tx.auditEvent.create({
+      data: {
+        entityType: "Order",
+        entityId: orderId,
+        action: "status_changed",
+        userId,
+        metadata: { newStatus: status },
+      },
+    });
+
+    return updated;
   });
 
   // Fire Bloo.io iMessage for key delivery milestones (fire-and-forget)
