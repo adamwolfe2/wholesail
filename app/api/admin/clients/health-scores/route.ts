@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAdminOrRep } from '@/lib/auth/require-admin'
 import { prisma } from '@/lib/db'
 import { calculateHealthScore } from '@/lib/client-health'
+import { unstable_cache } from 'next/cache'
 
 export interface ClientHealthRow {
   orgId: string
@@ -13,33 +14,24 @@ export interface ClientHealthRow {
   avgOrderValue: number
 }
 
-/**
- * GET /api/admin/clients/health-scores
- * Returns RFM health scores for every organization.
- */
-export async function GET() {
-  const { error } = await requireAdminOrRep()
-  if (error) return error
-
-  try {
+const getHealthScores = unstable_cache(
+  async () => {
     const now = new Date()
     const twelveMonthsAgo = new Date(now)
     twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12)
 
-    // Fetch all orgs (just id + name — lightweight)
     const orgs = await prisma.organization.findMany({
       select: { id: true, name: true },
       orderBy: { name: 'asc' },
-      take: 1000, // safety cap; realistic for any wholesale business
+      take: 1000,
     })
 
     if (orgs.length === 0) {
-      return NextResponse.json({ scores: [], summary: { Champion: 0, Healthy: 0, 'At Risk': 0, Dormant: 0 } })
+      return { scores: [], summary: { Champion: 0, Healthy: 0, 'At Risk': 0, Dormant: 0 } }
     }
 
     const orgIds = orgs.map((o) => o.id)
 
-    // ── Last order date per org — single DISTINCT ON query, no full table scan ─
     type LastOrderRow = { organizationId: string; createdAt: Date }
     const lastOrderRows = await prisma.$queryRaw<LastOrderRow[]>`
       SELECT DISTINCT ON ("organizationId") "organizationId", "createdAt"
@@ -50,7 +42,6 @@ export async function GET() {
     `
     const lastOrderMap = new Map(lastOrderRows.map((r) => [r.organizationId, r.createdAt]))
 
-    // ── Orders last 12 months per org ──────────────────────────────────────
     const recentOrderGroups = await prisma.order.groupBy({
       by: ['organizationId'],
       where: {
@@ -69,7 +60,6 @@ export async function GET() {
       recentTotalMap.set(g.organizationId, Number(g._sum.total ?? 0))
     }
 
-    // ── All-time AOV per org (for monetary component) ──────────────────────
     const allTimeGroups = await prisma.order.groupBy({
       by: ['organizationId'],
       where: {
@@ -87,7 +77,6 @@ export async function GET() {
       allTimeTotalMap.set(g.organizationId, Number(g._sum.total ?? 0))
     }
 
-    // ── Compute median AOV across all clients that have orders ─────────────
     const aovValues: number[] = []
     for (const orgId of orgIds) {
       const count = allTimeCountMap.get(orgId) ?? 0
@@ -107,7 +96,6 @@ export async function GET() {
           : sorted[mid]
     }
 
-    // ── Build scores ───────────────────────────────────────────────────────
     const summary = { Champion: 0, Healthy: 0, 'At Risk': 0, Dormant: 0 }
 
     const scores: ClientHealthRow[] = orgs.map((org) => {
@@ -142,7 +130,24 @@ export async function GET() {
       }
     })
 
-    return NextResponse.json({ scores, summary })
+    return { scores, summary }
+  },
+  ['admin-health-scores'],
+  { revalidate: 3600, tags: ['health-scores'] }
+)
+
+/**
+ * GET /api/admin/clients/health-scores
+ * Returns RFM health scores for every organization.
+ * Cached for 1 hour via unstable_cache.
+ */
+export async function GET() {
+  const { error } = await requireAdminOrRep()
+  if (error) return error
+
+  try {
+    const data = await getHealthScores()
+    return NextResponse.json(data)
   } catch (err) {
     console.error('[health-scores] DB error:', err)
     return NextResponse.json(

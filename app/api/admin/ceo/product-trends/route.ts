@@ -1,29 +1,24 @@
 import { NextResponse } from "next/server";
 import { requireAdminOrRep } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/db";
+import { unstable_cache } from "next/cache";
 
-// GET /api/admin/ceo/product-trends
-// Returns top 5 products by all-time revenue with monthly revenue for last 6 months
-export async function GET() {
-  const { error } = await requireAdminOrRep();
-  if (error) return error;
+const getProductTrends = unstable_cache(
+  async () => {
+    const now = new Date();
+    const monthLabels = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ];
 
-  const now = new Date();
-  const monthLabels = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-  ];
+    const months: string[] = [];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      months.push(
+        `${monthLabels[d.getMonth()]} '${String(d.getFullYear()).slice(2)}`
+      );
+    }
 
-  // Build the 6 month labels (oldest → newest)
-  const months: string[] = [];
-  for (let i = 5; i >= 0; i--) {
-    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-    months.push(
-      `${monthLabels[d.getMonth()]} '${String(d.getFullYear()).slice(2)}`
-    );
-  }
-
-  try {
     // Step 1: Get top 5 products by all-time revenue
     const topProductGroups = await prisma.orderItem.groupBy({
       by: ["productId", "name"],
@@ -36,7 +31,7 @@ export async function GET() {
     });
 
     if (topProductGroups.length === 0) {
-      return NextResponse.json({ products: [], months, data: [] });
+      return { products: [], months, data: [] };
     }
 
     const productNames = topProductGroups.map((p) => p.name);
@@ -63,7 +58,6 @@ export async function GET() {
     // Step 3: Aggregate into { month: string, [productName]: number }[]
     const monthDataMap = new Map<string, Record<string, number>>();
 
-    // Initialize all months with 0 for all products
     for (const month of months) {
       const row: Record<string, number> = { month: 0 };
       for (const name of productNames) {
@@ -81,7 +75,6 @@ export async function GET() {
       }
     }
 
-    // Build final data array
     const data = months.map((month) => {
       const row = monthDataMap.get(month) ?? {};
       const entry: Record<string, number | string> = { month };
@@ -91,9 +84,24 @@ export async function GET() {
       return entry;
     });
 
-    return NextResponse.json({ products: productNames, months, data });
+    return { products: productNames, months, data };
+  },
+  ["admin-ceo-product-trends"],
+  { revalidate: 21600, tags: ["product-trends"] }
+);
+
+// GET /api/admin/ceo/product-trends
+// Returns top 5 products by all-time revenue with monthly revenue for last 6 months.
+// Cached for 6 hours via unstable_cache.
+export async function GET() {
+  const { error } = await requireAdminOrRep();
+  if (error) return error;
+
+  try {
+    const data = await getProductTrends();
+    return NextResponse.json(data);
   } catch (err) {
     console.error("[admin/ceo/product-trends]", err);
-    return NextResponse.json({ products: [], months, data: [] });
+    return NextResponse.json({ products: [], months: [], data: [] });
   }
 }

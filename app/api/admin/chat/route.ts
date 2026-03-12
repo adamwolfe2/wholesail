@@ -158,8 +158,14 @@ ${PLATFORM_KNOWLEDGE}`
         for (let step = 0; step < 5; step++) {
           const response = await anthropic.messages.create({
             model: process.env.AI_CHAT_MODEL ?? 'claude-haiku-4-5-20251001',
-            max_tokens: 4096,
-            system: systemPrompt,
+            max_tokens: 2048,
+            system: [
+              {
+                type: 'text' as const,
+                text: systemPrompt,
+                cache_control: { type: 'ephemeral' as const },
+              },
+            ],
             tools: anthropicTools,
             messages: conversationMessages,
           })

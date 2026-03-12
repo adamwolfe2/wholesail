@@ -160,7 +160,7 @@ export async function POST(
           const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
           const message = await anthropic.messages.create({
             model: "claude-haiku-4-5-20251001",
-            max_tokens: 4096,
+            max_tokens: 2048,
             temperature: 0,
             system:
               "You are a portal configuration generator. Return ONLY valid TypeScript — a complete portal.config.ts file. No explanation, no markdown fences.",

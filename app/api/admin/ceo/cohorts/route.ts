@@ -1,33 +1,27 @@
 import { NextResponse } from "next/server";
 import { requireAdminOrRep } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/db";
+import { unstable_cache } from "next/cache";
 
-// GET /api/admin/ceo/cohorts
-// Returns new client cohort data for last 6 months with 30-day retention rates
-export async function GET() {
-  const { error } = await requireAdminOrRep();
-  if (error) return error;
+const getCohortData = unstable_cache(
+  async () => {
+    const now = new Date();
+    const monthLabels = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+    ];
 
-  const now = new Date();
-  const monthLabels = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-  ];
+    const results: {
+      month: string;
+      newClients: number;
+      retained30d: number;
+      retentionPct: number;
+    }[] = [];
 
-  const results: {
-    month: string;
-    newClients: number;
-    retained30d: number;
-    retentionPct: number;
-  }[] = [];
-
-  try {
-    // Build 6 months of cohort data, oldest first
     for (let i = 5; i >= 0; i--) {
       const monthStart = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const monthEnd = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
 
-      // Count orgs created in this month
       const newOrgs = await prisma.organization.findMany({
         where: { createdAt: { gte: monthStart, lt: monthEnd } },
         select: { id: true, createdAt: true },
@@ -40,8 +34,6 @@ export async function GET() {
       if (newClientCount > 0) {
         const orgIds = newOrgs.map((o) => o.id);
 
-        // Single SQL replaces N per-org order.count() calls:
-        // find distinct orgs that placed >= 1 order within 30 days of joining
         type RetainedRow = { organizationId: string }
         const retained = await prisma.$queryRaw<RetainedRow[]>`
           SELECT DISTINCT ord."organizationId"
@@ -66,10 +58,25 @@ export async function GET() {
             : 0,
       });
     }
+
+    return results;
+  },
+  ["admin-ceo-cohorts"],
+  { revalidate: 86400, tags: ["cohorts"] }
+);
+
+// GET /api/admin/ceo/cohorts
+// Returns new client cohort data for last 6 months with 30-day retention rates
+// Cached for 24 hours via unstable_cache.
+export async function GET() {
+  const { error } = await requireAdminOrRep();
+  if (error) return error;
+
+  try {
+    const data = await getCohortData();
+    return NextResponse.json(data);
   } catch (err) {
     console.error("[admin/ceo/cohorts]", err);
     return NextResponse.json([]);
   }
-
-  return NextResponse.json(results);
 }

@@ -139,32 +139,36 @@ export async function GET() {
     }
 
     // Revenue from existing clients last month vs this month (Net Revenue Retention)
-    const lastMonthOrgOrders = await prisma.order.findMany({
+    // Use groupBy aggregates instead of loading all order rows into memory
+    const lastMonthByOrg = await prisma.order.groupBy({
+      by: ["organizationId"],
       where: {
         status: { not: "CANCELLED" },
         createdAt: { gte: startOfLastMonth, lt: endOfLastMonth },
       },
-      select: { organizationId: true, total: true },
+      _sum: { total: true },
     });
 
-    const lastMonthOrgIds = new Set(lastMonthOrgOrders.map((o) => o.organizationId));
+    const lastMonthOrgIds = lastMonthByOrg.map((g) => g.organizationId);
 
-    const thisMonthOrgOrders = await prisma.order.findMany({
-      where: {
-        status: { not: "CANCELLED" },
-        organizationId: { in: Array.from(lastMonthOrgIds) },
-        createdAt: { gte: startOfMonth },
-      },
-      select: { organizationId: true, total: true },
-    });
+    const thisMonthByOrg = lastMonthOrgIds.length > 0
+      ? await prisma.order.groupBy({
+          by: ["organizationId"],
+          where: {
+            status: { not: "CANCELLED" },
+            organizationId: { in: lastMonthOrgIds },
+            createdAt: { gte: startOfMonth },
+          },
+          _sum: { total: true },
+        })
+      : [];
 
-    const lastMonthRevFromExisting = lastMonthOrgOrders
-      .filter((o) => lastMonthOrgIds.has(o.organizationId))
-      .reduce((sum, o) => sum + Number(o.total), 0);
+    const lastMonthRevFromExisting = lastMonthByOrg.reduce(
+      (sum, g) => sum + Number(g._sum.total ?? 0), 0
+    );
 
-    const thisMonthRevFromExisting = thisMonthOrgOrders.reduce(
-      (sum, o) => sum + Number(o.total),
-      0
+    const thisMonthRevFromExisting = thisMonthByOrg.reduce(
+      (sum, g) => sum + Number(g._sum.total ?? 0), 0
     );
 
     const nrrStr =
@@ -210,7 +214,8 @@ export async function GET() {
         "Content-Disposition": `attachment; filename="wholesail-executive-summary-${dateStr}.csv"`,
       },
     });
-  } catch {
+  } catch (err) {
+    console.error("[GET /api/admin/ceo/export]", err);
     return NextResponse.json(
       { error: "Failed to generate export" },
       { status: 500 }
