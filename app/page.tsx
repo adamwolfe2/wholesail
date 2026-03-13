@@ -1757,7 +1757,7 @@ export default function WholesailPage() {
                   Build Status
                 </a>
                 <a
-                  href="mailto:adam@wholesailhub.com"
+                  href="mailto:orders@wholesailhub.com"
                   className="block font-mono text-xs transition-colors"
                   style={{ color: "var(--text-body)" }}
                 >

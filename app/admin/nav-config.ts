@@ -8,6 +8,7 @@ import {
   FileInput,
   Kanban,
   Mail,
+  History,
 } from "lucide-react";
 
 // badgeKey maps to a count fetched server-side in layout.tsx and passed as navBadges
@@ -23,6 +24,7 @@ export const adminNav = [
   { href: "/admin/subscribers", label: "Subscribers", icon: Mail },
   // ── System ───────────────────────────────────
   { href: "/admin/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/admin/audit-log", label: "Audit Log", icon: History },
   { href: "/admin/settings", label: "Settings", icon: Settings },
   // ── AI ───────────────────────────────────────
   { href: "/admin/chat", label: "AI Assistant", icon: Sparkles },

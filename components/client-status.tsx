@@ -383,7 +383,7 @@ function ProjectStatus({ client }: { client: ClientProject }) {
             Questions about your build? We respond within 2 hours.
           </p>
           <a
-            href="mailto:adam@wholesailhub.com"
+            href="mailto:orders@wholesailhub.com"
             className="inline-flex items-center gap-2 text-white px-5 py-2.5 font-mono text-xs font-semibold"
             style={{ backgroundColor: "var(--blue)" }}
           >
@@ -526,7 +526,7 @@ export function ClientStatusPage() {
               style={{ color: "var(--text-body)" }}
             >
               No project found for that email. Check your spelling or contact us
-              at adam@wholesailhub.com
+              at orders@wholesailhub.com
             </p>
           )}
 

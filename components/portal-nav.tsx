@@ -12,18 +12,40 @@ import {
   CreditCard,
   LogOut,
   Settings,
+  ShoppingCart,
+  FileText,
+  FileCheck,
+  RefreshCw,
+  Store,
 } from 'lucide-react'
 
 interface NotificationCounts {
   unreadMessages: number
 }
 
-const portalLinks = [
-  { href: '/client-portal/dashboard', label: 'Dashboard', icon: LayoutDashboard, badge: null as keyof NotificationCounts | null },
-  { href: '/client-portal/messages', label: 'Messages', icon: MessageSquare, badge: 'unreadMessages' as keyof NotificationCounts | null },
-  { href: '/client-portal/payments', label: 'Payments', icon: CreditCard, badge: null as keyof NotificationCounts | null },
-  { href: '/client-portal/settings', label: 'Settings', icon: Settings, badge: null as keyof NotificationCounts | null },
+type PortalLink = {
+  href: string
+  label: string
+  icon: typeof LayoutDashboard
+  badge: keyof NotificationCounts | null
+  mobileOnly?: boolean
+  desktopOnly?: boolean
+}
+
+const portalLinks: PortalLink[] = [
+  { href: '/client-portal/dashboard', label: 'Dashboard', icon: LayoutDashboard, badge: null },
+  { href: '/client-portal/orders', label: 'Orders', icon: ShoppingCart, badge: null },
+  { href: '/client-portal/invoices', label: 'Invoices', icon: FileText, badge: null, desktopOnly: true },
+  { href: '/client-portal/quotes', label: 'Quotes', icon: FileCheck, badge: null, desktopOnly: true },
+  { href: '/client-portal/standing-orders', label: 'Standing Orders', icon: RefreshCw, badge: null, desktopOnly: true },
+  { href: '/catalog', label: 'Catalog', icon: Store, badge: null, desktopOnly: true },
+  { href: '/client-portal/messages', label: 'Messages', icon: MessageSquare, badge: 'unreadMessages' },
+  { href: '/client-portal/payments', label: 'Payments', icon: CreditCard, badge: null },
+  { href: '/client-portal/settings', label: 'Settings', icon: Settings, badge: null },
 ]
+
+// Mobile bottom tab: only core items (5 max for thumb-friendly layout)
+const mobileLinks = portalLinks.filter((l) => !l.desktopOnly)
 
 function NotificationBadge({ count }: { count: number }) {
   if (count <= 0) return null
@@ -127,9 +149,9 @@ export function PortalNav() {
           </div>
         </div>
 
-        {/* Mobile bottom tab bar — all 4 items */}
+        {/* Mobile bottom tab bar — core items only */}
         <div className="flex border-t border-[#E5E1DB]">
-          {portalLinks.map((link) => {
+          {mobileLinks.map((link) => {
             const isActive = pathname === link.href || (link.href !== '/client-portal/dashboard' && pathname?.startsWith(link.href))
             const badgeCount = link.badge ? counts[link.badge] : 0
             return (
