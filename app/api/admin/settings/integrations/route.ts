@@ -17,6 +17,23 @@ export async function GET() {
         docsUrl: "https://dashboard.stripe.com/webhooks",
       },
       {
+        name: "Clerk",
+        configured: !!(
+          process.env.CLERK_SECRET_KEY &&
+          process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        ),
+        description: "Authentication & user management",
+        envVars: ["CLERK_SECRET_KEY", "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY"],
+        docsUrl: "https://dashboard.clerk.com",
+      },
+      {
+        name: "Resend",
+        configured: !!process.env.RESEND_API_KEY,
+        description: "Transactional email delivery",
+        envVars: ["RESEND_API_KEY", "RESEND_FROM_EMAIL"],
+        docsUrl: "https://resend.com/api-keys",
+      },
+      {
         name: "Bloo.io",
         configured: !!(
           process.env.BLOOIO_API_KEY &&
@@ -32,21 +49,60 @@ export async function GET() {
         docsUrl: "https://blooio.com",
       },
       {
-        name: "Resend",
-        configured: !!process.env.RESEND_API_KEY,
-        description: "Transactional email delivery",
-        envVars: ["RESEND_API_KEY"],
-        docsUrl: "https://resend.com/api-keys",
+        name: "Sentry",
+        configured: !!(
+          process.env.SENTRY_AUTH_TOKEN && process.env.SENTRY_ORG
+        ),
+        description: "Error tracking & performance monitoring",
+        envVars: ["SENTRY_AUTH_TOKEN", "SENTRY_ORG", "SENTRY_PROJECT"],
+        docsUrl: "https://sentry.io",
       },
       {
-        name: "Clerk",
+        name: "Upstash KV",
         configured: !!(
-          process.env.CLERK_SECRET_KEY &&
-          process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+          process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN
         ),
-        description: "Authentication & user management",
-        envVars: ["CLERK_SECRET_KEY", "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY"],
-        docsUrl: "https://dashboard.clerk.com",
+        description: "Rate limiting on public endpoints",
+        envVars: ["KV_REST_API_URL", "KV_REST_API_TOKEN"],
+        docsUrl: "https://console.upstash.com",
+      },
+      {
+        name: "Slack",
+        configured: !!process.env.SLACK_WEBHOOK_URL,
+        description: "Intake & alert notifications",
+        envVars: ["SLACK_WEBHOOK_URL"],
+        docsUrl: "https://api.slack.com/apps",
+      },
+      {
+        name: "Cal.com",
+        configured: !!process.env.CAL_WEBHOOK_SECRET,
+        description: "Booking sync for intake calls",
+        envVars: ["CAL_WEBHOOK_SECRET", "NEXT_PUBLIC_CAL_LINK"],
+        docsUrl: "https://cal.com",
+      },
+      {
+        name: "Anthropic AI",
+        configured: !!process.env.ANTHROPIC_API_KEY,
+        description: "AI chat assistant & config generation",
+        envVars: ["ANTHROPIC_API_KEY"],
+        docsUrl: "https://console.anthropic.com",
+      },
+      {
+        name: "Google Gemini",
+        configured: !!process.env.GEMINI_API_KEY,
+        description: "AI reply suggestions & order parsing",
+        envVars: ["GEMINI_API_KEY"],
+        docsUrl: "https://ai.google.dev",
+      },
+      {
+        name: "PostHog",
+        configured: !!(
+          process.env.NEXT_PUBLIC_POSTHOG_KEY &&
+          process.env.NEXT_PUBLIC_POSTHOG_HOST
+        ),
+        description: "Product analytics & event tracking",
+        envVars: ["NEXT_PUBLIC_POSTHOG_KEY", "NEXT_PUBLIC_POSTHOG_HOST"],
+        docsUrl: "https://app.posthog.com",
       },
     ];
 
