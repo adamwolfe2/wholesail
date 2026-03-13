@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { getAuthUserId } from "@/lib/auth";
+import { auth } from "@clerk/nextjs/server";
 import { getProjects } from "@/lib/db/projects";
 import { getIntakeSubmissions } from "@/lib/db/intake";
 import { AdminDashboard } from "@/components/admin-dashboard";
@@ -8,7 +8,7 @@ import { mapProjectsForDashboard } from "@/lib/client-data";
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
-  const userId = await getAuthUserId();
+  const { userId } = await auth();
   if (!userId) redirect("/sign-in");
 
   const [projects, intakes] = await Promise.all([
