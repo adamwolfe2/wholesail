@@ -83,6 +83,17 @@ export async function PlatformHealthCard() {
         link: ordersNeedingConfirm > 0 ? '/admin/orders' : undefined,
         icon: CheckCircle2,
       },
+      {
+        ok: !!(process.env.STRIPE_SECRET_KEY && process.env.RESEND_API_KEY && process.env.KV_REST_API_URL),
+        label: process.env.STRIPE_SECRET_KEY && process.env.RESEND_API_KEY && process.env.KV_REST_API_URL
+          ? 'Core integrations configured'
+          : 'Some integrations need setup',
+        detail: !(process.env.STRIPE_SECRET_KEY && process.env.RESEND_API_KEY && process.env.KV_REST_API_URL)
+          ? 'Check Settings → Integrations to see what needs configuring'
+          : undefined,
+        link: '/admin/settings',
+        icon: Zap,
+      },
     ]
 
     allOk = items.every(i => i.ok)
