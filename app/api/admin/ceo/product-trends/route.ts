@@ -39,21 +39,37 @@ const getProductTrends = unstable_cache(
     // Step 2: For each of the last 6 months, get revenue per product
     const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
 
-    const allItems = await prisma.orderItem.findMany({
-      where: {
-        productId: { in: topProductGroups.map((p) => p.productId) },
-        order: {
-          status: { not: "CANCELLED" },
-          createdAt: { gte: sixMonthsAgo },
+    // Cursor-based batching: fetch 500 at a time instead of 10k at once
+    const BATCH_SIZE = 500;
+    const allItems: { name: string; total: unknown; order: { createdAt: Date } }[] = [];
+    let itemCursor: string | undefined;
+
+    const itemWhere = {
+      productId: { in: topProductGroups.map((p) => p.productId) },
+      order: {
+        status: { not: "CANCELLED" as const },
+        createdAt: { gte: sixMonthsAgo },
+      },
+    };
+
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      const batch = await prisma.orderItem.findMany({
+        where: itemWhere,
+        select: {
+          id: true,
+          name: true,
+          total: true,
+          order: { select: { createdAt: true } },
         },
-      },
-      select: {
-        name: true,
-        total: true,
-        order: { select: { createdAt: true } },
-      },
-      take: 10000,
-    });
+        take: BATCH_SIZE,
+        ...(itemCursor ? { skip: 1, cursor: { id: itemCursor } } : {}),
+      });
+
+      allItems.push(...batch);
+      if (batch.length < BATCH_SIZE) break;
+      itemCursor = batch[batch.length - 1].id;
+    }
 
     // Step 3: Aggregate into { month: string, [productName]: number }[]
     const monthDataMap = new Map<string, Record<string, number>>();

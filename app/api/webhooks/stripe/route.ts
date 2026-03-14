@@ -6,6 +6,9 @@ import { prisma } from "@/lib/db";
 import {
   sendOrderConfirmation,
   sendInternalOrderNotification,
+  sendPaymentReceivedEmail,
+  sendRefundConfirmationEmail,
+  sendDisputeAlertEmail,
 } from "@/lib/email";
 import { generateInvoiceForOrder } from "@/app/api/billing/generate/route";
 import {
@@ -14,6 +17,7 @@ import {
   orderConfirmationMessage,
   toE164,
 } from "@/lib/integrations/blooio";
+import { createOrderWithRetry } from "@/lib/order-number";
 
 export async function POST(req: NextRequest) {
   if (!isStripeConfigured()) {
@@ -85,18 +89,6 @@ export async function POST(req: NextRequest) {
             break;
           }
 
-          // Generate an order number
-          const year = new Date().getFullYear();
-          const orderCount = await prisma.order.count({
-            where: {
-              createdAt: {
-                gte: new Date(`${year}-01-01`),
-                lt: new Date(`${year + 1}-01-01`),
-              },
-            },
-          });
-          const orderNumber = `ORD-${year}-${String(orderCount + 1).padStart(4, "0")}`;
-
           // Get org's default shipping address
           const address = await prisma.address.findFirst({
             where: {
@@ -118,70 +110,72 @@ export async function POST(req: NextRequest) {
             break;
           }
 
-          // Create the order and payment record in a transaction
-          const order = await prisma.$transaction(async (tx) => {
-            const newOrder = await tx.order.create({
-              data: {
-                orderNumber,
-                organizationId: existingQuote.organizationId,
-                userId: orgUser.id,
-                status: "CONFIRMED",
-                subtotal: existingQuote.total,
-                tax: 0,
-                deliveryFee: 0,
-                total: existingQuote.total,
-                shippingAddressId: address?.id,
-                stripeSessionId: session.id,
-                stripePaymentIntentId: paymentIntentId,
-                paidAt: new Date(),
-                notes: `Created from quote ${existingQuote.quoteNumber}`,
-                items: {
-                  create: existingQuote.items.map((item) => ({
-                    productId: item.productId,
-                    name: item.name,
-                    quantity: item.quantity,
-                    unitPrice: item.unitPrice,
-                    total: item.total,
-                  })),
-                },
-              },
-              include: {
-                items: true,
-                organization: true,
-              },
-            });
-
-            await tx.quote.update({
-              where: { id: quoteId },
-              data: { convertedOrderId: newOrder.id },
-            });
-
-            await tx.payment.create({
-              data: {
-                orderId: newOrder.id,
-                amount: (session.amount_total ?? 0) / 100,
-                method: "CARD",
-                status: "COMPLETED",
-                stripePaymentId: paymentIntentId,
-              },
-            });
-
-            await tx.auditEvent.create({
-              data: {
-                entityType: "Quote",
-                entityId: quoteId,
-                action: "quote_paid_and_converted",
-                metadata: {
-                  stripeSessionId: session.id,
-                  quoteNumber: existingQuote.quoteNumber,
+          // Create the order and payment record in a transaction with retry on duplicate order number
+          const order = await createOrderWithRetry(async (orderNumber) => {
+            return prisma.$transaction(async (tx) => {
+              const newOrder = await tx.order.create({
+                data: {
                   orderNumber,
+                  organizationId: existingQuote.organizationId,
+                  userId: orgUser.id,
+                  status: "CONFIRMED",
+                  subtotal: existingQuote.total,
+                  tax: 0,
+                  deliveryFee: 0,
+                  total: existingQuote.total,
+                  shippingAddressId: address?.id,
+                  stripeSessionId: session.id,
+                  stripePaymentIntentId: paymentIntentId,
+                  paidAt: new Date(),
+                  notes: `Created from quote ${existingQuote.quoteNumber}`,
+                  items: {
+                    create: existingQuote.items.map((item) => ({
+                      productId: item.productId,
+                      name: item.name,
+                      quantity: item.quantity,
+                      unitPrice: item.unitPrice,
+                      total: item.total,
+                    })),
+                  },
+                },
+                include: {
+                  items: true,
+                  organization: true,
+                },
+              });
+
+              await tx.quote.update({
+                where: { id: quoteId },
+                data: { convertedOrderId: newOrder.id },
+              });
+
+              await tx.payment.create({
+                data: {
                   orderId: newOrder.id,
                   amount: (session.amount_total ?? 0) / 100,
+                  method: "CARD",
+                  status: "COMPLETED",
+                  stripePaymentId: paymentIntentId,
                 },
-              },
-            });
+              });
 
-            return newOrder;
+              await tx.auditEvent.create({
+                data: {
+                  entityType: "Quote",
+                  entityId: quoteId,
+                  action: "quote_paid_and_converted",
+                  metadata: {
+                    stripeSessionId: session.id,
+                    quoteNumber: existingQuote.quoteNumber,
+                    orderNumber,
+                    orderId: newOrder.id,
+                    amount: (session.amount_total ?? 0) / 100,
+                  },
+                },
+              });
+
+              return newOrder;
+            });
           });
 
           // Send order confirmation email (non-fatal)
@@ -203,7 +197,7 @@ export async function POST(req: NextRequest) {
           );
 
           console.info(
-            `Quote ${quoteId} paid — order ${orderNumber} created`
+            `Quote ${quoteId} paid — order ${order.orderNumber} created`
           );
           break;
         }
@@ -250,6 +244,28 @@ export async function POST(req: NextRequest) {
               },
             }),
           ]);
+
+          // Send payment confirmation email for invoice portal payment (fire-and-forget)
+          if (existingInv?.orderId) {
+            const invOrder = await prisma.order.findUnique({
+              where: { id: existingInv.orderId },
+              select: {
+                orderNumber: true,
+                organization: { select: { contactPerson: true, email: true } },
+              },
+            });
+            if (invOrder?.organization?.email) {
+              sendPaymentReceivedEmail({
+                orderNumber: invOrder.orderNumber,
+                customerName: invOrder.organization.contactPerson ?? "Valued Client",
+                customerEmail: invOrder.organization.email,
+                amount: (session.amount_total ?? 0) / 100,
+                method: "card",
+              }).catch((err) =>
+                console.error("Invoice portal payment email failed:", err)
+              );
+            }
+          }
 
           console.info(`Invoice ${invoiceId} paid via client portal`);
           break;
@@ -515,6 +531,26 @@ export async function POST(req: NextRequest) {
           }
         }
 
+        // Send payment confirmation email to client (fire-and-forget)
+        const paidOrder = await prisma.order.findUnique({
+          where: { id: orderId },
+          select: {
+            orderNumber: true,
+            organization: { select: { contactPerson: true, email: true } },
+          },
+        });
+        if (paidOrder?.organization?.email) {
+          sendPaymentReceivedEmail({
+            orderNumber: paidOrder.orderNumber,
+            customerName: paidOrder.organization.contactPerson ?? "Valued Client",
+            customerEmail: paidOrder.organization.email,
+            amount: (inv.amount_paid ?? 0) / 100,
+            method: "invoice payment",
+          }).catch((err) =>
+            console.error("Invoice payment confirmation email failed:", err)
+          );
+        }
+
         console.info(`Invoice paid for order ${orderId} via Stripe`);
         break;
       }
@@ -547,55 +583,193 @@ export async function POST(req: NextRequest) {
         const charge = event.data.object;
         const paymentIntentId = charge.payment_intent as string | null;
 
-        if (paymentIntentId) {
-          // Mark the Payment record as refunded
-          const payment = await prisma.payment.findFirst({
-            where: { stripePaymentId: paymentIntentId },
-            select: { id: true, orderId: true },
+        if (!paymentIntentId) {
+          console.warn("charge.refunded event missing payment_intent");
+          break;
+        }
+
+        // Find the Payment record by stripePaymentIntentId
+        const payment = await prisma.payment.findFirst({
+          where: { stripePaymentId: paymentIntentId },
+          select: { id: true, orderId: true, amount: true },
+        });
+
+        if (!payment) {
+          console.warn(`No Payment record found for payment_intent ${paymentIntentId}`);
+          break;
+        }
+
+        const fullyRefunded = charge.refunded === true;
+        const amountRefundedCents = charge.amount_refunded ?? 0;
+        const amountRefunded = amountRefundedCents / 100;
+
+        // Update Payment status to REFUNDED (full refund)
+        if (fullyRefunded) {
+          await prisma.payment.update({
+            where: { id: payment.id },
+            data: { status: "REFUNDED" },
           });
+        }
 
-          if (payment) {
-            await prisma.payment.update({
-              where: { id: payment.id },
-              data: { status: "REFUNDED" },
+        // If fully refunded and there's a related Invoice, mark it CANCELLED
+        // (InvoiceStatus enum doesn't have REFUNDED, so CANCELLED is the closest)
+        if (fullyRefunded) {
+          const invoice = await prisma.invoice.findFirst({
+            where: { orderId: payment.orderId },
+            select: { id: true, status: true },
+          });
+          if (invoice && invoice.status !== "CANCELLED") {
+            await prisma.invoice.update({
+              where: { id: invoice.id },
+              data: { status: "CANCELLED" },
             });
-
-            await prisma.auditEvent.create({
-              data: {
-                entityType: "Payment",
-                entityId: payment.orderId,
-                action: "charge_refunded",
-                metadata: {
-                  chargeId: charge.id,
-                  paymentIntentId,
-                  amountRefunded: charge.amount_refunded,
-                  fullyRefunded: charge.refunded,
-                },
-              },
-            });
-
-            console.info(`Refund recorded for charge ${charge.id}, order ${payment.orderId}`);
           }
         }
+
+        // Create an AuditEvent logging the refund
+        await prisma.auditEvent.create({
+          data: {
+            entityType: "Payment",
+            entityId: payment.orderId,
+            action: "charge_refunded",
+            metadata: {
+              chargeId: charge.id,
+              paymentIntentId,
+              amountRefunded,
+              amountRefundedCents,
+              fullyRefunded,
+            },
+          },
+        });
+
+        // Send refund confirmation email to client (fire-and-forget)
+        const refundOrder = await prisma.order.findUnique({
+          where: { id: payment.orderId },
+          select: {
+            orderNumber: true,
+            organization: { select: { contactPerson: true, email: true } },
+          },
+        });
+        if (refundOrder?.organization?.email) {
+          sendRefundConfirmationEmail({
+            orderNumber: refundOrder.orderNumber,
+            customerName: refundOrder.organization.contactPerson ?? "Valued Client",
+            customerEmail: refundOrder.organization.email,
+            amountRefunded,
+            isPartial: !fullyRefunded,
+          }).catch((err) =>
+            console.error("Refund confirmation email failed:", err)
+          );
+        }
+
+        console.info(
+          `Refund recorded for charge ${charge.id}, order ${payment.orderId} (${fullyRefunded ? "full" : "partial"}: $${amountRefunded.toFixed(2)})`
+        );
         break;
       }
 
       // ─── Disputes ───────────────────────────────────────────────────────
       case "charge.dispute.created": {
         const dispute = event.data.object;
+        const disputePaymentIntentId = dispute.payment_intent as string | null;
+
+        // Find the Payment by stripePaymentIntentId
+        const disputePayment = disputePaymentIntentId
+          ? await prisma.payment.findFirst({
+              where: { stripePaymentId: disputePaymentIntentId },
+              select: { id: true, orderId: true },
+            })
+          : null;
+
+        // Create AuditEvent with dispute reason
         await prisma.auditEvent.create({
           data: {
             entityType: "Payment",
-            entityId: dispute.payment_intent as string ?? "unknown",
-            action: "dispute_created",
+            entityId: disputePayment?.orderId ?? disputePaymentIntentId ?? "unknown",
+            action: "dispute_opened",
             metadata: {
               disputeId: dispute.id,
               reason: dispute.reason,
               amount: dispute.amount,
+              paymentIntentId: disputePaymentIntentId,
+              status: dispute.status,
             },
           },
         });
-        console.warn(`⚠️  Stripe dispute created: ${dispute.id} — reason: ${dispute.reason}`);
+
+        // Look up order number for alert context
+        let disputeOrderNumber: string | undefined;
+        if (disputePayment) {
+          const disputeOrder = await prisma.order.findUnique({
+            where: { id: disputePayment.orderId },
+            select: { orderNumber: true },
+          });
+          disputeOrderNumber = disputeOrder?.orderNumber;
+        }
+
+        // Send internal alert email to ops (fire-and-forget)
+        sendDisputeAlertEmail({
+          disputeId: dispute.id,
+          reason: dispute.reason ?? "unknown",
+          amount: dispute.amount ?? 0,
+          paymentIntentId: disputePaymentIntentId ?? "unknown",
+          orderNumber: disputeOrderNumber,
+        }).catch((err) =>
+          console.error("Dispute alert email failed:", err)
+        );
+
+        console.warn(
+          `Stripe dispute opened: ${dispute.id} — reason: ${dispute.reason}`
+        );
+        break;
+      }
+
+      case "charge.dispute.closed": {
+        const closedDispute = event.data.object;
+        const closedDisputePiId = closedDispute.payment_intent as string | null;
+
+        // Determine outcome: won or lost
+        const disputeStatus = closedDispute.status; // "won", "lost", "warning_closed", etc.
+        const disputeLost = disputeStatus === "lost";
+
+        // Create AuditEvent with the outcome
+        const closedDisputePayment = closedDisputePiId
+          ? await prisma.payment.findFirst({
+              where: { stripePaymentId: closedDisputePiId },
+              select: { id: true, orderId: true },
+            })
+          : null;
+
+        await prisma.auditEvent.create({
+          data: {
+            entityType: "Payment",
+            entityId: closedDisputePayment?.orderId ?? closedDisputePiId ?? "unknown",
+            action: "dispute_closed",
+            metadata: {
+              disputeId: closedDispute.id,
+              outcome: disputeStatus,
+              reason: closedDispute.reason,
+              amount: closedDispute.amount,
+              paymentIntentId: closedDisputePiId,
+            },
+          },
+        });
+
+        // If lost, update Payment status to REFUNDED (Stripe debits the amount)
+        if (disputeLost && closedDisputePayment) {
+          await prisma.payment.update({
+            where: { id: closedDisputePayment.id },
+            data: { status: "REFUNDED" },
+          });
+          console.warn(
+            `Dispute ${closedDispute.id} lost — Payment ${closedDisputePayment.id} marked REFUNDED`
+          );
+        } else {
+          console.info(
+            `Dispute ${closedDispute.id} closed with outcome: ${disputeStatus}`
+          );
+        }
+
         break;
       }
 

@@ -31,7 +31,7 @@ export function AdminMobileNav({ navBadges = {} }: { navBadges?: Record<string, 
         <SheetHeader className="p-4 border-b">
           <SheetTitle className="flex items-center gap-2">
             <Package className="h-5 w-5" />
-            Wholesail Admin
+            {process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'} Admin
           </SheetTitle>
         </SheetHeader>
         <nav className="p-3 space-y-1">
@@ -39,7 +39,7 @@ export function AdminMobileNav({ navBadges = {} }: { navBadges?: Record<string, 
             const isActive =
               pathname === item.href ||
               (item.href !== "/admin" && pathname.startsWith(item.href));
-            const badgeCount = "badgeKey" in item ? (navBadges[item.badgeKey] ?? 0) : 0;
+            const badgeCount = item.badgeKey ? (navBadges[item.badgeKey] ?? 0) : 0;
 
             return (
               <Link

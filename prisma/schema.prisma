@@ -251,6 +251,10 @@ model Project {
   upstashStoreId String? // Vercel KV store ID — query /v1/storage/stores/{id} for usage + cost
   deploymentId   String? // first triggered Vercel deployment ID
 
+  // Stripe Connect — connected account for this client portal build
+  stripeAccountId    String?
+  platformFeePercent Decimal?    @default(2.5) @db.Decimal(5, 2)
+
   // Per-client service key references — stored for cost attribution queries
   // Shape: { resend: { keyId: "xxx" }, anthropic: { note: "shared+metadata" }, ... }
   serviceKeys Json?
@@ -348,6 +352,7 @@ model User {
   savedCarts        SavedCart[]     @relation("UserSavedCarts")
   standingOrders    StandingOrder[] @relation("UserStandingOrders")
   clientNotes       ClientNote[]
+  attachments       Attachment[]
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
 
@@ -372,6 +377,8 @@ model Organization {
   referralCredits       Decimal                @default(0) @db.Decimal(10, 2)
   loyaltyPoints         Int                    @default(0)
   lifetimeLoyaltyPoints Int                    @default(0)
+  stripeAccountId       String? // Stripe Connect account ID for direct payments
+  autoInvoice           Boolean                @default(true)
   notificationPrefs     Json?
   onboardingStep        Int                    @default(0) // 0=not started, 1=day0 sent, 2=day1 sent, 3=day3 sent, 4=done
   approvedAt            DateTime? // when the wholesale application was approved
@@ -423,6 +430,7 @@ model Product {
   name                 String
   description          String
   price                Decimal                @db.Decimal(10, 2)
+  costPrice            Decimal?               @db.Decimal(10, 2)
   unit                 String
   category             String
   minimumOrder         String?
@@ -485,6 +493,7 @@ model Order {
   payments               Payment[]
   invoice                Invoice?
   shipment               Shipment?
+  attachments            Attachment[]
   createdAt              DateTime      @default(now())
   updatedAt              DateTime      @updatedAt
 
@@ -689,6 +698,7 @@ model Quote {
   notes            String?
   expiresAt        DateTime?
   acceptedAt       DateTime?
+  sentAt           DateTime?
   convertedOrderId String?
   items            QuoteItem[]
   createdAt        DateTime     @default(now())
@@ -1034,4 +1044,57 @@ model DistributorInventory {
 
   @@unique([distributorOrgId, productId])
   @@index([distributorOrgId])
+}
+
+// ============================================================
+// FILE ATTACHMENTS
+// ============================================================
+
+model Attachment {
+  id           String   @id @default(cuid())
+  orderId      String?
+  order        Order?   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  fileName     String
+  fileUrl      String
+  fileSize     Int
+  mimeType     String
+  uploadedById String
+  uploadedBy   User     @relation(fields: [uploadedById], references: [id])
+  createdAt    DateTime @default(now())
+
+  @@index([orderId])
+  @@index([uploadedById])
+}
+
+// ============================================================
+// WEBHOOK EVENT SYSTEM
+// ============================================================
+
+model WebhookEndpoint {
+  id        String          @id @default(cuid())
+  orgId     String?
+  url       String
+  secret    String
+  events    String[] // e.g. ["order.created", "order.status_changed", "invoice.created"]
+  isActive  Boolean         @default(true)
+  logs      WebhookLog[]
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  @@index([isActive])
+}
+
+model WebhookLog {
+  id         String          @id @default(cuid())
+  endpointId String
+  endpoint   WebhookEndpoint @relation(fields: [endpointId], references: [id], onDelete: Cascade)
+  event      String
+  payload    Json
+  statusCode Int?
+  response   String?
+  attempt    Int             @default(1)
+  success    Boolean         @default(false)
+  createdAt  DateTime        @default(now())
+
+  @@index([endpointId, createdAt(sort: Desc)])
 }

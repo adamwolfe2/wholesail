@@ -21,8 +21,10 @@ export default async function AdminProductsPage() {
   const serialized = products.map((p) => ({
     id: p.id,
     name: p.name,
+    sku: p.slug,
     category: p.category,
     price: String(p.price),
+    costPrice: p.costPrice ? String(p.costPrice) : null,
     unit: p.unit,
     available: p.available,
     marketRate: p.marketRate,

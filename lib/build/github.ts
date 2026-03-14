@@ -1,5 +1,7 @@
 const GITHUB_API = "https://api.github.com";
 const GITHUB_OWNER = process.env.GITHUB_OWNER ?? "adamwolfe2";
+/** The template repo that contains the full Wholesail portal codebase */
+const TEMPLATE_REPO = process.env.GITHUB_TEMPLATE_REPO ?? "wholesail";
 
 function headers() {
   const token = process.env.GITHUB_PAT;
@@ -10,6 +12,49 @@ function headers() {
     Accept: "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
   };
+}
+
+/**
+ * Create a new repo from the Wholesail template repo.
+ * This copies the FULL codebase (all 500+ files) into the new repo.
+ * Falls back to an empty repo if the template doesn't exist or isn't marked as a template.
+ */
+export async function createRepoFromTemplate(
+  name: string,
+  description: string
+): Promise<{ fullName: string; htmlUrl: string; cloneUrl: string; fromTemplate: boolean }> {
+  // Try template-based creation first
+  const templateRes = await fetch(
+    `${GITHUB_API}/repos/${GITHUB_OWNER}/${TEMPLATE_REPO}/generate`,
+    {
+      method: "POST",
+      headers: headers(),
+      body: JSON.stringify({
+        owner: GITHUB_OWNER,
+        name,
+        description,
+        private: true,
+        include_all_branches: false,
+      }),
+    }
+  );
+
+  if (templateRes.ok) {
+    const data = await templateRes.json();
+    return {
+      fullName: data.full_name,
+      htmlUrl: data.html_url,
+      cloneUrl: data.clone_url,
+      fromTemplate: true,
+    };
+  }
+
+  // Fallback: create empty repo (template not configured or not marked as template)
+  console.warn(
+    `[github] Template repo ${GITHUB_OWNER}/${TEMPLATE_REPO} not available (${templateRes.status}), creating empty repo`
+  );
+  const repo = await createRepo(name, description);
+  return { ...repo, fromTemplate: false };
 }
 
 export async function createRepo(

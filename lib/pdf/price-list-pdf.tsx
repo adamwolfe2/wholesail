@@ -6,9 +6,9 @@ import {
   StyleSheet,
 } from "@react-pdf/renderer"
 
-const COMPANY_NAME = process.env.PORTAL_COMPANY_NAME || "Wholesail";
-const COMPANY_DOMAIN = process.env.PORTAL_COMPANY_DOMAIN || "wholesailhub.com";
-const COMPANY_EMAIL = process.env.PORTAL_COMPANY_EMAIL || process.env.RESEND_FROM_EMAIL || "orders@wholesailhub.com";
+const COMPANY_NAME = process.env.PORTAL_COMPANY_NAME || process.env.BRAND_NAME || "Wholesail";
+const COMPANY_DOMAIN = process.env.PORTAL_COMPANY_DOMAIN || (process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com").replace(/^https?:\/\//, "");
+const COMPANY_EMAIL = process.env.PORTAL_COMPANY_EMAIL || process.env.ADMIN_EMAIL || process.env.RESEND_FROM_EMAIL || "orders@wholesailhub.com";
 
 const styles = StyleSheet.create({
   page: {

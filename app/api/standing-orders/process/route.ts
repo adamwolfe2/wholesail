@@ -1,19 +1,7 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { notifyDistributorsForOrder } from '@/lib/db/orders'
-
-async function generateOrderNumber(): Promise<string> {
-  const year = new Date().getFullYear()
-  const count = await prisma.order.count({
-    where: {
-      createdAt: {
-        gte: new Date(`${year}-01-01`),
-        lt: new Date(`${year + 1}-01-01`),
-      },
-    },
-  })
-  return `ORD-${year}-${String(count + 1).padStart(4, '0')}`
-}
+import { createOrderWithRetry } from '@/lib/order-number'
 
 function getNextRunDate(
   frequency: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY',
@@ -123,22 +111,23 @@ export async function GET(req: Request) {
           continue
         }
 
-        const orderNumber = await generateOrderNumber()
-
-        const order = await prisma.order.create({
-          data: {
-            orderNumber,
-            organizationId: so.organizationId,
-            userId: so.userId,
-            status: 'PENDING',
-            subtotal,
-            tax: 0,
-            deliveryFee: 0,
-            total: subtotal,
-            notes: `Auto-generated from standing order: ${so.name}`,
-            items: { create: lineItems },
-          },
+        const order = await createOrderWithRetry(async (orderNumber) => {
+          return prisma.order.create({
+            data: {
+              orderNumber,
+              organizationId: so.organizationId,
+              userId: so.userId,
+              status: 'PENDING',
+              subtotal,
+              tax: 0,
+              deliveryFee: 0,
+              total: subtotal,
+              notes: `Auto-generated from standing order: ${so.name}`,
+              items: { create: lineItems },
+            },
+          })
         })
+        const orderNumber = order.orderNumber
 
         notifyDistributorsForOrder({
           orderId: order.id,

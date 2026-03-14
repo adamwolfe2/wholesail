@@ -38,6 +38,9 @@ export const notifyLimiter = createLimiter(redis, 3, '1 m')
 // 10 AI calls per userId per hour
 export const aiCallLimiter = createLimiter(redis, 10, '1 h')
 
+// 3 CSV imports per userId per minute
+export const csvImportLimiter = createLimiter(redis, 3, '1 m')
+
 /** Returns true if the request should be allowed; false if rate-limited. Skips gracefully if limiter is null (env vars not set). */
 export async function checkRateLimit(
   limiter: Ratelimit | null,

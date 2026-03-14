@@ -28,10 +28,10 @@ export async function GET(req: NextRequest) {
 
     const nextCursor = events.length === take ? events[events.length - 1].id : null;
 
-    // Get distinct entity types and actions for filter dropdowns
+    // Get distinct entity types and actions for filter dropdowns (bounded)
     const [entityTypes, actions] = await Promise.all([
-      prisma.auditEvent.findMany({ distinct: ["entityType"], select: { entityType: true } }),
-      prisma.auditEvent.findMany({ distinct: ["action"], select: { action: true } }),
+      prisma.auditEvent.findMany({ distinct: ["entityType"], select: { entityType: true }, take: 100 }),
+      prisma.auditEvent.findMany({ distinct: ["action"], select: { action: true }, take: 200 }),
     ]);
 
     return NextResponse.json({

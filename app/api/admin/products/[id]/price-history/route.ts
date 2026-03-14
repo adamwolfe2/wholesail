@@ -22,6 +22,7 @@ export async function GET(
         user: { select: { name: true, email: true } },
       },
       orderBy: { createdAt: "asc" },
+      take: 50,
     });
 
     const history = events.map((event) => {

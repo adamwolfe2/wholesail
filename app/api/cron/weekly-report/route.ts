@@ -26,10 +26,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Email not configured' }, { status: 503 })
   }
 
+  const BRAND_NAME = process.env.BRAND_NAME || 'Wholesail'
   const FROM_EMAIL =
     process.env.RESEND_FROM_EMAIL || 'orders@wholesailhub.com'
-  const OPS_EMAIL =
-    process.env.OPS_NOTIFICATION_EMAIL || FROM_EMAIL
+  // Support multiple recipients via REPORT_RECIPIENTS (comma-separated)
+  const recipientStr = process.env.REPORT_RECIPIENTS || process.env.OPS_NOTIFICATION_EMAIL || FROM_EMAIL
+  const recipients = recipientStr.split(',').map((e: string) => e.trim()).filter(Boolean)
 
   const now = new Date()
   const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
@@ -187,7 +189,7 @@ export async function GET(req: NextRequest) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wholesail Weekly Business Report</title>
+  <title>${BRAND_NAME} Weekly Business Report</title>
 </head>
 <body style="margin:0;padding:0;background-color:#F9F7F4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F9F7F4;padding:32px 0;">
@@ -198,7 +200,7 @@ export async function GET(req: NextRequest) {
           <!-- Header -->
           <tr>
             <td style="background-color:#0A0A0A;padding:24px 36px;">
-              <p style="margin:0 0 4px;color:#C8C0B4;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;">Wholesail — Internal</p>
+              <p style="margin:0 0 4px;color:#C8C0B4;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;">${BRAND_NAME} — Internal</p>
               <h1 style="margin:0;color:#FFFFFF;font-size:20px;font-weight:600;font-family:Georgia,serif;">Weekly Business Report</h1>
               <p style="margin:6px 0 0;color:#C8C0B4;font-size:13px;">${weekLabel}</p>
             </td>
@@ -276,7 +278,7 @@ export async function GET(req: NextRequest) {
           <tr>
             <td style="background-color:#F9F7F4;padding:16px 36px;border-top:1px solid #E5E0D8;">
               <p style="margin:0;color:#888077;font-size:12px;line-height:1.6;">
-                Wholesail Internal Report &nbsp;&middot;&nbsp; Generated ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}<br/>
+                ${BRAND_NAME} Internal Report &nbsp;&middot;&nbsp; Generated ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}<br/>
                 Do not forward — for internal ops use only.
               </p>
             </td>
@@ -289,7 +291,7 @@ export async function GET(req: NextRequest) {
 </body>
 </html>`
 
-    const text = `Wholesail Weekly Business Report — ${weekLabel}
+    const text = `${BRAND_NAME} Weekly Business Report — ${weekLabel}
 
 WEEK AT A GLANCE
 Revenue: $${revenueThisWeek.toFixed(2)}${revenueChangePct !== null ? ` (${revenueChangePct >= 0 ? '+' : ''}${revenueChangePct.toFixed(1)}% vs last week)` : ''}
@@ -304,21 +306,21 @@ AT-RISK CLIENTS (45+ days no order)
 ${atRiskOrgs.slice(0, 10).map((o) => `• ${o.name} <${o.email}> — ${o.daysSince} days`).join('\n') || 'None'}
 
 Generated: ${now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-Wholesail Internal Ops`
+${BRAND_NAME} Internal Ops`
 
     await r.emails.send({
       from: FROM_EMAIL,
-      to: OPS_EMAIL,
-      subject: `Wholesail Weekly Report — ${weekLabel}`,
+      to: recipients,
+      subject: `${BRAND_NAME} Weekly Report — ${weekLabel}`,
       html,
       text,
     })
 
-    console.info(`Weekly report cron: sent to ${OPS_EMAIL}`)
+    console.info(`Weekly report cron: sent to ${recipients.join(', ')}`)
 
     return NextResponse.json({
       ok: true,
-      sentTo: OPS_EMAIL,
+      sentTo: recipients,
       stats: {
         revenueThisWeek,
         revenueLastWeek,

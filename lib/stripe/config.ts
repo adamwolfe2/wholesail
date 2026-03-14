@@ -32,7 +32,7 @@ export function getStripeClient(): Stripe {
       apiVersion: STRIPE_API_VERSION,
       typescript: true,
       appInfo: {
-        name: "Wholesail",
+        name: process.env.BRAND_NAME || "Wholesail",
         version: "1.0.0",
       },
     });

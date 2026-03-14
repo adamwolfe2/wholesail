@@ -3,17 +3,12 @@ import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/db'
 import { z } from 'zod'
 import { notifyDistributorsForOrder } from '@/lib/db/orders'
+import { createOrderWithRetry } from '@/lib/order-number'
 
 const reorderSchema = z.object({
   orderId: z.string().optional(),
   orderNumber: z.string().optional(),
 })
-
-async function generateOrderNumber(): Promise<string> {
-  const year = new Date().getFullYear()
-  const count = await prisma.order.count()
-  return `ORD-${year}-${String(count + 1).padStart(4, '0')}`
-}
 
 export async function POST(request: Request) {
   try {
@@ -58,8 +53,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Order not found' }, { status: 404 })
     }
 
-    const newOrderNumber = await generateOrderNumber()
-
     // Fetch CURRENT prices and availability for all products (not stale prices from source order)
     const reorderProductIds = sourceOrder.items.map((i) => i.productId)
     const reorderProducts = await prisma.product.findMany({
@@ -90,33 +83,35 @@ export async function POST(request: Request) {
       return sum + Number(product.price) * item.quantity
     }, 0)
 
-    const newOrder = await prisma.order.create({
-      data: {
-        orderNumber: newOrderNumber,
-        organizationId: user.organizationId,
-        userId,
-        status: 'PENDING',
-        subtotal,
-        tax: 0,
-        deliveryFee: 0,
-        total: subtotal,
-        notes: unavailable.length > 0
-          ? `Reorder of ${sourceOrder.orderNumber} (${unavailable.length} item(s) unavailable, omitted)`
-          : `Reorder of ${sourceOrder.orderNumber}`,
-        items: {
-          create: availableItems.map((item) => {
-            const product = productMap.get(item.productId)!
-            return {
-              productId: item.productId,
-              name: product.name,
-              quantity: item.quantity,
-              unitPrice: product.price,
-              total: Number(product.price) * item.quantity,
-              distributorOrgId: product.distributorOrgId ?? null,
-            }
-          }),
+    const newOrder = await createOrderWithRetry(async (orderNumber) => {
+      return prisma.order.create({
+        data: {
+          orderNumber,
+          organizationId: user.organizationId!,
+          userId,
+          status: 'PENDING',
+          subtotal,
+          tax: 0,
+          deliveryFee: 0,
+          total: subtotal,
+          notes: unavailable.length > 0
+            ? `Reorder of ${sourceOrder.orderNumber} (${unavailable.length} item(s) unavailable, omitted)`
+            : `Reorder of ${sourceOrder.orderNumber}`,
+          items: {
+            create: availableItems.map((item) => {
+              const product = productMap.get(item.productId)!
+              return {
+                productId: item.productId,
+                name: product.name,
+                quantity: item.quantity,
+                unitPrice: product.price,
+                total: Number(product.price) * item.quantity,
+                distributorOrgId: product.distributorOrgId ?? null,
+              }
+            }),
+          },
         },
-      },
+      })
     })
 
     // Notify distributors (fire-and-forget)
@@ -126,7 +121,7 @@ export async function POST(request: Request) {
     })
     notifyDistributorsForOrder({
       orderId: newOrder.id,
-      orderNumber: newOrderNumber,
+      orderNumber: newOrder.orderNumber,
       clientName: reorderOrg?.name ?? 'Client',
       clientEmail: reorderOrg?.email ?? null,
       deliveryAddress: null,

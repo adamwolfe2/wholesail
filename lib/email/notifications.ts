@@ -6,6 +6,7 @@ const resend = process.env.RESEND_API_KEY
 
 const FROM = process.env.RESEND_FROM_EMAIL || "Wholesail <noreply@wholesailhub.com>";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "adam@wholesailhub.com";
+const BRAND_NAME = process.env.BRAND_NAME || "Wholesail";
 
 function send(opts: { to: string; subject: string; html: string }) {
   if (!resend) {
@@ -74,7 +75,7 @@ export function sendIntakeConfirmation(data: {
           </a>
         </p>
         <p style="color: #8B92A5; font-size: 12px; margin-top: 24px;">
-          — The Wholesail Team
+          — The ${BRAND_NAME} Team
         </p>
       </div>
     `,
@@ -116,8 +117,8 @@ export function sendIntakeNurtureDay3(data: {
           ">Book a 20-minute call →</a>
         </p>
         <p style="color: #8B92A5; font-size: 12px; margin-top: 24px;">
-          — Adam at Wholesail<br/>
-          <a href="https://wholesailhub.com" style="color: #8B92A5;">wholesailhub.com</a>
+          — The ${BRAND_NAME} Team<br/>
+          <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"}" style="color: #8B92A5;">${(process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com").replace(/^https?:\/\//, "")}</a>
         </p>
       </div>
     `,
@@ -160,8 +161,8 @@ export function sendIntakeNurtureDay7(data: {
           ">Schedule the call →</a>
         </p>
         <p style="color: #8B92A5; font-size: 12px; margin-top: 24px;">
-          — Adam at Wholesail<br/>
-          <a href="https://wholesailhub.com" style="color: #8B92A5;">wholesailhub.com</a>
+          — The ${BRAND_NAME} Team<br/>
+          <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"}" style="color: #8B92A5;">${(process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com").replace(/^https?:\/\//, "")}</a>
         </p>
       </div>
     `,
@@ -232,7 +233,53 @@ export function notifyClientStatusChange(data: {
           </a>
         </p>
         <p style="color: #8B92A5; font-size: 12px; margin-top: 24px;">
-          — The Wholesail Team
+          — The ${BRAND_NAME} Team
+        </p>
+      </div>
+    `,
+  });
+}
+
+// ── Client: Stripe Connect onboarding ────────────────────────────────────────
+
+export function sendStripeOnboardingEmail(params: {
+  contactName: string;
+  contactEmail: string;
+  companyName: string;
+  onboardingUrl: string;
+}) {
+  return send({
+    to: params.contactEmail,
+    subject: `${params.companyName} — complete your payment setup`,
+    html: `
+      <div style="font-family: monospace; font-size: 14px; color: #0F1523; max-width: 500px;">
+        <h2 style="margin: 0 0 8px;">Your distribution portal is being built!</h2>
+        <p style="color: #3D4556; line-height: 1.6;">
+          Hi ${params.contactName}, great news — we've started building your custom wholesale
+          ordering portal for <strong>${params.companyName}</strong>.
+        </p>
+        <p style="color: #3D4556; line-height: 1.6;">
+          To accept payments through your portal, please complete your Stripe account setup.
+          This takes about 5 minutes and connects your bank account so you can receive payouts directly.
+        </p>
+        <p style="margin: 24px 0;">
+          <a href="${params.onboardingUrl}" style="
+            display: inline-block;
+            background: #0A0A0A;
+            color: #FFFFFF;
+            padding: 12px 24px;
+            text-decoration: none;
+            font-family: monospace;
+            font-size: 14px;
+            font-weight: bold;
+          ">Complete Stripe Setup</a>
+        </p>
+        <p style="color: #8B92A5; font-size: 12px; line-height: 1.5;">
+          This link expires in 24 hours. If it expires, contact us and we'll send a new one.
+        </p>
+        <p style="color: #8B92A5; font-size: 12px; margin-top: 24px;">
+          — The ${BRAND_NAME} Team<br/>
+          <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"}" style="color: #8B92A5;">${(process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com").replace(/^https?:\/\//, "")}</a>
         </p>
       </div>
     `,
@@ -267,7 +314,7 @@ export function notifyClientPortalLive(data: {
           for you to manage operations. If you need anything, just reply to this email.
         </p>
         <p style="color: #8B92A5; font-size: 12px; margin-top: 24px;">
-          — The Wholesail Team
+          — The ${BRAND_NAME} Team
         </p>
       </div>
     `,

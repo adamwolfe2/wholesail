@@ -2,17 +2,20 @@ import { NextRequest, NextResponse } from 'next/server'
 import { requireAdminOrRep } from '@/lib/auth/require-admin'
 import { prisma } from '@/lib/db'
 import { isConfigured as blooConfigured, sendMessage as blooSend, toE164 } from '@/lib/integrations/blooio'
+import { parseCursorParams, buildPrismaCursorArgs, buildCursorResponse } from '@/lib/pagination'
 
 // GET /api/admin/messages — all conversations across all orgs
-// Returns { conversations: ConversationRow[] } matching the shape the client expects
-export async function GET() {
+// Returns { conversations, nextCursor, hasMore }
+export async function GET(req: NextRequest) {
   const { error } = await requireAdminOrRep()
   if (error) return error
+
+  const { cursor, take } = parseCursorParams(req)
 
   try {
     const raw = await prisma.conversation.findMany({
       orderBy: { updatedAt: 'desc' },
-      take: 100,
+      ...buildPrismaCursorArgs(cursor, take),
       include: {
         organization: { select: { id: true, name: true } },
         messages: {
@@ -29,7 +32,9 @@ export async function GET() {
       },
     })
 
-    const conversations = raw.map((c) => ({
+    const { data, nextCursor, hasMore } = buildCursorResponse(raw, take)
+
+    const conversations = data.map((c) => ({
       id: c.id,
       subject: c.subject,
       isOpen: c.isOpen,
@@ -43,7 +48,7 @@ export async function GET() {
       repClaimedAt: c.repClaimedAt?.toISOString() ?? null,
     }))
 
-    return NextResponse.json({ conversations })
+    return NextResponse.json({ conversations, nextCursor, hasMore })
   } catch (err) {
     console.error('GET /api/admin/messages error:', err)
     return NextResponse.json({ error: 'Failed to load messages' }, { status: 500 })
@@ -82,6 +87,7 @@ export async function POST(req: NextRequest) {
       select: { name: true },
     })
 
+    const brandName = process.env.BRAND_NAME || 'Wholesail'
     const now = new Date()
     const [conversation] = await prisma.$transaction([
       prisma.conversation.create({
@@ -94,7 +100,7 @@ export async function POST(req: NextRequest) {
           messages: {
             create: {
               senderId: userId,
-              senderName: staff?.name ?? 'Wholesail Team',
+              senderName: staff?.name ?? `${brandName} Team`,
               senderRole: 'staff',
               content: message.trim(),
             },

@@ -8,6 +8,7 @@ import {
   orderDeliveredMessage,
 } from "@/lib/integrations/blooio";
 import { sendDistributorOrderNotification } from "@/lib/email";
+import { createOrderWithRetry } from "@/lib/order-number";
 
 const FREE_DELIVERY_THRESHOLD = 500;
 const STANDARD_DELIVERY_FEE = 25;
@@ -28,22 +29,6 @@ const STATE_TAX_RATES: Record<string, number> = {
 function getTaxRate(state?: string): number {
   if (!state) return 0;
   return STATE_TAX_RATES[state.trim().toUpperCase()] ?? 0;
-}
-
-// Generate order number: ORD-2026-0001.
-// Uses MAX existing number + 1 (more robust than COUNT under concurrent inserts).
-async function generateOrderNumber(attempt = 0): Promise<string> {
-  const year = new Date().getFullYear();
-  const prefix = `ORD-${year}-`;
-  const last = await prisma.order.findFirst({
-    where: { orderNumber: { startsWith: prefix } },
-    orderBy: { orderNumber: "desc" },
-    select: { orderNumber: true },
-  });
-  const lastNum = last ? parseInt(last.orderNumber.replace(prefix, ""), 10) : 0;
-  // On retry, add random offset to avoid collision with concurrent requests
-  const offset = attempt > 0 ? Math.floor(Math.random() * 100) + attempt : 0;
-  return `${prefix}${String(lastNum + 1 + offset).padStart(4, "0")}`;
 }
 
 interface CreateOrderInput {
@@ -95,7 +80,6 @@ export async function createOrder(input: CreateOrderInput) {
   const creditApplied = Math.min(input.creditApplied ?? 0, subtotal + tax + deliveryFee);
   const total = subtotal + tax + deliveryFee - creditApplied;
 
-  // Retry up to 10 times on unique constraint collision (concurrent order creation)
   type OrderResult = Prisma.OrderGetPayload<{
     include: {
       items: true;
@@ -103,92 +87,76 @@ export async function createOrder(input: CreateOrderInput) {
       shippingAddress: { select: { street: true; city: true; state: true; zip: true } };
     };
   }>;
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  let order!: OrderResult;
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  let orderNumber!: string;
-  for (let attempt = 0; attempt < 10; attempt++) {
-    orderNumber = await generateOrderNumber(attempt);
-    try {
-      order = await prisma.$transaction(async (tx) => {
-        const created = await tx.order.create({
-          data: {
-            orderNumber,
-            organizationId: input.organizationId,
-            userId: input.userId,
-            subtotal,
-            tax,
-            deliveryFee,
-            creditApplied,
-            total,
-            shippingAddressId: input.shippingAddressId,
-            notes: input.notes,
-            items: {
-              create: pricedItems.map((item) => ({
-                productId: item.productId,
-                name: item.name,
-                quantity: item.quantity,
-                unitPrice: item.unitPrice,
-                total: item.unitPrice * item.quantity,
-                distributorOrgId: item.distributorOrgId,
-              })),
-            },
-          },
-          include: {
-            items: true,
-            organization: { select: { name: true, email: true } },
-            shippingAddress: { select: { street: true, city: true, state: true, zip: true } },
-          },
-        });
 
-        // Reserve inventory (inside transaction — prevents overselling)
-        for (const item of pricedItems) {
-          await tx.inventoryLevel.updateMany({
-            where: {
+  const order = await createOrderWithRetry<OrderResult>(async (orderNumber) => {
+    return prisma.$transaction(async (tx) => {
+      const created = await tx.order.create({
+        data: {
+          orderNumber,
+          organizationId: input.organizationId,
+          userId: input.userId,
+          subtotal,
+          tax,
+          deliveryFee,
+          creditApplied,
+          total,
+          shippingAddressId: input.shippingAddressId,
+          notes: input.notes,
+          items: {
+            create: pricedItems.map((item) => ({
               productId: item.productId,
-              quantityOnHand: { gte: item.quantity }, // only if sufficient stock
-            },
-            data: {
-              quantityOnHand: { decrement: item.quantity },
-              quantityReserved: { increment: item.quantity },
-            },
-          });
-          // Note: if updateMany matches 0 rows (no inventory record or insufficient stock),
-          // the order still proceeds — inventory tracking is best-effort for products
-          // that don't have InventoryLevel records yet.
-        }
+              name: item.name,
+              quantity: item.quantity,
+              unitPrice: item.unitPrice,
+              total: item.unitPrice * item.quantity,
+              distributorOrgId: item.distributorOrgId,
+            })),
+          },
+        },
+        include: {
+          items: true,
+          organization: { select: { name: true, email: true } },
+          shippingAddress: { select: { street: true, city: true, state: true, zip: true } },
+        },
+      });
 
-        // Audit event (inside transaction)
-        await tx.auditEvent.create({
+      // Reserve inventory (inside transaction — prevents overselling)
+      for (const item of pricedItems) {
+        await tx.inventoryLevel.updateMany({
+          where: {
+            productId: item.productId,
+            quantityOnHand: { gte: item.quantity }, // only if sufficient stock
+          },
           data: {
-            entityType: "Order",
-            entityId: created.id,
-            action: "created",
-            userId: input.userId,
-            metadata: {
-              orderNumber,
-              total,
-              discountPct: discountPct > 0 ? discountPct : undefined,
-              taxRate: taxRate > 0 ? taxRate : undefined,
-              creditApplied: creditApplied > 0 ? creditApplied : undefined,
-            },
+            quantityOnHand: { decrement: item.quantity },
+            quantityReserved: { increment: item.quantity },
           },
         });
-
-        return created;
-      });
-      break;
-    } catch (err) {
-      if (
-        err instanceof Prisma.PrismaClientKnownRequestError &&
-        err.code === "P2002" &&
-        attempt < 9
-      ) {
-        continue;
+        // Note: if updateMany matches 0 rows (no inventory record or insufficient stock),
+        // the order still proceeds — inventory tracking is best-effort for products
+        // that don't have InventoryLevel records yet.
       }
-      throw err;
-    }
-  }
+
+      // Audit event (inside transaction)
+      await tx.auditEvent.create({
+        data: {
+          entityType: "Order",
+          entityId: created.id,
+          action: "created",
+          userId: input.userId,
+          metadata: {
+            orderNumber,
+            total,
+            discountPct: discountPct > 0 ? discountPct : undefined,
+            taxRate: taxRate > 0 ? taxRate : undefined,
+            creditApplied: creditApplied > 0 ? creditApplied : undefined,
+          },
+        },
+      });
+
+      return created;
+    });
+  }, 10);
 
   // Notify each distributor about their items (fire-and-forget)
   const distributorIds = [...new Set(

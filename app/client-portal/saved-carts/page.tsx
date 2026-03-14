@@ -107,7 +107,7 @@ export default function SavedCartsPage() {
       })
     }
     setTimeout(() => {
-      router.push('/catalog')
+      router.push('/client-portal/catalog')
     }, 300)
   }
 

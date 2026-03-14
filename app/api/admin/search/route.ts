@@ -10,11 +10,11 @@ export async function GET(req: NextRequest) {
   const q = searchParams.get("q") ?? "";
 
   if (q.trim().length < 2) {
-    return NextResponse.json({ organizations: [], orders: [], invoices: [] });
+    return NextResponse.json({ organizations: [], orders: [], invoices: [], products: [] });
   }
 
   try {
-    const [organizations, orders, invoices] = await Promise.all([
+    const [organizations, orders, invoices, products] = await Promise.all([
       prisma.organization.findMany({
         where: {
           OR: [
@@ -54,9 +54,27 @@ export async function GET(req: NextRequest) {
         },
         take: 5,
       }),
+
+      prisma.product.findMany({
+        where: {
+          OR: [
+            { name: { contains: q, mode: "insensitive" } },
+            { slug: { contains: q, mode: "insensitive" } },
+            { category: { contains: q, mode: "insensitive" } },
+          ],
+        },
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+          category: true,
+          available: true,
+        },
+        take: 5,
+      }),
     ]);
 
-    return NextResponse.json({ organizations, orders, invoices });
+    return NextResponse.json({ organizations, orders, invoices, products });
   } catch (error) {
     console.error("Search error:", error);
     return NextResponse.json(

@@ -269,6 +269,11 @@ export async function POST(req: NextRequest) {
 
     let session: Awaited<ReturnType<typeof createCheckoutSession>>;
     try {
+      // Platform fee: read from PLATFORM_FEE_PERCENT env var (set by Wholesail build pipeline)
+      const platformFeePercent = process.env.PLATFORM_FEE_PERCENT
+        ? parseFloat(process.env.PLATFORM_FEE_PERCENT)
+        : null;
+
       session = await createCheckoutSession({
         orderId: order.id,
         orderNumber: order.orderNumber,
@@ -276,6 +281,8 @@ export async function POST(req: NextRequest) {
         customerEmail: data.email,
         successUrl,
         cancelUrl,
+        stripeAccountId: org.stripeAccountId, // Stripe Connect: route to client's account if configured
+        platformFeePercent: org.stripeAccountId ? platformFeePercent : null, // only apply fee with Connect
       });
     } catch (stripeErr) {
       // Cancel the order so it doesn't sit as an orphaned PENDING record

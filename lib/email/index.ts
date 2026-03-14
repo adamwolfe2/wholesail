@@ -13,6 +13,9 @@ function getResend() {
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Wholesail <noreply@wholesailhub.com>";
 const APP_URL = getSiteUrl();
 const OPS_NAME = process.env.OPS_NAME || "our team";
+const BRAND_NAME = process.env.BRAND_NAME || "Wholesail";
+const BRAND_LOCATION = process.env.BRAND_LOCATION || "";
+const BRAND_EMAIL = process.env.ADMIN_EMAIL || "${BRAND_EMAIL}";
 
 // ---------------------------------------------------------------------------
 // buildBaseHtml — private helper that wraps content in the Wholesail branded
@@ -58,7 +61,7 @@ function buildBaseHtml({
 
         <!-- HEADER: dark bar with brand name -->
         <tr><td style="background-color:#0A0A0A;padding:24px 32px;">
-          <p style="margin:0;color:#FFFFFF;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">Wholesail</p>
+          <p style="margin:0;color:#FFFFFF;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">${BRAND_NAME}</p>
         </td></tr>
 
         <!-- OPTIONAL ALERT BANNER -->
@@ -75,8 +78,8 @@ function buildBaseHtml({
 
         <!-- FOOTER -->
         <tr><td style="padding:20px 32px;border-top:1px solid #E5E1DB;background-color:#F9F7F4;">
-          <p style="margin:0;color:#0A0A0A;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;">Wholesail</p>
-          <p style="margin:4px 0 0;color:#C8C0B4;font-size:12px;">wholesailhub.com &nbsp;&middot;&nbsp; Los Angeles, CA</p>
+          <p style="margin:0;color:#0A0A0A;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;">${BRAND_NAME}</p>
+          <p style="margin:4px 0 0;color:#C8C0B4;font-size:12px;">${APP_URL.replace(/^https?:\/\//, "")}${BRAND_LOCATION ? ` &nbsp;&middot;&nbsp; ${BRAND_LOCATION}` : ""}</p>
         </td></tr>
 
       </table>
@@ -184,7 +187,7 @@ View your order: ${orderUrl}
 
 Have questions? Reply to this email.
 
-— Wholesail`;
+— ${BRAND_NAME}`;
 
   try {
     const r = getResend();
@@ -244,7 +247,7 @@ Expected delivery: within 24–48 hours.
 
 Track your order: ${orderUrl}
 
-— Wholesail`;
+— ${BRAND_NAME}`;
 
   try {
     const r = getResend();
@@ -298,7 +301,7 @@ Place your next order: ${catalogUrl}
 
 P.S. Leave feedback or message us anytime through your portal.
 
-— Wholesail`;
+— ${BRAND_NAME}`;
 
   try {
     const r = getResend();
@@ -380,7 +383,7 @@ View and pay your invoice: ${invoicesUrl}
 
 Questions? Reply here or message us in your portal.
 
-— Wholesail`;
+— ${BRAND_NAME}`;
 
   try {
     const r = getResend();
@@ -409,8 +412,8 @@ export async function sendWelcomePartnerEmail(data: {
   businessName: string;
   portalUrl?: string;
 }) {
-  const portalUrl = data.portalUrl ?? "https://wholesailhub.com/client-portal/dashboard";
-  const catalogUrl = "https://wholesailhub.com/catalog";
+  const portalUrl = data.portalUrl ?? `${APP_URL}/client-portal/dashboard`;
+  const catalogUrl = `${APP_URL}/catalog`;
 
   const bodyHtml = `
     <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">
@@ -482,7 +485,7 @@ Questions? Reply to this email or reach ${OPS_NAME} directly.
 
 Browse the catalog: ${catalogUrl}
 
-— The Wholesail Team`;
+— The ${BRAND_NAME} Team`;
 
   try {
     const r = getResend();
@@ -490,7 +493,7 @@ Browse the catalog: ${catalogUrl}
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: `Welcome to Wholesail, ${data.name} — here's everything you need to know`,
+      subject: `Welcome to ${BRAND_NAME}, ${data.name} — here's everything you need to know`,
       html,
       text,
     });
@@ -512,9 +515,9 @@ export async function sendWholesaleRejectionEmail(data: {
 }) {
   const bodyHtml = `
     <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.contactName},</p>
-    <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Thank you for your interest in partnering with Wholesail.</p>
+    <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Thank you for your interest in partnering with ${BRAND_NAME}.</p>
     <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">After careful review, we're unable to move forward with <strong style="color:#0A0A0A;">${data.businessName}</strong>'s wholesale application at this time. This decision may be due to our current capacity, geographic focus, or product alignment — it is not a reflection of your business.</p>
-    <p style="margin:0 0 4px;font-size:15px;color:#3D3833;line-height:1.6;">You're welcome to reapply in 90 days, and we encourage you to reach out directly with any questions at <a href="mailto:orders@wholesailhub.com" style="color:#0A0A0A;">orders@wholesailhub.com</a>.</p>
+    <p style="margin:0 0 4px;font-size:15px;color:#3D3833;line-height:1.6;">You're welcome to reapply in 90 days, and we encourage you to reach out directly with any questions at <a href="mailto:${BRAND_EMAIL}" style="color:#0A0A0A;">${BRAND_EMAIL}</a>.</p>
   `;
 
   const html = buildBaseHtml({
@@ -524,15 +527,15 @@ export async function sendWholesaleRejectionEmail(data: {
 
   const text = `Hi ${data.contactName},
 
-Thank you for your interest in partnering with Wholesail.
+Thank you for your interest in partnering with ${BRAND_NAME}.
 
 After careful review, we're unable to move forward with ${data.businessName}'s wholesale application at this time. This decision may be due to our current capacity, geographic focus, or product alignment — it is not a reflection of your business.
 
-You're welcome to reapply in 90 days, and we encourage you to reach out directly with any questions at orders@wholesailhub.com.
+You're welcome to reapply in 90 days, and we encourage you to reach out directly with any questions at ${BRAND_EMAIL}.
 
 We appreciate your interest and hope to have the opportunity to work together in the future.
 
-— The Wholesail Team`;
+— The ${BRAND_NAME} Team`;
 
   try {
     const r = getResend();
@@ -540,7 +543,7 @@ We appreciate your interest and hope to have the opportunity to work together in
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: `Your Wholesail Application — ${data.businessName}`,
+      subject: `Your ${BRAND_NAME} Application — ${data.businessName}`,
       html,
       text,
     });
@@ -598,7 +601,7 @@ ${data.dropTitle}
 ${categoryLine}Available: ${formattedDate}${descLine}
 Shop now: ${APP_URL}
 
-— Wholesail`;
+— ${BRAND_NAME}`;
 
   try {
     const r = getResend();
@@ -684,15 +687,15 @@ export async function sendDropBlastEmail(data: {
   if (data.priceNote) lines.push(`Pricing: ${data.priceNote}`);
   if (data.description) lines.push(`\n${data.description}`);
 
-  const text = `New drop from Wholesail.
+  const text = `New drop from ${BRAND_NAME}.
 
 ${data.dropTitle}
 ${lines.join("\n")}
 
 First-come, first-served. Order now:
-wholesailhub.com/drops
+${APP_URL}/drops
 
-— Wholesail`;
+— ${BRAND_NAME}`;
 
   try {
     const r = getResend();
@@ -788,7 +791,7 @@ ${data.checkoutUrl}
 
 Items in your cart are subject to availability. Whenever you're ready, we're here.
 
-— Wholesail
+— ${BRAND_NAME}
 P.S. Reply to this email if you have any questions about pricing, delivery, or your order.`;
 
   try {
@@ -869,9 +872,9 @@ You can paste a plain-text list — like "10 cases olive oil, 5 lbs sea salt" �
 Browse the full catalog here:
 ${catalogUrl}
 
-Questions? Reply to this email or reach us at orders@wholesailhub.com.
+Questions? Reply to this email or reach us at ${BRAND_EMAIL}.
 
-— The Wholesail Team`;
+— The ${BRAND_NAME} Team`;
 
   try {
     const r = getResend();
@@ -879,7 +882,7 @@ Questions? Reply to this email or reach us at orders@wholesailhub.com.
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: `Your first Wholesail order — here's what to know`,
+      subject: `Your first ${BRAND_NAME} order — here's what to know`,
       html,
       text,
     });
@@ -923,7 +926,7 @@ ${APP_URL}
 
 As always, reply here if you have questions about availability, pricing, or delivery.
 
-— The Wholesail Team`;
+— The ${BRAND_NAME} Team`;
 
   try {
     const r = getResend();
@@ -956,7 +959,7 @@ export async function sendLowStockAlert(
 ) {
   const r = getResend();
   if (!r) return null;
-  const from = process.env.RESEND_FROM_EMAIL || "orders@wholesailhub.com";
+  const from = process.env.RESEND_FROM_EMAIL || "${BRAND_EMAIL}";
   const to = process.env.OPS_NOTIFICATION_EMAIL || from;
 
   const itemRowsHtml = items
@@ -984,7 +987,7 @@ export async function sendLowStockAlert(
 
         <!-- HEADER -->
         <tr><td style="background-color:#0A0A0A;padding:20px 28px;border-bottom:1px solid #2A2A2A;">
-          <p style="margin:0;color:#F9F7F4;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">Wholesail Ops &nbsp;&middot;&nbsp; Internal Alert</p>
+          <p style="margin:0;color:#F9F7F4;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">${BRAND_NAME} Ops &nbsp;&middot;&nbsp; Internal Alert</p>
         </td></tr>
 
         <!-- CONTENT -->
@@ -1007,7 +1010,7 @@ export async function sendLowStockAlert(
 
         <!-- FOOTER -->
         <tr><td style="padding:16px 28px;border-top:1px solid #2A2A2A;">
-          <p style="margin:0;color:#C8C0B4;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;">Wholesail Ops &nbsp;&middot;&nbsp; wholesailhub.com</p>
+          <p style="margin:0;color:#C8C0B4;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;">${BRAND_NAME} Ops &nbsp;&middot;&nbsp; ${APP_URL.replace(/^https?:\/\//, "")}</p>
         </td></tr>
 
       </table>
@@ -1025,7 +1028,7 @@ export async function sendLowStockAlert(
     to,
     subject: `Low Stock Alert — ${items.length} item${items.length !== 1 ? "s" : ""} need restocking`,
     html,
-    text: `Low Stock Alert\n\n${items.length} product${items.length !== 1 ? "s are" : " is"} at or below the restock threshold:\n\n${textRows}\n\n— Wholesail Ops`,
+    text: `Low Stock Alert\n\n${items.length} product${items.length !== 1 ? "s are" : " is"} at or below the restock threshold:\n\n${textRows}\n\n— ${BRAND_NAME} Ops`,
   });
 }
 
@@ -1141,7 +1144,7 @@ export async function sendTierUpgradeEmail(data: {
   const isVIP = data.newTier === "VIP";
 
   const subject = isVIP
-    ? `${data.businessName} is now a Wholesail VIP Partner`
+    ? `${data.businessName} is now a ${BRAND_NAME} VIP Partner`
     : `${data.businessName} has unlocked Repeat Partner status`;
 
   const tierLabel = isVIP ? "VIP Partner" : "Repeat Partner";
@@ -1215,7 +1218,7 @@ Welcome to ${tierLabel}.
 
 Browse the catalog: ${catalogUrl}
 
-— The Wholesail Team`;
+— The ${BRAND_NAME} Team`;
 
   return r.emails.send({
     from: FROM_EMAIL,
@@ -1245,7 +1248,7 @@ export async function sendApplicationStatusEmail(data: {
   let text: string;
 
   if (data.status === "APPROVED") {
-    subject = `Your Wholesail wholesale application has been approved!`;
+    subject = `Your ${BRAND_NAME} wholesale application has been approved!`;
     headline = "You're Approved!";
     bodyHtml = `
       <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.contactName},</p>
@@ -1265,44 +1268,44 @@ Get started here: ${portalUrl}
 
 Questions? Reply to this email and we'll get back to you the same day.
 
-— The Wholesail Team`;
+— The ${BRAND_NAME} Team`;
   } else if (data.status === "WAITLISTED") {
-    subject = `You've been added to the Wholesail waitlist — ${data.businessName}`;
+    subject = `You've been added to the ${BRAND_NAME} waitlist — ${data.businessName}`;
     headline = "You're on the Waitlist";
     bodyHtml = `
       <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.contactName},</p>
-      <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Thank you for applying to partner with Wholesail.</p>
+      <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Thank you for applying to partner with ${BRAND_NAME}.</p>
       <p style="margin:0 0 4px;font-size:15px;color:#3D3833;line-height:1.6;">We've reviewed <strong style="color:#0A0A0A;">${data.businessName}</strong>'s application and have added you to our waitlist. We're selectively expanding our partner network and will reach out as soon as space opens up.</p>
     `;
     text = `Hi ${data.contactName},
 
-Thank you for applying to partner with Wholesail.
+Thank you for applying to partner with ${BRAND_NAME}.
 
 We've reviewed ${data.businessName}'s application and have added you to our waitlist. We're selectively expanding our partner network and will reach out as soon as space opens up.
 
 We appreciate your interest and look forward to the opportunity to work together.
 
-— The Wholesail Team`;
+— The ${BRAND_NAME} Team`;
   } else {
-    subject = `Your Wholesail wholesale application — ${data.businessName}`;
+    subject = `Your ${BRAND_NAME} wholesale application — ${data.businessName}`;
     headline = "Thank You for Applying";
     bodyHtml = `
       <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.contactName},</p>
-      <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Thank you for your interest in partnering with Wholesail.</p>
+      <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Thank you for your interest in partnering with ${BRAND_NAME}.</p>
       <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">After careful review, we're unable to move forward with <strong style="color:#0A0A0A;">${data.businessName}</strong>'s wholesale application at this time. This decision may be due to our current capacity, geographic focus, or product alignment — it is not a reflection of your business.</p>
-      <p style="margin:0 0 4px;font-size:15px;color:#3D3833;line-height:1.6;">You're welcome to reapply in 90 days, and we encourage you to reach out at <a href="mailto:orders@wholesailhub.com" style="color:#0A0A0A;">orders@wholesailhub.com</a> with any questions.</p>
+      <p style="margin:0 0 4px;font-size:15px;color:#3D3833;line-height:1.6;">You're welcome to reapply in 90 days, and we encourage you to reach out at <a href="mailto:${BRAND_EMAIL}" style="color:#0A0A0A;">${BRAND_EMAIL}</a> with any questions.</p>
     `;
     text = `Hi ${data.contactName},
 
-Thank you for your interest in partnering with Wholesail.
+Thank you for your interest in partnering with ${BRAND_NAME}.
 
 After careful review, we're unable to move forward with ${data.businessName}'s wholesale application at this time. This decision may be due to our current capacity, geographic focus, or product alignment — it is not a reflection of your business.
 
-You're welcome to reapply in 90 days, and we encourage you to reach out directly with any questions at orders@wholesailhub.com.
+You're welcome to reapply in 90 days, and we encourage you to reach out directly with any questions at ${BRAND_EMAIL}.
 
 We appreciate your interest and hope to have the opportunity to work together in the future.
 
-— The Wholesail Team`;
+— The ${BRAND_NAME} Team`;
   }
 
   const html = buildBaseHtml({ headline, bodyHtml });
@@ -1383,7 +1386,7 @@ It's been ${data.daysSinceLastOrder} days since your last order — we wanted to
 ${data.topProducts.length > 0 ? `Your usual:\n${productLines}\n\n` : ""}Shop the current selection: ${catalogUrl}
 
 Reply to this email or message us anytime — ${OPS_NAME}
-Wholesail · wholesailhub.com`;
+${BRAND_NAME} · ${APP_URL.replace(/^https?:\/\//, "")}`;
 
   return r.emails.send({
     from: FROM_EMAIL,
@@ -1460,7 +1463,7 @@ export async function sendWeeklyDigestEmail(data: {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Weekly Wholesail Update</title>
+  <title>Your Weekly ${BRAND_NAME} Update</title>
 </head>
 <body style="margin:0;padding:0;background-color:#F9F7F4;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#F9F7F4;padding:40px 0;">
@@ -1471,8 +1474,8 @@ export async function sendWeeklyDigestEmail(data: {
           <!-- Header -->
           <tr>
             <td style="background-color:#0A0A0A;padding:28px 40px;">
-              <p style="margin:0 0 4px;color:#C8C0B4;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;">Wholesail</p>
-              <h1 style="margin:0;color:#FFFFFF;font-size:22px;font-weight:600;font-family:Georgia,serif;">Your Weekly Wholesail Update</h1>
+              <p style="margin:0 0 4px;color:#C8C0B4;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;">${BRAND_NAME}</p>
+              <h1 style="margin:0;color:#FFFFFF;font-size:22px;font-weight:600;font-family:Georgia,serif;">Your Weekly ${BRAND_NAME} Update</h1>
             </td>
           </tr>
 
@@ -1575,8 +1578,8 @@ export async function sendWeeklyDigestEmail(data: {
           <tr>
             <td style="background-color:#F9F7F4;padding:20px 40px;border-top:1px solid #E5E0D8;">
               <p style="margin:0;color:#888077;font-size:12px;line-height:1.7;">
-                Wholesail &nbsp;&middot;&nbsp; orders@wholesailhub.com<br />
-                You&rsquo;re receiving this weekly digest as a Wholesail wholesale partner.<br />
+                ${BRAND_NAME} &nbsp;&middot;&nbsp; ${BRAND_EMAIL}<br />
+                You&rsquo;re receiving this weekly digest as a ${BRAND_NAME} wholesale partner.<br />
                 <a href="${settingsUrl}" style="color:#888077;">Manage email preferences</a>
               </p>
             </td>
@@ -1589,7 +1592,7 @@ export async function sendWeeklyDigestEmail(data: {
 </body>
 </html>`;
 
-  const text = `Your Weekly Wholesail Update
+  const text = `Your Weekly ${BRAND_NAME} Update
 Hi ${data.name},
 
 YOUR MONTH SO FAR
@@ -1613,13 +1616,13 @@ COMING SOON
 New drops and seasonal arrivals are on the way — check the drops calendar: ${APP_URL}/drops
 
 Manage preferences: ${settingsUrl}
-— Wholesail`;
+— ${BRAND_NAME}`;
 
   try {
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
-      subject: `Your Wholesail Weekly Update — ${new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}`,
+      subject: `Your ${BRAND_NAME} Weekly Update — ${new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}`,
       html,
       text,
     });
@@ -1829,13 +1832,13 @@ export async function sendQuoteToClientEmail(data: {
     "",
     `Review your quote: ${quoteUrl}`,
     "",
-    "— Wholesail",
+    `— ${BRAND_NAME}`,
   ].filter(Boolean);
 
   await resend.emails.send({
     from: FROM_EMAIL,
     to: data.clientEmail,
-    subject: `New Quote from Wholesail — ${data.quoteNumber}`,
+    subject: `New Quote from ${BRAND_NAME} — ${data.quoteNumber}`,
     html,
     text: textParts.join("\n"),
   });
@@ -1967,6 +1970,193 @@ View your fulfillment queue: ${portalUrl}`;
     return { success: true };
   } catch (error) {
     console.error('Failed to send distributor order notification:', error);
+    return { success: false, error };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// sendPaymentReceivedEmail — sent to client when a payment is recorded
+// (invoice.paid, manual payment, etc.)
+// ---------------------------------------------------------------------------
+
+export async function sendPaymentReceivedEmail(data: {
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string;
+  amount: number;
+  method?: string;
+}) {
+  const orderUrl = `${APP_URL}/client-portal/orders/${data.orderNumber}`;
+  const methodLabel = data.method ?? "payment";
+
+  const bodyHtml = `
+    <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.customerName},</p>
+    <p style="margin:0 0 24px;font-size:15px;color:#3D3833;line-height:1.6;">
+      We've received your ${methodLabel} of <strong style="color:#0A0A0A;">$${data.amount.toFixed(2)}</strong> for order
+      <strong style="color:#0A0A0A;">${data.orderNumber}</strong>. Thank you!
+    </p>
+    <p style="margin:0 0 8px;font-size:13px;color:#C8C0B4;font-style:italic;">
+      If you have any questions about this payment, reply to this email or reach out through your portal.
+    </p>
+  `;
+
+  const html = buildBaseHtml({
+    headline: "Payment Received",
+    bodyHtml,
+    ctaText: "View Order →",
+    ctaUrl: orderUrl,
+  });
+
+  const text = `Hi ${data.customerName},
+
+We've received your ${methodLabel} of $${data.amount.toFixed(2)} for order ${data.orderNumber}. Thank you!
+
+View your order: ${orderUrl}
+
+— ${BRAND_NAME}`;
+
+  try {
+    const r = getResend();
+    if (!r) return { success: false, error: "Email not configured" };
+    await r.emails.send({
+      from: FROM_EMAIL,
+      to: data.customerEmail,
+      subject: `Payment Received — ${data.orderNumber}`,
+      html,
+      text,
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to send payment received email:", error);
+    return { success: false, error };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// sendRefundConfirmationEmail — sent to client when a refund is processed
+// ---------------------------------------------------------------------------
+
+export async function sendRefundConfirmationEmail(data: {
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string;
+  amountRefunded: number;
+  isPartial: boolean;
+}) {
+  const orderUrl = `${APP_URL}/client-portal/orders/${data.orderNumber}`;
+  const refundType = data.isPartial ? "partial refund" : "full refund";
+
+  const bodyHtml = `
+    <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.customerName},</p>
+    <p style="margin:0 0 24px;font-size:15px;color:#3D3833;line-height:1.6;">
+      A ${refundType} of <strong style="color:#0A0A0A;">$${data.amountRefunded.toFixed(2)}</strong> has been issued for order
+      <strong style="color:#0A0A0A;">${data.orderNumber}</strong>. The refund should appear on your statement within 5–10 business days.
+    </p>
+    <p style="margin:0 0 8px;font-size:13px;color:#C8C0B4;font-style:italic;">
+      If you have any questions about this refund, reply to this email or reach out through your portal.
+    </p>
+  `;
+
+  const html = buildBaseHtml({
+    headline: "Refund Processed",
+    bodyHtml,
+    ctaText: "View Order",
+    ctaUrl: orderUrl,
+  });
+
+  const text = `Hi ${data.customerName},
+
+A ${refundType} of $${data.amountRefunded.toFixed(2)} has been issued for order ${data.orderNumber}. The refund should appear on your statement within 5-10 business days.
+
+View your order: ${orderUrl}
+
+— ${BRAND_NAME}`;
+
+  try {
+    const r = getResend();
+    if (!r) return { success: false, error: "Email not configured" };
+    await r.emails.send({
+      from: FROM_EMAIL,
+      to: data.customerEmail,
+      subject: `Refund Processed — ${data.orderNumber}`,
+      html,
+      text,
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to send refund confirmation email:", error);
+    return { success: false, error };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// sendDisputeAlertEmail — internal alert when a Stripe dispute is opened
+// ---------------------------------------------------------------------------
+
+export async function sendDisputeAlertEmail(data: {
+  disputeId: string;
+  reason: string;
+  amount: number;
+  paymentIntentId: string;
+  orderNumber?: string;
+}) {
+  const OPS_EMAIL = process.env.OPS_NOTIFICATION_EMAIL || FROM_EMAIL;
+  const dashboardUrl = `https://dashboard.stripe.com/disputes/${data.disputeId}`;
+  const orderRef = data.orderNumber
+    ? ` (Order ${data.orderNumber})`
+    : "";
+
+  const bodyHtml = `
+    <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">A new Stripe dispute has been opened${orderRef}.</p>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
+      <tr><td style="padding:8px 0;font-size:14px;color:#6B6560;border-bottom:1px solid #E8E4DF;">Dispute ID</td>
+          <td style="padding:8px 0;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E8E4DF;font-weight:600;">${data.disputeId}</td></tr>
+      <tr><td style="padding:8px 0;font-size:14px;color:#6B6560;border-bottom:1px solid #E8E4DF;">Reason</td>
+          <td style="padding:8px 0;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E8E4DF;font-weight:600;">${data.reason}</td></tr>
+      <tr><td style="padding:8px 0;font-size:14px;color:#6B6560;border-bottom:1px solid #E8E4DF;">Amount</td>
+          <td style="padding:8px 0;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E8E4DF;font-weight:600;">$${(data.amount / 100).toFixed(2)}</td></tr>
+      <tr><td style="padding:8px 0;font-size:14px;color:#6B6560;">Payment Intent</td>
+          <td style="padding:8px 0;font-size:14px;color:#0A0A0A;font-weight:600;">${data.paymentIntentId}</td></tr>
+    </table>
+    <p style="margin:0 0 8px;font-size:13px;color:#C8C0B4;font-style:italic;">
+      Respond within 7 days to avoid an automatic loss.
+    </p>
+  `;
+
+  const html = buildBaseHtml({
+    headline: "Dispute Opened",
+    bodyHtml,
+    ctaText: "View in Stripe",
+    ctaUrl: dashboardUrl,
+    alertBannerHtml: `<p style="margin:0;font-size:13px;font-weight:600;color:#92400E;">ACTION REQUIRED — A payment dispute needs your attention</p>`,
+  });
+
+  const text = `DISPUTE OPENED${orderRef}
+
+Dispute ID: ${data.disputeId}
+Reason: ${data.reason}
+Amount: $${(data.amount / 100).toFixed(2)}
+Payment Intent: ${data.paymentIntentId}
+
+View in Stripe: ${dashboardUrl}
+
+Respond within 7 days to avoid an automatic loss.
+
+— ${BRAND_NAME}`;
+
+  try {
+    const r = getResend();
+    if (!r) return { success: false, error: "Email not configured" };
+    await r.emails.send({
+      from: FROM_EMAIL,
+      to: OPS_EMAIL,
+      subject: `DISPUTE OPENED — $${(data.amount / 100).toFixed(2)}${orderRef}`,
+      html,
+      text,
+    });
+    return { success: true };
+  } catch (error) {
+    console.error("Failed to send dispute alert email:", error);
     return { success: false, error };
   }
 }

@@ -3,20 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { sendQuoteResponseToRep } from "@/lib/email";
 import { notifyDistributorsForOrder } from "@/lib/db/orders";
-
-async function generateOrderNumber(): Promise<string> {
-  const year = new Date().getFullYear();
-  const prefix = `ORD-${year}-`;
-  const last = await prisma.order.findFirst({
-    where: { orderNumber: { startsWith: prefix } },
-    orderBy: { orderNumber: "desc" },
-    select: { orderNumber: true },
-  });
-  const seq = last
-    ? parseInt(last.orderNumber.replace(prefix, ""), 10) + 1
-    : 1;
-  return `${prefix}${String(seq).padStart(4, "0")}`;
-}
+import { createOrderWithRetry } from "@/lib/order-number";
 
 export async function POST(
   _req: NextRequest,
@@ -83,8 +70,6 @@ export async function POST(
       },
     });
 
-    const orderNumber = await generateOrderNumber();
-
     // Fetch distributor assignment for each product
     const acceptProductIds = quote.items.map((i) => i.productId);
     const acceptProducts = await prisma.product.findMany({
@@ -93,36 +78,38 @@ export async function POST(
     });
     const acceptDistributorMap = new Map(acceptProducts.map((p) => [p.id, p.distributorOrgId ?? null]));
 
-    // Create order from quote
-    const order = await prisma.order.create({
-      data: {
-        orderNumber,
-        organizationId: quote.organizationId,
-        userId,
-        placedByRepId: quote.repId ?? undefined,
-        status: "PENDING",
-        subtotal: quote.subtotal,
-        tax: 0,
-        deliveryFee: 0,
-        total: quote.total,
-        shippingAddressId: address?.id,
-        notes: `Created from quote ${quote.quoteNumber}`,
-        items: {
-          create: quote.items.map((item) => ({
-            productId: item.productId,
-            name: item.name,
-            quantity: item.quantity,
-            unitPrice: item.unitPrice,
-            total: item.total,
-            distributorOrgId: acceptDistributorMap.get(item.productId) ?? null,
-          })),
+    // Create order from quote with retry on duplicate order number
+    const order = await createOrderWithRetry(async (orderNumber) => {
+      return prisma.order.create({
+        data: {
+          orderNumber,
+          organizationId: quote.organizationId,
+          userId,
+          placedByRepId: quote.repId ?? undefined,
+          status: "PENDING",
+          subtotal: quote.subtotal,
+          tax: 0,
+          deliveryFee: 0,
+          total: quote.total,
+          shippingAddressId: address?.id,
+          notes: `Created from quote ${quote.quoteNumber}`,
+          items: {
+            create: quote.items.map((item) => ({
+              productId: item.productId,
+              name: item.name,
+              quantity: item.quantity,
+              unitPrice: item.unitPrice,
+              total: item.total,
+              distributorOrgId: acceptDistributorMap.get(item.productId) ?? null,
+            })),
+          },
         },
-      },
+      });
     });
 
     notifyDistributorsForOrder({
       orderId: order.id,
-      orderNumber,
+      orderNumber: order.orderNumber,
       clientName: quote.organization.name,
       clientEmail: null,
       deliveryAddress: null,
@@ -149,7 +136,7 @@ export async function POST(
           metadata: {
             quoteNumber: quote.quoteNumber,
             orderId: order.id,
-            orderNumber,
+            orderNumber: order.orderNumber,
           },
         },
       });
@@ -172,12 +159,12 @@ export async function POST(
         repName: rep.name,
         repEmail: rep.email,
         action: "ACCEPTED",
-        orderNumber,
+        orderNumber: order.orderNumber,
         orderId: order.id,
       }).catch(() => {});
     }
 
-    return NextResponse.json({ orderId: order.id, orderNumber });
+    return NextResponse.json({ orderId: order.id, orderNumber: order.orderNumber });
   } catch (error) {
     console.error("Error accepting quote:", error);
     return NextResponse.json(

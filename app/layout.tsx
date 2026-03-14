@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "Wholesail — Wholesale Ordering Portals for Distribution Companies",
   description:
     "Wholesail builds custom ordering portals for distribution companies. Your clients order online, you manage everything in one place. Live in under 2 weeks.",
-  metadataBase: new URL("https://wholesailhub.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"),
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

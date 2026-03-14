@@ -5,7 +5,9 @@ import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
 import { getIntakeSubmissionById } from "@/lib/db/intake";
 import { convertIntakeToProject } from "@/lib/db/projects";
 import { logCost } from "@/lib/db/costs";
-import { createRepo, commitFile } from "@/lib/build/github";
+import { createRepoFromTemplate, commitFile } from "@/lib/build/github";
+import { runResearchPipeline, estimateResearchCost } from "@/lib/build/research";
+import { generateReadme, generateMarketingCopy, type ReadmeInput } from "@/lib/build/readme-generator";
 import {
   createProject as createVercelProject,
   setEnvVar,
@@ -14,6 +16,9 @@ import {
 import { createPostgresStore, createKVStore, connectStoreToProject } from "@/lib/build/storage";
 import { createResendApiKey } from "@/lib/build/resend-admin";
 import { createSentryProject } from "@/lib/build/sentry-admin";
+import { createConnectedAccount } from "@/lib/build/stripe-connect";
+import { provisionClerkApp, isPlatformApiAvailable, generateClerkWebhookInstructions } from "@/lib/build/clerk-admin";
+import { sendStripeOnboardingEmail } from "@/lib/email/notifications";
 import { prisma } from "@/lib/db";
 import Anthropic from "@anthropic-ai/sdk";
 import crypto from "crypto";
@@ -193,7 +198,130 @@ export async function POST(
       await saveProgress();
     }
 
-    // ── STEP 2: Create GitHub repo ─────────────────────────────────────────
+    // ── STEP 2: Research Pipeline (Tavily + Claude Synthesis) ──────────────
+    let researchData: Record<string, unknown> | null = null;
+    if (!buildChecklist.researchCompleted) {
+      try {
+        appendLog("Running research pipeline (Tavily searches + Claude synthesis)...");
+        await saveProgress();
+
+        const researchResult = await runResearchPipeline({
+          companyName: intake.companyName,
+          industry: intake.industry,
+          website: intake.website,
+          location: intake.location,
+          productCategories: intake.productCategories,
+          selectedFeatures: intake.selectedFeatures ?? [],
+          additionalNotes: intake.additionalNotes,
+          scrapeData: (intake.scrapeData as Record<string, unknown>) ?? null,
+        });
+
+        researchData = researchResult as unknown as Record<string, unknown>;
+
+        // Store research data in serviceKeys JSON (already a flexible JSON field)
+        await prisma.project.update({
+          where: { id: projectId },
+          data: {
+            serviceKeys: {
+              ...((typeof project.serviceKeys === "object" && project.serviceKeys !== null
+                ? project.serviceKeys
+                : {}) as Record<string, unknown>),
+              research: researchData,
+            } as object,
+          },
+        });
+
+        const costs = estimateResearchCost();
+        await logCost(projectId, {
+          service: "tavily",
+          amountCents: costs.tavily,
+          description: "Research pipeline — 4 Tavily advanced searches",
+        });
+        if (process.env.ANTHROPIC_API_KEY) {
+          await logCost(projectId, {
+            service: "anthropic",
+            amountCents: costs.anthropic,
+            description: "Research pipeline — Claude Sonnet synthesis",
+          });
+        }
+
+        buildChecklist.researchCompleted = true;
+        appendLog(`Research pipeline complete: ${researchResult.researchedAt}`);
+        await saveProgress();
+      } catch (researchErr) {
+        appendLog(`Research pipeline error (non-fatal): ${(researchErr as Error).message}`);
+        buildChecklist.researchCompleted = true; // Mark done to avoid blocking
+        await saveProgress();
+      }
+    } else {
+      // Recover cached research data from serviceKeys
+      const keys = project.serviceKeys as Record<string, unknown> | null;
+      if (keys?.research) {
+        researchData = keys.research as Record<string, unknown>;
+      }
+    }
+
+    // ── STEP 3: Generate CLAUDE.md (build instructions) ─────────────────────
+    let readmeContent: string | null = null;
+    let marketingCopyContent: string | null = null;
+
+    if (!buildChecklist.readmeGenerated) {
+      try {
+        appendLog("Generating CLAUDE.md build instructions...");
+        const updatedProject = await prisma.project.findUnique({ where: { id: projectId } });
+        const configContent = updatedProject?.generatedConfig ?? CONFIG_SKELETON;
+
+        const readmeInput = {
+          companyName: intake.companyName,
+          shortName: intake.shortName || intake.companyName.slice(0, 3).toUpperCase(),
+          industry: intake.industry,
+          website: intake.website,
+          location: intake.location,
+          contactEmail: intake.contactEmail,
+          primaryColor: intake.primaryColor ?? "#0A0A0A",
+          brandSecondaryColor: intake.brandSecondaryColor ?? null,
+          logoUrl: intake.logoUrl ?? null,
+          selectedFeatures: intake.selectedFeatures ?? [],
+          productCategories: intake.productCategories,
+          coldChain: intake.coldChain,
+          paymentTerms: intake.paymentTerms ?? [],
+          deliveryCoverage: intake.deliveryCoverage,
+          additionalNotes: intake.additionalNotes,
+          targetDomain: intake.targetDomain ?? null,
+          minimumOrderValue: intake.minimumOrderValue ?? null,
+          researchData: researchData as ReadmeInput["researchData"],
+          scrapeData: (intake.scrapeData as ReadmeInput["scrapeData"]) ?? null,
+          generatedConfig: configContent,
+        };
+
+        // Generate CLAUDE.md and marketing copy in parallel
+        const [readme, marketing] = await Promise.allSettled([
+          generateReadme(readmeInput),
+          generateMarketingCopy(readmeInput),
+        ]);
+
+        readmeContent = readme.status === "fulfilled" ? readme.value : null;
+        marketingCopyContent = marketing.status === "fulfilled" ? marketing.value : null;
+
+        if (marketingCopyContent && process.env.ANTHROPIC_API_KEY) {
+          await logCost(projectId, {
+            service: "anthropic",
+            amountCents: 5,
+            description: "Marketing copy generation via Claude Sonnet",
+          });
+        }
+
+        buildChecklist.readmeGenerated = true;
+        appendLog(`CLAUDE.md generated (${readmeContent?.length ?? 0} chars), marketing copy generated (${marketingCopyContent?.length ?? 0} chars)`);
+        await saveProgress();
+      } catch (readmeErr) {
+        appendLog(`README generation error (non-fatal): ${(readmeErr as Error).message}`);
+        buildChecklist.readmeGenerated = true;
+        await saveProgress();
+      }
+    }
+
+    // ── STEP 4: Create GitHub repo FROM TEMPLATE ────────────────────────────
     let repoName = project.githubRepo?.split("/")[1] ?? null;
     if (!buildChecklist.githubRepoCreated && process.env.GITHUB_PAT) {
       const slug = intake.companyName
@@ -203,16 +331,16 @@ export async function POST(
       repoName = `${slug}-portal`;
 
       try {
-        const repo = await createRepo(
+        const repo = await createRepoFromTemplate(
           repoName,
-          `${intake.companyName} — Wholesail distribution portal`
+          `${intake.companyName} — Distribution portal powered by Wholesail`
         );
         await prisma.project.update({
           where: { id: projectId },
           data: { githubRepo: repo.fullName },
         });
         buildChecklist.githubRepoCreated = true;
-        appendLog(`GitHub repo created: ${repo.fullName}`);
+        appendLog(`GitHub repo created: ${repo.fullName} (from template: ${repo.fromTemplate})`);
         await saveProgress();
       } catch (ghErr) {
         appendLog(`GitHub repo error: ${(ghErr as Error).message}`);
@@ -220,7 +348,7 @@ export async function POST(
       }
     }
 
-    // ── STEP 3: Commit initial files to GitHub ─────────────────────────────
+    // ── STEP 5: Commit build artifacts to GitHub ─────────────────────────────
     if (
       buildChecklist.githubRepoCreated &&
       !buildChecklist.filesCommitted &&
@@ -230,12 +358,69 @@ export async function POST(
         const updatedProject = await prisma.project.findUnique({ where: { id: projectId } });
         const configContent = updatedProject?.generatedConfig ?? CONFIG_SKELETON;
 
-        // portal.config.ts — generated client config
+        // 1. portal.config.ts — generated client config
         await commitFile(repoName, "portal.config.ts", configContent,
           "chore: initial portal config (auto-generated by Wholesail)"
         );
 
-        // .env.example — env var reference for this client
+        // 2. CLAUDE.md — build instructions for Claude Code
+        if (readmeContent) {
+          await commitFile(repoName, "CLAUDE.md", readmeContent,
+            "chore: add CLAUDE.md build instructions"
+          );
+        }
+
+        // 3. docs/research.md — industry research
+        if (researchData) {
+          const rd = researchData as Record<string, unknown>;
+          const researchDoc = [
+            `# ${intake.companyName} — Industry Research`,
+            ``,
+            `> Auto-generated by Wholesail research pipeline on ${rd.researchedAt ?? new Date().toISOString()}`,
+            ``,
+            `## Executive Brief`,
+            rd.synthesizedBrief ?? "_Research not available._",
+            ``,
+            `## Industry Landscape`,
+            rd.industryLandscape ?? "_Not available._",
+            ``,
+            `## Company Intelligence`,
+            rd.companyIntelligence ?? "_Not available._",
+            ``,
+            `## Pain Points`,
+            rd.painPoints ?? "_Not available._",
+            ``,
+            `## Competitor Software`,
+            rd.competitorSoftware ?? "_Not available._",
+            ``,
+            `## SEO Keywords`,
+            ...(Array.isArray(rd.seoKeywords) ? (rd.seoKeywords as string[]).map(k => `- ${k}`) : ["_None generated._"]),
+            ``,
+            `## Marketing Angles`,
+            ...(Array.isArray(rd.marketingAngles) ? (rd.marketingAngles as string[]).map(a => `- ${a}`) : ["_None generated._"]),
+            ``,
+            `## Suggested Catalog Categories`,
+            ...(Array.isArray(rd.catalogCategories) ? (rd.catalogCategories as string[]).map(c => `- ${c}`) : ["_None generated._"]),
+            ``,
+            `## Industry Terminology`,
+            ...(rd.industryTerminology && typeof rd.industryTerminology === "object"
+              ? Object.entries(rd.industryTerminology as Record<string, string>).map(([k, v]) => `- **${k}**: ${v}`)
+              : ["_None generated._"]),
+          ].join("\n");
+
+          await commitFile(repoName, "docs/research.md", researchDoc,
+            "chore: add industry research document"
+          );
+        }
+
+        // 4. docs/marketing-copy.md — generated marketing copy
+        if (marketingCopyContent) {
+          await commitFile(repoName, "docs/marketing-copy.md", marketingCopyContent,
+            "chore: add generated marketing copy"
+          );
+        }
+
+        // 5. .env.example — env var reference for this client
         const envExample = [
           "# Auto-provisioned by Wholesail — DO NOT edit these manually",
           "DATABASE_URL=",
@@ -256,9 +441,15 @@ export async function POST(
           "CLERK_SECRET_KEY=",
           "CLERK_WEBHOOK_SECRET=",
           "",
-          "# Provided by client",
+          "# Stripe Connect (auto-provisioned by Wholesail when available)",
+          "STRIPE_CONNECT_ACCOUNT_ID=",
+          "PLATFORM_FEE_PERCENT=2.5",
+          "",
+          "# Stripe fallback (only if Connect not provisioned — provided by client)",
           "STRIPE_SECRET_KEY=",
           "STRIPE_WEBHOOK_SECRET=",
+          "",
+          "# Bloo.io SMS (if enabled)",
           "BLOOIO_API_KEY=",
           "BLOOIO_PHONE_NUMBER=",
           "BLOOIO_WEBHOOK_SECRET=",
@@ -269,7 +460,8 @@ export async function POST(
         );
 
         buildChecklist.filesCommitted = true;
-        appendLog("Initial files committed to GitHub");
+        const fileCount = [configContent, readmeContent, researchData, marketingCopyContent, envExample].filter(Boolean).length;
+        appendLog(`${fileCount} files committed to GitHub (config, CLAUDE.md, research, marketing copy, .env.example)`);
         await saveProgress();
       } catch (commitErr) {
         appendLog(`File commit error: ${(commitErr as Error).message}`);
@@ -277,7 +469,7 @@ export async function POST(
       }
     }
 
-    // ── STEP 4: Create Vercel project ──────────────────────────────────────
+    // ── STEP 6: Create Vercel project ──────────────────────────────────────
     let vercelProjectId = project.vercelProject;
     const vercelUrl = vercelProjectId
       ? `https://${repoName}.vercel.app`
@@ -308,7 +500,7 @@ export async function POST(
       }
     }
 
-    // ── STEP 5: Provision Vercel Postgres (Neon) ───────────────────────────
+    // ── STEP 7: Provision Vercel Postgres (Neon) ───────────────────────────
     let neonStoreId = project.neonStoreId;
     if (!buildChecklist.storagePostgresCreated && vercelProjectId && process.env.WS_VERCEL_TOKEN) {
       try {
@@ -339,7 +531,7 @@ export async function POST(
       }
     }
 
-    // ── STEP 6: Provision Vercel KV (Upstash) ─────────────────────────────
+    // ── STEP 8: Provision Vercel KV (Upstash) ─────────────────────────────
     let upstashStoreId = project.upstashStoreId;
     if (!buildChecklist.storageKVCreated && vercelProjectId && process.env.WS_VERCEL_TOKEN) {
       try {
@@ -370,7 +562,7 @@ export async function POST(
       }
     }
 
-    // ── STEP 7: Provision per-client Sentry project ────────────────────────
+    // ── STEP 9: Provision per-client Sentry project ────────────────────────
     let sentryDsn: string | null = null;
     let sentryProjectSlug: string | null = null;
     if (
@@ -406,7 +598,7 @@ export async function POST(
       }
     }
 
-    // ── STEP 8: Provision per-client Resend API key ───────────────────────
+    // ── STEP 10: Provision per-client Resend API key ──────────────────────
     let resendKeyId: string | null = null;
     let resendToken: string | null = null;
     if (!buildChecklist.resendKeyCreated && process.env.RESEND_API_KEY) {
@@ -432,7 +624,114 @@ export async function POST(
       }
     }
 
-    // ── STEP 8: Set auto env vars (per-client + generated secrets) ─────────
+    // ── STEP 11: Create Stripe Connect account ───────────────────────────
+    let stripeConnectAccountId: string | null = null;
+    let stripeOnboardingUrl: string | null = null;
+    if (!buildChecklist.stripeConnectCreated && process.env.STRIPE_SECRET_KEY) {
+      try {
+        appendLog("Creating Stripe Express Connected Account...");
+        await saveProgress();
+
+        const connectResult = await createConnectedAccount({
+          companyName: intake.companyName,
+          contactEmail: intake.contactEmail,
+          industry: intake.industry,
+          website: intake.website,
+        });
+
+        stripeConnectAccountId = connectResult.accountId;
+        stripeOnboardingUrl = connectResult.onboardingUrl;
+
+        await prisma.project.update({
+          where: { id: projectId },
+          data: { stripeAccountId: connectResult.accountId },
+        });
+
+        await logCost(projectId, {
+          service: "stripe",
+          amountCents: 0, // Stripe Connect account creation is free
+          description: "Stripe Express Connected Account created",
+          metadata: { accountId: connectResult.accountId },
+        });
+
+        buildChecklist.stripeConnectCreated = true;
+        appendLog(
+          `Stripe Connect account created: ${connectResult.accountId} — onboarding link generated`
+        );
+        await saveProgress();
+
+        // Send onboarding email to client (fire-and-forget)
+        Promise.resolve(
+          sendStripeOnboardingEmail({
+            contactName: intake.contactName,
+            contactEmail: intake.contactEmail,
+            companyName: intake.companyName,
+            onboardingUrl: connectResult.onboardingUrl,
+          })
+        ).catch((emailErr) => {
+          appendLog(
+            `Stripe onboarding email error (non-fatal): ${(emailErr as Error).message}`
+          );
+        });
+      } catch (stripeErr) {
+        appendLog(
+          `Stripe Connect error (non-fatal): ${(stripeErr as Error).message} — client will need manual Stripe setup`
+        );
+        await saveProgress();
+      }
+    } else if (buildChecklist.stripeConnectCreated) {
+      // Recover existing Stripe account ID from project
+      const existingProject = await prisma.project.findUnique({
+        where: { id: projectId },
+        select: { stripeAccountId: true },
+      });
+      stripeConnectAccountId = existingProject?.stripeAccountId ?? null;
+    }
+
+    // ── STEP 12: Provision Clerk app (Platform API) ────────────────────────
+    let clerkPublishableKey: string | null = null;
+    let clerkSecretKey: string | null = null;
+    let clerkAppId: string | null = null;
+    if (!buildChecklist.clerkAppCreated && isPlatformApiAvailable()) {
+      try {
+        appendLog("Creating Clerk application via Platform API...");
+        await saveProgress();
+
+        const clerkResult = await provisionClerkApp(
+          repoName ?? intake.companyName.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+          intake.targetDomain ?? undefined
+        );
+
+        if (clerkResult) {
+          clerkAppId = clerkResult.applicationId;
+          clerkPublishableKey = clerkResult.publishableKey;
+          clerkSecretKey = clerkResult.secretKey;
+
+          await logCost(projectId, {
+            service: "clerk",
+            amountCents: 0, // Clerk app creation is free
+            description: "Clerk application created via Platform API",
+            metadata: {
+              applicationId: clerkResult.applicationId,
+              instanceCount: clerkResult.allInstances.length,
+            },
+          });
+
+          buildChecklist.clerkAppCreated = true;
+          appendLog(
+            `Clerk app created: ${clerkResult.applicationId} — ${clerkResult.allInstances.length} instances (dev + prod)`
+          );
+          await saveProgress();
+        }
+      } catch (clerkErr) {
+        appendLog(
+          `Clerk Platform API error (non-fatal): ${(clerkErr as Error).message} — will fall back to manual setup`
+        );
+        await saveProgress();
+      }
+    }
+
+    // ── STEP 13: Set auto env vars (per-client + generated secrets) ────────
     if (!buildChecklist.envVarsAutoSet && vercelProjectId && process.env.WS_VERCEL_TOKEN) {
       try {
         const clientUrl = `https://${repoName}.vercel.app`;
@@ -446,7 +745,13 @@ export async function POST(
           // App URL
           NEXT_PUBLIC_APP_URL: clientUrl,
 
-          // Clerk redirect URLs (standard — admin sets the publishable/secret keys)
+          // Clerk — auto-provisioned keys if Platform API available
+          ...(clerkPublishableKey && clerkSecretKey ? {
+            NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: clerkPublishableKey,
+            CLERK_SECRET_KEY: clerkSecretKey,
+          } : {}),
+
+          // Clerk redirect URLs (standard)
           NEXT_PUBLIC_CLERK_SIGN_IN_URL: "/sign-in",
           NEXT_PUBLIC_CLERK_SIGN_UP_URL: "/sign-up",
           NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: "/client-portal",
@@ -456,7 +761,6 @@ export async function POST(
           CRON_SECRET: cronSecret,
 
           // AI keys — Anthropic is shared (no programmatic key creation API).
-          // Tag usage by injecting CLIENT_ID so we can filter Anthropic dashboard by project.
           ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
           GEMINI_API_KEY: process.env.GEMINI_API_KEY,
 
@@ -465,10 +769,15 @@ export async function POST(
           RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL ?? "orders@wholesailhub.com",
 
           // Error monitoring — dedicated per-client Sentry project when available
-          // Both server and client-side SDKs need the same DSN value under different names
           ...(sentryDsn ? {
             SENTRY_DSN: sentryDsn,
             NEXT_PUBLIC_SENTRY_DSN: sentryDsn,
+          } : {}),
+
+          // Stripe Connect — set connected account ID + platform fee if provisioned
+          ...(stripeConnectAccountId ? {
+            STRIPE_CONNECT_ACCOUNT_ID: stripeConnectAccountId,
+            PLATFORM_FEE_PERCENT: "2.5",
           } : {}),
         };
 
@@ -510,16 +819,24 @@ export async function POST(
       }
     }
 
-    // ── STEP 9: Set placeholder env vars (admin fills after Clerk/Stripe setup)
-    if (!buildChecklist.envVarsPlaceholderSet && vercelProjectId && process.env.WS_VERCEL_TOKEN) { // Step 9
+    // ── STEP 14: Set placeholder env vars (admin fills after Clerk setup; Stripe only if Connect failed)
+    if (!buildChecklist.envVarsPlaceholderSet && vercelProjectId && process.env.WS_VERCEL_TOKEN) {
       try {
-        const placeholders: Record<string, string> = {
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "PENDING_CLERK_SETUP",
-          CLERK_SECRET_KEY: "PENDING_CLERK_SETUP",
-          CLERK_WEBHOOK_SECRET: "PENDING_CLERK_SETUP",
-          STRIPE_SECRET_KEY: "PENDING_CLIENT_STRIPE",
-          STRIPE_WEBHOOK_SECRET: "PENDING_CLIENT_STRIPE",
-        };
+        const placeholders: Record<string, string> = {};
+
+        // Only add Clerk placeholders if NOT auto-provisioned via Platform API
+        if (!clerkPublishableKey) {
+          placeholders.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = "PENDING_CLERK_SETUP";
+          placeholders.CLERK_SECRET_KEY = "PENDING_CLERK_SETUP";
+        }
+        // Webhook secret always needs manual setup (even with Platform API)
+        placeholders.CLERK_WEBHOOK_SECRET = "PENDING_CLERK_WEBHOOK";
+
+        // Only add Stripe placeholders if Connect was NOT successfully provisioned
+        if (!stripeConnectAccountId) {
+          placeholders.STRIPE_SECRET_KEY = "PENDING_CLIENT_STRIPE";
+          placeholders.STRIPE_WEBHOOK_SECRET = "PENDING_CLIENT_STRIPE";
+        }
 
         // Only set Bloo.io placeholders if SMS ordering was requested
         const features = intake.selectedFeatures ?? [];
@@ -537,7 +854,7 @@ export async function POST(
         );
 
         // Track env var status on project for the dashboard
-        const envVarStatus = {
+        const envVarStatus: Record<string, string> = {
           DATABASE_URL: "configured",
           DATABASE_URL_UNPOOLED: "configured",
           UPSTASH_REDIS_REST_URL: "configured",
@@ -547,11 +864,16 @@ export async function POST(
           GEMINI_API_KEY: process.env.GEMINI_API_KEY ? "configured-shared" : "missing",
           RESEND_API_KEY: resendKeyId ? "configured-dedicated" : (process.env.RESEND_API_KEY ? "configured-shared" : "missing"),
           SENTRY_DSN: sentryDsn ? "configured-dedicated" : "not-configured",
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pending",
-          CLERK_SECRET_KEY: "pending",
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: clerkPublishableKey ? "configured" : "pending",
+          CLERK_SECRET_KEY: clerkSecretKey ? "configured" : "pending",
           CLERK_WEBHOOK_SECRET: "pending",
-          STRIPE_SECRET_KEY: "pending",
-          STRIPE_WEBHOOK_SECRET: "pending",
+          ...(stripeConnectAccountId ? {
+            STRIPE_CONNECT_ACCOUNT_ID: "configured",
+            PLATFORM_FEE_PERCENT: "configured",
+          } : {
+            STRIPE_SECRET_KEY: "pending",
+            STRIPE_WEBHOOK_SECRET: "pending",
+          }),
           ...(hasSMS ? {
             BLOOIO_API_KEY: "pending",
             BLOOIO_PHONE_NUMBER: "pending",
@@ -573,7 +895,7 @@ export async function POST(
       }
     }
 
-    // ── STEP 10: Trigger first Vercel deployment ───────────────────────────
+    // ── STEP 15: Trigger first Vercel deployment ──────────────────────────
     let deploymentId = project.deploymentId;
     if (
       !buildChecklist.deploymentTriggered &&
@@ -602,7 +924,7 @@ export async function POST(
       }
     }
 
-    // ── STEP 11: Mark storage fully provisioned + update status ───────────
+    // ── STEP 16: Mark storage fully provisioned + update status ────────────
     buildChecklist.storageProvisioned =
       !!buildChecklist.storagePostgresCreated &&
       !!buildChecklist.storageKVCreated &&
@@ -628,8 +950,10 @@ export async function POST(
     const pendingActions = [
       !buildChecklist.storagePostgresCreated && "Provision Postgres DB manually",
       !buildChecklist.storageKVCreated && "Provision KV store manually",
-      "Create Clerk app → set NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, CLERK_SECRET_KEY, CLERK_WEBHOOK_SECRET",
-      "Get client Stripe keys → set STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET",
+      !buildChecklist.clerkAppCreated && "Create Clerk app → set NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY, CLERK_SECRET_KEY",
+      "Configure Clerk webhook → set CLERK_WEBHOOK_SECRET",
+      !buildChecklist.stripeConnectCreated && "Get client Stripe keys → set STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET",
+      buildChecklist.stripeConnectCreated && "Client needs to complete Stripe Connect onboarding (link emailed)",
       "Connect custom domain in Vercel",
     ].filter(Boolean);
 

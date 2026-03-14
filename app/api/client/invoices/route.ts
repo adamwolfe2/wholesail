@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
     const page = Math.max(1, parseInt(url.searchParams.get("page") ?? "1", 10));
     const take = 50;
     const skip = (page - 1) * take;
+    const statusFilter = url.searchParams.get("status");
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
@@ -23,9 +24,16 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ invoices: [], total: 0, page, pages: 0 });
     }
 
+    const where: Record<string, unknown> = { organizationId: user.organizationId };
+    if (statusFilter === "outstanding") {
+      where.status = { in: ["PENDING", "OVERDUE"] };
+    } else if (statusFilter) {
+      where.status = statusFilter;
+    }
+
     const [invoices, total] = await Promise.all([
       prisma.invoice.findMany({
-        where: { organizationId: user.organizationId },
+        where,
         include: {
           order: {
             include: {
@@ -45,7 +53,7 @@ export async function GET(req: NextRequest) {
         take,
         skip,
       }),
-      prisma.invoice.count({ where: { organizationId: user.organizationId } }),
+      prisma.invoice.count({ where }),
     ]);
 
     return NextResponse.json({

@@ -25,11 +25,16 @@ interface CreateCheckoutInput {
   customerEmail: string;
   successUrl: string;
   cancelUrl: string;
+  /** Stripe Connect account ID — if set, payment goes to this connected account */
+  stripeAccountId?: string | null;
+  /** Platform fee percentage (e.g. 2.5 for 2.5%). Only applied when stripeAccountId is set. */
+  platformFeePercent?: number | null;
 }
 
 export async function createCheckoutSession(input: CreateCheckoutInput) {
   const stripe = getStripe();
-  const session = await stripe.checkout.sessions.create({
+
+  const sessionParams: Stripe.Checkout.SessionCreateParams = {
     mode: "payment",
     customer_email: input.customerEmail,
     line_items: input.items.map((item) => ({
@@ -48,7 +53,32 @@ export async function createCheckoutSession(input: CreateCheckoutInput) {
     },
     success_url: input.successUrl,
     cancel_url: input.cancelUrl,
-  });
+  };
+
+  // Stripe Connect: route payment to the connected account + collect platform fee
+  if (input.stripeAccountId) {
+    const feePercent = input.platformFeePercent ?? 2.5;
+    if (feePercent > 0) {
+      // Calculate total in cents for the fee
+      const totalCents = input.items.reduce(
+        (sum, item) => sum + Math.round(item.unitPrice * 100) * item.quantity,
+        0
+      );
+      const applicationFeeAmount = Math.round(
+        totalCents * (feePercent / 100)
+      );
+      sessionParams.payment_intent_data = {
+        ...sessionParams.payment_intent_data,
+        application_fee_amount: applicationFeeAmount,
+      };
+    }
+  }
+
+  const stripeOptions: Stripe.RequestOptions | undefined = input.stripeAccountId
+    ? { stripeAccount: input.stripeAccountId }
+    : undefined;
+
+  const session = await stripe.checkout.sessions.create(sessionParams, stripeOptions);
 
   return session;
 }

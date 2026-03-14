@@ -3,6 +3,8 @@ import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { z } from "zod";
 import { notifyDistributorsForOrder } from "@/lib/db/orders";
+import { dispatchWebhook } from "@/lib/webhooks";
+import { createOrderWithRetry } from "@/lib/order-number";
 
 const buildCartSchema = z.object({
   organizationId: z.string().min(1),
@@ -18,20 +20,6 @@ const buildCartSchema = z.object({
   notes: z.string().optional(),
   repNote: z.string().optional(),
 });
-
-async function generateOrderNumber(): Promise<string> {
-  const year = new Date().getFullYear();
-  const prefix = `ORD-${year}-`;
-  const last = await prisma.order.findFirst({
-    where: { orderNumber: { startsWith: prefix } },
-    orderBy: { orderNumber: "desc" },
-    select: { orderNumber: true },
-  });
-  const seq = last
-    ? parseInt(last.orderNumber.replace(prefix, ""), 10) + 1
-    : 1;
-  return `${prefix}${String(seq).padStart(4, "0")}`;
-}
 
 export async function POST(req: NextRequest) {
   try {
@@ -111,26 +99,27 @@ export async function POST(req: NextRequest) {
     });
 
     const subtotal = orderItems.reduce((acc, i) => acc + i.total, 0);
-    const orderNumber = await generateOrderNumber();
 
-    const order = await prisma.order.create({
-      data: {
-        orderNumber,
-        organizationId: data.organizationId,
-        userId: clientUserId,
-        placedByRepId: userId,
-        status: "PENDING",
-        subtotal,
-        tax: 0,
-        deliveryFee: 0,
-        total: subtotal,
-        notes: [data.notes, data.repNote ? `[Rep Note] ${data.repNote}` : null]
-          .filter(Boolean)
-          .join("\n\n") || null,
-        items: {
-          create: orderItems,
+    const order = await createOrderWithRetry(async (orderNumber) => {
+      return prisma.order.create({
+        data: {
+          orderNumber,
+          organizationId: data.organizationId,
+          userId: clientUserId,
+          placedByRepId: userId,
+          status: "PENDING",
+          subtotal,
+          tax: 0,
+          deliveryFee: 0,
+          total: subtotal,
+          notes: [data.notes, data.repNote ? `[Rep Note] ${data.repNote}` : null]
+            .filter(Boolean)
+            .join("\n\n") || null,
+          items: {
+            create: orderItems,
+          },
         },
-      },
+      });
     });
 
     notifyDistributorsForOrder({
@@ -149,12 +138,19 @@ export async function POST(req: NextRequest) {
           entityId: order.id,
           action: "created_by_rep",
           userId,
-          metadata: { orderNumber, organizationId: data.organizationId },
+          metadata: { orderNumber: order.orderNumber, organizationId: data.organizationId },
         },
       });
     } catch {
       // audit failure is non-fatal
     }
+
+    dispatchWebhook("order.created", {
+      orderId: order.id,
+      orderNumber: order.orderNumber,
+      organizationId: data.organizationId,
+      total: subtotal,
+    }).catch(() => {});
 
     return NextResponse.json(
       { orderId: order.id, orderNumber: order.orderNumber },

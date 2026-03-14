@@ -138,7 +138,7 @@ export async function GET(req: NextRequest) {
         const smsPromise = phone
           ? sendMessage({
               to: phone,
-              message: `Hey ${firstName}! It's been ${daysSince} days since your last Wholesail order — running low on anything? Text your order or visit wholesailhub.com/catalog`,
+              message: `Hey ${firstName}! It's been ${daysSince} days since your last order — running low on anything? Text your order or visit ${(process.env.NEXT_PUBLIC_APP_URL || 'https://wholesailhub.com').replace(/^https?:\/\//, '')}/catalog`,
             }).catch(err => {
               errors.push(`SMS failed for org ${org.id}: ${err instanceof Error ? err.message : 'unknown'}`)
               return null

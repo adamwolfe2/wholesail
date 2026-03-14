@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/db";
 import { Prisma } from "@prisma/client";
 import { z } from "zod";
+import { dispatchWebhook } from "@/lib/webhooks";
 import { addDays } from "date-fns";
 
 const generateSchema = z.object({
@@ -195,6 +196,15 @@ export async function generateInvoiceForOrder(
           },
         },
       });
+      dispatchWebhook("invoice.created", {
+        invoiceId: invoice.id,
+        invoiceNumber,
+        orderId,
+        organizationId: order.organizationId,
+        total: Number(order.total),
+        dueDate: dueDate.toISOString(),
+      }).catch(() => {});
+
       return { invoice, created: true };
     } catch (err) {
       if (

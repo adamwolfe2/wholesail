@@ -19,16 +19,7 @@ export async function GET(req: NextRequest) {
     if (to) (where.createdAt as Record<string, unknown>).lte = new Date(to + "T23:59:59Z");
   }
 
-  const invoices = await prisma.invoice.findMany({
-    where,
-    include: {
-      organization: { select: { name: true, email: true } },
-    },
-    orderBy: { createdAt: "desc" },
-    take: 10000,
-  });
-
-  // Build CSV
+  // Build CSV header
   const headers = [
     "Invoice #",
     "Client",
@@ -56,20 +47,43 @@ export async function GET(req: NextRequest) {
     return d.toISOString().split("T")[0];
   }
 
-  const rows = invoices.map((inv) =>
-    [
-      csvEscape(inv.invoiceNumber),
-      csvEscape(inv.organization?.name),
-      csvEscape(inv.organization?.email),
-      csvEscape(inv.status),
-      csvEscape(Number(inv.subtotal).toFixed(2)),
-      csvEscape(Number(inv.tax ?? 0).toFixed(2)),
-      csvEscape(Number(inv.total).toFixed(2)),
-      csvEscape(fmtDate(inv.dueDate)),
-      csvEscape(fmtDate(inv.paidAt)),
-      csvEscape(fmtDate(inv.createdAt)),
-    ].join(",")
-  );
+  // Cursor-based batching: fetch 500 at a time instead of 10k at once
+  const BATCH_SIZE = 500;
+  const rows: string[] = [];
+  let cursor: string | undefined;
+
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    const batch = await prisma.invoice.findMany({
+      where,
+      include: {
+        organization: { select: { name: true, email: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      take: BATCH_SIZE,
+      ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
+    });
+
+    for (const inv of batch) {
+      rows.push(
+        [
+          csvEscape(inv.invoiceNumber),
+          csvEscape(inv.organization?.name),
+          csvEscape(inv.organization?.email),
+          csvEscape(inv.status),
+          csvEscape(Number(inv.subtotal).toFixed(2)),
+          csvEscape(Number(inv.tax ?? 0).toFixed(2)),
+          csvEscape(Number(inv.total).toFixed(2)),
+          csvEscape(fmtDate(inv.dueDate)),
+          csvEscape(fmtDate(inv.paidAt)),
+          csvEscape(fmtDate(inv.createdAt)),
+        ].join(",")
+      );
+    }
+
+    if (batch.length < BATCH_SIZE) break;
+    cursor = batch[batch.length - 1].id;
+  }
 
   const csv = [headers.join(","), ...rows].join("\n");
   const filename = `wholesail-invoices-${new Date().toISOString().split("T")[0]}.csv`;

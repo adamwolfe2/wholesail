@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
 import { OrderTable } from "./order-table";
 import { ExportButton } from "./export-button";
+import { ImportOrdersButton } from "./import-orders-button";
 import { OrderFilters } from "./order-filters";
 import { Prisma, type OrderStatus } from "@prisma/client";
 import { EmptyState } from "@/components/empty-state";
@@ -62,7 +63,10 @@ export default async function AdminOrdersPage({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="font-serif text-3xl font-normal">Orders</h2>
-        {orders.length > 0 && <ExportButton />}
+        <div className="flex items-center gap-2">
+          <ImportOrdersButton />
+          {orders.length > 0 && <ExportButton />}
+        </div>
       </div>
 
       {/* Advanced Filters */}

@@ -5,20 +5,29 @@ import { z } from 'zod'
 
 // GET /api/admin/clients/[id]/notes
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { error } = await requireAdminOrRep()
   if (error) return error
 
   const { id } = await params
+  const cursor = new URL(req.url).searchParams.get('cursor')
+  const take = 50
+
   const notes = await prisma.clientNote.findMany({
     where: { organizationId: id },
     include: { author: { select: { id: true, name: true } } },
     orderBy: { createdAt: 'desc' },
+    take: take + 1,
+    ...(cursor ? { skip: 1, cursor: { id: cursor } } : {}),
   })
 
-  return NextResponse.json({ notes })
+  const hasMore = notes.length > take
+  const data = hasMore ? notes.slice(0, take) : notes
+  const nextCursor = hasMore ? data[data.length - 1].id : null
+
+  return NextResponse.json({ notes: data, nextCursor, hasMore })
 }
 
 // POST /api/admin/clients/[id]/notes

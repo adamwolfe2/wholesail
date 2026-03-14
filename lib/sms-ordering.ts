@@ -3,6 +3,7 @@ import { sendMessage } from "@/lib/integrations/blooio"
 import { sendInternalOrderNotification } from "@/lib/email/index"
 import { notifyDistributorsForOrder } from "@/lib/db/orders"
 import { getSiteUrl } from "@/lib/get-site-url"
+import { createOrderWithRetry } from "@/lib/order-number"
 
 // Simple intent detection — does this message look like an order?
 export function isOrderIntent(text: string): boolean {
@@ -114,49 +115,32 @@ export async function convertDraftToOrder(
     0
   )
 
-  // Generate order number with retry loop for unique constraint violations
-  let order: Awaited<ReturnType<typeof prisma.order.create>> | null = null
-  let orderNumber = ""
-  for (let attempt = 0; attempt < 5; attempt++) {
-    const count = await prisma.order.count()
-    const year = new Date().getFullYear()
-    orderNumber = `ORD-${year}-${String(count + 1 + attempt).padStart(4, "0")}`
-    try {
-      order = await prisma.order.create({
-        data: {
-          orderNumber,
-          organizationId: draft.organizationId,
-          userId,
-          status: "PENDING",
-          subtotal,
-          tax: 0,
-          deliveryFee: 0,
-          total: subtotal,
-          notes: "Placed via iMessage/SMS — awaiting rep review",
-          items: {
-            create: availableItems.map((i) => ({
-              productId: i.productId,
-              name: i.productName,
-              quantity: i.quantity,
-              unitPrice: i.unitPrice,
-              total: i.marketRate ? 0 : i.unitPrice * i.quantity,
-              distributorOrgId: smsDistributorMap.get(i.productId) ?? null,
-            })),
-          },
+  const order = await createOrderWithRetry(async (orderNumber) => {
+    return prisma.order.create({
+      data: {
+        orderNumber,
+        organizationId: draft.organizationId,
+        userId,
+        status: "PENDING",
+        subtotal,
+        tax: 0,
+        deliveryFee: 0,
+        total: subtotal,
+        notes: "Placed via iMessage/SMS — awaiting rep review",
+        items: {
+          create: availableItems.map((i) => ({
+            productId: i.productId,
+            name: i.productName,
+            quantity: i.quantity,
+            unitPrice: i.unitPrice,
+            total: i.marketRate ? 0 : i.unitPrice * i.quantity,
+            distributorOrgId: smsDistributorMap.get(i.productId) ?? null,
+          })),
         },
-      })
-      break
-    } catch (err) {
-      if ((err as { code?: string }).code === "P2002" && attempt < 4) continue
-      throw err
-    }
-  }
-
-  if (!order) {
-    // Clean up the draft on total failure so it doesn't hang around
-    await prisma.smsOrderDraft.delete({ where: { id: draft.id } }).catch(() => {})
-    throw new Error("Failed to create order after 5 attempts")
-  }
+      },
+    })
+  })
+  const orderNumber = order.orderNumber
 
   notifyDistributorsForOrder({
     orderId: order.id,

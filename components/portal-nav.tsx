@@ -38,7 +38,7 @@ const portalLinks: PortalLink[] = [
   { href: '/client-portal/invoices', label: 'Invoices', icon: FileText, badge: null, desktopOnly: true },
   { href: '/client-portal/quotes', label: 'Quotes', icon: FileCheck, badge: null, desktopOnly: true },
   { href: '/client-portal/standing-orders', label: 'Standing Orders', icon: RefreshCw, badge: null, desktopOnly: true },
-  { href: '/catalog', label: 'Catalog', icon: Store, badge: null, desktopOnly: true },
+  { href: '/client-portal/catalog', label: 'Catalog', icon: Store, badge: null },
   { href: '/client-portal/messages', label: 'Messages', icon: MessageSquare, badge: 'unreadMessages' },
   { href: '/client-portal/payments', label: 'Payments', icon: CreditCard, badge: null },
   { href: '/client-portal/settings', label: 'Settings', icon: Settings, badge: null },
@@ -89,7 +89,7 @@ export function PortalNav() {
         {/* Wordmark */}
         <div className="flex items-center h-16 px-5 border-b border-[#E5E1DB]">
           <Link href="/" className="flex flex-col min-w-0">
-            <span className="font-serif font-bold text-lg sm:text-xl text-[#0A0A0A] tracking-tight leading-tight">Wholesail</span>
+            <span className="font-serif font-bold text-lg sm:text-xl text-[#0A0A0A] tracking-tight leading-tight">{process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'}</span>
             <span className="font-serif italic text-sm text-[#C8C0B4] leading-tight">Portal</span>
           </Link>
         </div>
@@ -137,7 +137,7 @@ export function PortalNav() {
       <header className="sticky top-0 z-50 border-b border-[#E5E1DB] bg-[#F9F7F4]/95 backdrop-blur supports-[backdrop-filter]:bg-[#F9F7F4]/80 lg:hidden">
         <div className="flex h-14 items-center justify-between px-4">
           <Link href="/" className="flex flex-col min-w-0">
-            <span className="font-serif font-bold text-sm sm:text-base text-[#0A0A0A] leading-tight">Wholesail</span>
+            <span className="font-serif font-bold text-sm sm:text-base text-[#0A0A0A] leading-tight">{process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'}</span>
             <span className="font-serif italic text-[10px] text-[#C8C0B4] leading-tight">Portal</span>
           </Link>
           <div className="flex items-center gap-1">

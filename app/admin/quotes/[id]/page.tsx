@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft, ExternalLink, Download } from "lucide-react";
 import { quoteStatusColors } from "@/lib/status-colors";
 import { QuoteActions } from "./quote-actions";
 
@@ -67,18 +67,30 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
             {quote.rep && <> &bull; Rep: {quote.rep.name}</>}
           </p>
         </div>
-        {quote.convertedOrderId && (
+        <div className="flex items-center gap-2">
           <Button
             variant="outline"
             asChild
             className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none"
           >
-            <Link href={`/admin/orders/${quote.convertedOrderId}`}>
-              <ExternalLink className="h-4 w-4 mr-2" />
-              View Order
-            </Link>
+            <a href={`/api/admin/quotes/${quote.id}/pdf`} download>
+              <Download className="h-4 w-4 mr-2" />
+              Download PDF
+            </a>
           </Button>
-        )}
+          {quote.convertedOrderId && (
+            <Button
+              variant="outline"
+              asChild
+              className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none"
+            >
+              <Link href={`/admin/orders/${quote.convertedOrderId}`}>
+                <ExternalLink className="h-4 w-4 mr-2" />
+                View Order
+              </Link>
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -255,6 +267,16 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
                   {format(quote.createdAt, "MMM d, yyyy 'at' h:mm a")}
                 </p>
               </div>
+              {quote.sentAt && (
+                <div>
+                  <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                    Sent
+                  </p>
+                  <p className="text-[#0A0A0A]">
+                    {format(quote.sentAt, "MMM d, yyyy 'at' h:mm a")}
+                  </p>
+                </div>
+              )}
               {quote.expiresAt && (
                 <div>
                   <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">

@@ -64,13 +64,58 @@ export async function setEnvVar(
     }
   );
 
-  if (!res.ok) {
-    const body = await res.text();
-    // Don't throw on conflict (409) — env var may already exist
-    if (res.status !== 409) {
-      throw new Error(`Vercel setEnvVar failed (${res.status}): ${body}`);
+  if (res.ok) return;
+
+  // On 409 conflict the env var already exists — update it via PATCH
+  if (res.status === 409) {
+    // Fetch existing env vars to find the ID for this key
+    const listRes = await fetch(
+      `${VERCEL_API}/v10/projects/${projectId}/env${teamParam()}`,
+      { headers: headers() }
+    );
+
+    if (!listRes.ok) {
+      const body = await listRes.text();
+      throw new Error(
+        `Vercel listEnvVars failed during update (${listRes.status}): ${body}`
+      );
     }
+
+    const listData = await listRes.json();
+    const envVars: Array<{ id: string; key: string }> = listData.envs ?? [];
+    const existing = envVars.find((e) => e.key === key);
+
+    if (!existing) {
+      throw new Error(
+        `Vercel setEnvVar: 409 conflict but could not find existing env var "${key}" to update`
+      );
+    }
+
+    const patchRes = await fetch(
+      `${VERCEL_API}/v10/projects/${projectId}/env/${existing.id}${teamParam()}`,
+      {
+        method: "PATCH",
+        headers: headers(),
+        body: JSON.stringify({
+          value,
+          type: "plain",
+          target: ["production", "preview", "development"],
+        }),
+      }
+    );
+
+    if (!patchRes.ok) {
+      const body = await patchRes.text();
+      throw new Error(
+        `Vercel setEnvVar PATCH failed (${patchRes.status}): ${body}`
+      );
+    }
+
+    return;
   }
+
+  const body = await res.text();
+  throw new Error(`Vercel setEnvVar failed (${res.status}): ${body}`);
 }
 
 export interface Deployment {
@@ -115,6 +160,58 @@ export async function getProjectUrl(projectId: string): Promise<string | null> {
     return `https://${data.name}.vercel.app`;
   }
   return null;
+}
+
+// ── Usage & Billing ────────────────────────────────────────────────────────
+
+export interface ProjectUsage {
+  bandwidth: { total: number; unit: string };
+  builds: { total: number };
+  serverlessFunctions: { total: number; unit: string };
+  edgeFunctions: { total: number; unit: string };
+  sourceImages: { total: number };
+  period: { start: string; end: string };
+}
+
+/**
+ * Fetch usage data for a specific Vercel project.
+ * Returns bandwidth, builds, serverless invocations for the current billing period.
+ */
+export async function getProjectUsage(projectId: string): Promise<ProjectUsage | null> {
+  try {
+    const res = await fetch(
+      `${VERCEL_API}/v1/usage${teamParam()}&projectId=${projectId}`,
+      { headers: headers() }
+    );
+    if (!res.ok) return null;
+    return (await res.json()) as ProjectUsage;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * List all Vercel integration/store connections for a project.
+ * Returns store IDs so we can map storage costs to specific clients.
+ */
+export async function getProjectIntegrations(
+  projectId: string
+): Promise<Array<{ id: string; type: string; name: string }>> {
+  try {
+    const res = await fetch(
+      `${VERCEL_API}/v1/storage/stores${teamParam()}&projectId=${projectId}`,
+      { headers: headers() }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data.stores ?? []).map((s: Record<string, unknown>) => ({
+      id: s.id as string,
+      type: s.type as string,
+      name: s.name as string,
+    }));
+  } catch {
+    return [];
+  }
 }
 
 /**

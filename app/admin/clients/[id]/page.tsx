@@ -52,6 +52,7 @@ import { DeleteClientButton } from './delete-client-button'
 import { ClientNotes } from './client-notes'
 import { calculateHealthScore } from '@/lib/client-health'
 import { LoyaltyPanel } from './loyalty-panel'
+import { StripeConnectPanel } from './stripe-connect-panel'
 import { NewTaskDialog } from '@/components/new-task-dialog'
 import { TaskActions } from '@/app/admin/reps/[id]/task-actions'
 
@@ -510,6 +511,9 @@ export default async function AdminClientDetailPage({
 
       {/* Loyalty Points */}
       <LoyaltyPanel organizationId={client.id} />
+
+      {/* Stripe Connect */}
+      <StripeConnectPanel organizationId={client.id} />
 
       {/* Recent Conversations */}
       {client.conversations.length > 0 && (

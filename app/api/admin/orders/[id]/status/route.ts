@@ -3,8 +3,11 @@ import { requireAdmin } from "@/lib/auth/require-admin";
 import { updateOrderStatus } from "@/lib/db/orders";
 import { prisma } from "@/lib/db";
 import { z } from "zod";
-import { sendOrderShippedEmail, sendOrderDeliveredEmail } from "@/lib/email";
+import { sendOrderShippedEmail, sendOrderDeliveredEmail, sendInvoiceEmail } from "@/lib/email";
 import { awardLoyaltyPoints } from "@/lib/loyalty";
+import { generateInvoiceForOrder } from "@/app/api/billing/generate/route";
+import { format, addDays } from "date-fns";
+import { dispatchWebhook } from "@/lib/webhooks";
 
 const statusSchema = z.object({
   status: z.enum([
@@ -68,6 +71,7 @@ export async function PATCH(
 
         // SMS notification to client
         const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"
+        const brandName = process.env.BRAND_NAME || "Wholesail"
         const clientPhone = fullOrder.organization?.phone
         if (clientPhone) {
           const { sendMessage, toE164 } = await import("@/lib/integrations/blooio")
@@ -76,11 +80,11 @@ export async function PATCH(
           let smsText: string | null = null
 
           if (parsed.data.status === "CONFIRMED") {
-            smsText = `Your Wholesail order ${fullOrder.orderNumber} is confirmed — we're packing it now. You'll get another text when it ships.`
+            smsText = `Your ${brandName} order ${fullOrder.orderNumber} is confirmed — we're packing it now. You'll get another text when it ships.`
           } else if (parsed.data.status === "SHIPPED") {
-            smsText = `Your Wholesail order ${fullOrder.orderNumber} has shipped and is on its way. Questions? Reply here or visit ${APP_URL}/client-portal/orders`
+            smsText = `Your ${brandName} order ${fullOrder.orderNumber} has shipped and is on its way. Questions? Reply here or visit ${APP_URL}/client-portal/orders`
           } else if (parsed.data.status === "DELIVERED") {
-            smsText = `Your Wholesail order ${fullOrder.orderNumber} has been delivered. Enjoy! Reply here if anything needs attention.`
+            smsText = `Your ${brandName} order ${fullOrder.orderNumber} has been delivered. Enjoy! Reply here if anything needs attention.`
           }
 
           if (smsText && normalizedPhone) {
@@ -101,9 +105,37 @@ export async function PATCH(
             Number(fullOrder.total),
             fullOrder.id
           ).catch(console.error)
+
+          // Auto-invoicing: generate invoice if org has autoInvoice enabled
+          const org = await prisma.organization.findUnique({
+            where: { id: fullOrder.organizationId },
+            select: { autoInvoice: true, contactPerson: true, email: true },
+          })
+          if (org?.autoInvoice) {
+            generateInvoiceForOrder(fullOrder.id, userId).then((result) => {
+              if (result?.created) {
+                // Send invoice email to client
+                sendInvoiceEmail({
+                  invoiceNumber: result.invoice.invoiceNumber,
+                  customerName: org.contactPerson,
+                  customerEmail: org.email,
+                  total: Number(result.invoice.total),
+                  dueDate: format(result.invoice.dueDate, "MMMM d, yyyy"),
+                }).catch((err) => console.error("Auto-invoice email error:", err))
+              }
+            }).catch((err) => console.error("Auto-invoice generation error:", err))
+          }
         }
       }
     }
+
+    // Dispatch webhook
+    dispatchWebhook("order.status_changed", {
+      orderId: order.id,
+      orderNumber: order.orderNumber,
+      previousStatus: body.previousStatus ?? null,
+      newStatus: parsed.data.status,
+    }).catch(() => {});
 
     return NextResponse.json({ order });
   } catch (error) {

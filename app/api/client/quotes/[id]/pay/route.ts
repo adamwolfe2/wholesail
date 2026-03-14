@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { isStripeConfigured, getStripeClient } from "@/lib/stripe/config";
 import { notifyDistributorsForOrder } from "@/lib/db/orders";
 import { getSiteUrl } from "@/lib/get-site-url";
+import { createOrderWithRetry } from "@/lib/order-number";
 
 export async function POST(
   _req: NextRequest,
@@ -60,18 +61,6 @@ export async function POST(
 
     // ── Demo mode: no Stripe configured ──────────────────────────────────────
     if (!isStripeConfigured()) {
-      // Generate an order number
-      const year = new Date().getFullYear();
-      const orderCount = await prisma.order.count({
-        where: {
-          createdAt: {
-            gte: new Date(`${year}-01-01`),
-            lt: new Date(`${year + 1}-01-01`),
-          },
-        },
-      });
-      const orderNumber = `ORD-${year}-${String(orderCount + 1).padStart(4, "0")}`;
-
       // Get org's default shipping address
       const address = await prisma.address.findFirst({
         where: {
@@ -88,36 +77,38 @@ export async function POST(
       });
       const payDistributorMap = new Map(payProducts.map((p) => [p.id, p.distributorOrgId ?? null]));
 
-      // Create an order from the quote items
-      const order = await prisma.order.create({
-        data: {
-          orderNumber,
-          organizationId: quote.organizationId,
-          userId,
-          status: "CONFIRMED",
-          subtotal: quote.subtotal,
-          tax: 0,
-          deliveryFee: 0,
-          total: quote.total,
-          shippingAddressId: address?.id,
-          notes: `Created from quote ${quote.quoteNumber}`,
-          paidAt: new Date(),
-          items: {
-            create: quote.items.map((item) => ({
-              productId: item.productId,
-              name: item.name,
-              quantity: item.quantity,
-              unitPrice: item.unitPrice,
-              total: item.total,
-              distributorOrgId: payDistributorMap.get(item.productId) ?? null,
-            })),
+      // Create an order from the quote items with retry on duplicate order number
+      const order = await createOrderWithRetry(async (orderNumber) => {
+        return prisma.order.create({
+          data: {
+            orderNumber,
+            organizationId: quote.organizationId,
+            userId,
+            status: "CONFIRMED",
+            subtotal: quote.subtotal,
+            tax: 0,
+            deliveryFee: 0,
+            total: quote.total,
+            shippingAddressId: address?.id,
+            notes: `Created from quote ${quote.quoteNumber}`,
+            paidAt: new Date(),
+            items: {
+              create: quote.items.map((item) => ({
+                productId: item.productId,
+                name: item.name,
+                quantity: item.quantity,
+                unitPrice: item.unitPrice,
+                total: item.total,
+                distributorOrgId: payDistributorMap.get(item.productId) ?? null,
+              })),
+            },
           },
-        },
+        });
       });
 
       notifyDistributorsForOrder({
         orderId: order.id,
-        orderNumber,
+        orderNumber: order.orderNumber,
         clientName: quote.organization.name,
         clientEmail: quote.organization.email ?? null,
         deliveryAddress: null,
@@ -137,14 +128,14 @@ export async function POST(
           userId,
           metadata: {
             quoteNumber: quote.quoteNumber,
-            orderNumber,
+            orderNumber: order.orderNumber,
             orderId: order.id,
             note: "Stripe not configured — order confirmed without payment",
           },
         },
       });
 
-      return NextResponse.json({ demoMode: true, orderNumber });
+      return NextResponse.json({ demoMode: true, orderNumber: order.orderNumber });
     }
 
     // ── Stripe checkout session ───────────────────────────────────────────────

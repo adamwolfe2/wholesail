@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -11,11 +11,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, Users } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Search, Users, Download, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
 import { tierColors } from "@/lib/status-colors";
 import { getHealthColors } from "@/lib/client-health";
 import type { ClientHealthRow } from "@/app/api/admin/clients/health-scores/route";
+
+type SortField = "name" | "tier" | "orderCount" | "health";
+type SortDir = "asc" | "desc";
 
 interface ClientRow {
   id: string;
@@ -34,6 +38,17 @@ export function ClientTable({ clients }: { clients: ClientRow[] }) {
   const [tierFilter, setTierFilter] = useState("all");
   const [healthMap, setHealthMap] = useState<Map<string, ClientHealthRow>>(new Map());
   const [healthLoading, setHealthLoading] = useState(true);
+  const [sortField, setSortField] = useState<SortField>("name");
+  const [sortDir, setSortDir] = useState<SortDir>("asc");
+
+  const toggleSort = useCallback((field: SortField) => {
+    if (sortField === field) {
+      setSortDir((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortField(field);
+      setSortDir(field === "name" ? "asc" : "desc");
+    }
+  }, [sortField]);
 
   // Fetch health scores on mount
   useEffect(() => {
@@ -60,7 +75,7 @@ export function ClientTable({ clients }: { clients: ClientRow[] }) {
   }, []);
 
   const filtered = useMemo(() => {
-    return clients.filter((c) => {
+    const list = clients.filter((c) => {
       const matchesSearch =
         !search ||
         c.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -69,7 +84,32 @@ export function ClientTable({ clients }: { clients: ClientRow[] }) {
       const matchesTier = tierFilter === "all" || c.tier === tierFilter;
       return matchesSearch && matchesTier;
     });
-  }, [clients, search, tierFilter]);
+
+    const tierOrder: Record<string, number> = { NEW: 0, REPEAT: 1, VIP: 2 };
+    list.sort((a, b) => {
+      let cmp = 0;
+      switch (sortField) {
+        case "name":
+          cmp = a.name.localeCompare(b.name);
+          break;
+        case "tier":
+          cmp = (tierOrder[a.tier] ?? 0) - (tierOrder[b.tier] ?? 0);
+          break;
+        case "orderCount":
+          cmp = a.orderCount - b.orderCount;
+          break;
+        case "health": {
+          const ha = healthMap.get(a.id)?.score ?? -1;
+          const hb = healthMap.get(b.id)?.score ?? -1;
+          cmp = ha - hb;
+          break;
+        }
+      }
+      return sortDir === "asc" ? cmp : -cmp;
+    });
+
+    return list;
+  }, [clients, search, tierFilter, sortField, sortDir, healthMap]);
 
   return (
     <div>
@@ -95,6 +135,12 @@ export function ClientTable({ clients }: { clients: ClientRow[] }) {
             <SelectItem value="VIP">VIP</SelectItem>
           </SelectContent>
         </Select>
+        <Button variant="outline" size="sm" className="h-10" asChild>
+          <a href="/api/admin/clients/export" download>
+            <Download className="h-4 w-4 mr-2" />
+            CSV
+          </a>
+        </Button>
       </div>
 
       {filtered.length === 0 ? (
@@ -108,15 +154,15 @@ export function ClientTable({ clients }: { clients: ClientRow[] }) {
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b text-left">
-                <th className="pb-3 font-medium">Organization</th>
+                <SortableHeader field="name" current={sortField} dir={sortDir} onClick={toggleSort}>Organization</SortableHeader>
                 <th className="pb-3 font-medium hidden sm:table-cell">Contact</th>
                 <th className="pb-3 font-medium hidden md:table-cell">Email</th>
                 <th className="pb-3 font-medium hidden lg:table-cell">Phone</th>
-                <th className="pb-3 font-medium">Tier</th>
+                <SortableHeader field="tier" current={sortField} dir={sortDir} onClick={toggleSort}>Tier</SortableHeader>
                 <th className="pb-3 font-medium hidden md:table-cell">Type</th>
                 <th className="pb-3 font-medium hidden sm:table-cell">Terms</th>
-                <th className="pb-3 font-medium">Orders</th>
-                <th className="pb-3 font-medium hidden sm:table-cell">Health</th>
+                <SortableHeader field="orderCount" current={sortField} dir={sortDir} onClick={toggleSort}>Orders</SortableHeader>
+                <SortableHeader field="health" current={sortField} dir={sortDir} onClick={toggleSort} className="hidden sm:table-cell">Health</SortableHeader>
               </tr>
             </thead>
             <tbody>
@@ -177,10 +223,52 @@ export function ClientTable({ clients }: { clients: ClientRow[] }) {
         </div>
       )}
 
-      <p className="text-xs text-muted-foreground mt-3">
-        Showing {filtered.length} of {clients.length} clients
-      </p>
+      <div className="flex items-center justify-between mt-3">
+        <p className="text-xs text-muted-foreground">
+          Showing {filtered.length} of {clients.length} clients
+        </p>
+        <div className="flex items-center gap-3 text-xs text-muted-foreground">
+          {(["NEW", "REPEAT", "VIP"] as const).map((t) => {
+            const count = clients.filter((c) => c.tier === t).length;
+            return (
+              <span key={t}>
+                {t}: <span className="font-medium text-foreground">{count}</span>
+              </span>
+            );
+          })}
+        </div>
+      </div>
     </div>
+  );
+}
+
+function SortableHeader({
+  field,
+  current,
+  dir,
+  onClick,
+  children,
+  className = "",
+}: {
+  field: SortField;
+  current: SortField;
+  dir: SortDir;
+  onClick: (f: SortField) => void;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const active = current === field;
+  const Icon = active ? (dir === "asc" ? ArrowUp : ArrowDown) : ArrowUpDown;
+  return (
+    <th
+      className={`pb-3 font-medium cursor-pointer select-none hover:text-foreground ${className}`}
+      onClick={() => onClick(field)}
+    >
+      <span className="inline-flex items-center gap-1">
+        {children}
+        <Icon className={`h-3 w-3 ${active ? "text-foreground" : "text-muted-foreground/50"}`} />
+      </span>
+    </th>
   );
 }
 

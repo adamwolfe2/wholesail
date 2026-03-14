@@ -4,24 +4,11 @@ import { prisma } from "@/lib/db";
 import { z } from "zod";
 import { sendQuoteToClientEmail } from "@/lib/email";
 import { notifyDistributorsForOrder } from "@/lib/db/orders";
+import { createOrderWithRetry } from "@/lib/order-number";
 
 const patchSchema = z.object({
   action: z.enum(["accept", "decline", "convert", "send"]),
 });
-
-async function generateOrderNumber(): Promise<string> {
-  const year = new Date().getFullYear();
-  const prefix = `ORD-${year}-`;
-  const last = await prisma.order.findFirst({
-    where: { orderNumber: { startsWith: prefix } },
-    orderBy: { orderNumber: "desc" },
-    select: { orderNumber: true },
-  });
-  const seq = last
-    ? parseInt(last.orderNumber.replace(prefix, ""), 10) + 1
-    : 1;
-  return `${prefix}${String(seq).padStart(4, "0")}`;
-}
 
 export async function PATCH(
   req: NextRequest,
@@ -67,7 +54,7 @@ export async function PATCH(
       }
       const updated = await prisma.quote.update({
         where: { id },
-        data: { status: "SENT" },
+        data: { status: "SENT", sentAt: new Date() },
       });
       try {
         await prisma.auditEvent.create({
@@ -129,7 +116,6 @@ export async function PATCH(
       }
 
       const clientUserId = quote.organization.members[0].id;
-      const orderNumber = await generateOrderNumber();
 
       // Fetch distributor assignment for each product
       const quoteProductIds = quote.items.map((i) => i.productId);
@@ -139,34 +125,36 @@ export async function PATCH(
       });
       const productDistributorMap = new Map(quoteProducts.map((p) => [p.id, p.distributorOrgId ?? null]));
 
-      const order = await prisma.order.create({
-        data: {
-          orderNumber,
-          organizationId: quote.organizationId,
-          userId: clientUserId,
-          placedByRepId: quote.repId ?? undefined,
-          status: "PENDING",
-          subtotal: quote.subtotal,
-          tax: 0,
-          deliveryFee: 0,
-          total: quote.total,
-          notes: quote.notes,
-          items: {
-            create: quote.items.map((item) => ({
-              productId: item.productId,
-              name: item.name,
-              quantity: item.quantity,
-              unitPrice: item.unitPrice,
-              total: item.total,
-              distributorOrgId: productDistributorMap.get(item.productId) ?? null,
-            })),
+      const order = await createOrderWithRetry(async (orderNumber) => {
+        return prisma.order.create({
+          data: {
+            orderNumber,
+            organizationId: quote.organizationId,
+            userId: clientUserId,
+            placedByRepId: quote.repId ?? undefined,
+            status: "PENDING",
+            subtotal: quote.subtotal,
+            tax: 0,
+            deliveryFee: 0,
+            total: quote.total,
+            notes: quote.notes,
+            items: {
+              create: quote.items.map((item) => ({
+                productId: item.productId,
+                name: item.name,
+                quantity: item.quantity,
+                unitPrice: item.unitPrice,
+                total: item.total,
+                distributorOrgId: productDistributorMap.get(item.productId) ?? null,
+              })),
+            },
           },
-        },
+        });
       });
 
       notifyDistributorsForOrder({
         orderId: order.id,
-        orderNumber,
+        orderNumber: order.orderNumber,
         clientName: quote.organization.name,
         clientEmail: quote.organization.email ?? null,
         deliveryAddress: null,
@@ -189,14 +177,14 @@ export async function PATCH(
             entityId: id,
             action: "converted_to_order",
             userId,
-            metadata: { orderId: order.id, orderNumber },
+            metadata: { orderId: order.id, orderNumber: order.orderNumber },
           },
         });
       } catch {
         // non-fatal
       }
 
-      return NextResponse.json({ quote: updated, orderId: order.id, orderNumber });
+      return NextResponse.json({ quote: updated, orderId: order.id, orderNumber: order.orderNumber });
     }
 
     return NextResponse.json({ error: "Unknown action" }, { status: 400 });

@@ -15,7 +15,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { DollarSign, CreditCard, CheckCircle2, Clock, Building2, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { DollarSign, CreditCard, CheckCircle2, Clock, Building2, Loader2, ExternalLink, FileText } from 'lucide-react'
+import Link from 'next/link'
+
+interface OutstandingInvoice {
+  id: string
+  invoiceNumber: string
+  total: string
+  dueDate: string
+  status: string
+}
 
 interface DbPayment {
   id: string
@@ -60,6 +70,7 @@ function getMethodIcon(method: string) {
 export default function PaymentsPage() {
   const { isLoaded, isSignedIn } = useUser()
   const [dbPayments, setDbPayments] = useState<DbPayment[]>([])
+  const [outstandingInvoices, setOutstandingInvoices] = useState<OutstandingInvoice[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -69,12 +80,19 @@ export default function PaymentsPage() {
       return
     }
 
-    async function fetchPayments() {
+    async function fetchData() {
       try {
-        const res = await fetch('/api/client/payments')
-        if (res.ok) {
-          const data = await res.json()
+        const [paymentsRes, invoicesRes] = await Promise.all([
+          fetch('/api/client/payments'),
+          fetch('/api/client/invoices?status=outstanding'),
+        ])
+        if (paymentsRes.ok) {
+          const data = await paymentsRes.json()
           setDbPayments(data.payments || [])
+        }
+        if (invoicesRes.ok) {
+          const data = await invoicesRes.json()
+          setOutstandingInvoices(data.invoices || [])
         }
       } catch {
         // silently fail — empty state shows
@@ -83,7 +101,7 @@ export default function PaymentsPage() {
       }
     }
 
-    fetchPayments()
+    fetchData()
   }, [isLoaded, isSignedIn])
 
   if (!isLoaded) {
@@ -139,11 +157,50 @@ export default function PaymentsPage() {
               <CreditCard className="h-4 w-4 text-[#C8C0B4]" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#0A0A0A]">—</div>
-              <p className="text-xs text-[#0A0A0A]/40 mt-1">Awaiting payment</p>
+              <div className="text-2xl font-bold text-[#0A0A0A]">
+                {outstandingInvoices.length > 0
+                  ? `$${outstandingInvoices.reduce((s, i) => s + Number(i.total), 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+                  : '$0.00'}
+              </div>
+              <p className="text-xs text-[#0A0A0A]/40 mt-1">{outstandingInvoices.length} awaiting payment</p>
             </CardContent>
           </Card>
         </div>
+
+        {/* Outstanding Invoices */}
+        {outstandingInvoices.length > 0 && (
+          <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+            <CardHeader className="border-b border-[#C8C0B4]/50">
+              <CardTitle className="font-serif text-lg text-[#0A0A0A]">Outstanding Invoices</CardTitle>
+              <CardDescription className="text-[#0A0A0A]/50">Invoices awaiting payment</CardDescription>
+            </CardHeader>
+            <CardContent className="pt-4 space-y-3">
+              {outstandingInvoices.map((inv) => (
+                <div key={inv.id} className="flex items-center justify-between border border-[#C8C0B4]/50 p-4">
+                  <div className="flex items-center gap-3">
+                    <FileText className="h-5 w-5 text-[#C8C0B4]" />
+                    <div>
+                      <p className="font-mono text-sm font-semibold text-[#0A0A0A]">{inv.invoiceNumber}</p>
+                      <p className="text-xs text-[#0A0A0A]/50">
+                        Due {new Date(inv.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="font-bold text-[#0A0A0A]">
+                      ${Number(inv.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    </span>
+                    <Button size="sm" className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none" asChild>
+                      <Link href={`/client-portal/invoices/${inv.id}`}>
+                        Pay Now
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
 
         {/* Payment History */}
         <Card className="border-[#C8C0B4] bg-[#F9F7F4]">

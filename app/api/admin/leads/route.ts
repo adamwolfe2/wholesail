@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { requireAdmin } from '@/lib/auth/require-admin'
 import { LeadStatus } from '@prisma/client'
+import { parseCursorParams, buildPrismaCursorArgs, buildCursorResponse } from '@/lib/pagination'
 
 export async function GET(req: NextRequest) {
   const { userId, error } = await requireAdmin()
@@ -11,14 +12,16 @@ export async function GET(req: NextRequest) {
 
   const { searchParams } = new URL(req.url)
   const status = searchParams.get('status') as LeadStatus | null
+  const { cursor, take } = parseCursorParams(req)
 
   try {
     const leads = await prisma.lead.findMany({
       where: status ? { status } : undefined,
       orderBy: { createdAt: 'desc' },
-      take: 500,
+      ...buildPrismaCursorArgs(cursor, take),
     })
-    return NextResponse.json({ leads })
+    const { data, nextCursor, hasMore } = buildCursorResponse(leads, take)
+    return NextResponse.json({ leads: data, nextCursor, hasMore })
   } catch (err) {
     console.error('GET /api/admin/leads error:', err)
     return NextResponse.json({ error: 'Failed to fetch leads' }, { status: 500 })
