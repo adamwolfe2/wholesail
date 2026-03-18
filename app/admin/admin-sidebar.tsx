@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { NavGroup } from "./nav-config";
+import { adminNavGroups, type NavGroup } from "./nav-config";
 
 const STORAGE_KEY = "admin-nav-collapsed";
 
@@ -20,12 +20,12 @@ function getInitialCollapsed(): Record<string, boolean> {
 }
 
 export function AdminSidebar({
-  groups,
   navBadges,
 }: {
-  groups: NavGroup[];
+  groups?: NavGroup[]; // deprecated — imported directly to avoid passing functions across server/client boundary
   navBadges: Record<string, number>;
 }) {
+  const groups = adminNavGroups;
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const [mounted, setMounted] = useState(false);

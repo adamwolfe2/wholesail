@@ -7,7 +7,6 @@ import { prisma } from "@/lib/db";
 import { AdminMobileNav } from "./mobile-nav";
 import { CommandPalette } from "./command-palette";
 import { AdminSearchBar } from "./search-bar";
-import { adminNavGroups } from "./nav-config";
 import { AdminSidebar } from "./admin-sidebar";
 import { AdminNotifications } from "@/components/admin-notifications";
 
@@ -76,7 +75,7 @@ export default async function AdminLayout({
           </Link>
           <p className="font-serif italic text-sm text-[#C8C0B4] mt-0.5">Admin</p>
         </div>
-        <AdminSidebar groups={adminNavGroups} navBadges={navBadges} />
+        <AdminSidebar navBadges={navBadges} />
       </aside>
 
       {/* Main content */}
