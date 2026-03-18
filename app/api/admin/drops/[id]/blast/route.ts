@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db'
 import { sendDropBlastEmail } from '@/lib/email'
 import { sendMessage, toE164 } from '@/lib/integrations/blooio'
 import { notifyLimiter, checkRateLimit } from '@/lib/rate-limit'
+import { getSiteUrl } from '@/lib/brand'
 
 /**
  * POST /api/admin/drops/[id]/blast
@@ -49,7 +50,7 @@ export async function POST(
     })
   }
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://wholesailhub.com'
+  const appUrl = getSiteUrl()
   const smsBody = `New Wholesail Drop: ${drop.title}${drop.priceNote ? `. ${drop.priceNote}` : ''}. First-come, first-served. Order now: ${appUrl}/drops`
 
   let emailsSent = 0

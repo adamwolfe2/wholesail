@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/db'
 import { getOrganizationByUserId } from '@/lib/db/organizations'
+import type { Prisma } from '@prisma/client'
 
 export interface NotificationPrefs {
   emailDropAlerts: boolean
@@ -76,12 +77,9 @@ export async function PATCH(req: NextRequest) {
       emailWeeklyDigest: typeof emailWeeklyDigest === 'boolean' ? emailWeeklyDigest : current.emailWeeklyDigest,
     }
 
-    // Cast to `any` to satisfy Prisma's NullableJsonNullValueInput union —
-    // our shape is valid JSON, Prisma just needs the extra coercion.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await prisma.organization.update({
       where: { id: org.id },
-      data: { notificationPrefs: updated as any },
+      data: { notificationPrefs: updated as unknown as Prisma.InputJsonValue },
     })
 
     return NextResponse.json({ prefs: updated })

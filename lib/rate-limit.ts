@@ -2,13 +2,12 @@ import { Ratelimit } from '@upstash/ratelimit'
 import { Redis } from '@upstash/redis'
 
 function createRedis(): Redis | null {
-  if (!process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN) {
+  const url = process.env.KV_REST_API_URL || process.env.UPSTASH_REDIS_REST_URL
+  const token = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN
+  if (!url || !token) {
     return null
   }
-  return new Redis({
-    url: process.env.KV_REST_API_URL,
-    token: process.env.KV_REST_API_TOKEN,
-  })
+  return new Redis({ url, token })
 }
 
 function createLimiter(
@@ -40,6 +39,18 @@ export const aiCallLimiter = createLimiter(redis, 10, '1 h')
 
 // 3 CSV imports per userId per minute
 export const csvImportLimiter = createLimiter(redis, 3, '1 m')
+
+// 60 client read requests per userId per minute
+export const clientReadLimiter = createLimiter(redis, 60, '1 m')
+
+// 20 client write requests per userId per minute
+export const clientWriteLimiter = createLimiter(redis, 20, '1 m')
+
+// 5 enrich/scrape requests per userId per minute
+export const enrichLimiter = createLimiter(redis, 5, '1 m')
+
+// 30 admin read requests per userId per minute
+export const adminReadLimiter = createLimiter(redis, 30, '1 m')
 
 /** Returns true if the request should be allowed; false if rate-limited. Skips gracefully if limiter is null (env vars not set). */
 export async function checkRateLimit(

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { z } from "zod";
+import { getSiteUrl } from "@/lib/brand";
 
 const createShipmentSchema = z.object({
   orderId: z.string(),
@@ -102,7 +103,7 @@ export async function POST(req: NextRequest) {
     // SMS client notification with ETA (fire-and-forget)
     const clientPhone = order.organization?.phone;
     if (clientPhone) {
-      const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com";
+      const APP_URL = getSiteUrl();
       const { sendMessage, toE164 } = await import("@/lib/integrations/blooio");
       const normalizedPhone = toE164(clientPhone);
 

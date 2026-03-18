@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { z } from "zod";
 import { notifyDistributorsForOrder } from "@/lib/db/orders";
 import { dispatchWebhook } from "@/lib/webhooks";
 import { createOrderWithRetry } from "@/lib/order-number";
+import { requireAdminOrRep } from "@/lib/auth/require-admin";
 
 const buildCartSchema = z.object({
   organizationId: z.string().min(1),
@@ -23,20 +23,8 @@ const buildCartSchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await auth();
-    if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    // Verify user has an allowed role
-    const currentUser = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { role: true },
-    });
-
-    if (!currentUser || !["ADMIN", "SALES_REP", "OPS"].includes(currentUser.role)) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
+    const { userId, error: authError } = await requireAdminOrRep();
+    if (authError) return authError;
 
     const body = await req.json();
     const parsed = buildCartSchema.safeParse(body);

@@ -116,7 +116,8 @@ export async function GET(req: NextRequest) {
         });
         d3Sent++;
       } catch (err) {
-        const msg = `D3 failed for ${intake.id}: ${(err as Error).message}`;
+        const errMessage = err instanceof Error ? err.message : String(err);
+        const msg = `D3 failed for ${intake.id}: ${errMessage}`;
         errors.push(msg);
         console.error("[intake-nurture]", msg);
         await prisma.auditEvent.create({
@@ -125,7 +126,7 @@ export async function GET(req: NextRequest) {
             entityType: "IntakeSubmission",
             entityId: intake.id,
             userId: null,
-            metadata: { error: (err as Error).message },
+            metadata: { error: errMessage },
           },
         }).catch(() => {});
       }
@@ -153,7 +154,8 @@ export async function GET(req: NextRequest) {
         });
         d7Sent++;
       } catch (err) {
-        const msg = `D7 failed for ${intake.id}: ${(err as Error).message}`;
+        const errMessage = err instanceof Error ? err.message : String(err);
+        const msg = `D7 failed for ${intake.id}: ${errMessage}`;
         errors.push(msg);
         console.error("[intake-nurture]", msg);
         await prisma.auditEvent.create({
@@ -162,7 +164,7 @@ export async function GET(req: NextRequest) {
             entityType: "IntakeSubmission",
             entityId: intake.id,
             userId: null,
-            metadata: { error: (err as Error).message },
+            metadata: { error: errMessage },
           },
         }).catch(() => {});
       }
@@ -170,7 +172,7 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     console.error("[intake-nurture] Fatal error:", err);
     return NextResponse.json(
-      { error: "Internal server error", details: (err as Error).message },
+      { error: "Internal server error", details: err instanceof Error ? err.message : String(err) },
       { status: 500 }
     );
   }

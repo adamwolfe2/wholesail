@@ -31,7 +31,7 @@ export async function PATCH(
   const { key, status } = data;
 
   const project = await prisma.project.findUnique({
-    where: { id },
+    where: { id, deletedAt: null },
     select: { envVars: true },
   });
   if (!project) {

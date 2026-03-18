@@ -23,6 +23,7 @@ import { prisma } from "@/lib/db";
 import Anthropic from "@anthropic-ai/sdk";
 import crypto from "crypto";
 import { INDUSTRY_DEFAULTS, CONFIG_SKELETON, primaryForeground } from "@/lib/build/config-template";
+import { AI_MODEL, BRAND_EMAIL } from "@/lib/brand";
 
 function ts() {
   return new Date().toISOString();
@@ -164,7 +165,7 @@ export async function POST(
         } else {
           const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
           const message = await anthropic.messages.create({
-            model: "claude-haiku-4-5-20251001",
+            model: AI_MODEL,
             max_tokens: 2048,
             temperature: 0,
             system:
@@ -200,7 +201,7 @@ export async function POST(
 
     // ── STEP 2: Research Pipeline (Tavily + Claude Synthesis) ──────────────
     let researchData: Record<string, unknown> | null = null;
-    if (!buildChecklist.researchCompleted) {
+    if (!buildChecklist.researchCompleted && !buildChecklist.researchFailed) {
       try {
         appendLog("Running research pipeline (Tavily searches + Claude synthesis)...");
         await saveProgress();
@@ -250,7 +251,7 @@ export async function POST(
         await saveProgress();
       } catch (researchErr) {
         appendLog(`Research pipeline error (non-fatal): ${(researchErr as Error).message}`);
-        buildChecklist.researchCompleted = true; // Mark done to avoid blocking
+        buildChecklist.researchFailed = true; // Mark as failed — do NOT set researchCompleted
         await saveProgress();
       }
     } else {
@@ -265,7 +266,7 @@ export async function POST(
     let readmeContent: string | null = null;
     let marketingCopyContent: string | null = null;
 
-    if (!buildChecklist.readmeGenerated) {
+    if (!buildChecklist.readmeGenerated && !buildChecklist.readmeFailed) {
       try {
         appendLog("Generating CLAUDE.md build instructions...");
         const updatedProject = await prisma.project.findUnique({ where: { id: projectId } });
@@ -316,7 +317,7 @@ export async function POST(
         await saveProgress();
       } catch (readmeErr) {
         appendLog(`README generation error (non-fatal): ${(readmeErr as Error).message}`);
-        buildChecklist.readmeGenerated = true;
+        buildChecklist.readmeFailed = true; // Mark as failed — do NOT set readmeGenerated
         await saveProgress();
       }
     }
@@ -766,7 +767,7 @@ export async function POST(
 
           // Email — dedicated per-client key when available
           RESEND_API_KEY: resendApiKey,
-          RESEND_FROM_EMAIL: process.env.RESEND_FROM_EMAIL ?? "orders@wholesailhub.com",
+          RESEND_FROM_EMAIL: BRAND_EMAIL,
 
           // Error monitoring — dedicated per-client Sentry project when available
           ...(sentryDsn ? {
@@ -973,7 +974,7 @@ export async function POST(
   } catch (err) {
     console.error("[build-start] Error:", err);
     return NextResponse.json(
-      { error: "Internal server error", details: (err as Error).message },
+      { error: "Internal server error", details: err instanceof Error ? err.message : String(err) },
       { status: 500 }
     );
   }

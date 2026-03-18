@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db'
 import { z } from 'zod'
 import { notifyDistributorsForOrder } from '@/lib/db/orders'
 import { createOrderWithRetry } from '@/lib/order-number'
+import { clientWriteLimiter, checkRateLimit } from '@/lib/rate-limit'
 
 const reorderSchema = z.object({
   orderId: z.string().optional(),
@@ -15,6 +16,11 @@ export async function POST(request: Request) {
     const { userId } = await auth()
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
+    const rl = await checkRateLimit(clientWriteLimiter, userId)
+    if (!rl.allowed) {
+      return NextResponse.json({ error: 'Rate limit exceeded. Try again later.' }, { status: 429 })
     }
 
     const body = await request.json()

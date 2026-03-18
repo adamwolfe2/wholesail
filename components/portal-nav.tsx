@@ -17,6 +17,11 @@ import {
   FileCheck,
   RefreshCw,
   Store,
+  BarChart3,
+  Truck,
+  Package,
+  Users,
+  ShoppingBag,
 } from 'lucide-react'
 
 interface NotificationCounts {
@@ -39,6 +44,11 @@ const portalLinks: PortalLink[] = [
   { href: '/client-portal/quotes', label: 'Quotes', icon: FileCheck, badge: null, desktopOnly: true },
   { href: '/client-portal/standing-orders', label: 'Standing Orders', icon: RefreshCw, badge: null, desktopOnly: true },
   { href: '/client-portal/catalog', label: 'Catalog', icon: Store, badge: null },
+  { href: '/client-portal/saved-carts', label: 'Saved Carts', icon: ShoppingBag, badge: null, desktopOnly: true },
+  { href: '/client-portal/fulfillment', label: 'Fulfillment', icon: Truck, badge: null, desktopOnly: true },
+  { href: '/client-portal/inventory', label: 'Inventory', icon: Package, badge: null, desktopOnly: true },
+  { href: '/client-portal/analytics', label: 'Analytics', icon: BarChart3, badge: null, desktopOnly: true },
+  { href: '/client-portal/referrals', label: 'Referrals', icon: Users, badge: null, desktopOnly: true },
   { href: '/client-portal/messages', label: 'Messages', icon: MessageSquare, badge: 'unreadMessages' },
   { href: '/client-portal/payments', label: 'Payments', icon: CreditCard, badge: null },
   { href: '/client-portal/settings', label: 'Settings', icon: Settings, badge: null },

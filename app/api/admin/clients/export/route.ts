@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/db";
+import { adminReadLimiter, checkRateLimit } from "@/lib/rate-limit";
 
 function csvEscape(value: string | number | null | undefined): string {
   const str = String(value ?? "");
@@ -23,8 +24,13 @@ const HEADERS = [
 const BATCH_SIZE = 500;
 
 export async function GET() {
-  const { error } = await requireAdmin();
+  const { userId, error } = await requireAdmin();
   if (error) return error;
+
+  const rl = await checkRateLimit(adminReadLimiter, userId);
+  if (!rl.allowed) {
+    return NextResponse.json({ error: "Rate limit exceeded. Try again later." }, { status: 429 });
+  }
 
   const encoder = new TextEncoder();
 

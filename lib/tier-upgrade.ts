@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/db"
 import { sendTierUpgradeEmail } from "@/lib/email/index"
 import { sendMessage, toE164 } from "@/lib/integrations/blooio"
+import { BRAND_NAME, BRAND_TEAM } from "@/lib/brand"
 
 const TIER_THRESHOLDS = {
   NEW: 0,
@@ -73,8 +74,8 @@ export async function checkAndUpgradeTier(organizationId: string): Promise<void>
   if (phone) {
     const tierMessage =
       upgradedTier === "VIP"
-        ? `You've reached VIP status at Wholesail! Your partnership means everything. Expect priority access and white-glove service. — The Wholesail Team`
-        : `You've unlocked Repeat Partner status at Wholesail — thank you for your continued trust. Log in to see your updated pricing. — The Wholesail Team`
+        ? `You've reached VIP status at ${BRAND_NAME}! Your partnership means everything. Expect priority access and white-glove service. — The ${BRAND_TEAM}`
+        : `You've unlocked Repeat Partner status at ${BRAND_NAME} — thank you for your continued trust. Log in to see your updated pricing. — The ${BRAND_TEAM}`
     sendMessage({ to: phone, message: tierMessage }).catch(console.error)
   }
 }

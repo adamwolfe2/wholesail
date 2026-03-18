@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { Resend } from 'resend'
+import { BRAND_EMAIL, BRAND_NAME as BRAND_NAME_IMPORT } from '@/lib/brand'
 
 function getResend() {
   if (!process.env.RESEND_API_KEY) return null
@@ -26,9 +27,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Email not configured' }, { status: 503 })
   }
 
-  const BRAND_NAME = process.env.BRAND_NAME || 'Wholesail'
-  const FROM_EMAIL =
-    process.env.RESEND_FROM_EMAIL || 'orders@wholesailhub.com'
+  const BRAND_NAME = BRAND_NAME_IMPORT
+  const FROM_EMAIL = BRAND_EMAIL
   // Support multiple recipients via REPORT_RECIPIENTS (comma-separated)
   const recipientStr = process.env.REPORT_RECIPIENTS || process.env.OPS_NOTIFICATION_EMAIL || FROM_EMAIL
   const recipients = recipientStr.split(',').map((e: string) => e.trim()).filter(Boolean)

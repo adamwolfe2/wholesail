@@ -63,30 +63,38 @@ export async function GET() {
       }),
     ]);
 
-    // Build top products — for lastOrderedAt we need one extra query per product.
-    // Since we only have 5 products, 5 queries is fine (and cached by the connection pool).
-    const topProducts = await Promise.all(
-      topProductsRaw.map(async (p) => {
-        const lastItem = await prisma.orderItem.findFirst({
+    // Build top products — batch query for last order info instead of N+1 individual queries
+    const topProductNames = topProductsRaw.map((p) => p.name);
+    const lastOrderItems = topProductNames.length > 0
+      ? await prisma.orderItem.findMany({
           where: {
-            name: p.name,
+            name: { in: topProductNames },
             order: { organizationId: orgId, status: { not: "CANCELLED" } },
           },
           orderBy: { order: { createdAt: "desc" } },
-          select: { quantity: true, order: { select: { createdAt: true } } },
-        });
-        const MS_PER_DAY = 1000 * 60 * 60 * 24;
-        return {
-          name: p.name,
-          orders: p._sum.quantity ?? 0,
-          revenue: Math.round(Number(p._sum.total ?? 0)),
-          daysSinceLastOrder: lastItem
-            ? Math.floor((now.getTime() - lastItem.order.createdAt.getTime()) / MS_PER_DAY)
-            : null,
-          lastQuantity: lastItem?.quantity ?? null,
-        };
-      })
+          distinct: ["name"] as const,
+          select: { name: true, quantity: true, order: { select: { createdAt: true } } },
+        })
+      : [];
+
+    // O(1) lookup map from product name to last order info
+    const lastOrderMap = new Map(
+      lastOrderItems.map((item) => [item.name, item])
     );
+
+    const MS_PER_DAY = 1000 * 60 * 60 * 24;
+    const topProducts = topProductsRaw.map((p) => {
+      const lastItem = lastOrderMap.get(p.name);
+      return {
+        name: p.name,
+        orders: p._sum.quantity ?? 0,
+        revenue: Math.round(Number(p._sum.total ?? 0)),
+        daysSinceLastOrder: lastItem
+          ? Math.floor((now.getTime() - lastItem.order.createdAt.getTime()) / MS_PER_DAY)
+          : null,
+        lastQuantity: lastItem?.quantity ?? null,
+      };
+    });
 
     // Aggregate monthly revenue using explicit year/month keys to avoid TZ issues
     const monthMap = new Map<string, number>();

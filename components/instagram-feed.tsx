@@ -59,8 +59,7 @@ export function InstagramFeed() {
   // Wire up Mirror App auto-resize once both script and iframe are ready
   useEffect(() => {
     if (scriptReady && iframeLoaded && iframeRef.current) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const setup = (window as any).iFrameSetup
+      const setup = window.iFrameSetup
       if (typeof setup === 'function') setup(iframeRef.current)
     }
   }, [scriptReady, iframeLoaded])

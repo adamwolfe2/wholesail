@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
-import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
+import { enrichLimiter, checkRateLimit } from "@/lib/rate-limit";
 import { isAllowedUrl } from "@/lib/utils/ssrf-protection";
 
 // ── Types ──────────────────────────────────────────────────────────────
@@ -127,7 +127,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "URL not allowed" }, { status: 400 });
     }
 
-    const rl = await checkRateLimit(aiCallLimiter, userId);
+    const rl = await checkRateLimit(enrichLimiter, userId);
     if (!rl.allowed) {
       return NextResponse.json(
         { error: "Rate limit exceeded. Try again later." },

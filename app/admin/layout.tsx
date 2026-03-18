@@ -24,7 +24,7 @@ const getNavBadgeCounts = unstable_cache(
       await Promise.all([
         prisma.message.count({ where: { senderRole: "client", readAt: null } }).catch(() => 0),
         prisma.intakeSubmission.count({ where: { reviewedAt: null, archivedAt: null } }).catch(() => 0),
-        prisma.project.count({ where: { status: { in: ["ONBOARDING", "BUILDING", "REVIEW"] } } }).catch(() => 0),
+        prisma.project.count({ where: { status: { in: ["ONBOARDING", "BUILDING", "REVIEW"] }, deletedAt: null } }).catch(() => 0),
       ]);
     return { unreadMessages, pendingIntakes, activeBuilds };
   },

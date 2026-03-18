@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/db";
 import { z } from "zod";
+import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
 
 const bulkUpdateSchema = z.object({
   orgIds: z.array(z.string()).min(1).max(200),
@@ -12,6 +13,11 @@ const bulkUpdateSchema = z.object({
 export async function POST(req: NextRequest) {
   const { userId, error: authError } = await requireAdmin();
   if (authError) return authError;
+
+  const rl = await checkRateLimit(aiCallLimiter, userId);
+  if (!rl.allowed) {
+    return NextResponse.json({ error: "Rate limit exceeded. Try again later." }, { status: 429 });
+  }
 
   try {
     const body = await req.json();

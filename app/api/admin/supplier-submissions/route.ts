@@ -1,22 +1,11 @@
 import { NextResponse } from 'next/server'
-import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/db'
+import { requireAdmin } from '@/lib/auth/require-admin'
 
 export async function GET() {
   try {
-    const { userId } = await auth()
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { role: true },
-    })
-
-    if (!user || (user.role !== 'ADMIN' && user.role !== 'OPS')) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-    }
+    const { error: authError } = await requireAdmin()
+    if (authError) return authError
 
     const submissions = await prisma.supplierSubmission.findMany({
       include: {

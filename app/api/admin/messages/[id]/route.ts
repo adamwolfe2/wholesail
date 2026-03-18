@@ -3,6 +3,7 @@ import { requireAdminOrRep } from '@/lib/auth/require-admin'
 import { prisma } from '@/lib/db'
 import { z } from 'zod'
 import { isConfigured as blooConfigured, sendMessage as blooSend, toE164 } from '@/lib/integrations/blooio'
+import { BRAND_TEAM } from '@/lib/brand'
 
 // GET /api/admin/messages/[id] — load full thread + mark client messages read
 export async function GET(
@@ -74,7 +75,7 @@ export async function POST(
         data: {
           conversationId: id,
           senderId: userId,
-          senderName: staff?.name ?? 'Wholesail Team',
+          senderName: staff?.name ?? BRAND_TEAM,
           senderRole: 'staff',
           content: content.trim(),
         },

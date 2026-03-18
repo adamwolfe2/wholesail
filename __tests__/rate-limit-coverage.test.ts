@@ -21,6 +21,8 @@ const PUBLIC_MUTATION_ROUTES = [
   "notify-me/route.ts",
   "drops/alert-signup/route.ts",
   "claim/route.ts",
+  "scrape/route.ts",
+  "enrich/route.ts",
 ];
 
 describe("Rate limit coverage on public endpoints", () => {

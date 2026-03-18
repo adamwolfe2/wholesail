@@ -8,6 +8,7 @@ import { awardLoyaltyPoints } from "@/lib/loyalty";
 import { generateInvoiceForOrder } from "@/app/api/billing/generate/route";
 import { format, addDays } from "date-fns";
 import { dispatchWebhook } from "@/lib/webhooks";
+import { getSiteUrl } from "@/lib/brand";
 
 const statusSchema = z.object({
   status: z.enum([
@@ -70,7 +71,7 @@ export async function PATCH(
         }
 
         // SMS notification to client
-        const APP_URL = process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"
+        const APP_URL = getSiteUrl()
         const brandName = process.env.BRAND_NAME || "Wholesail"
         const clientPhone = fullOrder.organization?.phone
         if (clientPhone) {

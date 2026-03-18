@@ -35,7 +35,7 @@ export default async function ProjectCostsPage({
   const { id } = await params;
 
   const project = await prisma.project.findUnique({
-    where: { id },
+    where: { id, deletedAt: null },
     select: { id: true, company: true, shortName: true },
   });
 

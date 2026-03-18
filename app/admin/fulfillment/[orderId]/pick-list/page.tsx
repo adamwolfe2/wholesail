@@ -3,6 +3,7 @@ import { prisma } from "@/lib/db";
 import { format } from "date-fns";
 import { PrintButton } from "./print-button";
 import { PickListItems } from "./pick-list-items";
+import { BRAND_NAME } from "@/lib/brand";
 
 async function getOrder(orderId: string) {
   return prisma.order.findUnique({
@@ -129,7 +130,7 @@ export default async function PickListPage({
         </div>
 
         <div className="mt-6 text-xs text-[#0A0A0A]/30 text-center print:mt-4">
-          Wholesail — Internal Use Only
+          {BRAND_NAME} — Internal Use Only
         </div>
       </div>
     </div>

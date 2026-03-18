@@ -17,6 +17,8 @@ const BodySchema = z.object({
   clients: z.array(ClientSchema).min(1, 'clients array must not be empty').max(5000, 'Maximum 5000 clients per import'),
 })
 
+const MAX_IMPORT_SIZE = 500
+
 // POST /api/admin/clients/bulk-import — upsert organizations from a CSV import
 export async function POST(req: NextRequest) {
   const { error } = await requireAdmin()
@@ -33,6 +35,13 @@ export async function POST(req: NextRequest) {
     }
 
     const { clients } = parsed.data
+
+    if (clients.length > MAX_IMPORT_SIZE) {
+      return NextResponse.json(
+        { error: `Import size exceeds maximum of ${MAX_IMPORT_SIZE} clients. Please split your file into smaller batches.` },
+        { status: 400 }
+      )
+    }
     let created = 0
     let updated = 0
     const errors: string[] = []

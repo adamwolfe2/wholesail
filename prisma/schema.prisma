@@ -69,6 +69,7 @@ enum PaymentStatus {
   COMPLETED
   FAILED
   REFUNDED
+  PARTIAL_REFUND
 }
 
 enum InvoiceStatus {
@@ -191,6 +192,7 @@ model IntakeSubmission {
   project Project?
 
   @@index([contactEmail])
+  @@index([companyName])
   @@index([createdAt])
 }
 
@@ -259,8 +261,9 @@ model Project {
   // Shape: { resend: { keyId: "xxx" }, anthropic: { note: "shared+metadata" }, ... }
   serviceKeys Json?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
 
   notes ProjectNote[]
   tasks ProjectTask[]
@@ -268,6 +271,7 @@ model Project {
 
   @@index([contactEmail])
   @@index([status])
+  @@index([status, createdAt])
 }
 
 /// Per-project cost tracking (AI, Firecrawl, infrastructure)

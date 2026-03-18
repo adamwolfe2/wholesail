@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
-import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
+import { enrichLimiter, checkRateLimit } from "@/lib/rate-limit";
 import { isAllowedUrl } from "@/lib/utils/ssrf-protection";
 
 const enrichSchema = z.object({
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const rl = await checkRateLimit(aiCallLimiter, userId);
+    const rl = await checkRateLimit(enrichLimiter, userId);
     if (!rl.allowed) {
       return NextResponse.json(
         { error: "Rate limit exceeded. Try again later." },

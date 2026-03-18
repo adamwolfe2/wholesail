@@ -51,12 +51,12 @@ export async function GET(req: NextRequest) {
     // Intakes: total
     prisma.intakeSubmission.count(),
     // Projects grouped by status
-    prisma.project.groupBy({ by: ["status"], _count: { id: true } }),
+    prisma.project.groupBy({ by: ["status"], where: { deletedAt: null }, _count: { id: true } }),
     // Total contract value across all projects
-    prisma.project.aggregate({ _sum: { contractValue: true } }),
+    prisma.project.aggregate({ where: { deletedAt: null }, _sum: { contractValue: true } }),
     // MRR: monthlyRevenue + retainer for LIVE projects
     prisma.project.aggregate({
-      where: { status: "LIVE" },
+      where: { status: "LIVE", deletedAt: null },
       _sum: { monthlyRevenue: true, retainer: true },
     }),
     // Build costs: all-time total
@@ -76,6 +76,7 @@ export async function GET(req: NextRequest) {
     }),
     // Recent project activity
     prisma.project.findMany({
+      where: { deletedAt: null },
       orderBy: { updatedAt: "desc" },
       take: 5,
       select: { id: true, company: true, status: true, updatedAt: true },

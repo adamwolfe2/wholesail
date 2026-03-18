@@ -28,7 +28,7 @@ export async function GET(
 
   // Verify project exists and grab vercelProject ID
   const project = await prisma.project.findUnique({
-    where: { id },
+    where: { id, deletedAt: null },
     select: { id: true, vercelProject: true },
   });
 

@@ -31,7 +31,7 @@ export async function POST(
 
   const { text, type } = data;
 
-  const project = await prisma.project.findUnique({ where: { id } });
+  const project = await prisma.project.findUnique({ where: { id, deletedAt: null } });
   if (!project) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }

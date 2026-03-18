@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { Send, Search, Loader2, ArrowLeft, MessageSquare, CheckCircle, XCircle, ArrowDown, AlertTriangle, Plus, Wand2, CheckCheck } from 'lucide-react'
+import { BRAND_TEAM } from '@/lib/brand'
 import type { ConversationRow } from './page'
 
 const THREAD_POLL_MS = 5000   // re-fetch active thread every 5s
@@ -236,7 +237,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
 
     const optimistic: Message = {
       id: `tmp-${Date.now()}`,
-      senderName: 'Wholesail Team',
+      senderName: BRAND_TEAM,
       senderRole: 'staff',
       content,
       createdAt: new Date().toISOString(),

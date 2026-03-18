@@ -902,35 +902,31 @@ function Step3({
 function CalEmbed({ name, email }: { name?: string; email?: string }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if ((window as any).__calWholesailInitialized) return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).__calWholesailInitialized = true;
+    if (window.__calWholesailInitialized) return;
+    window.__calWholesailInitialized = true;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    if (!(window as any).Cal) {
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-      (function (C: any, A: string, L: string) {
-        const p = function (a: any, ar: any) {
-          a.q.push(ar);
+    if (!window.Cal) {
+      (function (C: Window, A: string, L: string) {
+        const p = function (a: CalFunction, ar: IArguments | unknown[]) {
+          a.q!.push(ar);
         };
         const d = C.document;
         C.Cal =
           C.Cal ||
-          function () {
-            const cal = C.Cal;
+          function (this: CalFunction) {
+            const cal = C.Cal!;
             const ar = arguments;
             if (!cal.loaded) {
-              cal.ns = {};
+              cal.ns = {} as Record<string, CalFunction>;
               cal.q = cal.q || [];
               d.head.appendChild(d.createElement("script")).src = A;
               cal.loaded = true;
             }
             if (ar[0] === L) {
-              const api: any = function () {
+              const api: CalFunction = function () {
                 p(api, arguments);
-              };
-              const namespace = ar[1];
+              } as CalFunction;
+              const namespace = ar[1] as string;
               api.q = api.q || [];
               if (typeof namespace === "string") {
                 cal.ns[namespace] = cal.ns[namespace] || api;
@@ -940,13 +936,11 @@ function CalEmbed({ name, email }: { name?: string; email?: string }) {
               return;
             }
             p(cal, ar);
-          };
+          } as CalFunction;
       })(window, "https://app.cal.com/embed/embed.js", "init");
-      /* eslint-enable @typescript-eslint/no-explicit-any */
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const Cal = (window as any).Cal;
+    const Cal = window.Cal!;
     Cal("init", "wholesail", { origin: "https://app.cal.com" });
     Cal.ns.wholesail("inline", {
       elementOrSelector: "#my-cal-inline-wholesail",

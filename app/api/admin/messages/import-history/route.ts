@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth/require-admin'
 import { prisma } from '@/lib/db'
 import { toE164, isConfigured as blooConfigured } from '@/lib/integrations/blooio'
+import { BRAND_TEAM } from '@/lib/brand'
 
 const BLOOIO_BASE = 'https://backend.blooio.com/v2/api'
 
@@ -115,7 +116,7 @@ export async function POST() {
                 const senderRole: string =
                   msg.direction === 'inbound' ? 'client' : 'staff'
                 const senderName =
-                  msg.direction === 'inbound' ? org.name : 'Wholesail Team'
+                  msg.direction === 'inbound' ? org.name : BRAND_TEAM
 
                 return {
                   senderName,

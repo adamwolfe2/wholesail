@@ -4,6 +4,7 @@ import { getIntakeSubmissionById } from "@/lib/db/intake";
 import Anthropic from "@anthropic-ai/sdk";
 import { INDUSTRY_DEFAULTS, CONFIG_SKELETON, primaryForeground } from "@/lib/build/config-template";
 import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
+import { AI_MODEL } from "@/lib/brand";
 
 export async function POST(
   req: NextRequest,
@@ -109,7 +110,7 @@ export async function POST(
     const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
     const message = await anthropic.messages.create({
-      model: "claude-haiku-4-5-20251001",
+      model: AI_MODEL,
       max_tokens: 2048,
       temperature: 0,
       system:

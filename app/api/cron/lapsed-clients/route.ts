@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { sendLapsedClientEmail } from '@/lib/email/index'
 import { sendMessage, toE164 } from '@/lib/integrations/blooio'
+import { getSiteUrl } from '@/lib/brand'
 
 // Vercel cron calls this as GET with Authorization header
 // Schedule: 0 11 * * * (11am UTC daily)
@@ -138,7 +139,7 @@ export async function GET(req: NextRequest) {
         const smsPromise = phone
           ? sendMessage({
               to: phone,
-              message: `Hey ${firstName}! It's been ${daysSince} days since your last order — running low on anything? Text your order or visit ${(process.env.NEXT_PUBLIC_APP_URL || 'https://wholesailhub.com').replace(/^https?:\/\//, '')}/catalog`,
+              message: `Hey ${firstName}! It's been ${daysSince} days since your last order — running low on anything? Text your order or visit ${getSiteUrl().replace(/^https?:\/\//, '')}/catalog`,
             }).catch(err => {
               errors.push(`SMS failed for org ${org.id}: ${err instanceof Error ? err.message : 'unknown'}`)
               return null

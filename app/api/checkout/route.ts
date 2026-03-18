@@ -182,21 +182,31 @@ export async function POST(req: NextRequest) {
       creditApplied: creditToApply,
     });
 
-    // Deduct referral credits from org balance
+    // Deduct referral credits from org balance (optimistic locking to prevent race conditions)
     if (referralCreditToApply > 0) {
       const appliedReferral = Math.min(referralCreditToApply, Number(order.creditApplied));
-      await prisma.organization.update({
-        where: { id: org.id },
-        data: { referralCredits: { decrement: appliedReferral } },
-      });
-      await prisma.auditEvent.create({
-        data: {
-          entityType: "Order",
-          entityId: order.id,
-          action: "referral_credit_applied",
-          userId,
-          metadata: { creditApplied: appliedReferral, orgId: org.id },
-        },
+      await prisma.$transaction(async (tx) => {
+        const currentOrg = await tx.organization.findUniqueOrThrow({
+          where: { id: org.id },
+          select: { referralCredits: true },
+        });
+        const currentBalance = Number(currentOrg.referralCredits ?? 0);
+        if (appliedReferral > currentBalance) {
+          throw new Error("Insufficient referral credits");
+        }
+        await tx.organization.update({
+          where: { id: org.id },
+          data: { referralCredits: { decrement: appliedReferral } },
+        });
+        await tx.auditEvent.create({
+          data: {
+            entityType: "Order",
+            entityId: order.id,
+            action: "referral_credit_applied",
+            userId,
+            metadata: { creditApplied: appliedReferral, orgId: org.id },
+          },
+        });
       });
     }
 

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/db'
+import { BRAND_NAME, BRAND_EMAIL } from '@/lib/brand'
 
 // GET /api/client/statement?from=YYYY-MM-DD&to=YYYY-MM-DD
 // Returns a printable HTML account statement with @media print CSS
@@ -176,7 +177,7 @@ export async function GET(req: NextRequest) {
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Account Statement — ${org?.name ?? 'Wholesail'}</title>
+  <title>Account Statement — ${org?.name ?? BRAND_NAME}</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -212,7 +213,7 @@ export async function GET(req: NextRequest) {
   <!-- Statement Header -->
   <div style="border-bottom:2px solid #0A0A0A;padding-bottom:24px;margin-bottom:32px;display:flex;justify-content:space-between;align-items:flex-start;gap:24px;">
     <div>
-      <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#C8C0B4;margin-bottom:6px">Wholesail</p>
+      <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#C8C0B4;margin-bottom:6px">${BRAND_NAME}</p>
       <h1 style="font-size:30px;font-family:Georgia,serif;font-weight:400;color:#0A0A0A;line-height:1.1">Account Statement</h1>
       <p style="font-size:13px;color:#888077;margin-top:6px">${periodLabel}</p>
     </div>
@@ -269,7 +270,7 @@ export async function GET(req: NextRequest) {
   <!-- Footer -->
   <div style="border-top:1px solid #E5E1DB;margin-top:40px;padding-top:16px;display:flex;justify-content:space-between;align-items:flex-end;gap:16px;">
     <p style="font-size:12px;color:#888077;line-height:1.7;">
-      Wholesail &nbsp;&middot;&nbsp; orders@wholesailhub.com<br />
+      ${BRAND_NAME} &nbsp;&middot;&nbsp; ${BRAND_EMAIL}<br />
       This statement is for informational purposes only.
     </p>
     <p style="font-size:12px;color:#C8C0B4;text-align:right;white-space:nowrap;">

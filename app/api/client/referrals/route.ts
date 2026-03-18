@@ -5,13 +5,14 @@ import { prisma } from '@/lib/db'
 import { ensureReferralCode } from '@/lib/referrals'
 import { Resend } from 'resend'
 import { getSiteUrl } from '@/lib/get-site-url'
+import { BRAND_EMAIL, BRAND_NAME, BRAND_TEAM } from '@/lib/brand'
 
 function getResend() {
   if (!process.env.RESEND_API_KEY) return null
   return new Resend(process.env.RESEND_API_KEY)
 }
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'orders@wholesailhub.com'
+const FROM_EMAIL = BRAND_EMAIL
 const APP_URL = getSiteUrl()
 
 const inviteSchema = z.object({
@@ -143,14 +144,14 @@ export async function POST(req: NextRequest) {
       .send({
         from: FROM_EMAIL,
         to: normalizedEmail,
-        subject: `${orgName} invited you to Wholesail`,
-        text: `${name ? `Hi ${name},\n\n` : ''}${orgName} has invited you to apply for a wholesale account with Wholesail — truffles, caviar, and specialty foods for Michelin-caliber kitchens.
+        subject: `${orgName} invited you to ${BRAND_NAME}`,
+        text: `${name ? `Hi ${name},\n\n` : ''}${orgName} has invited you to apply for a wholesale account with ${BRAND_NAME}.
 
 Apply here: ${referLink}
 
 Applications are reviewed within 24 hours. Once approved, you'll get access to 122+ SKUs at true wholesale pricing with same-day LA delivery.
 
-— The Wholesail Team`,
+— The ${BRAND_TEAM}`,
       })
       .catch((err: unknown) => console.error('Referral invite email failed:', err))
   }

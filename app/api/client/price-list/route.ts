@@ -79,9 +79,10 @@ export async function GET() {
       products: priceListProducts,
     });
 
-    // PriceListPDF renders a <Document> at its root — safe to cast
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const buffer = await renderToBuffer(pdfElement as any);
+    // PriceListPDF renders a <Document> at its root, but createElement's
+    // return type doesn't satisfy @react-pdf/renderer's narrow overload.
+    // @ts-expect-error — React.ReactElement vs react-pdf's internal element type
+    const buffer = await renderToBuffer(pdfElement);
 
     const filename = `Wholesail-Price-List-${orgName.replace(/[^a-zA-Z0-9]/g, "-")}.pdf`;
 

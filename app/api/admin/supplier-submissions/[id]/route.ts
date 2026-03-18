@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
-import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/db'
 import { z } from 'zod'
+import { requireAdmin } from '@/lib/auth/require-admin'
 
 const patchSchema = z.object({
   action: z.enum(['approve', 'reject']),
@@ -12,20 +12,8 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId } = await auth()
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
-    // Verify admin role
-    const user = await prisma.user.findUnique({
-      where: { id: userId },
-      select: { role: true },
-    })
-
-    if (!user || (user.role !== 'ADMIN' && user.role !== 'OPS')) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-    }
+    const { userId, error: authError } = await requireAdmin()
+    if (authError) return authError
 
     const body = await request.json()
     const parsed = patchSchema.safeParse(body)

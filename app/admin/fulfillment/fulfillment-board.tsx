@@ -25,6 +25,7 @@ import {
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { formatDistanceToNow, format } from 'date-fns'
+import { BRAND_FLEET } from '@/lib/brand'
 
 interface OrderItem {
   id: string
@@ -94,7 +95,7 @@ interface Props {
   deliveredOrders: DeliveredOrder[]
 }
 
-const CARRIERS = ['Wholesail Fleet', 'FedEx', 'UPS', 'DoorDash', 'Other'] as const
+const CARRIERS = [BRAND_FLEET, 'FedEx', 'UPS', 'DoorDash', 'Other'] as const
 
 // ─── Individual order card ──────────────────────────────────────────────────
 
@@ -224,7 +225,7 @@ export function FulfillmentBoard({
     orderId: string
     orderNumber: string
   } | null>(null)
-  const [carrier, setCarrier] = useState('Wholesail Fleet')
+  const [carrier, setCarrier] = useState(BRAND_FLEET)
   const [driverName, setDriverName] = useState('')
   const [driverPhone, setDriverPhone] = useState('')
   const [driverNotes, setDriverNotes] = useState('')
@@ -290,7 +291,7 @@ export function FulfillmentBoard({
   }
 
   function resetShipmentForm() {
-    setCarrier('Wholesail Fleet')
+    setCarrier(BRAND_FLEET)
     setDriverName('')
     setDriverPhone('')
     setDriverNotes('')
@@ -628,7 +629,7 @@ export function FulfillmentBoard({
             {/* Tracking Number */}
             <div className="space-y-1.5">
               <Label htmlFor="modal-tracking" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
-                Tracking # <span className="normal-case text-[#0A0A0A]/40">(optional — not required for Wholesail Fleet)</span>
+                Tracking # <span className="normal-case text-[#0A0A0A]/40">(optional — not required for {BRAND_FLEET})</span>
               </Label>
               <Input
                 id="modal-tracking"

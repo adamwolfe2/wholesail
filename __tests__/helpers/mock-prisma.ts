@@ -11,8 +11,10 @@ function createModelMock() {
     findMany: vi.fn(),
     create: vi.fn(),
     update: vi.fn(),
+    updateMany: vi.fn(),
     delete: vi.fn(),
     count: vi.fn(),
+    groupBy: vi.fn(),
   };
 }
 
@@ -21,12 +23,16 @@ export function createMockPrisma() {
     order: createModelMock(),
     orderItem: createModelMock(),
     invoice: createModelMock(),
+    payment: createModelMock(),
     user: createModelMock(),
     organization: createModelMock(),
     webhookEndpoint: createModelMock(),
     webhookLog: createModelMock(),
     auditEvent: createModelMock(),
     lead: createModelMock(),
+    quote: createModelMock(),
+    product: createModelMock(),
+    project: createModelMock(),
     $transaction: vi.fn(),
   };
 }

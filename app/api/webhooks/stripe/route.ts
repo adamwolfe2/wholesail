@@ -603,11 +603,16 @@ export async function POST(req: NextRequest) {
         const amountRefundedCents = charge.amount_refunded ?? 0;
         const amountRefunded = amountRefundedCents / 100;
 
-        // Update Payment status to REFUNDED (full refund)
+        // Update Payment status based on refund type
         if (fullyRefunded) {
           await prisma.payment.update({
             where: { id: payment.id },
             data: { status: "REFUNDED" },
+          });
+        } else {
+          await prisma.payment.update({
+            where: { id: payment.id },
+            data: { status: "PARTIAL_REFUND" },
           });
         }
 
@@ -760,6 +765,18 @@ export async function POST(req: NextRequest) {
           await prisma.payment.update({
             where: { id: closedDisputePayment.id },
             data: { status: "REFUNDED" },
+          });
+          await prisma.auditEvent.create({
+            data: {
+              entityType: "Payment",
+              entityId: closedDisputePayment.orderId,
+              action: "dispute_lost",
+              metadata: {
+                disputeId: closedDispute.id,
+                amount: closedDispute.amount,
+                paymentIntentId: closedDisputePiId,
+              },
+            },
           });
           console.warn(
             `Dispute ${closedDispute.id} lost — Payment ${closedDisputePayment.id} marked REFUNDED`

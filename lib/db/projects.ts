@@ -13,7 +13,7 @@ export async function getProjects(opts?: {
   status?: ProjectStatus;
   search?: string;
 }) {
-  const where: Prisma.ProjectWhereInput = {};
+  const where: Prisma.ProjectWhereInput = { deletedAt: null };
 
   if (opts?.status) where.status = opts.status;
   if (opts?.search) {
@@ -38,7 +38,7 @@ export async function getProjects(opts?: {
 
 export async function getProjectById(id: string) {
   return prisma.project.findUnique({
-    where: { id },
+    where: { id, deletedAt: null },
     include: {
       intake: {
         select: {
@@ -65,7 +65,7 @@ export async function getProjectById(id: string) {
 
 export async function getProjectByEmail(email: string) {
   return prisma.project.findFirst({
-    where: { contactEmail: { equals: email, mode: "insensitive" } },
+    where: { contactEmail: { equals: email, mode: "insensitive" }, deletedAt: null },
     include: {
       notes: {
         where: { type: { in: ["MILESTONE", "UPDATE"] } },
@@ -110,7 +110,7 @@ export async function updateProject(
 // ── Delete ──────────────────────────────────────────────────────────────────
 
 export async function deleteProject(id: string) {
-  return prisma.project.delete({ where: { id } });
+  return prisma.project.update({ where: { id }, data: { deletedAt: new Date() } });
 }
 
 // ── Convert Intake → Project ────────────────────────────────────────────────

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { clerkClient } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/db'
 import { z } from 'zod'
+import { BRAND_EMAIL } from '@/lib/brand'
 import { getSiteUrl } from '@/lib/get-site-url'
 
 // ---------------------------------------------------------------------------
@@ -294,7 +295,7 @@ export async function POST(req: NextRequest) {
     // Generic Clerk error — log it server-side but return a safe message
     console.error('[/api/claim] Clerk invitation error:', err)
     return NextResponse.json(
-      { error: 'We couldn\'t send the invitation right now. Please try again or contact orders@wholesailhub.com.' },
+      { error: `We couldn't send the invitation right now. Please try again or contact ${BRAND_EMAIL}.` },
       { status: 422 },
     )
   }

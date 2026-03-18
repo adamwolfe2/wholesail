@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/db'
+import { clientWriteLimiter, checkRateLimit } from '@/lib/rate-limit'
 
 async function getOrgId(userId: string) {
   const user = await prisma.user.findUnique({
@@ -61,6 +62,11 @@ export async function POST(req: NextRequest) {
   try {
     const { userId } = await auth()
     if (!userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+
+    const rl = await checkRateLimit(clientWriteLimiter, userId)
+    if (!rl.allowed) {
+      return NextResponse.json({ error: 'Rate limit exceeded. Try again later.' }, { status: 429 })
+    }
 
     const user = await getOrgId(userId)
     if (!user?.organizationId) {

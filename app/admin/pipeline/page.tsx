@@ -15,7 +15,7 @@ export default async function AdminPipelinePage() {
       orderBy: { createdAt: "desc" },
     }).catch(() => []),
     prisma.project.findMany({
-      where: { status: { not: "CHURNED" } },
+      where: { status: { not: "CHURNED" }, deletedAt: null },
       select: {
         id: true,
         company: true,
