@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
+
+export const metadata: Metadata = { title: "Intake Details" };
 import { prisma } from "@/lib/db";
 import { getIntakeSubmissionById } from "@/lib/db/intake";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

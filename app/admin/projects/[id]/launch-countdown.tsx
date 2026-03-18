@@ -93,6 +93,7 @@ export function LaunchCountdown({ projectId, targetLaunchDate, goLiveTimeline }:
             value={dateValue}
             onChange={(e) => setDateValue(e.target.value)}
             className="border border-[#E5E1DB] px-2 py-1 text-[10px] font-mono bg-white focus:outline-none"
+            aria-label="Launch date"
           />
           <button
             type="button"

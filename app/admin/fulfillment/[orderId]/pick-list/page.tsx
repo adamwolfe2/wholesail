@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
+
+export const metadata: Metadata = { title: "Pick List" };
 import { PrintButton } from "./print-button";
 import { PickListItems } from "./pick-list-items";
 import { BRAND_NAME } from "@/lib/brand";

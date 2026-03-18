@@ -454,6 +454,7 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                         type="text"
                         value={newTaskLabel}
                         onChange={(e) => setNewTaskLabel(e.target.value)}
+                        aria-label="New task name"
                         onKeyDown={(e) => {
                           if (e.key === "Enter") handleAddTask(phase);
                           if (e.key === "Escape") {

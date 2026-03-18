@@ -1,8 +1,10 @@
+import type { Metadata } from "next";
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { MessagesAdminClient } from './messages-admin-client'
 
+export const metadata: Metadata = { title: "Messages" };
 export const dynamic = 'force-dynamic'
 
 export default async function AdminMessagesPage() {

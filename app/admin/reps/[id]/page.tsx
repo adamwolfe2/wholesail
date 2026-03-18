@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
 import { ArrowLeft, ShoppingCart, Building2, CheckSquare } from "lucide-react";
+
+export const metadata: Metadata = { title: "Rep Details" };
 import { NewTaskForm } from "./new-task-form";
 import { TaskActions } from "./task-actions";
 

@@ -215,6 +215,7 @@ export function SettingsClient() {
                 size="icon"
                 className="shrink-0"
                 onClick={() => copyToClipboard(webhookUrl, 'blooio')}
+                aria-label="Copy Bloo.io webhook URL"
               >
                 {copied === 'blooio' ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </Button>
@@ -235,6 +236,7 @@ export function SettingsClient() {
                 size="icon"
                 className="shrink-0"
                 onClick={() => copyToClipboard(stripeWebhookUrl, 'stripe')}
+                aria-label="Copy Stripe webhook URL"
               >
                 {copied === 'stripe' ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </Button>

@@ -122,6 +122,7 @@ export function ClientTable({ clients }: { clients: ClientRow[] }) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-9"
+            aria-label="Search clients"
           />
         </div>
         <Select value={tierFilter} onValueChange={setTierFilter}>

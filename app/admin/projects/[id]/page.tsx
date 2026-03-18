@@ -1,6 +1,9 @@
+import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
+
+export const metadata: Metadata = { title: "Project Details" };
 import { prisma } from "@/lib/db";
 import { getProjectById } from "@/lib/db/projects";
 import { getProjectCosts } from "@/lib/db/costs";

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { addDays } from "date-fns";
@@ -5,6 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Webhook, ArrowRight } from "lucide-react";
 import { BillingReminders } from "./billing-reminders";
 import { SettingsClient } from "./settings-client";
+
+export const metadata: Metadata = { title: "Settings" };
 
 export default async function AdminSettingsPage() {
   let overdueCount = 0;

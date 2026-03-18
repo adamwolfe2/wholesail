@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -5,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
 import { Plus, ArrowRight } from "lucide-react";
+
+export const metadata: Metadata = { title: "Quotes" };
 import { quoteStatusColors } from "@/lib/status-colors";
 
 export default async function AdminQuotesPage() {

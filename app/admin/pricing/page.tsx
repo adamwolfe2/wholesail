@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { PricingClient } from "./pricing-client";
+
+export const metadata: Metadata = { title: "Pricing Rules" };
 
 export default async function AdminPricingPage() {
   let rules: {

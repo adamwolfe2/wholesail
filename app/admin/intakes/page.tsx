@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { FileInput, CalendarCheck } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/empty-state";
 import { getIntakeSubmissions } from "@/lib/db/intake";
 
+export const metadata: Metadata = { title: "Intakes" };
 export const dynamic = "force-dynamic";
 
 const FILTERS = ["pending", "reviewed", "archived"] as const;

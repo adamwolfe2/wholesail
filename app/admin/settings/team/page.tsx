@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { prisma } from "@/lib/db";
 import { Users, Shield, UserCircle } from "lucide-react";
+
+export const metadata: Metadata = { title: "Team" };
 
 const ROLE_LABELS: Record<string, string> = {
   ADMIN: "Admin",

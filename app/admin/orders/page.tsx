@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
+
+export const metadata: Metadata = { title: "Orders" };
 import { OrderTable } from "./order-table";
 import { ExportButton } from "./export-button";
 import { ImportOrdersButton } from "./import-orders-button";

@@ -73,6 +73,7 @@ export function ProductImportForm() {
           accept=".csv,.tsv,.txt"
           disabled={isUploading}
           className="flex-1"
+          aria-label="Select CSV file to import"
         />
         <Button type="submit" disabled={isUploading} className="shrink-0">
           {isUploading ? (

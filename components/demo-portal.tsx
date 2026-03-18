@@ -2498,7 +2498,7 @@ function DemoPortalInner() {
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={brand.logo}
-              alt=""
+              alt={`${brand.company} logo`}
               className="w-4 h-4 sm:w-5 sm:h-5 object-contain bg-white/20 p-0.5 flex-shrink-0"
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
@@ -2530,7 +2530,7 @@ function DemoPortalInner() {
             style={{ height: 56, minWidth: sidebarCollapsed ? 52 : 240, padding: sidebarCollapsed ? "0 10px" : "0 16px", gap: sidebarCollapsed ? 0 : 12 }}
           >
             {sidebarCollapsed ? (
-              <button onClick={toggleSidebar} className="w-8 h-8 flex items-center justify-center mx-auto">
+              <button onClick={toggleSidebar} className="w-8 h-8 flex items-center justify-center mx-auto" aria-label="Toggle sidebar">
                 <Menu className="w-4 h-4 text-[#0A0A0A]/60" />
               </button>
             ) : (
@@ -2539,7 +2539,7 @@ function DemoPortalInner() {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
                     src={brand.logo}
-                    alt=""
+                    alt={`${brand.company} logo`}
                     className="w-7 h-7 object-contain flex-shrink-0"
                     onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                   />

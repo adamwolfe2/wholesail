@@ -495,6 +495,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                       value={orgSearch}
                       onChange={e => setOrgSearch(e.target.value)}
                       className="pl-8 h-9 text-sm border-[#C8C0B4]"
+                      aria-label="Search organizations"
                     />
                   </div>
                   <div className="border border-[#E5E1DB] max-h-40 overflow-y-auto">
@@ -641,6 +642,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
                     className="pl-8 h-9 text-sm border-[#C8C0B4]"
+                    aria-label="Search conversations"
                   />
                 </div>
               </div>
@@ -761,6 +763,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                     variant="ghost" size="icon"
                     className="sm:hidden h-8 w-8"
                     onClick={() => setMobileShowThread(false)}
+                    aria-label="Back to conversations"
                   >
                     <ArrowLeft className="h-4 w-4" />
                   </Button>
@@ -921,6 +924,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                         value={newMessage}
                         onChange={e => setNewMessage(e.target.value)}
                         className="flex-1 min-h-[44px]"
+                        aria-label="Reply message"
                         onKeyDown={e => {
                           if (e.key === 'Enter' && !e.shiftKey && newMessage.trim()) {
                             e.preventDefault()
@@ -932,6 +936,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                         size="icon"
                         variant="outline"
                         title="AI reply suggestions"
+                        aria-label="AI reply suggestions"
                         className="shrink-0 border-[#C8C0B4] text-[#0A0A0A] hover:bg-[#F9F7F4] min-h-[44px] min-w-[44px]"
                         disabled={suggestLoading}
                         onClick={suggestReply}
@@ -946,6 +951,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                         className="shrink-0 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 min-h-[44px] min-w-[44px]"
                         disabled={!newMessage.trim() || sendLoading}
                         onClick={sendReply}
+                        aria-label="Send reply"
                       >
                         {sendLoading
                           ? <Loader2 className="h-4 w-4 animate-spin" />

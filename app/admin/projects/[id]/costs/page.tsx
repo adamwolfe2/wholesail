@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+
+export const metadata: Metadata = { title: "Project Costs" };
 import { getProjectCosts } from "@/lib/db/costs";
 import {
   Card,

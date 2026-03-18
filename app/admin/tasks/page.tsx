@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { format, isPast, isToday } from "date-fns";
@@ -7,6 +8,8 @@ import { Button } from "@/components/ui/button";
 import { CheckSquare, Building2, AlertTriangle, ExternalLink } from "lucide-react";
 import { NewTaskDialog } from "@/components/new-task-dialog";
 import { TaskActions } from "@/app/admin/reps/[id]/task-actions";
+
+export const metadata: Metadata = { title: "Tasks" };
 
 const PRIORITIES = ["URGENT", "HIGH", "NORMAL", "LOW"] as const;
 type Priority = (typeof PRIORITIES)[number];

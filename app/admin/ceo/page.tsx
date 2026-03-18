@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
+
+export const metadata: Metadata = { title: "CEO Dashboard" };
 import {
   DollarSign,
   Users,

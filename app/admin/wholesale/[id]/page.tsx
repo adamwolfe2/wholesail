@@ -1,7 +1,10 @@
+import type { Metadata } from "next";
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/db'
 import { WholesaleStatus } from '@prisma/client'
+
+export const metadata: Metadata = { title: "Wholesale Application Details" };
 import { Badge } from '@/components/ui/badge'
 import { WholesaleReviewActions } from './review-actions'
 

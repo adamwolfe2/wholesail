@@ -228,6 +228,7 @@ export function ProductTable({ products }: { products: Product[] }) {
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by name, SKU, or category..."
             className="pl-9"
+            aria-label="Search products"
           />
         </div>
         <Select value={categoryFilter} onValueChange={setCategoryFilter}>
@@ -313,6 +314,7 @@ export function ProductTable({ products }: { products: Product[] }) {
                           onChange={(e) => setEditImage(e.target.value)}
                           className="h-7 text-xs"
                           placeholder="https://…"
+                          aria-label="Image URL"
                         />
                         {editImage && (
                           <div className="w-8 h-8 border border-border overflow-hidden">
@@ -367,6 +369,7 @@ export function ProductTable({ products }: { products: Product[] }) {
                         type="number"
                         step="0.01"
                         min="0"
+                        aria-label="Price"
                       />
                     ) : (
                       <span>${Number(product.price).toFixed(2)}</span>
@@ -382,6 +385,7 @@ export function ProductTable({ products }: { products: Product[] }) {
                         step="0.01"
                         min="0"
                         placeholder="Cost"
+                        aria-label="Cost price"
                       />
                     ) : (
                       <span className="text-muted-foreground">
@@ -407,6 +411,7 @@ export function ProductTable({ products }: { products: Product[] }) {
                         className="w-20 h-8"
                         type="number"
                         min="1"
+                        aria-label="Minimum order"
                       />
                     ) : (
                       <span className="text-muted-foreground">{product.minimumOrder}</span>
@@ -458,6 +463,7 @@ export function ProductTable({ products }: { products: Product[] }) {
                           className="h-8 w-8"
                           onClick={() => saveEdit(product.id)}
                           disabled={isSaving}
+                          aria-label="Save changes"
                         >
                           {isSaving ? (
                             <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -471,6 +477,7 @@ export function ProductTable({ products }: { products: Product[] }) {
                           className="h-8 w-8"
                           onClick={() => setEditingId(null)}
                           disabled={isSaving}
+                          aria-label="Cancel editing"
                         >
                           <X className="h-3.5 w-3.5" />
                         </Button>
@@ -482,6 +489,7 @@ export function ProductTable({ products }: { products: Product[] }) {
                           size="icon"
                           className="h-8 w-8"
                           onClick={() => startEdit(product)}
+                          aria-label="Edit product"
                         >
                           <Pencil className="h-3.5 w-3.5" />
                         </Button>
@@ -490,6 +498,7 @@ export function ProductTable({ products }: { products: Product[] }) {
                           size="icon"
                           className="h-8 w-8"
                           asChild
+                          aria-label="View product analytics"
                         >
                           <Link href={`/admin/products/${product.id}`}>
                             <TrendingUp className="h-3.5 w-3.5" />

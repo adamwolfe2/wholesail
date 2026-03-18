@@ -325,6 +325,7 @@ export default function MessagesPage() {
                 size="icon"
                 className="h-7 w-7 text-[#0A0A0A]/50 hover:text-[#0A0A0A]"
                 onClick={() => { setShowNewConvo(false); setNewSubject(''); setNewBody(''); setNewConvoError(null) }}
+                aria-label="Close new conversation"
               >
                 <X className="h-4 w-4" />
               </Button>
@@ -334,6 +335,7 @@ export default function MessagesPage() {
               value={newSubject}
               onChange={e => setNewSubject(e.target.value)}
               className="bg-[#F9F7F4] border-[#C8C0B4] text-[#0A0A0A] placeholder:text-[#0A0A0A]/40 focus-visible:ring-[#0A0A0A]"
+              aria-label="Conversation subject"
             />
             <Textarea
               placeholder="Write your message..."
@@ -488,6 +490,7 @@ export default function MessagesPage() {
                       size="icon"
                       className="sm:hidden shrink-0 h-8 w-8 text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#C8C0B4]/20"
                       onClick={() => setMobileShowThread(false)}
+                      aria-label="Back to conversations"
                     >
                       <ArrowLeft className="h-4 w-4" />
                     </Button>
@@ -601,6 +604,7 @@ export default function MessagesPage() {
                           className="shrink-0 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 min-h-[44px] min-w-[44px]"
                           disabled={!newMessage.trim() || sendLoading}
                           onClick={sendMessage}
+                          aria-label="Send message"
                         >
                           {sendLoading
                             ? <Loader2 className="h-4 w-4 animate-spin" />

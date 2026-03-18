@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { format, startOfDay, endOfDay } from "date-fns";
+
+export const metadata: Metadata = { title: "Fulfillment" };
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Package, Truck, CheckCircle, Clock, AlertCircle } from "lucide-react";
 import { FulfillmentBoard } from "./fulfillment-board";

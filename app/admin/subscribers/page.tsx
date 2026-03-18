@@ -1,9 +1,11 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Mail, Users } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
 
+export const metadata: Metadata = { title: "Subscribers" };
 export const dynamic = "force-dynamic";
 
 export default async function AdminSubscribersPage() {

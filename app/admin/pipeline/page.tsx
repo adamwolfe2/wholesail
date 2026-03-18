@@ -1,8 +1,10 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { PipelineBoard, type PipelineColumn } from "@/components/pipeline-board";
 import type { PipelineItem } from "@/components/pipeline-card";
 import { Kanban } from "lucide-react";
 
+export const metadata: Metadata = { title: "Pipeline" };
 export const dynamic = "force-dynamic";
 
 export default async function AdminPipelinePage() {

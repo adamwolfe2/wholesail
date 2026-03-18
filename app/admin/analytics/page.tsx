@@ -1,4 +1,7 @@
+import type { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+
+export const metadata: Metadata = { title: "Analytics" };
 import { prisma } from "@/lib/db";
 import {
   DollarSign,

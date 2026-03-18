@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { getProjects } from "@/lib/db/projects";
@@ -7,6 +8,7 @@ import { mapProjectsForDashboard } from "@/lib/client-data";
 import Link from "next/link";
 import { ClipboardList, Users, Package } from "lucide-react";
 
+export const metadata: Metadata = { title: "Dashboard" };
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {

@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { prisma } from '@/lib/db'
+
+export const metadata: Metadata = { title: "Drops" };
 import { Calendar, Eye, Bell } from 'lucide-react'
 import { DropsAdminClient } from './drops-admin-client'
 import Link from 'next/link'

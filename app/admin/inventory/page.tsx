@@ -1,5 +1,8 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
+
+export const metadata: Metadata = { title: "Inventory" };
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AlertCircle, Package, TrendingDown, AlertTriangle, Boxes } from "lucide-react";

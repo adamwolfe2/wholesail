@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { prisma } from '@/lib/db'
 import { redirect } from 'next/navigation'
 import { auth } from '@clerk/nextjs/server'
@@ -5,6 +6,7 @@ import { AlertTriangle, Clock, DollarSign } from 'lucide-react'
 import { EmptyState } from '@/components/empty-state'
 import { SendReminderButton } from './send-reminder-button'
 
+export const metadata: Metadata = { title: "Invoice Aging" };
 export const dynamic = 'force-dynamic'
 
 // -----------------------------------------------------------------------

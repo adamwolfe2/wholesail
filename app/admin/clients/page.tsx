@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
 import { ClientTable } from "./client-table";
@@ -5,6 +6,8 @@ import { ImportClientsButton } from "./import-button";
 import { HealthSummaryCards } from "./health-summary-cards";
 import { EmptyState } from "@/components/empty-state";
 import { Users } from "lucide-react";
+
+export const metadata: Metadata = { title: "Clients" };
 
 export default async function AdminClientsPage() {
   let organizations: Awaited<ReturnType<typeof getOrganizations>> = [];

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
@@ -13,6 +14,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Truck, ArrowRight, MapPin } from "lucide-react";
+
+export const metadata: Metadata = { title: "Shipments" };
 
 const shipmentStatusColors: Record<string, string> = {
   PREPARING: "bg-neutral-100 text-neutral-600 border-neutral-200",

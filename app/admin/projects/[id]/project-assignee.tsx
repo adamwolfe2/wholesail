@@ -39,6 +39,7 @@ export function ProjectAssignee({ projectId, initialAssignedTo }: Props) {
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
+          aria-label="Assignee name"
           onKeyDown={(e) => {
             if (e.key === "Enter") handleSave();
             if (e.key === "Escape") {
