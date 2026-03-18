@@ -1,6 +1,7 @@
 import { prisma } from "./index";
 import type { ProjectStatus, Prisma } from "@prisma/client";
 import { ENV_VARS } from "@/lib/client-data";
+import { getDefaultProjectTasks } from "@/lib/build/default-tasks";
 
 // Initialize all env vars as "missing"
 function defaultEnvVars(): Record<string, string> {
@@ -53,6 +54,7 @@ export async function getProjectById(id: string) {
           calBooked: true,
           createdAt: true,
           targetDomain: true,
+          goLiveTimeline: true,
         },
       },
       notes: { orderBy: { createdAt: "desc" } },
@@ -121,6 +123,8 @@ export async function convertIntakeToProject(intakeId: string) {
   });
   if (!intake) throw new Error("Intake not found");
 
+  const defaultTasks = getDefaultProjectTasks();
+
   const project = await prisma.project.create({
     data: {
       intake: { connect: { id: intakeId } },
@@ -136,6 +140,16 @@ export async function convertIntakeToProject(intakeId: string) {
       status: "INQUIRY",
       currentPhase: 0,
       envVars: defaultEnvVars(),
+      tasks: {
+        createMany: {
+          data: defaultTasks.map((t) => ({
+            label: t.label,
+            description: t.description,
+            phase: t.phase,
+            externalUrl: t.externalUrl ?? null,
+          })),
+        },
+      },
     },
   });
 
@@ -171,23 +185,30 @@ export async function deleteNote(noteId: string) {
 
 export async function addTask(
   projectId: string,
-  data: { label: string; phase: number }
+  data: { label: string; phase: number; description?: string; externalUrl?: string }
 ) {
   return prisma.projectTask.create({
-    data: { projectId, label: data.label, phase: data.phase },
+    data: {
+      projectId,
+      label: data.label,
+      phase: data.phase,
+      description: data.description ?? null,
+      externalUrl: data.externalUrl ?? null,
+    },
   });
 }
 
 export async function updateTask(
   taskId: string,
-  data: { completed?: boolean; label?: string }
+  data: { completed?: boolean; label?: string; description?: string }
 ) {
+  const { completed, ...rest } = data;
   return prisma.projectTask.update({
     where: { id: taskId },
     data: {
-      ...data,
-      ...(data.completed !== undefined
-        ? { completedAt: data.completed ? new Date() : null }
+      ...rest,
+      ...(completed !== undefined
+        ? { completed, completedAt: completed ? new Date() : null }
         : {}),
     },
   });

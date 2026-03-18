@@ -5,7 +5,9 @@ import { prisma } from "@/lib/db";
 import { z } from "zod";
 
 const schema = z.object({
-  status: z.enum(["INQUIRY", "ONBOARDING", "BUILDING", "REVIEW", "LIVE", "CHURNED"]),
+  status: z.enum(["INQUIRY", "ONBOARDING", "BUILDING", "REVIEW", "LIVE", "CHURNED"]).optional(),
+  targetLaunchDate: z.string().datetime().optional(),
+  assignedTo: z.string().max(100).nullable().optional(),
 });
 
 export async function PATCH(
@@ -28,13 +30,20 @@ export async function PATCH(
     throw err;
   }
 
-  const { status } = data;
-
   const project = await prisma.project.findUnique({ where: { id, deletedAt: null } });
   if (!project) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  const updated = await updateProject(id, { status });
-  return NextResponse.json({ status: updated.status });
+  const updateData: Record<string, unknown> = {};
+  if (data.status !== undefined) updateData.status = data.status;
+  if (data.targetLaunchDate !== undefined) updateData.targetLaunchDate = new Date(data.targetLaunchDate);
+  if (data.assignedTo !== undefined) updateData.assignedTo = data.assignedTo;
+
+  const updated = await updateProject(id, updateData);
+  return NextResponse.json({
+    status: updated.status,
+    targetLaunchDate: updated.targetLaunchDate,
+    assignedTo: updated.assignedTo,
+  });
 }

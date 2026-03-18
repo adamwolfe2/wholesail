@@ -28,6 +28,12 @@ import {
   User,
 } from "lucide-react";
 import { ProjectActions } from "./project-actions";
+import { ProjectTasks } from "./project-tasks";
+import { BuildStatusCard } from "./build-status-card";
+import { LaunchCountdown } from "./launch-countdown";
+import { ProjectAssignee } from "./project-assignee";
+import { ProjectCommunications } from "./project-communications";
+import { StripeConnectBadge } from "./stripe-connect-badge";
 import { ENV_VARS } from "@/lib/client-data";
 
 export const dynamic = "force-dynamic";
@@ -107,6 +113,22 @@ export default async function AdminProjectDetailPage({
 
   const buildLog = project.buildLog ?? [];
 
+  // Serialize tasks for client component
+  const serializedTasks = project.tasks.map((t) => ({
+    id: t.id,
+    label: t.label,
+    description: t.description,
+    phase: t.phase,
+    completed: t.completed,
+    completedAt: t.completedAt?.toISOString() ?? null,
+    externalUrl: t.externalUrl,
+    createdAt: t.createdAt.toISOString(),
+  }));
+
+  // QA progress for sidebar
+  const qaTasks = project.tasks.filter((t) => t.phase === 4);
+  const qaCompleted = qaTasks.filter((t) => t.completed).length;
+
   return (
     <div className="space-y-6 max-w-6xl">
       <Breadcrumb>
@@ -129,12 +151,28 @@ export default async function AdminProjectDetailPage({
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="flex items-start justify-between">
-        <div>
+      {/* Header with status, assignee, launch countdown, Stripe */}
+      <div className="flex items-start justify-between gap-4">
+        <div className="space-y-2">
           <h2 className="font-serif text-2xl sm:text-3xl font-normal">{project.company}</h2>
           <p className="text-sm text-[#0A0A0A]/50 mt-1 font-mono">
             {project.shortName} &middot; {project.industry}
           </p>
+          <div className="flex items-center gap-3 flex-wrap">
+            <ProjectAssignee
+              projectId={project.id}
+              initialAssignedTo={project.assignedTo}
+            />
+            <StripeConnectBadge
+              projectId={project.id}
+              stripeAccountId={project.stripeAccountId}
+            />
+          </div>
+          <LaunchCountdown
+            projectId={project.id}
+            targetLaunchDate={project.targetLaunchDate?.toISOString() ?? null}
+            goLiveTimeline={project.intake?.goLiveTimeline ?? null}
+          />
         </div>
         <Badge
           variant="outline"
@@ -145,9 +183,26 @@ export default async function AdminProjectDetailPage({
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
-        {/* ── Left column — 5 info cards ─────────────────────────────────── */}
+        {/* ── Left column — Tasks first (main operator view), then info cards ── */}
         <div className="lg:col-span-2 space-y-5">
-          {/* Card 1: Company & Contact */}
+          {/* Fulfillment Tasks — the main thing an operator sees */}
+          <ProjectTasks projectId={project.id} initialTasks={serializedTasks} />
+
+          {/* Build Status Summary */}
+          <BuildStatusCard
+            buildChecklist={checklist}
+            buildLog={buildLog}
+            status={project.status}
+            intakeId={project.intakeId}
+          />
+
+          {/* Communications */}
+          <ProjectCommunications
+            projectId={project.id}
+            contactEmail={project.contactEmail}
+          />
+
+          {/* Company & Contact */}
           <Card>
             <CardHeader>
               <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
@@ -230,7 +285,7 @@ export default async function AdminProjectDetailPage({
             </CardContent>
           </Card>
 
-          {/* Card 2: Build Progress */}
+          {/* Build Progress */}
           <Card>
             <CardHeader>
               <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
@@ -299,7 +354,7 @@ export default async function AdminProjectDetailPage({
             </CardContent>
           </Card>
 
-          {/* Card 3: Environment Variables */}
+          {/* Environment Variables */}
           <Card>
             <CardHeader>
               <CardTitle className="font-serif text-lg font-normal">
@@ -332,7 +387,7 @@ export default async function AdminProjectDetailPage({
             </CardContent>
           </Card>
 
-          {/* Card 4: Build Log */}
+          {/* Build Log */}
           {buildLog.length > 0 && (
             <Card>
               <CardHeader>
@@ -350,7 +405,7 @@ export default async function AdminProjectDetailPage({
             </Card>
           )}
 
-          {/* Card 5: Costs */}
+          {/* Costs */}
           <Card>
             <CardHeader>
               <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
@@ -445,8 +500,8 @@ export default async function AdminProjectDetailPage({
           )}
         </div>
 
-        {/* ── Right column — actions ───────────────────────────────────────── */}
-        <div>
+        {/* ── Right column — actions + QA progress ───────────────────────────── */}
+        <div className="space-y-4">
           <ProjectActions
             projectId={project.id}
             buildChecklist={checklist}
@@ -455,6 +510,36 @@ export default async function AdminProjectDetailPage({
             customDomain={project.customDomain}
             currentStatus={project.status}
           />
+
+          {/* QA Progress card — shown when in REVIEW or STAGING-adjacent states */}
+          {(project.status === "REVIEW" || project.status === "BUILDING") && qaTasks.length > 0 && (
+            <Card>
+              <CardContent className="pt-4">
+                <p className="font-mono text-[9px] uppercase tracking-widest text-[#0A0A0A]/40 mb-2">
+                  QA Progress
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 h-2 bg-[#E5E1DB]">
+                    <div
+                      className="h-full transition-all"
+                      style={{
+                        width: `${qaTasks.length > 0 ? Math.round((qaCompleted / qaTasks.length) * 100) : 0}%`,
+                        backgroundColor: qaCompleted === qaTasks.length ? "#16a34a" : "#0A0A0A",
+                      }}
+                    />
+                  </div>
+                  <span className="font-mono text-xs text-[#0A0A0A]/60 shrink-0">
+                    {qaCompleted}/{qaTasks.length}
+                  </span>
+                </div>
+                <p className="text-[10px] text-[#0A0A0A]/40 mt-1.5 font-mono">
+                  {qaCompleted === qaTasks.length
+                    ? "All QA checks passed"
+                    : `${qaTasks.length - qaCompleted} QA check${qaTasks.length - qaCompleted !== 1 ? "s" : ""} remaining`}
+                </p>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>

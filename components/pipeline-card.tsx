@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { GitBranch, Globe, AlertCircle, Layers, ExternalLink, Loader2 } from "lucide-react";
+import { GitBranch, Globe, AlertCircle, Layers, ExternalLink, Loader2, UserCircle, Calendar } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { getPhaseName } from "@/lib/build/phases";
 
@@ -30,6 +30,9 @@ export type PipelineItem = {
   totalSpentCents?: number;   // sum of ProjectCost.amountCents
   // next action label
   nextAction?: string;
+  // operator assignment + launch
+  assignedTo?: string | null;
+  targetLaunchDate?: string | null; // ISO string
 };
 
 function daysAgo(isoString: string): number {
@@ -148,6 +151,37 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
           </div>
         )}
       </div>
+
+      {/* Assignee + Launch countdown */}
+      {(item.assignedTo || item.targetLaunchDate) && (
+        <div className="flex items-center gap-1.5 flex-wrap">
+          {item.assignedTo && (
+            <span className="text-[8px] font-mono bg-[#F9F7F4] text-[#0A0A0A]/50 border border-[#E5E1DB] px-1 py-0.5 flex items-center gap-0.5">
+              <UserCircle className="h-2.5 w-2.5" />
+              {item.assignedTo}
+            </span>
+          )}
+          {item.targetLaunchDate && (() => {
+            const target = new Date(item.targetLaunchDate);
+            const now = new Date();
+            target.setHours(0, 0, 0, 0);
+            now.setHours(0, 0, 0, 0);
+            const days = Math.ceil((target.getTime() - now.getTime()) / 86400000);
+            const color = days < 0 ? "bg-red-50 text-red-700 border-red-200 font-bold" :
+              days < 7 ? "bg-red-50 text-red-600 border-red-200" :
+              days <= 14 ? "bg-yellow-50 text-yellow-700 border-yellow-200" :
+              "bg-green-50 text-green-700 border-green-200";
+            const label = days < 0 ? `${Math.abs(days)}d overdue` :
+              days === 0 ? "Launch day" : `${days}d left`;
+            return (
+              <span className={`text-[8px] font-mono px-1 py-0.5 border flex items-center gap-0.5 ${color}`}>
+                <Calendar className="h-2 w-2" />
+                {label}
+              </span>
+            );
+          })()}
+        </div>
+      )}
 
       {/* Budget health bar */}
       {item.contractValue !== undefined && item.contractValue > 0 && item.totalSpentCents !== undefined && (() => {

@@ -253,6 +253,9 @@ model Project {
   upstashStoreId String? // Vercel KV store ID — query /v1/storage/stores/{id} for usage + cost
   deploymentId   String? // first triggered Vercel deployment ID
 
+  // Assignment
+  assignedTo String?
+
   // Stripe Connect — connected account for this client portal build
   stripeAccountId    String?
   platformFeePercent Decimal?    @default(2.5) @db.Decimal(5, 2)
@@ -311,9 +314,11 @@ model ProjectTask {
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   label       String
+  description String?
   phase       Int
   completed   Boolean   @default(false)
   completedAt DateTime?
+  externalUrl String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

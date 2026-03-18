@@ -28,6 +28,8 @@ export default async function AdminPipelinePage() {
         buildChecklist: true,
         enabledFeatures: true,
         contractValue: true,
+        assignedTo: true,
+        targetLaunchDate: true,
         createdAt: true,
         updatedAt: true,
         intake: { select: { id: true } },
@@ -101,6 +103,8 @@ export default async function AdminPipelinePage() {
         contractValue: p.contractValue,
         totalSpentCents: totalSpent(p),
         nextAction: getBuildingNextAction(checklist),
+        assignedTo: p.assignedTo,
+        targetLaunchDate: p.targetLaunchDate?.toISOString() ?? null,
       };
     })
     // Sort at-risk (>85% budget) to top
@@ -126,6 +130,8 @@ export default async function AdminPipelinePage() {
       contractValue: p.contractValue,
       totalSpentCents: totalSpent(p),
       nextAction: "Internal review pending",
+      assignedTo: p.assignedTo,
+      targetLaunchDate: p.targetLaunchDate?.toISOString() ?? null,
     }));
 
   const stagingItems: PipelineItem[] = projects
@@ -153,6 +159,8 @@ export default async function AdminPipelinePage() {
       contractValue: p.contractValue,
       totalSpentCents: totalSpent(p),
       nextAction: "Connect domain",
+      assignedTo: p.assignedTo,
+      targetLaunchDate: p.targetLaunchDate?.toISOString() ?? null,
     }));
 
   const liveItems: PipelineItem[] = projects
@@ -172,6 +180,8 @@ export default async function AdminPipelinePage() {
       contractValue: p.contractValue,
       totalSpentCents: totalSpent(p),
       nextAction: "Live",
+      assignedTo: p.assignedTo,
+      targetLaunchDate: p.targetLaunchDate?.toISOString() ?? null,
     }));
 
   const columns: PipelineColumn[] = [
