@@ -1,45 +1,45 @@
 /**
- * One-time bootstrap: elevates the currently signed-in Clerk user to ADMIN.
- * Protected by BOOTSTRAP_SECRET so it can't be called by anyone else.
+ * One-time bootstrap: creates an ADMIN user record in the database.
+ * Protected by BOOTSTRAP_SECRET — does NOT require Clerk auth session.
  *
- * Usage (run once after first deploy):
- *   curl -X POST https://wholesailhub.com/api/bootstrap \
- *     -H "Content-Type: application/json" \
- *     -d '{"secret":"<BOOTSTRAP_SECRET>"}'
+ * Pass the Clerk userId and email directly so this works even when
+ * the auth redirect loop prevents session establishment.
  *
- * Or from the browser console while signed in:
+ * Usage from browser console (no sign-in needed):
  *   fetch('/api/bootstrap', {
  *     method: 'POST',
  *     headers: { 'Content-Type': 'application/json' },
- *     body: JSON.stringify({ secret: '<BOOTSTRAP_SECRET>' })
+ *     body: JSON.stringify({
+ *       secret: '<BOOTSTRAP_SECRET>',
+ *       clerkUserId: '<clerk_user_id>',
+ *       email: 'you@example.com',
+ *       name: 'Your Name'
+ *     })
  *   }).then(r => r.json()).then(console.log)
  */
 import { NextRequest, NextResponse } from "next/server";
-import { auth, currentUser } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
-  const { userId } = await auth();
-  if (!userId) {
-    return NextResponse.json({ error: "Sign in first" }, { status: 401 });
-  }
+  const body = await req.json().catch(() => ({}));
+  const { secret, clerkUserId, email, name } = body;
 
-  const { secret } = await req.json().catch(() => ({ secret: "" }));
   if (!secret || secret !== process.env.BOOTSTRAP_SECRET) {
     return NextResponse.json({ error: "Invalid secret" }, { status: 403 });
   }
 
-  const clerkUser = await currentUser();
-  if (!clerkUser) {
-    console.error("[POST /api/admin/bootstrap] Could not fetch Clerk user for userId:", userId);
-    return NextResponse.json({ error: "Could not fetch user" }, { status: 500 });
+  if (!clerkUserId || !email) {
+    return NextResponse.json(
+      { error: "clerkUserId and email are required" },
+      { status: 400 }
+    );
   }
 
   // Idempotency: only allow bootstrap if no admin exists, or if caller is already admin
   const existingAdmins = await prisma.user.count({ where: { role: "ADMIN" } });
   if (existingAdmins > 0) {
     const callerIsAdmin = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: clerkUserId },
       select: { role: true },
     });
     if (callerIsAdmin?.role !== "ADMIN") {
@@ -50,16 +50,10 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const email =
-    clerkUser.emailAddresses[0]?.emailAddress ?? `${userId}@unknown.com`;
-  const name =
-    [clerkUser.firstName, clerkUser.lastName].filter(Boolean).join(" ") ||
-    email;
-
   const user = await prisma.user.upsert({
-    where: { id: userId },
+    where: { id: clerkUserId },
     update: { role: "ADMIN" },
-    create: { id: userId, email, name, role: "ADMIN" },
+    create: { id: clerkUserId, email, name: name || email, role: "ADMIN" },
   });
 
   return NextResponse.json({
