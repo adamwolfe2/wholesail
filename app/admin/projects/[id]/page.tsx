@@ -122,6 +122,8 @@ export default async function AdminProjectDetailPage({
     completed: t.completed,
     completedAt: t.completedAt?.toISOString() ?? null,
     externalUrl: t.externalUrl,
+    automationAction: t.automationAction ?? null,
+    automationResult: (t.automationResult as Record<string, unknown>) ?? null,
     createdAt: t.createdAt.toISOString(),
   }));
 

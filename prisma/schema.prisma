@@ -313,12 +313,14 @@ model ProjectTask {
   projectId String
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-  label       String
-  description String?
-  phase       Int
-  completed   Boolean   @default(false)
-  completedAt DateTime?
-  externalUrl String?
+  label            String
+  description      String?
+  phase            Int
+  completed        Boolean   @default(false)
+  completedAt      DateTime?
+  externalUrl      String?
+  automationAction String?
+  automationResult Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

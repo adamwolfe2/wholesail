@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import {
   CheckCircle2,
   Circle,
@@ -11,9 +11,18 @@ import {
   Loader2,
   ListChecks,
   Clock,
+  Send,
+  Shield,
+  Globe,
+  Zap,
+  Search,
+  Lock,
+  Rocket,
+  Play,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { PHASE_LABELS } from "@/lib/build/default-tasks";
 
 type Task = {
@@ -24,12 +33,81 @@ type Task = {
   completed: boolean;
   completedAt: string | null;
   externalUrl: string | null;
+  automationAction: string | null;
+  automationResult: Record<string, unknown> | null;
   createdAt: string;
 };
 
 type Props = {
   projectId: string;
   initialTasks: Task[];
+};
+
+// Map automation actions to button labels and icons
+const AUTOMATION_CONFIG: Record<
+  string,
+  { label: string; icon: typeof Play; confirmMessage: string }
+> = {
+  stripe_webhook: {
+    label: "Configure",
+    icon: Shield,
+    confirmMessage:
+      "This will create a Stripe webhook endpoint and save the signing secret to Vercel env vars.",
+  },
+  verify_env_vars: {
+    label: "Verify",
+    icon: Search,
+    confirmMessage:
+      "This will read all env vars from the Vercel project and report which are configured, pending, or missing.",
+  },
+  add_domain: {
+    label: "Add Domain",
+    icon: Globe,
+    confirmMessage:
+      "This will add the custom domain to the Vercel project. The client will still need to configure DNS records.",
+  },
+  send_assets_email: {
+    label: "Send Email",
+    icon: Send,
+    confirmMessage:
+      'This will send the "We need your assets" email to the client.',
+  },
+  send_review_email: {
+    label: "Send Email",
+    icon: Send,
+    confirmMessage:
+      'This will send the "Ready for review" email to the client with the staging URL.',
+  },
+  send_live_email: {
+    label: "Send Email",
+    icon: Send,
+    confirmMessage:
+      'This will send the "Portal is live" email to the client.',
+  },
+  verify_migration: {
+    label: "Verify",
+    icon: Search,
+    confirmMessage:
+      "This will hit the deployed /api/status endpoint to verify the application is running.",
+  },
+  verify_ssl: {
+    label: "Verify SSL",
+    icon: Lock,
+    confirmMessage:
+      "This will check the custom domain for valid HTTPS and SSL certificate.",
+  },
+  lighthouse_audit: {
+    label: "Run Audit",
+    icon: Zap,
+    confirmMessage:
+      "This will run a Google PageSpeed Insights audit on the site. This may take up to 60 seconds.",
+  },
+  mark_live: {
+    label: "Go Live",
+    icon: Rocket,
+    confirmMessage:
+      "This will set the project status to LIVE and record the launch date. This cannot be undone easily.",
+  },
 };
 
 export function ProjectTasks({ projectId, initialTasks }: Props) {
@@ -46,6 +124,10 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
   });
   const [expandedDescriptions, setExpandedDescriptions] = useState<Record<string, boolean>>({});
   const [savingTasks, setSavingTasks] = useState<Record<string, boolean>>({});
+  const [executingTasks, setExecutingTasks] = useState<Record<string, boolean>>({});
+  const [executionResults, setExecutionResults] = useState<
+    Record<string, { success: boolean; message: string; details?: Record<string, unknown> }>
+  >({});
   const [addingPhase, setAddingPhase] = useState<number | null>(null);
   const [newTaskLabel, setNewTaskLabel] = useState("");
   const [newTaskSaving, setNewTaskSaving] = useState(false);
@@ -85,6 +167,67 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
     }
   }
 
+  async function executeTask(taskId: string, action: string) {
+    const config = AUTOMATION_CONFIG[action];
+    if (!config) return;
+
+    const confirmed = window.confirm(`${config.confirmMessage}\n\nContinue?`);
+    if (!confirmed) return;
+
+    setExecutingTasks((prev) => ({ ...prev, [taskId]: true }));
+    // Clear previous result
+    setExecutionResults((prev) => {
+      const next = { ...prev };
+      delete next[taskId];
+      return next;
+    });
+    // Auto-expand description to show result
+    setExpandedDescriptions((prev) => ({ ...prev, [taskId]: true }));
+
+    try {
+      const res = await fetch(
+        `/api/admin/projects/${projectId}/tasks/${taskId}/execute`,
+        { method: "POST" }
+      );
+
+      const data = await res.json();
+
+      setExecutionResults((prev) => ({
+        ...prev,
+        [taskId]: {
+          success: data.success,
+          message: data.message,
+          details: data.details ?? undefined,
+        },
+      }));
+
+      // If auto-completed, update task state
+      if (data.autoCompleted && data.task) {
+        setTasks((prev) =>
+          prev.map((t) =>
+            t.id === taskId
+              ? {
+                  ...t,
+                  completed: data.task.completed,
+                  completedAt: data.task.completedAt,
+                }
+              : t
+          )
+        );
+      }
+    } catch (err) {
+      setExecutionResults((prev) => ({
+        ...prev,
+        [taskId]: {
+          success: false,
+          message: `Network error: ${(err as Error).message}`,
+        },
+      }));
+    } finally {
+      setExecutingTasks((prev) => ({ ...prev, [taskId]: false }));
+    }
+  }
+
   async function handleAddTask(phase: number) {
     if (!newTaskLabel.trim()) return;
     setNewTaskSaving(true);
@@ -96,7 +239,7 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
       });
       if (res.ok) {
         const { task } = await res.json();
-        setTasks((prev) => [...prev, task]);
+        setTasks((prev) => [...prev, { ...task, automationAction: null, automationResult: null }]);
         setNewTaskLabel("");
         setAddingPhase(null);
       }
@@ -183,7 +326,14 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                 <div className="border-t border-[#E5E1DB]">
                   {phaseTasks.map((task) => {
                     const isSaving = savingTasks[task.id];
+                    const isExecuting = executingTasks[task.id];
                     const isDescExpanded = expandedDescriptions[task.id];
+                    const execResult = executionResults[task.id];
+                    const automationConfig = task.automationAction
+                      ? AUTOMATION_CONFIG[task.automationAction]
+                      : null;
+
+                    const ActionIcon = automationConfig?.icon ?? Play;
 
                     return (
                       <div
@@ -229,6 +379,28 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                                 {task.description}
                               </p>
                             )}
+                            {/* Execution result */}
+                            {isDescExpanded && execResult && (
+                              <div
+                                className={`mt-1.5 px-2 py-1.5 text-[10px] font-mono leading-relaxed border ${
+                                  execResult.success
+                                    ? "bg-green-50 border-green-200 text-green-800"
+                                    : "bg-red-50 border-red-200 text-red-800"
+                                }`}
+                              >
+                                <p>{execResult.message}</p>
+                                {execResult.details && (
+                                  <details className="mt-1">
+                                    <summary className="cursor-pointer text-[9px] opacity-60">
+                                      Details
+                                    </summary>
+                                    <pre className="mt-1 text-[9px] whitespace-pre-wrap break-all opacity-80">
+                                      {JSON.stringify(execResult.details, null, 2)}
+                                    </pre>
+                                  </details>
+                                )}
+                              </div>
+                            )}
                             {task.completedAt && (
                               <span className="text-[9px] font-mono text-green-600/60 flex items-center gap-0.5 mt-0.5">
                                 <Clock className="h-2.5 w-2.5" />
@@ -239,6 +411,24 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                               </span>
                             )}
                           </div>
+
+                          {/* Automation run button */}
+                          {automationConfig && !task.completed && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => executeTask(task.id, task.automationAction!)}
+                              disabled={isExecuting}
+                              className="mt-0 shrink-0 h-6 px-2 text-[10px] font-mono gap-1 border-[#E5E1DB] hover:bg-[#F9F7F4]"
+                            >
+                              {isExecuting ? (
+                                <Loader2 className="h-3 w-3 animate-spin" />
+                              ) : (
+                                <ActionIcon className="h-3 w-3" />
+                              )}
+                              {isExecuting ? "Running..." : automationConfig.label}
+                            </Button>
+                          )}
 
                           {/* External link */}
                           {task.externalUrl && (

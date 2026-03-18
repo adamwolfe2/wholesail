@@ -8,6 +8,7 @@ export type DefaultTask = {
   description: string;
   phase: number;
   externalUrl?: string;
+  automationAction?: string;
 };
 
 const CAL_URL = process.env.NEXT_PUBLIC_CAL_URL || "https://cal.com/adamwolfe/wholesail";
@@ -70,24 +71,28 @@ export function getDefaultProjectTasks(): DefaultTask[] {
         "In Stripe dashboard > Webhooks > Add endpoint. URL: {siteUrl}/api/webhooks/stripe. Copy signing secret to STRIPE_WEBHOOK_SECRET env var.",
       phase: 2,
       externalUrl: "https://dashboard.stripe.com/webhooks",
+      automationAction: "stripe_webhook",
     },
     {
       label: "Verify all env vars configured",
       description:
         "Check the Environment Variables card on this page. Every var should show green (configured). Fix any showing yellow (pending) or red (missing).",
       phase: 2,
+      automationAction: "verify_env_vars",
     },
     {
       label: "Connect custom domain",
       description:
         "In Vercel project settings > Domains > Add the client's domain. Update DNS records. Verify SSL certificate is issued.",
       phase: 2,
+      automationAction: "add_domain",
     },
     {
       label: "Run database migration",
       description:
         "Vercel auto-runs prisma db push on first deploy. Verify by checking the deployment logs in Vercel for 'Your database is now in sync'.",
       phase: 2,
+      automationAction: "verify_migration",
     },
 
     // ── Phase 3 — Content & Data ───────────────────────────────────────────
@@ -96,6 +101,7 @@ export function getDefaultProjectTasks(): DefaultTask[] {
       description:
         "Send the 'We need your assets' email from the Communications tab. Need: logo (SVG/PNG), product catalog (CSV/spreadsheet), marketing photos, brand colors.",
       phase: 3,
+      automationAction: "send_assets_email",
     },
     {
       label: "Import product catalog",
@@ -158,12 +164,14 @@ export function getDefaultProjectTasks(): DefaultTask[] {
       description:
         "Visit the custom domain in a browser. Verify HTTPS, correct SSL certificate, and no mixed content warnings.",
       phase: 4,
+      automationAction: "verify_ssl",
     },
     {
       label: "Run Lighthouse audit",
       description:
         "Open Chrome DevTools > Lighthouse > Run audit on the homepage. Target: Performance >80, Accessibility >90, SEO >90.",
       phase: 4,
+      automationAction: "lighthouse_audit",
     },
 
     // ── Phase 5 — Launch ───────────────────────────────────────────────────
@@ -172,6 +180,7 @@ export function getDefaultProjectTasks(): DefaultTask[] {
       description:
         "Send the 'Ready for your review' email with the staging URL. Ask client to verify branding, products, and test an order.",
       phase: 5,
+      automationAction: "send_review_email",
     },
     {
       label: "Client approval received",
@@ -190,12 +199,14 @@ export function getDefaultProjectTasks(): DefaultTask[] {
       description:
         "Send the launch announcement email to the client with their portal URL, admin login instructions, and support contact.",
       phase: 5,
+      automationAction: "send_live_email",
     },
     {
       label: "Mark project as LIVE",
       description:
         "Change project status to LIVE using the status dropdown. This records the launch date automatically.",
       phase: 5,
+      automationAction: "mark_live",
     },
   ];
 }

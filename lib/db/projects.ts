@@ -147,6 +147,7 @@ export async function convertIntakeToProject(intakeId: string) {
             description: t.description,
             phase: t.phase,
             externalUrl: t.externalUrl ?? null,
+            automationAction: t.automationAction ?? null,
           })),
         },
       },
