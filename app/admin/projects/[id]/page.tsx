@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
-
-export const metadata: Metadata = { title: "Project Details" };
 import { prisma } from "@/lib/db";
 import { getProjectById } from "@/lib/db/projects";
 import { getProjectCosts } from "@/lib/db/costs";
@@ -39,6 +37,7 @@ import { ProjectCommunications } from "./project-communications";
 import { StripeConnectBadge } from "./stripe-connect-badge";
 import { ENV_VARS } from "@/lib/client-data";
 
+export const metadata: Metadata = { title: "Project Details" };
 export const dynamic = "force-dynamic";
 
 const STATUS_COLORS: Record<string, string> = {

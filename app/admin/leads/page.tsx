@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { prisma } from '@/lib/db'
-
-export const metadata: Metadata = { title: "Leads" };
 import { Users, UserPlus, Star, CheckCircle } from 'lucide-react'
 import { LeadsClient } from './leads-client'
+
+export const metadata: Metadata = { title: "Leads" };
 
 export default async function LeadsPipelinePage() {
   let leads: Awaited<ReturnType<typeof getLeads>> = []

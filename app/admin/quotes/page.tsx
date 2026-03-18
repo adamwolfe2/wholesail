@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
 import { Plus, ArrowRight } from "lucide-react";
+import { quoteStatusColors } from "@/lib/status-colors";
 
 export const metadata: Metadata = { title: "Quotes" };
-import { quoteStatusColors } from "@/lib/status-colors";
 
 export default async function AdminQuotesPage() {
   let quotes: Awaited<ReturnType<typeof getQuotes>> = [];

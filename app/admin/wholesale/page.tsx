@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Link from 'next/link'
 import { prisma } from '@/lib/db'
 import { WholesaleStatus } from '@prisma/client'
-
-export const metadata: Metadata = { title: "Wholesale Applications" };
 import { Badge } from '@/components/ui/badge'
 import { EmptyState } from '@/components/empty-state'
 import { FileCheck, UserPlus } from 'lucide-react'
+
+export const metadata: Metadata = { title: "Wholesale Applications" };
 
 type StatusFilter = 'ALL' | WholesaleStatus
 type SourceFilter = 'applications' | 'partners'

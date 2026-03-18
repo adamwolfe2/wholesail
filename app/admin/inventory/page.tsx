@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
-
-export const metadata: Metadata = { title: "Inventory" };
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AlertCircle, Package, TrendingDown, AlertTriangle, Boxes } from "lucide-react";
 import { InventoryTable } from "./inventory-table";
 import { AddTrackingButtons } from "./add-tracking-buttons";
+
+export const metadata: Metadata = { title: "Inventory" };
 
 async function getInventoryData() {
   const ninetyDaysAgo = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);

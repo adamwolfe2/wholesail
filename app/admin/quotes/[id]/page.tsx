@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
 import { ArrowLeft, ExternalLink, Download } from "lucide-react";
-
-export const metadata: Metadata = { title: "Quote Details" };
 import { quoteStatusColors } from "@/lib/status-colors";
 import { QuoteActions } from "./quote-actions";
+
+export const metadata: Metadata = { title: "Quote Details" };
 
 interface QuoteDetailPageProps {
   params: Promise<{ id: string }>;

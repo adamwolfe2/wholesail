@@ -3,8 +3,6 @@ import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
-
-export const metadata: Metadata = { title: "CEO Dashboard" };
 import {
   DollarSign,
   Users,
@@ -19,6 +17,8 @@ import {
 import { CeoCharts } from "./ceo-charts";
 import { CohortChart } from "./cohort-chart";
 import { ProductTrends } from "./product-trends";
+
+export const metadata: Metadata = { title: "CEO Dashboard" };
 
 export default async function CeoCommandCenter() {
   // ── Date anchors ──────────────────────────────────────────────────────────

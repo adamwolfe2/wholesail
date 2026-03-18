@@ -55,6 +55,9 @@ import { StripeConnectPanel } from './stripe-connect-panel'
 import { NewTaskDialog } from '@/components/new-task-dialog'
 import { TaskActions } from '@/app/admin/reps/[id]/task-actions'
 
+export const metadata: Metadata = { title: "Client Details" };
+export const dynamic = 'force-dynamic'
+
 const priorityColors: Record<string, string> = {
   URGENT: 'bg-red-100 text-red-700 border-red-200',
   HIGH: 'bg-orange-100 text-orange-700 border-orange-200',

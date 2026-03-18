@@ -3,8 +3,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
-
-export const metadata: Metadata = { title: "Product Details" };
 import {
   Card,
   CardContent,
@@ -36,6 +34,8 @@ import {
 } from "lucide-react";
 import { PriceHistoryChart } from "./price-history-chart";
 import { DistributorAssignmentCard } from "./distributor-assignment";
+
+export const metadata: Metadata = { title: "Product Details" };
 
 interface ProductDetailPageProps {
   params: Promise<{ id: string }>;

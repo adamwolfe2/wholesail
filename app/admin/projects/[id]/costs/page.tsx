@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
-
-export const metadata: Metadata = { title: "Project Costs" };
 import { getProjectCosts } from "@/lib/db/costs";
 import {
   Card,
@@ -13,6 +11,8 @@ import {
 } from "@/components/ui/card";
 import { DollarSign, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+
+export const metadata: Metadata = { title: "Project Costs" };
 
 const SERVICE_LABELS: Record<string, string> = {
   anthropic: "Anthropic (AI)",

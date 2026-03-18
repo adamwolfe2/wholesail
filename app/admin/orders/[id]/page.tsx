@@ -3,8 +3,6 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
-
-export const metadata: Metadata = { title: "Order Details" };
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -33,6 +31,8 @@ import {
 import { orderStatusColors } from "@/lib/status-colors";
 import { OrderDeliveryChecklist } from "@/components/order-delivery-checklist";
 import { AssignDistributor } from "./assign-distributor";
+
+export const metadata: Metadata = { title: "Order Details" };
 
 const statusColors = orderStatusColors;
 
