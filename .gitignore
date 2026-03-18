@@ -3,7 +3,11 @@ node_modules/
 out/
 .env
 .env.local
+.env*.local
+.env.production
 *.tsbuildinfo
 next-env.d.ts
 .vercel
-.env*.local
+.DS_Store
+*.pem
+.sentry-*

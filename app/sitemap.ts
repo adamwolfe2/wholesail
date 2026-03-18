@@ -1,6 +1,6 @@
 import { MetadataRoute } from "next";
 
-const BASE_URL = "https://wholesailhub.com";
+const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
