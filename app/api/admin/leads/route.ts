@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json().catch(() => ({}))
-    const { name, email, phone, restaurant, source, notes, status } = body
+    const { name, email, phone, company, source, notes, status } = body
 
     if (!name || typeof name !== 'string') {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 })
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
         name: name.trim(),
         email: email.toLowerCase().trim(),
         phone: phone?.trim() || null,
-        restaurant: restaurant?.trim() || null,
+        company: company?.trim() || null,
         source: source || 'website',
         notes: notes?.trim() || null,
         status: (status as LeadStatus) || 'NEW',

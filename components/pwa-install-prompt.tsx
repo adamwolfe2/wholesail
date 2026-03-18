@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-const DISMISSED_KEY = 'wholesail_pwa_dismissed'
+const DISMISSED_KEY = 'portal_pwa_dismissed'
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
@@ -52,7 +52,7 @@ export function PwaInstallPrompt() {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between gap-3 bg-[#0A0A0A] text-[#F9F7F4] px-4 py-3">
       <p className="text-sm font-medium leading-snug">
-        Install Wholesail on your home screen for faster ordering &rarr;
+        Install the app on your home screen for faster ordering &rarr;
       </p>
       <div className="flex items-center gap-2 shrink-0">
         <button

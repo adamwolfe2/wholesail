@@ -7,6 +7,7 @@ const resend = process.env.RESEND_API_KEY
 const FROM = process.env.RESEND_FROM_EMAIL || "Wholesail <noreply@wholesailhub.com>";
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "adam@wholesailhub.com";
 const BRAND_NAME = process.env.BRAND_NAME || "Wholesail";
+const BRAND_COLOR = process.env.BRAND_PRIMARY_COLOR || "#0A0A0A";
 
 function send(opts: { to: string; subject: string; html: string }) {
   if (!resend) {
@@ -108,7 +109,7 @@ export function sendIntakeNurtureDay3(data: {
         <p style="margin: 20px 0;">
           <a href="${bookingUrl}" style="
             display: inline-block;
-            background: #0A0A0A;
+            background: ${BRAND_COLOR};
             color: #FFFFFF;
             padding: 10px 20px;
             text-decoration: none;
@@ -152,7 +153,7 @@ export function sendIntakeNurtureDay7(data: {
         <p style="margin: 20px 0;">
           <a href="${bookingUrl}" style="
             display: inline-block;
-            background: #0A0A0A;
+            background: ${BRAND_COLOR};
             color: #FFFFFF;
             padding: 10px 20px;
             text-decoration: none;
@@ -265,7 +266,7 @@ export function sendStripeOnboardingEmail(params: {
         <p style="margin: 24px 0;">
           <a href="${params.onboardingUrl}" style="
             display: inline-block;
-            background: #0A0A0A;
+            background: ${BRAND_COLOR};
             color: #FFFFFF;
             padding: 12px 24px;
             text-decoration: none;

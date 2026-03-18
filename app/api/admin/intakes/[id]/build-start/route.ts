@@ -480,7 +480,7 @@ export async function POST(
       try {
         const vercelProject = await createVercelProject(
           repoName,
-          `adamwolfe2/${repoName}`
+          `${process.env.GITHUB_OWNER || 'adamwolfe2'}/${repoName}`
         );
         vercelProjectId = vercelProject.id;
 
@@ -906,7 +906,7 @@ export async function POST(
       process.env.WS_VERCEL_TOKEN
     ) {
       try {
-        const deployment = await triggerDeployment(vercelProjectId, `adamwolfe2/${repoName}`);
+        const deployment = await triggerDeployment(vercelProjectId, `${process.env.GITHUB_OWNER || 'adamwolfe2'}/${repoName}`);
         deploymentId = deployment.deploymentId;
 
         await logCost(projectId, {

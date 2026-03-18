@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import { getSiteUrl } from "@/lib/brand";
 
 function getStripe(): Stripe {
   if (!process.env.STRIPE_SECRET_KEY) {
@@ -50,8 +51,7 @@ export async function createConnectedAccount(
     },
   });
 
-  const appUrl =
-    process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com";
+  const appUrl = getSiteUrl();
 
   // Create an account onboarding link
   const accountLink = await stripe.accountLinks.create({
@@ -91,8 +91,7 @@ export async function refreshOnboardingLink(
   accountId: string
 ): Promise<string> {
   const stripe = getStripe();
-  const appUrl =
-    process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com";
+  const appUrl = getSiteUrl();
 
   const accountLink = await stripe.accountLinks.create({
     account: accountId,

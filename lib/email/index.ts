@@ -16,6 +16,7 @@ const OPS_NAME = process.env.OPS_NAME || "our team";
 const BRAND_NAME = process.env.BRAND_NAME || "Wholesail";
 const BRAND_LOCATION = process.env.BRAND_LOCATION || "";
 const BRAND_EMAIL = process.env.ADMIN_EMAIL || "${BRAND_EMAIL}";
+const BRAND_COLOR = process.env.BRAND_PRIMARY_COLOR || "#0A0A0A";
 
 // ---------------------------------------------------------------------------
 // buildBaseHtml — private helper that wraps content in the Wholesail branded
@@ -41,7 +42,7 @@ function buildBaseHtml({
   const ctaBlock =
     ctaText && ctaUrl
       ? `<tr><td style="padding:8px 32px 32px;">
-          <a href="${ctaUrl}" style="display:inline-block;background-color:#0A0A0A;color:#FFFFFF;font-size:13px;font-weight:600;text-decoration:none;padding:14px 28px;letter-spacing:0.06em;text-transform:uppercase;">${ctaText}</a>
+          <a href="${ctaUrl}" style="display:inline-block;background-color:${BRAND_COLOR};color:#FFFFFF;font-size:13px;font-weight:600;text-decoration:none;padding:14px 28px;letter-spacing:0.06em;text-transform:uppercase;">${ctaText}</a>
         </td></tr>`
       : "";
 
@@ -60,7 +61,7 @@ function buildBaseHtml({
       <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background-color:#FFFFFF;border:1px solid #E5E1DB;">
 
         <!-- HEADER: dark bar with brand name -->
-        <tr><td style="background-color:#0A0A0A;padding:24px 32px;">
+        <tr><td style="background-color:${BRAND_COLOR};padding:24px 32px;">
           <p style="margin:0;color:#FFFFFF;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">${BRAND_NAME}</p>
         </td></tr>
 

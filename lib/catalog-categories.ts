@@ -1,77 +1,107 @@
-// SAMPLE DATA — replace with client product categories
+// Override these categories in portal.config.ts or replace this file for client-specific catalogs
+
 export interface CatalogCategory {
-  slug: string           // URL slug: "truffles"
-  name: string           // Display name: "Truffles"
-  dbCategory: string     // Prisma category field value: "Truffles"
+  slug: string           // URL slug: "beverages"
+  name: string           // Display name: "Beverages"
+  dbCategory: string     // Prisma category field value: "Beverages"
   title: string          // SEO title
   description: string    // Meta description
   headline: string       // H1 on the page
   body: string           // 2-3 sentence intro paragraph
   keywords: string[]
+  icon?: string          // Optional icon identifier
+  seoTitle?: string      // Override for SEO <title> if different from title
+  seoDescription?: string // Override for SEO meta description
 }
 
-export const catalogCategories: CatalogCategory[] = [
+const defaultCategories: CatalogCategory[] = [
   {
-    slug: "truffles",
-    name: "Truffles",
-    dbCategory: "Truffles",
-    title: "Wholesale Truffles — Black & White Truffle Supplier | Wholesail",
-    description: "Wholesale black truffles, white truffles, and summer truffles for Michelin-starred restaurants, hotels, and private chefs. Same-day SoCal delivery. Nationwide 24-48hr.",
-    headline: "Wholesale Truffles",
-    body: "Wholesail sources fresh black and white truffles directly from Périgord, Alba, and the Pacific Northwest — available for same-day delivery across SoCal and 24-48hr nationwide. We supply Michelin-starred kitchens, luxury hotels, and private chefs with the freshest seasonal truffles available.",
-    keywords: ["wholesale truffles", "buy truffles wholesale", "black truffle supplier", "white truffle wholesale", "restaurant truffle supplier", "fresh truffles Los Angeles"],
+    slug: "beverages",
+    name: "Beverages",
+    dbCategory: "Beverages",
+    title: "Wholesale Beverages",
+    description: "Drinks and liquid products for your business. Order wholesale beverages with reliable delivery and competitive pricing.",
+    headline: "Wholesale Beverages",
+    body: "A full selection of wholesale beverages for your business — from craft sodas and juices to specialty drinks. Competitive pricing with flexible delivery schedules.",
+    keywords: ["wholesale beverages", "bulk drinks", "beverage distributor", "wholesale drinks supplier"],
   },
   {
-    slug: "caviar",
-    name: "Caviar",
-    dbCategory: "Caviar",
-    title: "Wholesale Caviar — Kaluga, Osetra & Sturgeon Supplier | Wholesail",
-    description: "Premium wholesale caviar including Kaluga Hybrid 000, Osetra, and Sevruga for fine dining restaurants, hotels, and catering. Cold-chain delivery nationwide.",
-    headline: "Wholesale Caviar",
-    body: "From Kaluga Hybrid 000 to Osetra and beyond, Wholesail carries the full premium caviar spectrum. All caviar ships cold-chain — insulated packaging with ice packs — to preserve the bead integrity and flavor profile your program demands.",
-    keywords: ["wholesale caviar", "buy caviar wholesale", "Kaluga caviar supplier", "Osetra caviar wholesale", "restaurant caviar supplier", "caviar distributor Los Angeles"],
+    slug: "dry-goods",
+    name: "Dry Goods",
+    dbCategory: "Dry Goods",
+    title: "Wholesale Dry Goods",
+    description: "Shelf-stable dry goods and pantry staples in bulk. Wholesale pricing for restaurants, hotels, and food service operations.",
+    headline: "Wholesale Dry Goods",
+    body: "Pantry staples, grains, flours, and shelf-stable ingredients — all available at wholesale pricing. Reliable inventory with consistent quality for your operation.",
+    keywords: ["wholesale dry goods", "bulk pantry staples", "dry goods distributor", "wholesale grains"],
   },
   {
-    slug: "wagyu",
-    name: "Wagyu & Protein",
-    dbCategory: "Wagyu & Protein",
-    title: "Wholesale A5 Wagyu & Premium Proteins | Wholesail",
-    description: "Wholesale A5 Japanese Wagyu, premium beef, and specialty proteins for fine dining restaurants. BMS 8-12, sourced from Miyazaki, Kagoshima, and Hokkaido prefectures.",
-    headline: "Wholesale Wagyu & Premium Proteins",
-    body: "Authentic A5 Japanese Wagyu from Miyazaki, Kagoshima, and Hokkaido — verified grade with BMS 8-12 marbling. Wholesail handles cold-chain logistics so your striploin and ribeye arrive at the exact temperature needed for your program.",
-    keywords: ["wholesale wagyu", "A5 wagyu supplier", "wholesale wagyu beef", "Japanese wagyu distributor", "premium beef wholesale", "wagyu Los Angeles"],
+    slug: "frozen",
+    name: "Frozen",
+    dbCategory: "Frozen",
+    title: "Wholesale Frozen Products",
+    description: "Frozen products with cold-chain delivery. Wholesale pricing for restaurants, catering, and food service businesses.",
+    headline: "Wholesale Frozen Products",
+    body: "Premium frozen products delivered with full cold-chain integrity. From proteins to prepared items, every order ships temperature-controlled to preserve quality.",
+    keywords: ["wholesale frozen food", "frozen products distributor", "bulk frozen goods", "cold chain delivery"],
   },
   {
-    slug: "foie-gras",
-    name: "Foie Gras & Duck",
-    dbCategory: "Foie Gras & Duck",
-    title: "Wholesale Foie Gras & Duck — Grade A Supplier | Wholesail",
-    description: "Grade A foie gras, duck confit, magret, and specialty duck products for restaurants and catering. Ships to all states except California.",
-    headline: "Wholesale Foie Gras & Duck",
-    body: "Wholesail carries Grade A whole lobe foie gras, Hudson Valley duck, magret, and duck confit — the full program for any serious kitchen. All duck and foie products ship cold-chain. We supply chefs across the country (note: foie gras ships to all states except California).",
-    keywords: ["wholesale foie gras", "foie gras supplier", "Grade A foie gras", "duck wholesale", "duck confit wholesale", "restaurant foie gras"],
+    slug: "refrigerated",
+    name: "Refrigerated",
+    dbCategory: "Refrigerated",
+    title: "Wholesale Refrigerated Products",
+    description: "Fresh refrigerated products with temperature-controlled delivery. Wholesale pricing for food service and hospitality.",
+    headline: "Wholesale Refrigerated Products",
+    body: "Fresh dairy, meats, produce, and perishables — all delivered with temperature-controlled logistics. Quality you can count on, delivered on your schedule.",
+    keywords: ["wholesale refrigerated", "fresh wholesale products", "refrigerated distributor", "cold storage wholesale"],
   },
   {
-    slug: "salumi",
-    name: "Salumi & Charcuterie",
-    dbCategory: "Salumi & Charcuterie",
-    title: "Wholesale Italian Salumi & Charcuterie | Wholesail",
-    description: "Wholesale imported Italian salumi, prosciutto, salami, and artisan charcuterie for restaurants, hotels, and catering. Same-day SoCal delivery.",
-    headline: "Wholesale Salumi & Charcuterie",
-    body: "From bison salami to imported Italian prosciutto and artisan coppa, Wholesail's charcuterie selection covers every program need. Hand-selected from the best producers — consistent quality, reliable availability.",
-    keywords: ["wholesale salumi", "Italian charcuterie wholesale", "prosciutto wholesale", "salami wholesale", "artisan charcuterie supplier"],
+    slug: "supplies",
+    name: "Supplies",
+    dbCategory: "Supplies",
+    title: "Wholesale Supplies",
+    description: "Business supplies and consumables at wholesale prices. Everything your operation needs to run smoothly.",
+    headline: "Wholesale Supplies",
+    body: "Packaging, disposables, cleaning products, and operational supplies — all at wholesale pricing. Keep your business stocked without breaking the budget.",
+    keywords: ["wholesale supplies", "business supplies bulk", "restaurant supplies wholesale", "operational supplies"],
   },
   {
-    slug: "coffee-tea",
-    name: "Coffee & Tea",
-    dbCategory: "Coffee & Tea",
-    title: "Wholesale Specialty Coffee & Premium Tea | Wholesail",
-    description: "Wholesale specialty coffee, matcha, and premium tea for hotels, restaurants, and hospitality programs. Curated for fine dining service.",
-    headline: "Wholesale Coffee & Tea",
-    body: "Wholesail's coffee and tea selection is curated for hospitality programs that don't compromise — specialty-grade coffee and ceremonial matcha alongside premium teas for dining room service.",
-    keywords: ["wholesale specialty coffee", "matcha wholesale", "premium tea wholesale", "restaurant coffee supplier", "hospitality beverage wholesale"],
+    slug: "equipment",
+    name: "Equipment",
+    dbCategory: "Equipment",
+    title: "Wholesale Equipment",
+    description: "Commercial equipment and tools for your business. Wholesale pricing on professional-grade gear.",
+    headline: "Wholesale Equipment",
+    body: "Professional-grade equipment for your operation. From small wares to larger tools, find what you need at competitive wholesale prices.",
+    keywords: ["wholesale equipment", "commercial equipment", "business equipment wholesale", "professional equipment"],
+  },
+  {
+    slug: "seasonal",
+    name: "Seasonal",
+    dbCategory: "Seasonal",
+    title: "Seasonal Products",
+    description: "Limited-availability seasonal products at wholesale prices. Fresh seasonal items with timely delivery.",
+    headline: "Seasonal Products",
+    body: "Seasonal specialties available for a limited time. We source the best seasonal products and make them available at wholesale pricing while supplies last.",
+    keywords: ["seasonal wholesale", "seasonal products", "limited availability wholesale", "seasonal specialties"],
+  },
+  {
+    slug: "specialty",
+    name: "Specialty",
+    dbCategory: "Specialty",
+    title: "Specialty Products",
+    description: "Premium specialty products at wholesale prices. Curated selection for discerning businesses.",
+    headline: "Specialty Products",
+    body: "A curated selection of specialty and premium products for businesses that demand the best. Unique items sourced from trusted producers.",
+    keywords: ["wholesale specialty products", "premium wholesale", "specialty distributor", "curated wholesale"],
   },
 ]
+
+export const catalogCategories: CatalogCategory[] = defaultCategories
+
+export function getCategories(): CatalogCategory[] {
+  return catalogCategories
+}
 
 export function getCategoryBySlug(slug: string): CatalogCategory | undefined {
   return catalogCategories.find(c => c.slug === slug)

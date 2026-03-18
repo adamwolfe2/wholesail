@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
         data: {
           name: first_name,
           email: emailLower,
-          restaurant: company || null,
+          company: company || null,
           website: website || null,
           source: 'rep',
           emailBisonId,

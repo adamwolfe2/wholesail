@@ -6,12 +6,16 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Instagram, ArrowUpRight } from 'lucide-react'
 
+const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'
+const INSTAGRAM_URL = process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://www.instagram.com/wholesailhub/'
+const INSTAGRAM_HANDLE = process.env.NEXT_PUBLIC_INSTAGRAM_HANDLE || '@wholesailhub'
+
 const FAN_IMAGES = [
-  { src: '/food-1.jpg', alt: 'Partner kitchen creation — Wholesail' },
-  { src: '/food-2.jpg', alt: 'Chef creation with Wholesail caviar' },
-  { src: '/food-3.jpg', alt: 'Fine dining with Wholesail truffles' },
-  { src: '/food-4.jpg', alt: 'Luxury plating — Wholesail partners' },
-  { src: '/food-5.jpg', alt: 'Restaurant creation — Wholesail ingredients' },
+  { src: '/food-1.jpg', alt: `Partner creation — ${BRAND_NAME}` },
+  { src: '/food-2.jpg', alt: `Product showcase — ${BRAND_NAME}` },
+  { src: '/food-3.jpg', alt: `Featured product — ${BRAND_NAME}` },
+  { src: '/food-4.jpg', alt: `Partner spotlight — ${BRAND_NAME}` },
+  { src: '/food-5.jpg', alt: `Product highlight — ${BRAND_NAME}` },
 ]
 
 function StaticGrid() {
@@ -21,7 +25,7 @@ function StaticGrid() {
         {FAN_IMAGES.map((img, i) => (
           <a
             key={i}
-            href="https://www.instagram.com/wholesailhub/"
+            href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="relative aspect-square overflow-hidden bg-[#F5F3F0] group"
@@ -43,7 +47,7 @@ function StaticGrid() {
         className="flex items-center justify-center gap-2.5 w-full border border-[#0A0A0A] text-[#0A0A0A] py-3.5 text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors"
       >
         <Instagram className="h-4 w-4" />
-        Follow @wholesailhub on Instagram
+        Follow {INSTAGRAM_HANDLE} on Instagram
         <ArrowUpRight className="h-3.5 w-3.5" />
       </a>
     </div>
@@ -90,7 +94,7 @@ export function InstagramFeed() {
           onLoad={() => setIframeLoaded(true)}
           src="https://app.mirror-app.com/feed-instagram/c3d7362d-b7a9-46dc-80fd-caedde01c5e6/preview"
           style={{ width: '100%', border: 'none', overflow: 'hidden', minHeight: '600px' }}
-          title="Wholesail Instagram Feed"
+          title={`${BRAND_NAME} Instagram Feed`}
         />
       </div>
 
@@ -100,7 +104,7 @@ export function InstagramFeed() {
           {FAN_IMAGES.map((img, i) => (
             <a
               key={i}
-              href="https://www.instagram.com/wholesailhub/"
+              href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
               className={`relative aspect-square overflow-hidden bg-[#F5F3F0]${i === 0 ? ' col-span-2' : ''}`}
@@ -122,7 +126,7 @@ export function InstagramFeed() {
           className="flex items-center justify-center gap-2.5 w-full border border-[#0A0A0A] text-[#0A0A0A] py-3.5 text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors"
         >
           <Instagram className="h-4 w-4" />
-          Follow @wholesailhub on Instagram
+          Follow {INSTAGRAM_HANDLE} on Instagram
           <ArrowUpRight className="h-3.5 w-3.5" />
         </a>
       </div>

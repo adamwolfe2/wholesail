@@ -20,7 +20,7 @@ declare global {
   interface Window {
     Cal?: CalFunction;
     /** Guard flag set by our CalEmbed component to prevent double-init */
-    __calWholesailInitialized?: boolean;
+    __calPortalInitialized?: boolean;
     iFrameSetup?: (el: HTMLIFrameElement) => void;
   }
 }

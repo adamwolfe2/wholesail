@@ -74,7 +74,7 @@ export async function POST(req: NextRequest) {
         name: fullName,
         email: email.toLowerCase().trim(),
         phone: phone || null,
-        restaurant: company || null,
+        company: company || null,
         website: website || null,
         source: 'rep',
         notes: notesArr.join('\n') || null,

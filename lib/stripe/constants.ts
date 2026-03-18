@@ -14,8 +14,8 @@ export type NetTermDays = (typeof NET_TERM_OPTIONS)[number];
 
 /** Tax rates by jurisdiction (California focus) */
 export const TAX_RATES = {
-  /** Default CA rate for food service / specialty goods */
-  CA_DEFAULT: 0.0875,
+  /** Default rate — reads from env var with CA rate as fallback */
+  CA_DEFAULT: Number(process.env.DEFAULT_TAX_RATE) || 0.0875,
   /** Rate for tax-exempt orgs (restaurant resale, etc.) */
   EXEMPT: 0,
 } as const;

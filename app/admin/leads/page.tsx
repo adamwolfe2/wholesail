@@ -18,7 +18,7 @@ export default async function LeadsPipelinePage() {
     name: l.name,
     email: l.email,
     phone: l.phone,
-    restaurant: l.restaurant,
+    company: l.company,
     website: l.website,
     source: l.source,
     status: l.status as 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'CONVERTED' | 'LOST',

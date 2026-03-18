@@ -10,8 +10,8 @@ import {
 import { sendDistributorOrderNotification } from "@/lib/email";
 import { createOrderWithRetry } from "@/lib/order-number";
 
-const FREE_DELIVERY_THRESHOLD = 500;
-const STANDARD_DELIVERY_FEE = 25;
+const FREE_DELIVERY_THRESHOLD = Number(process.env.FREE_DELIVERY_THRESHOLD) || 500;
+const STANDARD_DELIVERY_FEE = Number(process.env.STANDARD_DELIVERY_FEE) || 25;
 
 // US state-level sales tax rates (representative — swap for TaxJar/Avalara for exact rates)
 const STATE_TAX_RATES: Record<string, number> = {

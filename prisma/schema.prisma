@@ -820,7 +820,7 @@ model Lead {
   name           String
   email          String     @unique
   phone          String?
-  restaurant     String?
+  company        String?    @map("restaurant")
   website        String?
   source         String     @default("giveaway")
   status         LeadStatus @default(NEW)

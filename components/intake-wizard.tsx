@@ -899,11 +899,13 @@ function Step3({
 }
 
 // ── Cal.com Embed ────────────────────────────────────────────────────────
+const CAL_NAMESPACE = process.env.NEXT_PUBLIC_CAL_NAMESPACE || 'wholesail'
+
 function CalEmbed({ name, email }: { name?: string; email?: string }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.__calWholesailInitialized) return;
-    window.__calWholesailInitialized = true;
+    if (window.__calPortalInitialized) return;
+    window.__calPortalInitialized = true;
 
     if (!window.Cal) {
       (function (C: Window, A: string, L: string) {
@@ -941,9 +943,9 @@ function CalEmbed({ name, email }: { name?: string; email?: string }) {
     }
 
     const Cal = window.Cal!;
-    Cal("init", "wholesail", { origin: "https://app.cal.com" });
-    Cal.ns.wholesail("inline", {
-      elementOrSelector: "#my-cal-inline-wholesail",
+    Cal("init", CAL_NAMESPACE, { origin: "https://app.cal.com" });
+    Cal.ns[CAL_NAMESPACE]("inline", {
+      elementOrSelector: "#my-cal-inline",
       config: {
         layout: "month_view",
         useSlotsViewOnSmallScreen: "true",
@@ -952,7 +954,7 @@ function CalEmbed({ name, email }: { name?: string; email?: string }) {
       },
       calLink: process.env.NEXT_PUBLIC_CAL_LINK ?? "adamwolfe/wholesail",
     });
-    Cal.ns.wholesail("ui", {
+    Cal.ns[CAL_NAMESPACE]("ui", {
       theme: "light",
       cssVarsPerTheme: { light: { "cal-brand": "#5194ca" } },
       hideEventTypeDetails: true,
@@ -962,7 +964,7 @@ function CalEmbed({ name, email }: { name?: string; email?: string }) {
 
   return (
     <div
-      id="my-cal-inline-wholesail"
+      id="my-cal-inline"
       style={{ width: "100%", minHeight: "660px", overflow: "scroll" }}
     />
   );
@@ -1067,7 +1069,7 @@ function Step4({ step1, step2, step3 }: { step1: Step1Data; step2: Step2Data; st
 
 // ── Main Wizard ──────────────────────────────────────────────────────────
 const STEPS = ["Company", "Distribution", "Features", "Book Call"];
-const DRAFT_KEY = "wholesail_intake_draft";
+const DRAFT_KEY = "portal_intake_draft";
 const DRAFT_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 const STEP1_DEFAULT: Step1Data = {

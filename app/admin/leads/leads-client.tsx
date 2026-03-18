@@ -24,7 +24,7 @@ interface Lead {
   name: string
   email: string
   phone: string | null
-  restaurant: string | null
+  company: string | null
   website: string | null
   source: string
   status: LeadStatus
@@ -175,7 +175,7 @@ function AddLeadTab({ onLeadAdded }: { onLeadAdded: (lead: Lead) => void }) {
         emailBisonId: data.lead.emailBisonId ?? null,
         website: data.lead.website ?? null,
         phone: data.lead.phone ?? null,
-        restaurant: data.lead.restaurant ?? null,
+        company: data.lead.company ?? null,
         notes: data.lead.notes ?? null,
       })
       setForm({ firstName: '', lastName: '', email: '', company: '', website: '', phone: '' })
@@ -562,7 +562,7 @@ function PipelineTab({
   const [isPending, startTransition] = useTransition()
 
   // Quick-add form (plain add without campaign push)
-  const [form, setForm] = useState({ name: '', email: '', phone: '', restaurant: '', source: 'website', notes: '' })
+  const [form, setForm] = useState({ name: '', email: '', phone: '', company: '', source: 'website', notes: '' })
   const [formLoading, setFormLoading] = useState(false)
   const [formError, setFormError] = useState('')
 
@@ -594,7 +594,7 @@ function PipelineTab({
       const data = await res.json()
       if (!res.ok) { setFormError(data.error || 'Failed'); return }
       setAddOpen(false)
-      setForm({ name: '', email: '', phone: '', restaurant: '', source: 'website', notes: '' })
+      setForm({ name: '', email: '', phone: '', company: '', source: 'website', notes: '' })
     } catch { setFormError('Network error') } finally { setFormLoading(false) }
   }
 
@@ -644,8 +644,8 @@ function PipelineTab({
                   <Input value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} placeholder="+1 (310) 555-0100" className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]" />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">Restaurant</Label>
-                  <Input value={form.restaurant} onChange={(e) => setForm((f) => ({ ...f, restaurant: e.target.value }))} placeholder="Restaurant name" className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]" />
+                  <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">Company</Label>
+                  <Input value={form.company} onChange={(e) => setForm((f) => ({ ...f, company: e.target.value }))} placeholder="Company name" className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]" />
                 </div>
               </div>
               {formError && <p className="text-red-600 text-xs">{formError}</p>}
@@ -688,7 +688,7 @@ function PipelineTab({
                     </td>
                     <td className="px-4 py-3 text-[#0A0A0A]/70 font-mono text-xs hidden sm:table-cell">{lead.email}</td>
                     <td className="px-4 py-3 text-[#0A0A0A]/60 hidden lg:table-cell">
-                      {lead.restaurant || <span className="text-[#0A0A0A]/25">—</span>}
+                      {lead.company || <span className="text-[#0A0A0A]/25">—</span>}
                     </td>
                     <td className="px-4 py-3 hidden lg:table-cell">
                       {lead.website ? (

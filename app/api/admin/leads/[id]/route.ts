@@ -11,7 +11,7 @@ const patchLeadSchema = z.object({
   notes: z.string().max(5000).nullable().optional(),
   name: z.string().min(1).max(200).optional(),
   phone: z.string().max(50).nullable().optional(),
-  restaurant: z.string().max(200).nullable().optional(),
+  company: z.string().max(200).nullable().optional(),
   source: z.string().max(100).nullable().optional(),
 })
 
@@ -29,14 +29,14 @@ export async function PATCH(
     if (!parsed.success) {
       return NextResponse.json({ error: 'Invalid input', details: parsed.error.flatten() }, { status: 400 })
     }
-    const { status, notes, name, phone, restaurant, source } = parsed.data
+    const { status, notes, name, phone, company, source } = parsed.data
 
     const data: Record<string, unknown> = {}
     if (status !== undefined) data.status = status
     if (notes !== undefined) data.notes = notes
     if (name !== undefined) data.name = name
     if (phone !== undefined) data.phone = phone
-    if (restaurant !== undefined) data.restaurant = restaurant
+    if (company !== undefined) data.company = company
     if (source !== undefined) data.source = source
 
     const lead = await prisma.lead.update({ where: { id }, data })

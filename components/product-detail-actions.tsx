@@ -6,6 +6,7 @@ import { SignInButton } from '@clerk/nextjs'
 import { ShoppingCart, Check, Minus, Plus, LogIn } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ProductCard } from '@/components/product-card'
+import { BRAND_EMAIL } from '@/lib/brand'
 import type { Product } from '@/lib/products'
 
 interface ProductDetailActionsProps {
@@ -23,7 +24,7 @@ interface ProductDetailActionsProps {
   relatedProducts: Product[]
 }
 
-const RECENTLY_VIEWED_KEY = 'wholesail-recently-viewed'
+const RECENTLY_VIEWED_KEY = 'portal-recently-viewed'
 const MAX_RECENTLY_VIEWED = 5
 
 interface RecentlyViewedItem {
@@ -102,7 +103,7 @@ export function ProductDetailActions({ product, isSignedIn, relatedProducts }: P
               This product is priced at market rate. Contact us for today&apos;s pricing and availability.
             </p>
             <a
-              href="mailto:orders@wholesailhub.com"
+              href={`mailto:${BRAND_EMAIL}`}
               className="mt-3 inline-flex items-center gap-2 text-sm font-medium text-[#0A0A0A] underline underline-offset-2 hover:opacity-70 transition-opacity"
             >
               Contact for pricing
