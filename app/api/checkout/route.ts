@@ -346,12 +346,12 @@ export async function POST(req: NextRequest) {
       ...(creditWarning ? { warning: creditWarning } : {}),
     });
   } catch (error) {
-    const err = error as Error & { type?: string; code?: string; statusCode?: number; param?: string; raw?: unknown };
-    console.error("Checkout error:", err.message, "| type:", err.type, "| code:", err.code, "| param:", err.param, "| raw:", JSON.stringify(err.raw ?? null));
-    const statusCode = err.statusCode;
-    if (statusCode === 400) {
+    const message = error instanceof Error ? error.message : String(error);
+    const err = error as { type?: string; code?: string; statusCode?: number; param?: string; raw?: unknown };
+    console.error("Checkout error:", message, "| type:", err?.type, "| code:", err?.code, "| param:", err?.param, "| raw:", JSON.stringify(err?.raw ?? null));
+    if (err?.statusCode === 400) {
       return NextResponse.json(
-        { error: (error as Error).message },
+        { error: message },
         { status: 400 }
       );
     }

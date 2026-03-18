@@ -327,7 +327,7 @@ async function executeVerifyMigration(
   } catch (err) {
     return {
       success: false,
-      message: `Could not reach ${statusUrl}: ${(err as Error).message}`,
+      message: `Could not reach ${statusUrl}: ${err instanceof Error ? err.message : String(err)}`,
       details: { url: statusUrl },
     };
   }
@@ -378,7 +378,7 @@ async function executeVerifySSL(
   } catch (err) {
     return {
       success: false,
-      message: `Could not reach ${url}: ${(err as Error).message}`,
+      message: `Could not reach ${url}: ${err instanceof Error ? err.message : String(err)}`,
       details: { url },
     };
   }
@@ -443,7 +443,7 @@ async function executeLighthouseAudit(
   } catch (err) {
     return {
       success: false,
-      message: `Lighthouse audit failed: ${(err as Error).message}`,
+      message: `Lighthouse audit failed: ${err instanceof Error ? err.message : String(err)}`,
     };
   }
 }
@@ -548,7 +548,7 @@ export async function POST(
     console.error(`[task-execute] Action ${task.automationAction} failed:`, err);
     result = {
       success: false,
-      message: `Automation error: ${(err as Error).message}`,
+      message: `Automation error: ${err instanceof Error ? err.message : String(err)}`,
     };
   }
 
