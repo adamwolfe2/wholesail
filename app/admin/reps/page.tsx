@@ -5,8 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
-
-export const metadata: Metadata = { title: "Sales Reps" };
 import {
   Users,
   CheckSquare,
@@ -15,6 +13,8 @@ import {
   ArrowRight,
   Building2,
 } from "lucide-react";
+
+export const metadata: Metadata = { title: "Sales Reps" };
 
 const priorityColors: Record<string, string> = {
   URGENT: "bg-red-100 text-red-700 border-red-200",
