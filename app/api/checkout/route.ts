@@ -182,37 +182,71 @@ export async function POST(req: NextRequest) {
       creditApplied: creditToApply,
     });
 
-    // Deduct referral credits from org balance (optimistic locking to prevent race conditions)
-    if (referralCreditToApply > 0) {
-      const appliedReferral = Math.min(referralCreditToApply, Number(order.creditApplied));
-      await prisma.$transaction(async (tx) => {
-        const currentOrg = await tx.organization.findUniqueOrThrow({
-          where: { id: org.id },
-          select: { referralCredits: true },
-        });
-        const currentBalance = Number(currentOrg.referralCredits ?? 0);
-        if (appliedReferral > currentBalance) {
-          throw new Error("Insufficient referral credits");
-        }
-        await tx.organization.update({
-          where: { id: org.id },
-          data: { referralCredits: { decrement: appliedReferral } },
-        });
-        await tx.auditEvent.create({
-          data: {
-            entityType: "Order",
-            entityId: order.id,
-            action: "referral_credit_applied",
-            userId,
-            metadata: { creditApplied: appliedReferral, orgId: org.id },
-          },
-        });
-      });
-    }
+    // Deduct referral credits + loyalty points in a single atomic transaction
+    // If this fails, cancel the order so the customer can't get a free discount
+    if (referralCreditToApply > 0 || pointsToRedeem > 0) {
+      const appliedReferral = referralCreditToApply > 0
+        ? Math.min(referralCreditToApply, Number(order.creditApplied))
+        : 0;
 
-    // Redeem loyalty points
-    if (pointsToRedeem > 0) {
-      await redeemLoyaltyPoints(org.id, pointsToRedeem);
+      try {
+        await prisma.$transaction(async (tx) => {
+          if (appliedReferral > 0) {
+            const currentOrg = await tx.organization.findUniqueOrThrow({
+              where: { id: org.id },
+              select: { referralCredits: true, loyaltyPoints: true },
+            });
+            const currentBalance = Number(currentOrg.referralCredits ?? 0);
+            if (appliedReferral > currentBalance) {
+              throw new Error("Insufficient referral credits");
+            }
+            await tx.organization.update({
+              where: { id: org.id },
+              data: { referralCredits: { decrement: appliedReferral } },
+            });
+            await tx.auditEvent.create({
+              data: {
+                entityType: "Order",
+                entityId: order.id,
+                action: "referral_credit_applied",
+                userId,
+                metadata: { creditApplied: appliedReferral, orgId: org.id },
+              },
+            });
+          }
+
+          if (pointsToRedeem > 0) {
+            const currentOrg = await tx.organization.findUniqueOrThrow({
+              where: { id: org.id },
+              select: { loyaltyPoints: true },
+            });
+            const actualPoints = Math.min(pointsToRedeem, currentOrg.loyaltyPoints);
+            if (actualPoints > 0) {
+              await tx.organization.update({
+                where: { id: org.id },
+                data: { loyaltyPoints: { decrement: actualPoints } },
+              });
+              await tx.auditEvent.create({
+                data: {
+                  entityType: "Organization",
+                  entityId: org.id,
+                  action: "loyalty_points_redeemed",
+                  metadata: { points: actualPoints, dollarDiscount: actualPoints / POINTS_PER_DOLLAR_REDEMPTION },
+                },
+              });
+            }
+          }
+        });
+      } catch (discountErr) {
+        // Credit/points deduction failed — cancel the order to prevent free discounts
+        await updateOrderStatus(order.id, "CANCELLED").catch(() => {});
+        console.error("Discount deduction failed — order cancelled:", order.orderNumber, discountErr);
+        const message = discountErr instanceof Error ? discountErr.message : String(discountErr);
+        return NextResponse.json(
+          { error: message === "Insufficient referral credits" ? message : "Could not apply discounts. Please try again." },
+          { status: 400 }
+        );
+      }
     }
 
     // Process referral conversion (fire-and-forget — safe to call on every order)
