@@ -10,9 +10,16 @@ import { AdminSearchBar } from "./search-bar";
 import { AdminSidebar } from "./admin-sidebar";
 import { AdminNotifications } from "@/components/admin-notifications";
 
+import type { Metadata } from "next";
+
 export const dynamic = 'force-dynamic';
 
 const BRAND_NAME = process.env.BRAND_NAME || "Wholesail";
+
+export const metadata: Metadata = {
+  title: { template: `%s | ${BRAND_NAME} Admin`, default: `${BRAND_NAME} Admin` },
+  robots: { index: false, follow: false },
+};
 
 const ALLOWED_ROLES = ["ADMIN", "OPS", "SALES_REP"] as const;
 
