@@ -575,7 +575,7 @@ export default function WholesailPage() {
             The Alternative
           </span>
           <h2
-            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal mb-4 max-w-2xl"
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal mb-4 max-w-3xl"
             style={{ color: "var(--text-headline)" }}
           >
             You&apos;ve been quoted $75K and told to wait a year.
