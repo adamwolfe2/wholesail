@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
-
-export const metadata: Metadata = { title: "Orders" };
 import { OrderTable } from "./order-table";
 import { ExportButton } from "./export-button";
 import { ImportOrdersButton } from "./import-orders-button";
@@ -10,6 +8,8 @@ import { OrderFilters } from "./order-filters";
 import { Prisma, type OrderStatus } from "@prisma/client";
 import { EmptyState } from "@/components/empty-state";
 import { ShoppingBag, Search } from "lucide-react";
+
+export const metadata: Metadata = { title: "Orders" };
 
 interface SearchParams {
   status?: string | string[];

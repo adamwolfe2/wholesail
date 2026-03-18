@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-
-export const metadata: Metadata = { title: "Analytics" };
 import { prisma } from "@/lib/db";
 import {
   DollarSign,
@@ -12,6 +10,8 @@ import {
 } from "lucide-react";
 import { AdminCharts } from "./admin-charts";
 import { SmartReorderAlerts } from "./smart-reorder-alerts";
+
+export const metadata: Metadata = { title: "Analytics" };
 
 export default async function AdminAnalyticsPage() {
   let stats = {

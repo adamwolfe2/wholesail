@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
 import { format } from "date-fns";
 import { ArrowLeft, ShoppingCart, Building2, CheckSquare } from "lucide-react";
-
-export const metadata: Metadata = { title: "Rep Details" };
 import { NewTaskForm } from "./new-task-form";
 import { TaskActions } from "./task-actions";
+
+export const metadata: Metadata = { title: "Rep Details" };
 
 const priorityColors: Record<string, string> = {
   URGENT: "bg-red-100 text-red-700 border-red-200",
