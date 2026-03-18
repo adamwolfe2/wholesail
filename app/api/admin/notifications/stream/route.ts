@@ -133,7 +133,8 @@ export async function GET(req: NextRequest) {
               cursor = ev.createdAt;
             }
           }
-        } catch {
+        } catch (e) {
+          console.error("Notification stream poll error:", e);
           // DB error — send a comment so the connection stays alive
           controller.enqueue(encoder.encode(": poll-error\n\n"));
         }
