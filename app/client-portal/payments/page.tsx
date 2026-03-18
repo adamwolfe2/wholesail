@@ -191,7 +191,7 @@ export default function PaymentsPage() {
                       ${Number(inv.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                     </span>
                     <Button size="sm" className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none" asChild>
-                      <Link href={`/client-portal/invoices/${inv.id}`}>
+                      <Link href="/client-portal/invoices">
                         Pay Now
                       </Link>
                     </Button>

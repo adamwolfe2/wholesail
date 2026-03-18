@@ -27,6 +27,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { DollarSign, Clock, AlertTriangle, Download, Eye, Loader2, FileText, CheckCircle, CreditCard } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface DbInvoice {
   id: string
@@ -199,11 +200,11 @@ export default function InvoicesPage() {
       if (res.ok && data.checkoutUrl) {
         window.location.href = data.checkoutUrl
       } else {
-        alert(data.error || 'Failed to start payment. Please try again.')
+        toast.error(data.error || 'Failed to start payment. Please try again.')
         setPayingId(null)
       }
     } catch {
-      alert('Network error. Please try again.')
+      toast.error('Network error. Please try again.')
       setPayingId(null)
     }
   }

@@ -47,10 +47,10 @@ export function AdminMobileNav({ navBadges = {} }: { navBadges?: Record<string, 
                 href={item.href}
                 onClick={() => setOpen(false)}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                  "flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-muted text-foreground"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    ? "bg-[#0A0A0A] text-[#F9F7F4]"
+                    : "text-[#0A0A0A]/60 hover:bg-[#0A0A0A]/[0.06] hover:text-[#0A0A0A]"
                 )}
               >
                 <item.icon className="h-4 w-4" />

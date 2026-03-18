@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/table'
 import { Copy, Check, Loader2, Gift, Users, DollarSign, Clock } from 'lucide-react'
 import { format } from 'date-fns'
+import { PortalLayout } from '@/components/portal-nav'
 
 const APP_URL =
   typeof window !== 'undefined'
@@ -148,6 +149,7 @@ export default function ReferralsPage() {
     .reduce((sum, r) => sum + r.creditAmount, 0) ?? 0
 
   return (
+    <PortalLayout>
     <div className="space-y-8">
       {/* Page header */}
       <div>
@@ -458,5 +460,6 @@ export default function ReferralsPage() {
         </CardContent>
       </Card>
     </div>
+    </PortalLayout>
   )
 }

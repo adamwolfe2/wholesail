@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { format } from 'date-fns'
 import { CheckSquare, Square, Package, MapPin, Mail, Phone, Loader2, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { PortalLayout } from '@/components/portal-nav'
 
 interface OrderInfo {
   id: string
@@ -106,13 +107,16 @@ export default function DistributorFulfillmentPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-6 w-6 animate-spin text-[#0A0A0A]/40" />
-      </div>
+      <PortalLayout>
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-6 w-6 animate-spin text-[#0A0A0A]/40" />
+        </div>
+      </PortalLayout>
     )
   }
 
   return (
+    <PortalLayout>
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -211,6 +215,7 @@ export default function DistributorFulfillmentPage() {
         </div>
       )}
     </div>
+    </PortalLayout>
   )
 }
 

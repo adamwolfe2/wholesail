@@ -1,7 +1,5 @@
 'use client'
 
-export const dynamic = 'force-dynamic'
-
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
@@ -337,7 +335,7 @@ function HistoryPanel({
                   </div>
                   <button
                     onClick={(e) => { e.stopPropagation(); onDelete(session.id) }}
-                    className={`absolute right-3 top-3 opacity-0 group-hover:opacity-100 transition-opacity p-0.5 ${
+                    className={`absolute right-3 top-3 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 sm:opacity-0 max-sm:opacity-60 transition-opacity p-0.5 ${
                       isActive ? 'text-[#F9F7F4]/50 hover:text-[#F9F7F4]' : 'text-[#0A0A0A]/30 hover:text-[#0A0A0A]'
                     }`}
                     aria-label="Delete chat"
@@ -478,7 +476,12 @@ export default function AIAssistantPage() {
         return
       }
 
-      const reader = res.body!.getReader()
+      if (!res.body) {
+        setErrorMsg('No response body received.')
+        return
+      }
+
+      const reader = res.body.getReader()
       const decoder = new TextDecoder()
       let buffer = ''
 

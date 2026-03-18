@@ -30,12 +30,12 @@ body {
   --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
     Consolas, monospace;
-  --color-cream: #F5F3EE;
+  --color-cream: #F9F7F4;
 }
 
 :root {
   /* Backgrounds */
-  --bg-primary: #F5F3EE;
+  --bg-primary: #F9F7F4;
   --bg-white: #FFFFFF;
   --bg-blue: #1B3A6B;
   --bg-blue-dark: #112649;
@@ -59,7 +59,7 @@ body {
 
   /* Black */
   --black: #0F1523;
-  --cream: #F5F3EE;
+  --cream: #F9F7F4;
 }
 
 /* ── Selection ──────────────────────────────────────────────────────────── */

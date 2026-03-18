@@ -76,7 +76,7 @@ export default async function WholesaleApplicationDetailPage({
       </div>
 
       {/* Application Details */}
-      <div className="border border-[#E5E1DB] bg-white p-6 space-y-4">
+      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6 space-y-4">
         <h3 className="font-serif text-lg font-normal text-[#0A0A0A]">Application Details</h3>
         <dl className="space-y-3">
           <DetailRow label="Business Name" value={application.businessName} />
@@ -97,7 +97,7 @@ export default async function WholesaleApplicationDetailPage({
 
       {/* Review Decision (if reviewed) */}
       {isReviewed && (
-        <div className="border border-[#E5E1DB] bg-white p-6 space-y-3">
+        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6 space-y-3">
           <h3 className="font-serif text-lg font-normal text-[#0A0A0A]">Review Decision</h3>
           <dl className="space-y-3">
             <DetailRow label="Decision" value={application.status} />
@@ -130,7 +130,7 @@ export default async function WholesaleApplicationDetailPage({
 
       {/* Review Actions (pending only) */}
       {!isReviewed && (
-        <div className="border border-[#E5E1DB] bg-white p-6 space-y-4">
+        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6 space-y-4">
           <h3 className="font-serif text-lg font-normal text-[#0A0A0A]">Review Application</h3>
           <WholesaleReviewActions
             applicationId={application.id}

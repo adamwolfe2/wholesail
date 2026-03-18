@@ -66,7 +66,7 @@ export default async function PickListPage({
         </div>
 
         {/* Client + Delivery Info */}
-        <div className="grid grid-cols-2 gap-6 mb-8 print:mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8 print:mb-6">
           <div className="border border-[#E5E1DB] p-4">
             <p className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider mb-2">
               Client
@@ -105,7 +105,7 @@ export default async function PickListPage({
         />
 
         {/* Signature + footer */}
-        <div className="mt-12 print:mt-8 grid grid-cols-3 gap-8 border-t border-[#E5E1DB] pt-8">
+        <div className="mt-12 print:mt-8 grid grid-cols-1 sm:grid-cols-3 gap-8 border-t border-[#E5E1DB] pt-8">
           <div>
             <p className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider mb-6">
               Packed By

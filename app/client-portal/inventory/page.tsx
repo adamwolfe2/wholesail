@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Loader2, Save, CheckCircle2, Package, AlertCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { PortalLayout } from '@/components/portal-nav'
 
 interface ProductReport {
   productId: string
@@ -126,29 +127,34 @@ export default function DistributorInventoryPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-6 w-6 animate-spin text-[#0A0A0A]/40" />
-      </div>
+      <PortalLayout>
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-6 w-6 animate-spin text-[#0A0A0A]/40" />
+        </div>
+      </PortalLayout>
     )
   }
 
   if (products.length === 0) {
     return (
-      <div className="space-y-6">
-        <div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#0A0A0A]">My Inventory</h2>
-          <p className="text-sm text-[#0A0A0A]/50 mt-1">Report your current stock levels</p>
+      <PortalLayout>
+        <div className="space-y-6">
+          <div>
+            <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#0A0A0A]">My Inventory</h2>
+            <p className="text-sm text-[#0A0A0A]/50 mt-1">Report your current stock levels</p>
+          </div>
+          <div className="border border-[#E5E1DB] bg-white py-16 text-center">
+            <Package className="h-8 w-8 text-[#0A0A0A]/20 mx-auto mb-3" />
+            <p className="text-sm text-[#0A0A0A]/50">No products assigned to your account yet.</p>
+            <p className="text-xs text-[#0A0A0A]/30 mt-1">Contact your admin to get your products configured.</p>
+          </div>
         </div>
-        <div className="border border-[#E5E1DB] bg-white py-16 text-center">
-          <Package className="h-8 w-8 text-[#0A0A0A]/20 mx-auto mb-3" />
-          <p className="text-sm text-[#0A0A0A]/50">No products assigned to your account yet.</p>
-          <p className="text-xs text-[#0A0A0A]/30 mt-1">Contact your admin to get your products configured.</p>
-        </div>
-      </div>
+      </PortalLayout>
     )
   }
 
   return (
+    <PortalLayout>
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
@@ -309,5 +315,6 @@ export default function DistributorInventoryPage() {
         </div>
       )}
     </div>
+    </PortalLayout>
   )
 }
