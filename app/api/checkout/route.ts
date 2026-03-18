@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { captureWithContext } from "@/lib/sentry";
 import { auth } from "@clerk/nextjs/server";
 import { createOrder, updateOrderStripeIds, updateOrderStatus } from "@/lib/db/orders";
 import { createCheckoutSession, isStripeConfigured } from "@/lib/payments/stripe";
@@ -241,6 +242,7 @@ export async function POST(req: NextRequest) {
         // Credit/points deduction failed — cancel the order to prevent free discounts
         await updateOrderStatus(order.id, "CANCELLED").catch(() => {});
         console.error("Discount deduction failed — order cancelled:", order.orderNumber, discountErr);
+        captureWithContext(discountErr, { route: "checkout", step: "discount_deduction", orderNumber: order.orderNumber });
         const message = discountErr instanceof Error ? discountErr.message : String(discountErr);
         return NextResponse.json(
           { error: message === "Insufficient referral credits" ? message : "Could not apply discounts. Please try again." },
@@ -332,6 +334,7 @@ export async function POST(req: NextRequest) {
       // Cancel the order so it doesn't sit as an orphaned PENDING record
       await updateOrderStatus(order.id, "CANCELLED").catch(() => {});
       console.error("Stripe session creation failed — order cancelled:", order.orderNumber, stripeErr);
+      captureWithContext(stripeErr, { route: "checkout", step: "stripe_session_creation", orderNumber: order.orderNumber });
       return NextResponse.json({ error: "Payment session could not be created. Please try again." }, { status: 502 });
     }
 
@@ -349,6 +352,7 @@ export async function POST(req: NextRequest) {
     const message = error instanceof Error ? error.message : String(error);
     const err = error as { type?: string; code?: string; statusCode?: number; param?: string; raw?: unknown };
     console.error("Checkout error:", message, "| type:", err?.type, "| code:", err?.code, "| param:", err?.param, "| raw:", JSON.stringify(err?.raw ?? null));
+    captureWithContext(error, { route: "checkout", type: err?.type, code: err?.code });
     if (err?.statusCode === 400) {
       return NextResponse.json(
         { error: message },

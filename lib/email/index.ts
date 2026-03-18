@@ -30,6 +30,8 @@ interface BaseHtmlOptions {
   ctaUrl?: string;
   /** Optional amber banner shown above the header (e.g. payment reminders) */
   alertBannerHtml?: string;
+  /** If true, includes a one-click unsubscribe link in the footer (CAN-SPAM). Use for marketing/nurture emails, not transactional. */
+  includeUnsubscribe?: boolean;
 }
 
 function buildBaseHtml({
@@ -38,6 +40,7 @@ function buildBaseHtml({
   ctaText,
   ctaUrl,
   alertBannerHtml,
+  includeUnsubscribe,
 }: BaseHtmlOptions): string {
   const ctaBlock =
     ctaText && ctaUrl
@@ -81,6 +84,7 @@ function buildBaseHtml({
         <tr><td style="padding:20px 32px;border-top:1px solid #E5E1DB;background-color:#F9F7F4;">
           <p style="margin:0;color:#0A0A0A;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;">${BRAND_NAME}</p>
           <p style="margin:4px 0 0;color:#C8C0B4;font-size:12px;">${APP_URL.replace(/^https?:\/\//, "")}${BRAND_LOCATION ? ` &nbsp;&middot;&nbsp; ${BRAND_LOCATION}` : ""}</p>
+          ${includeUnsubscribe ? `<p style="margin:8px 0 0;"><a href="${APP_URL}/client-portal/settings" style="color:#C8C0B4;font-size:11px;text-decoration:underline;">Unsubscribe or manage email preferences</a></p>` : ""}
         </td></tr>
 
       </table>
@@ -591,6 +595,7 @@ export async function sendDropAlertEmail(data: {
     bodyHtml,
     ctaText: "Shop Now →",
     ctaUrl: APP_URL,
+    includeUnsubscribe: true,
   });
 
   const categoryLine = data.category ? `Category: ${data.category}\n` : "";
@@ -680,6 +685,7 @@ export async function sendDropBlastEmail(data: {
     bodyHtml,
     ctaText: "Order Now →",
     ctaUrl: `${APP_URL}/drops`,
+    includeUnsubscribe: true,
   });
 
   const lines: string[] = [];
@@ -772,6 +778,7 @@ export async function sendAbandonedCartEmail(data: {
     bodyHtml,
     ctaText: "Complete Your Order →",
     ctaUrl: data.checkoutUrl,
+    includeUnsubscribe: true,
   });
 
   const itemLines = data.items
@@ -850,6 +857,7 @@ export async function sendPartnerDay3Email(data: {
     bodyHtml,
     ctaText: "Browse the Catalog →",
     ctaUrl: catalogUrl,
+    includeUnsubscribe: true,
   });
 
   const text = `Hi ${data.name},
@@ -914,6 +922,7 @@ export async function sendPartnerDay7Email(data: {
     bodyHtml,
     ctaText: "Place Your First Order →",
     ctaUrl: APP_URL,
+    includeUnsubscribe: true,
   });
 
   const text = `Hi ${data.name},
@@ -1202,6 +1211,7 @@ export async function sendTierUpgradeEmail(data: {
     bodyHtml,
     ctaText: "Browse Catalog →",
     ctaUrl: catalogUrl,
+    includeUnsubscribe: true,
   });
 
   const perkLines = perks.map((p) => `  • ${p}`).join("\n");
@@ -1309,7 +1319,7 @@ We appreciate your interest and hope to have the opportunity to work together in
 — The ${BRAND_NAME} Team`;
   }
 
-  const html = buildBaseHtml({ headline, bodyHtml });
+  const html = buildBaseHtml({ headline, bodyHtml, includeUnsubscribe: true });
 
   try {
     const r = getResend();
@@ -1373,6 +1383,7 @@ export async function sendLapsedClientEmail(data: {
     bodyHtml,
     ctaText: "Shop Current Selection →",
     ctaUrl: catalogUrl,
+    includeUnsubscribe: true,
   });
 
   const productLines = data.topProducts

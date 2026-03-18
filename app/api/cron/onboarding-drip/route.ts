@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { captureWithContext } from "@/lib/sentry";
 import { prisma } from "@/lib/db";
 import { sendPartnerDay3Email, sendPartnerDay7Email } from "@/lib/email";
 
@@ -51,6 +52,7 @@ export async function GET(req: Request) {
       day1Sent++;
     } catch (err) {
       console.error(`Onboarding Day 1 email failed for org ${org.id}:`, err);
+      captureWithContext(err, { route: "cron/onboarding-drip", step: "day1", orgId: org.id });
       await prisma.auditEvent.create({
         data: {
           action: "onboarding_drip_failed",
@@ -87,6 +89,7 @@ export async function GET(req: Request) {
       day7Sent++;
     } catch (err) {
       console.error(`Onboarding Day 3 nudge failed for org ${org.id}:`, err);
+      captureWithContext(err, { route: "cron/onboarding-drip", step: "day3", orgId: org.id });
       await prisma.auditEvent.create({
         data: {
           action: "onboarding_drip_failed",

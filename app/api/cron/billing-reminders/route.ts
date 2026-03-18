@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { captureWithContext } from '@/lib/sentry'
 import { prisma } from '@/lib/db'
 import { sendInvoiceEmail } from '@/lib/email'
 import {
@@ -143,6 +144,7 @@ export async function GET(req: NextRequest) {
     })
   } catch (err) {
     console.error('Billing reminders cron error:', err)
+    captureWithContext(err, { route: 'cron/billing-reminders' })
     return NextResponse.json({ error: 'Cron failed' }, { status: 500 })
   }
 }

@@ -9,6 +9,7 @@ import { generateInvoiceForOrder } from "@/app/api/billing/generate/route";
 import { format, addDays } from "date-fns";
 import { dispatchWebhook } from "@/lib/webhooks";
 import { getSiteUrl } from "@/lib/brand";
+import { notifyOrg } from "@/lib/notifications";
 
 const statusSchema = z.object({
   status: z.enum([
@@ -128,6 +129,17 @@ export async function PATCH(
           }
         }
       }
+    }
+
+    // In-app notification for org members
+    if (order.organizationId) {
+      notifyOrg(
+        order.organizationId,
+        "ORDER_UPDATE",
+        `Order ${order.orderNumber} ${parsed.data.status.toLowerCase()}`,
+        `Your order has been updated to ${parsed.data.status.toLowerCase()}.`,
+        `/client-portal/orders/${order.orderNumber}`,
+      ).catch(() => {}); // non-blocking
     }
 
     // Dispatch webhook

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { captureWithContext } from "@/lib/sentry";
 import { isStripeConfigured, parseWebhookEvent } from "@/lib/stripe/config";
 import { WebhookSignatureError } from "@/lib/stripe/errors";
 import { updateOrderStatus, updateOrderStripeIds } from "@/lib/db/orders";
@@ -36,6 +37,7 @@ export async function POST(req: NextRequest) {
     event = await parseWebhookEvent(body, signature);
   } catch (err) {
     console.error("Webhook signature verification failed:", err);
+    captureWithContext(err, { route: "webhooks/stripe", step: "signature_verification" });
     const msg = err instanceof WebhookSignatureError ? err.message : "Invalid signature";
     return NextResponse.json({ error: msg }, { status: 400 });
   }
@@ -796,6 +798,7 @@ export async function POST(req: NextRequest) {
     }
   } catch (err) {
     console.error(`Error processing Stripe event ${event.type}:`, err);
+    captureWithContext(err, { route: "webhooks/stripe", eventType: event.type });
     // Return 500 so Stripe will retry the event
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }

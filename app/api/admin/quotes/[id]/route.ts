@@ -5,6 +5,7 @@ import { z } from "zod";
 import { sendQuoteToClientEmail } from "@/lib/email";
 import { notifyDistributorsForOrder } from "@/lib/db/orders";
 import { createOrderWithRetry } from "@/lib/order-number";
+import { notifyOrg } from "@/lib/notifications";
 
 const patchSchema = z.object({
   action: z.enum(["accept", "decline", "convert", "send"]),
@@ -81,6 +82,15 @@ export async function PATCH(
           notes: quote.notes,
         }).catch(() => {});
       }
+      // In-app notification for org members
+      notifyOrg(
+        quote.organizationId,
+        "QUOTE_RECEIVED",
+        `New quote ${quote.quoteNumber} received`,
+        `You have a new quote for $${Number(quote.total).toFixed(2)}. Review and accept it to place your order.`,
+        `/client-portal/quotes/${quote.quoteNumber}`,
+      ).catch(() => {}); // non-blocking
+
       return NextResponse.json({ quote: updated });
     }
 

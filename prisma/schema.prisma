@@ -364,6 +364,7 @@ model User {
   standingOrders    StandingOrder[] @relation("UserStandingOrders")
   clientNotes       ClientNote[]
   attachments       Attachment[]
+  notifications     Notification[]
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
 
@@ -1108,4 +1109,22 @@ model WebhookLog {
   createdAt  DateTime        @default(now())
 
   @@index([endpointId, createdAt(sort: Desc)])
+}
+
+// ============================================================
+// IN-APP NOTIFICATIONS
+// ============================================================
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  message   String
+  type      String   // ORDER_UPDATE, INVOICE_DUE, QUOTE_RECEIVED, REFERRAL_CONVERTED, LOW_STOCK
+  read      Boolean  @default(false)
+  link      String?  // deep link to relevant page
+  createdAt DateTime @default(now())
+
+  @@index([userId, read, createdAt(sort: Desc)])
 }

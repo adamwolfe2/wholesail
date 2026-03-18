@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { UserButton, useClerk } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
+import { NotificationBell } from '@/components/notification-bell'
 import {
   LayoutDashboard,
   MessageSquare,
@@ -139,6 +140,9 @@ export function PortalNav() {
           <div className="flex items-center gap-3 px-3 py-2">
             <UserButton afterSignOutUrl="/" />
             <span className="text-xs text-[#0A0A0A]/50 truncate">Account</span>
+            <div className="ml-auto">
+              <NotificationBell />
+            </div>
           </div>
           <Button variant="ghost" size="sm" className="w-full justify-start text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.08] transition-colors" onClick={handleLogout}>
             <LogOut className="h-4 w-4 mr-2" />
@@ -155,6 +159,7 @@ export function PortalNav() {
             <span className="font-serif italic text-[10px] text-[#C8C0B4] leading-tight">Portal</span>
           </Link>
           <div className="flex items-center gap-1">
+            <NotificationBell />
             <Button variant="ghost" size="sm" className="text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.08] transition-colors min-h-[44px] min-w-[44px]" onClick={handleLogout}>
               <LogOut className="h-4 w-4" />
               <span className="sr-only">Sign Out</span>

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { captureWithContext } from '@/lib/sentry'
 import { prisma } from '@/lib/db'
 import { sendAbandonedCartEmail } from '@/lib/email'
 import { getSiteUrl } from '@/lib/get-site-url'
@@ -126,6 +127,7 @@ export async function GET(req: NextRequest) {
     })
   } catch (err) {
     console.error('Abandoned cart cron error:', err)
+    captureWithContext(err, { route: 'cron/abandoned-carts' })
     return NextResponse.json({ error: 'Cron failed' }, { status: 500 })
   }
 }

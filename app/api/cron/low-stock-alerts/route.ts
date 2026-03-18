@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { captureWithContext } from '@/lib/sentry'
 import { prisma } from '@/lib/db'
 import { sendLowStockAlert } from '@/lib/email'
 
@@ -62,6 +63,7 @@ export async function GET(req: NextRequest) {
     })
   } catch (err) {
     console.error('Low stock cron error:', err)
+    captureWithContext(err, { route: 'cron/low-stock-alerts' })
     return NextResponse.json({ error: 'Cron failed' }, { status: 500 })
   }
 }

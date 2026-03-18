@@ -5,7 +5,7 @@
   "description": "Wholesail — white-label B2B distribution portal template",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "prisma generate && next build",
+    "build": "prisma generate && prisma migrate deploy && next build",
     "postinstall": "prisma generate",
     "start": "next start",
     "lint": "next lint",

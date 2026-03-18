@@ -1,4 +1,4 @@
-import { PrismaClient, ProjectStatus, NoteType } from "@prisma/client";
+import { PrismaClient, ProjectStatus, NoteType, UserRole, OrgTier, OrderStatus, InvoiceStatus, PaymentMethod, PaymentStatus } from "@prisma/client";
 
 if (process.env.NODE_ENV === "production") {
   throw new Error("Seed script must not run in production. Aborting.");
@@ -259,6 +259,204 @@ async function seed() {
   }
 
   console.log(`\nSeeded ${SEED_PROJECTS.length} projects.`);
+
+  // ── Operational seed data: users, org, products, orders, invoices ──
+
+  console.log("\nSeeding operational data...");
+
+  // Organization
+  const org = await prisma.organization.upsert({
+    where: { id: "seed-org-demo" },
+    update: {},
+    create: {
+      id: "seed-org-demo",
+      name: "Demo Restaurant Group",
+      tier: OrgTier.REPEAT,
+      contactPerson: "Alex Rivera",
+      email: "alex@demorestaurants.com",
+      phone: "(555) 123-4567",
+      website: "demorestaurants.com",
+      paymentTerms: "NET30",
+      referralCode: "DEMO2026",
+      onboardingStep: 4,
+      approvedAt: new Date("2026-01-15"),
+    },
+  });
+
+  // Users (Clerk IDs are placeholders — won't match real Clerk users)
+  const adminUser = await prisma.user.upsert({
+    where: { id: "seed-admin-user" },
+    update: {},
+    create: {
+      id: "seed-admin-user",
+      email: "admin@wholesailhub.com",
+      name: "Wholesail Admin",
+      role: UserRole.ADMIN,
+    },
+  });
+
+  const clientUser = await prisma.user.upsert({
+    where: { id: "seed-client-user" },
+    update: {},
+    create: {
+      id: "seed-client-user",
+      email: "alex@demorestaurants.com",
+      name: "Alex Rivera",
+      role: UserRole.CLIENT,
+      organizationId: org.id,
+    },
+  });
+
+  console.log("  + Users: admin + client");
+
+  // Address
+  const address = await prisma.address.upsert({
+    where: { id: "seed-address-1" },
+    update: {},
+    create: {
+      id: "seed-address-1",
+      organizationId: org.id,
+      type: "SHIPPING",
+      street: "123 Restaurant Row",
+      city: "Portland",
+      state: "OR",
+      zip: "97201",
+      isDefault: true,
+    },
+  });
+
+  // Products (5 items across categories)
+  const productData = [
+    { id: "seed-prod-1", slug: "wild-salmon-fillet", name: "Wild Salmon Fillet", description: "Fresh wild-caught Pacific salmon, 6oz portions", price: 14.50, costPrice: 9.00, unit: "lb", category: "Seafood", available: true },
+    { id: "seed-prod-2", slug: "organic-olive-oil", name: "Organic Extra Virgin Olive Oil", description: "Cold-pressed Italian EVOO, 1L bottle", price: 18.00, costPrice: 11.50, unit: "bottle", category: "Pantry", available: true },
+    { id: "seed-prod-3", slug: "aged-parmesan", name: "Aged Parmigiano Reggiano", description: "24-month aged, DOP certified", price: 22.00, costPrice: 15.00, unit: "lb", category: "Dairy & Cheese", available: true },
+    { id: "seed-prod-4", slug: "wagyu-ribeye", name: "A5 Wagyu Ribeye", description: "Japanese A5 Wagyu, marble score 10+", price: 120.00, costPrice: 85.00, unit: "lb", category: "Meat", available: true, prepayRequired: true },
+    { id: "seed-prod-5", slug: "heirloom-tomatoes", name: "Heirloom Tomatoes Mix", description: "Seasonal mix of heirloom varieties", price: 6.50, costPrice: 3.50, unit: "lb", category: "Produce", available: true },
+  ];
+
+  for (const p of productData) {
+    await prisma.product.upsert({
+      where: { id: p.id },
+      update: {},
+      create: { ...p, sortOrder: productData.indexOf(p) },
+    });
+  }
+  console.log(`  + ${productData.length} products`);
+
+  // Orders (3 orders in different statuses)
+  const orderData = [
+    {
+      id: "seed-order-1",
+      orderNumber: "WS-DEMO-001",
+      status: OrderStatus.DELIVERED,
+      items: [
+        { productId: "seed-prod-1", name: "Wild Salmon Fillet", quantity: 10, unitPrice: 14.50 },
+        { productId: "seed-prod-3", name: "Aged Parmigiano Reggiano", quantity: 5, unitPrice: 22.00 },
+      ],
+    },
+    {
+      id: "seed-order-2",
+      orderNumber: "WS-DEMO-002",
+      status: OrderStatus.CONFIRMED,
+      items: [
+        { productId: "seed-prod-2", name: "Organic Extra Virgin Olive Oil", quantity: 12, unitPrice: 18.00 },
+        { productId: "seed-prod-5", name: "Heirloom Tomatoes Mix", quantity: 20, unitPrice: 6.50 },
+      ],
+    },
+    {
+      id: "seed-order-3",
+      orderNumber: "WS-DEMO-003",
+      status: OrderStatus.PENDING,
+      items: [
+        { productId: "seed-prod-4", name: "A5 Wagyu Ribeye", quantity: 3, unitPrice: 120.00 },
+        { productId: "seed-prod-1", name: "Wild Salmon Fillet", quantity: 8, unitPrice: 14.50 },
+      ],
+    },
+  ];
+
+  for (const o of orderData) {
+    const subtotal = o.items.reduce((sum, i) => sum + i.quantity * i.unitPrice, 0);
+    const tax = Math.round(subtotal * 0.08 * 100) / 100;
+    const total = subtotal + tax;
+
+    const order = await prisma.order.upsert({
+      where: { id: o.id },
+      update: {},
+      create: {
+        id: o.id,
+        orderNumber: o.orderNumber,
+        organizationId: org.id,
+        userId: clientUser.id,
+        status: o.status,
+        subtotal,
+        tax,
+        total,
+        shippingAddressId: address.id,
+        paidAt: o.status !== OrderStatus.PENDING ? new Date() : null,
+      },
+    });
+
+    // Upsert order items
+    for (const item of o.items) {
+      await prisma.orderItem.upsert({
+        where: { id: `${o.id}-${item.productId}` },
+        update: {},
+        create: {
+          id: `${o.id}-${item.productId}`,
+          orderId: order.id,
+          productId: item.productId,
+          name: item.name,
+          quantity: item.quantity,
+          unitPrice: item.unitPrice,
+          total: item.quantity * item.unitPrice,
+        },
+      });
+    }
+  }
+  console.log(`  + ${orderData.length} orders with items`);
+
+  // Invoices (2 invoices)
+  const invoiceData = [
+    {
+      id: "seed-inv-1",
+      invoiceNumber: "INV-DEMO-001",
+      orderId: "seed-order-1",
+      status: InvoiceStatus.PAID,
+      paidAt: new Date(),
+    },
+    {
+      id: "seed-inv-2",
+      invoiceNumber: "INV-DEMO-002",
+      orderId: "seed-order-2",
+      status: InvoiceStatus.PENDING,
+      paidAt: null,
+    },
+  ];
+
+  for (const inv of invoiceData) {
+    const order = await prisma.order.findUnique({ where: { id: inv.orderId }, select: { subtotal: true, tax: true, total: true } });
+    if (!order) continue;
+
+    await prisma.invoice.upsert({
+      where: { id: inv.id },
+      update: {},
+      create: {
+        id: inv.id,
+        invoiceNumber: inv.invoiceNumber,
+        orderId: inv.orderId,
+        organizationId: org.id,
+        dueDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        status: inv.status,
+        subtotal: order.subtotal,
+        tax: order.tax,
+        total: order.total,
+        paidAt: inv.paidAt,
+      },
+    });
+  }
+  console.log(`  + ${invoiceData.length} invoices`);
+
+  console.log("\nOperational seed data complete.");
 }
 
 seed()

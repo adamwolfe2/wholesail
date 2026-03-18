@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { captureWithContext } from "@/lib/sentry";
 import { put, del } from "@vercel/blob";
 import { prisma } from "@/lib/db";
 import { requireAdminOrRep } from "@/lib/auth/require-admin";
@@ -119,6 +120,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ attachment }, { status: 201 });
   } catch (error) {
     console.error("Error uploading attachment:", error);
+    captureWithContext(error, { route: "attachments", method: "POST" });
     return NextResponse.json(
       { error: "Failed to upload file" },
       { status: 500 },
@@ -191,6 +193,7 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Error deleting attachment:", error);
+    captureWithContext(error, { route: "attachments", method: "DELETE" });
     return NextResponse.json(
       { error: "Failed to delete attachment" },
       { status: 500 },
