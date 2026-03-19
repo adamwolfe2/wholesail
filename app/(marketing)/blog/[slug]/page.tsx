@@ -51,12 +51,22 @@ function formatDate(iso: string): string {
   });
 }
 
-/** Strip dangerous HTML patterns as defense-in-depth for server-rendered content. */
+/**
+ * Strip dangerous HTML patterns as defense-in-depth for server-rendered content.
+ * NOTE: Content is admin-controlled (sourced from lib/blog/posts, not user input).
+ * If content ever becomes user-supplied, replace this with DOMPurify or similar
+ * library-based sanitizer — regex-based HTML sanitization is inherently bypassable.
+ */
 function sanitizeHtml(html: string): string {
   return html
     .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, "")
     .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, "")
-    .replace(/\son\w+\s*=\s*["'][^"']*["']/gi, "")
+    .replace(/<svg\b[^<]*(?:(?!<\/svg>)<[^<]*)*<\/svg>/gi, "")
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, "")
+    .replace(/<embed\b[^>]*\/?>/gi, "")
+    .replace(/<math\b[^<]*(?:(?!<\/math>)<[^<]*)*<\/math>/gi, "")
+    .replace(/<details\b[^<]*(?:(?!<\/details>)<[^<]*)*<\/details>/gi, "")
+    .replace(/\bon\w+\s*=/gi, "data-blocked=")
     .replace(/href\s*=\s*["']javascript:[^"']*["']/gi, 'href="#"');
 }
 

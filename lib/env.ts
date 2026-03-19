@@ -26,6 +26,22 @@ const envSchema = z.object({
   // Stripe — optional (only needed if payments are enabled)
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
+
+  // AI — required for AI-powered routes (quote generation, assistant, etc.)
+  ANTHROPIC_API_KEY: z.string().min(1, "ANTHROPIC_API_KEY is required for AI features"),
+
+  // Infrastructure provisioning — controls GitHub/Vercel project creation
+  WS_VERCEL_TOKEN: z.string().min(1, "WS_VERCEL_TOKEN is required for infrastructure provisioning"),
+
+  // Admin bootstrap — grants super-admin access
+  BOOTSTRAP_SECRET: z.string().min(1, "BOOTSTRAP_SECRET is required for admin bootstrap"),
+
+  // Clerk webhook verification
+  CLERK_WEBHOOK_SECRET: z.string().min(1, "CLERK_WEBHOOK_SECRET is required for webhook verification"),
+
+  // Rate limiting (KV store) — warn if missing in production
+  KV_REST_API_URL: z.string().optional(),
+  KV_REST_API_TOKEN: z.string().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;
@@ -47,6 +63,16 @@ export function validateEnv(): Env {
     if (process.env.NODE_ENV === "production") {
       throw new Error("Missing required environment variables. See logs above.");
     }
+  }
+
+  // Warn if KV (rate limiting) is missing in production
+  if (
+    process.env.NODE_ENV === "production" &&
+    (!process.env.KV_REST_API_URL || !process.env.KV_REST_API_TOKEN)
+  ) {
+    console.warn(
+      "[env] KV_REST_API_URL / KV_REST_API_TOKEN not set — rate limiting will be disabled in production"
+    );
   }
 
   _validated = true;
