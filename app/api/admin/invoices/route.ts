@@ -142,7 +142,7 @@ export async function GET() {
         organization: { select: { name: true } },
       },
       orderBy: { createdAt: "desc" },
-      take: 50,
+      take: 500,
     });
 
     return NextResponse.json({ invoices });
