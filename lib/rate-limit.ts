@@ -64,6 +64,11 @@ export async function checkRateLimit(
   identifier: string
 ): Promise<{ allowed: boolean; limit: number; remaining: number; reset: number }> {
   if (!limiter) {
+    // In production, fail closed — deny requests when rate limiting is unavailable
+    if (process.env.NODE_ENV === 'production') {
+      console.error('[RATE-LIMIT] Limiter unavailable in production — denying request for safety.')
+      return { allowed: false, limit: 0, remaining: 0, reset: 0 }
+    }
     return { allowed: true, limit: 0, remaining: 0, reset: 0 }
   }
   const result = await limiter.limit(identifier)

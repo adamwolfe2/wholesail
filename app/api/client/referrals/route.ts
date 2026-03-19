@@ -6,6 +6,7 @@ import { ensureReferralCode } from '@/lib/referrals'
 import { Resend } from 'resend'
 import { getSiteUrl } from '@/lib/get-site-url'
 import { BRAND_EMAIL, BRAND_NAME, BRAND_TEAM } from '@/lib/brand'
+import { checkRateLimit, clientWriteLimiter } from '@/lib/rate-limit'
 
 function getResend() {
   if (!process.env.RESEND_API_KEY) return null
@@ -96,6 +97,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'No organization found' }, { status: 404 })
   }
 
+  // Rate limit: 10 referral invites per user per hour
+  const rl = await checkRateLimit(clientWriteLimiter, userId)
+  if (!rl.allowed) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please wait and try again.' },
+      { status: 429 }
+    )
+  }
+
   const body = await req.json()
   const parsed = inviteSchema.safeParse(body)
   if (!parsed.success) {
@@ -107,6 +117,31 @@ export async function POST(req: NextRequest) {
 
   const { email, name } = parsed.data
   const normalizedEmail = email.toLowerCase()
+
+  // Self-referral prevention: check if the referee is the current user or a member of the same org
+  const currentUser = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { email: true },
+  })
+  if (currentUser?.email?.toLowerCase() === normalizedEmail) {
+    return NextResponse.json(
+      { error: 'Cannot refer members of your own organization' },
+      { status: 400 }
+    )
+  }
+  const orgMember = await prisma.user.findFirst({
+    where: {
+      organizationId: user.organizationId,
+      email: { equals: normalizedEmail, mode: 'insensitive' },
+    },
+    select: { id: true },
+  })
+  if (orgMember) {
+    return NextResponse.json(
+      { error: 'Cannot refer members of your own organization' },
+      { status: 400 }
+    )
+  }
 
   // Check for existing referral
   const existing = await prisma.referral.findFirst({

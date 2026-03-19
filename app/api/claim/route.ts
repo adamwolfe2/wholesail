@@ -166,79 +166,88 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  // ---------------------------------------------------------------------------
-  // Fetch all orgs once — only 313 records, cheap to pull for JS fuzzy matching
-  // ---------------------------------------------------------------------------
-  const allOrgs = await prisma.organization.findMany({
-    select: { id: true, name: true, email: true, phone: true },
-    take: 5000,
-  })
-
   let org: OrgRecord | null = null
   let claimEmail = email // the email address we'll use to send the Clerk invite
 
   // ---------------------------------------------------------------------------
-  // Attempt 1a: exact email match (case-insensitive, trimmed)
+  // Attempt 1a: exact email match (case-insensitive, trimmed) — DB query
   // ---------------------------------------------------------------------------
-  org = allOrgs.find(o => {
-    const stored = o.email.toLowerCase().trim()
-    return stored === emailLower && !IMPORT_EMAIL_RE.test(stored)
+  org = await prisma.organization.findFirst({
+    where: {
+      email: { equals: emailLower, mode: 'insensitive' },
+      NOT: { email: { startsWith: 'noemail+' } },
+    },
+    select: { id: true, name: true, email: true, phone: true },
   }) ?? null
 
   // ---------------------------------------------------------------------------
-  // Attempt 1b: normalized email match (strips + aliases, trims whitespace)
-  // Catches: "john+tbgc@gmail.com" matching stored "john@gmail.com"
-  //          stored " chef@hotel.com" (CSV import whitespace artifact)
+  // Attempt 1b: normalized email match (strips + aliases)
+  // Only needed if the normalized form differs from the raw lowercase form
   // ---------------------------------------------------------------------------
-  if (!org) {
-    org = allOrgs.find(o => {
-      const stored = normalizeEmail(o.email)
-      return stored === emailNorm && !IMPORT_EMAIL_RE.test(o.email)
-    }) ?? null
+  if (!org && emailNorm !== emailLower) {
+    const candidateOrgs = await prisma.organization.findMany({
+      where: {
+        NOT: { email: { startsWith: 'noemail+' } },
+      },
+      select: { id: true, name: true, email: true, phone: true },
+      take: 10,
+    })
+    org = candidateOrgs.find(o => normalizeEmail(o.email) === emailNorm) ?? null
   }
 
   // ---------------------------------------------------------------------------
-  // Attempt 2: fuzzy company name match
-  // Catches: "The Ritz-Carlton" → "Ritz-Carlton Los Angeles"
-  //          "L'Ermitage" → "L'Ermitage Beverly Hills"
-  //          "Nobu" → "Nobu Malibu"
-  //          "Mastro's" → "Mastro's Ocean Club"
+  // Attempt 2: fuzzy company name match — use DB contains first, then fuzzy
   // ---------------------------------------------------------------------------
   if (!org && companyName && companyName.trim().length > 0) {
-    const matched = fuzzyFindOrg(allOrgs, companyName)
-    if (matched) {
-      org = matched
-      // If the found org has a placeholder email, use the submitted email for the invite
-      if (IMPORT_EMAIL_RE.test(org.email)) {
-        claimEmail = email
-      } else {
-        // Found via name — use the submitted email for the Clerk invite
-        // (client may have a different email than what we have on file)
-        claimEmail = email
+    // First try a targeted DB query
+    const nameOrgs = await prisma.organization.findMany({
+      where: { name: { contains: companyName.trim(), mode: 'insensitive' } },
+      select: { id: true, name: true, email: true, phone: true },
+      take: 10,
+    })
+
+    if (nameOrgs.length > 0) {
+      // Use fuzzy matching on the narrowed set
+      const matched = fuzzyFindOrg(nameOrgs, companyName)
+      org = matched ?? nameOrgs[0]
+    } else {
+      // Broader fuzzy: extract significant words and search for any match
+      const normInput = normalizeOrgName(companyName)
+      const words = normInput.split(' ').filter(w => w.length >= 3)
+      if (words.length > 0) {
+        const broaderOrgs = await prisma.organization.findMany({
+          where: { name: { contains: words[0], mode: 'insensitive' } },
+          select: { id: true, name: true, email: true, phone: true },
+          take: 10,
+        })
+        const matched = fuzzyFindOrg(broaderOrgs, companyName)
+        if (matched) org = matched
       }
     }
+
+    if (org) claimEmail = email
   }
 
   // ---------------------------------------------------------------------------
-  // Attempt 3: phone number match
-  // Strips formatting, matches on last 10 digits
+  // Attempt 3: phone number match — targeted DB query
   // ---------------------------------------------------------------------------
   if (!org && phone && phone.trim().length > 0) {
     const digits = phone.replace(/\D/g, '')
     if (digits.length >= 7) {
       const last10 = digits.slice(-10)
-      org = allOrgs.find(o => {
-        if (!o.phone) return false
-        const storedDigits = o.phone.replace(/\D/g, '')
-        return storedDigits.includes(last10) || last10.includes(storedDigits.slice(-10))
-      }) ?? null
-      if (org) claimEmail = email // always invite to submitted email
+      const phoneOrgs = await prisma.organization.findMany({
+        where: { phone: { contains: last10 } },
+        select: { id: true, name: true, email: true, phone: true },
+        take: 10,
+      })
+      org = phoneOrgs[0] ?? null
+      if (org) claimEmail = email
     }
   }
 
-  // Organization not found — respond with generic success to avoid leaking info
+  // Organization not found — generic response to prevent enumeration
   if (!org) {
-    return NextResponse.json({ success: true, result: 'not_found' })
+    return NextResponse.json({ success: true, result: 'processed', message: "If a matching organization exists, we'll process your request." })
   }
 
   // ---------------------------------------------------------------------------
@@ -250,9 +259,8 @@ export async function POST(req: NextRequest) {
   })
 
   if (existingUser) {
-    // Account already claimed — don't send another invitation, but tell the
-    // client so they know to sign in instead.
-    return NextResponse.json({ success: true, result: 'already_exists' })
+    // Account already claimed — return same generic response to prevent enumeration
+    return NextResponse.json({ success: true, result: 'processed', message: "If a matching organization exists, we'll process your request." })
   }
 
   // ---------------------------------------------------------------------------
