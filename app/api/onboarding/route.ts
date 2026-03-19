@@ -196,7 +196,6 @@ export async function POST(req: NextRequest) {
 
       return NextResponse.json({
         success: true,
-        organizationId: org.id,
         message: "Application submitted successfully",
       });
     } catch (dbError) {

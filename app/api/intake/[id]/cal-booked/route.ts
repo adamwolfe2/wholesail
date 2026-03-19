@@ -20,21 +20,22 @@ export async function POST(
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  // Verify Cal.com webhook signature
   const secret = process.env.CAL_WEBHOOK_SECRET;
-  if (secret) {
-    const rawBody = await req.text();
-    const sig = req.headers.get("X-Cal-Signature-256") ?? "";
-    const expected = createHmac("sha256", secret).update(rawBody).digest("hex");
-    let valid = false;
-    try {
-      valid = timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
-    } catch {
-      valid = false;
-    }
-    if (!valid) {
-      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
-    }
+  if (!secret) {
+    return NextResponse.json({ error: "Webhook not configured" }, { status: 503 });
+  }
+
+  const rawBody = await req.text();
+  const sig = req.headers.get("X-Cal-Signature-256") ?? "";
+  const expected = createHmac("sha256", secret).update(rawBody).digest("hex");
+  let valid = false;
+  try {
+    valid = timingSafeEqual(Buffer.from(sig), Buffer.from(expected));
+  } catch {
+    valid = false;
+  }
+  if (!valid) {
+    return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
   try {

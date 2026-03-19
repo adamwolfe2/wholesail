@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { getProjectByEmail } from "@/lib/db/projects";
 
 export async function GET(req: NextRequest) {
+  const { userId } = await auth();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const email = req.nextUrl.searchParams.get("email")?.trim();
 
   if (!email) {
@@ -20,24 +26,16 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  // Return sanitized data — no financials, no envVars, no internal details
   return NextResponse.json({
     id: project.id,
     company: project.company,
     shortName: project.shortName,
     status: project.status,
     currentPhase: project.currentPhase,
-    enabledFeatures: project.enabledFeatures,
     domain: project.domain,
     customDomain: project.customDomain,
-    vercelUrl: project.vercelUrl,
     startDate: project.startDate,
     targetLaunchDate: project.targetLaunchDate,
     launchDate: project.launchDate,
-    notes: project.notes.map((n) => ({
-      text: n.text,
-      type: n.type,
-      date: n.createdAt.toISOString().split("T")[0],
-    })),
   });
 }

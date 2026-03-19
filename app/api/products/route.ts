@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs/server";
 import { getCategories } from "@/lib/db/products";
 import { prisma } from "@/lib/db";
 import { Prisma } from "@prisma/client";
@@ -6,6 +7,8 @@ import { Prisma } from "@prisma/client";
 type SortParam = "price_asc" | "price_desc" | "name_asc" | "featured";
 
 export async function GET(req: NextRequest) {
+  const { userId } = await auth();
+
   try {
     const { searchParams } = new URL(req.url);
     const category = searchParams.get("category") || undefined;
@@ -46,7 +49,11 @@ export async function GET(req: NextRequest) {
       getCategories(),
     ]);
 
-    return NextResponse.json({ products, total, page, limit, categories });
+    const sanitizedProducts = userId
+      ? products
+      : products.map(({ price, costPrice, ...rest }: Record<string, unknown>) => rest);
+
+    return NextResponse.json({ products: sanitizedProducts, total, page, limit, categories });
   } catch (err) {
     console.error("[api/products]", err);
     // DB not connected — return empty so frontend falls back to static data

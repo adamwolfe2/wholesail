@@ -26,7 +26,6 @@ export async function GET(req: NextRequest) {
       businessName: true,
       createdAt: true,
       reviewedAt: true,
-      reviewNotes: true,
     },
     orderBy: { createdAt: 'desc' },
   })
@@ -35,16 +34,10 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ status: 'NOT_FOUND' })
   }
 
-  // Do not expose reviewNotes for REJECTED status — show generic message only
-  const isRejected = application.status === 'REJECTED'
-
   return NextResponse.json({
     status: application.status,
     businessName: application.businessName,
     submittedAt: application.createdAt,
     reviewedAt: application.reviewedAt,
-    ...(!isRejected && application.reviewNotes
-      ? { reviewNotes: application.reviewNotes }
-      : {}),
   })
 }
