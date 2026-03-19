@@ -417,6 +417,7 @@ model Organization {
   @@index([tier])
   @@index([isWholesaler])
   @@index([createdAt(sort: Desc)])
+  @@index([accountManagerId])
 }
 
 model Address {
@@ -602,6 +603,7 @@ model ClientNote {
   updatedAt      DateTime     @updatedAt
 
   @@index([organizationId, createdAt(sort: Desc)])
+  @@index([authorId])
 }
 
 // ============================================================
