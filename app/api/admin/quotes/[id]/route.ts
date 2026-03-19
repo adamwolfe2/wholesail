@@ -220,7 +220,8 @@ export async function PATCH(
         { status: 409 }
       );
     }
-    console.error("Error patching quote:", error);
+    const { captureWithContext } = await import("@/lib/sentry");
+    captureWithContext(error, { route: "admin/quotes/[id]", action: "patch" });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

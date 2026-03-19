@@ -173,7 +173,8 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (err) {
-    console.error("Error in orders/import:", err);
+    const { captureWithContext } = await import("@/lib/sentry");
+    captureWithContext(err, { route: "admin/orders/import", action: "post" });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

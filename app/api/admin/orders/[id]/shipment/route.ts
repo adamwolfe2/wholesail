@@ -81,7 +81,8 @@ export async function PATCH(
 
     return NextResponse.json({ shipment: updated });
   } catch (err) {
-    console.error("Error updating shipment:", err);
+    const { captureWithContext } = await import("@/lib/sentry");
+    captureWithContext(err, { route: "admin/orders/[id]/shipment", action: "patch" });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

@@ -24,14 +24,20 @@ export async function GET() {
   const { error: authError } = await requireAdmin();
   if (authError) return authError;
 
-  const endpoints = await prisma.webhookEndpoint.findMany({
-    orderBy: { createdAt: "desc" },
-    include: {
-      _count: { select: { logs: true } },
-    },
-  });
+  try {
+    const endpoints = await prisma.webhookEndpoint.findMany({
+      orderBy: { createdAt: "desc" },
+      include: {
+        _count: { select: { logs: true } },
+      },
+    });
 
-  return NextResponse.json({ endpoints });
+    return NextResponse.json({ endpoints });
+  } catch (err) {
+    const { captureWithContext } = await import("@/lib/sentry");
+    captureWithContext(err, { route: "admin/webhooks", action: "get" });
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+  }
 }
 
 /**
@@ -41,28 +47,34 @@ export async function POST(req: NextRequest) {
   const { error: authError } = await requireAdmin();
   if (authError) return authError;
 
-  const body = await req.json();
-  const parsed = createSchema.safeParse(body);
+  try {
+    const body = await req.json();
+    const parsed = createSchema.safeParse(body);
 
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: "Invalid request", details: parsed.error.flatten() },
-      { status: 400 },
-    );
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: "Invalid request", details: parsed.error.flatten() },
+        { status: 400 },
+      );
+    }
+
+    const secret = crypto.randomBytes(32).toString("hex");
+
+    const endpoint = await prisma.webhookEndpoint.create({
+      data: {
+        url: parsed.data.url,
+        events: parsed.data.events,
+        orgId: parsed.data.orgId ?? null,
+        secret,
+        isActive: true,
+      },
+    });
+
+    // Return secret only on creation — it won't be shown again
+    return NextResponse.json({ endpoint, secret }, { status: 201 });
+  } catch (err) {
+    const { captureWithContext } = await import("@/lib/sentry");
+    captureWithContext(err, { route: "admin/webhooks", action: "post" });
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
-
-  const secret = crypto.randomBytes(32).toString("hex");
-
-  const endpoint = await prisma.webhookEndpoint.create({
-    data: {
-      url: parsed.data.url,
-      events: parsed.data.events,
-      orgId: parsed.data.orgId ?? null,
-      secret,
-      isActive: true,
-    },
-  });
-
-  // Return secret only on creation — it won't be shown again
-  return NextResponse.json({ endpoint, secret }, { status: 201 });
 }

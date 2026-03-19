@@ -6,7 +6,7 @@ import { z } from "zod";
 import { sendOrderShippedEmail, sendOrderDeliveredEmail, sendInvoiceEmail } from "@/lib/email";
 import { awardLoyaltyPoints } from "@/lib/loyalty";
 import { generateInvoiceForOrder } from "@/app/api/billing/generate/route";
-import { format, addDays } from "date-fns";
+import { format } from "date-fns";
 import { dispatchWebhook } from "@/lib/webhooks";
 import { getSiteUrl } from "@/lib/brand";
 import { notifyOrg } from "@/lib/notifications";
@@ -152,7 +152,8 @@ export async function PATCH(
 
     return NextResponse.json({ order });
   } catch (error) {
-    console.error("Error updating order status:", error);
+    const { captureWithContext } = await import("@/lib/sentry");
+    captureWithContext(error, { route: "admin/orders/[id]/status", action: "patch" });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

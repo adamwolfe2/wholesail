@@ -58,7 +58,8 @@ export async function PATCH(req: NextRequest) {
       status,
     });
   } catch (error) {
-    console.error("Error bulk updating orders:", error);
+    const { captureWithContext } = await import("@/lib/sentry");
+    captureWithContext(error, { route: "admin/orders/bulk-status", action: "patch" });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

@@ -10,7 +10,7 @@ import { z } from "zod";
 import { checkoutLimiter, checkRateLimit, getIp } from "@/lib/rate-limit";
 import { getCreditStatus } from "@/lib/credit";
 import { processReferralConversion } from "@/lib/referrals";
-import { redeemLoyaltyPoints, POINTS_PER_DOLLAR_REDEMPTION } from "@/lib/loyalty";
+import { POINTS_PER_DOLLAR_REDEMPTION } from "@/lib/loyalty";
 import { getSiteUrl } from "@/lib/get-site-url";
 
 const checkoutSchema = z.object({
@@ -241,7 +241,6 @@ export async function POST(req: NextRequest) {
       } catch (discountErr) {
         // Credit/points deduction failed — cancel the order to prevent free discounts
         await updateOrderStatus(order.id, "CANCELLED").catch(() => {});
-        console.error("Discount deduction failed — order cancelled:", order.orderNumber, discountErr);
         captureWithContext(discountErr, { route: "checkout", step: "discount_deduction", orderNumber: order.orderNumber });
         const message = discountErr instanceof Error ? discountErr.message : String(discountErr);
         return NextResponse.json(
@@ -333,7 +332,6 @@ export async function POST(req: NextRequest) {
     } catch (stripeErr) {
       // Cancel the order so it doesn't sit as an orphaned PENDING record
       await updateOrderStatus(order.id, "CANCELLED").catch(() => {});
-      console.error("Stripe session creation failed — order cancelled:", order.orderNumber, stripeErr);
       captureWithContext(stripeErr, { route: "checkout", step: "stripe_session_creation", orderNumber: order.orderNumber });
       return NextResponse.json({ error: "Payment session could not be created. Please try again." }, { status: 502 });
     }
@@ -351,7 +349,6 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
     const err = error as { type?: string; code?: string; statusCode?: number; param?: string; raw?: unknown };
-    console.error("Checkout error:", message, "| type:", err?.type, "| code:", err?.code, "| param:", err?.param, "| raw:", JSON.stringify(err?.raw ?? null));
     captureWithContext(error, { route: "checkout", type: err?.type, code: err?.code });
     if (err?.statusCode === 400) {
       return NextResponse.json(

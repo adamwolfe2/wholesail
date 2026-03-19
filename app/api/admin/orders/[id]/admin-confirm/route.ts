@@ -9,41 +9,47 @@ export async function PATCH(
   const { userId, error } = await requireAdmin()
   if (error) return error
 
-  const { id } = await params
+  try {
+    const { id } = await params
 
-  const order = await prisma.order.findUnique({
-    where: { id },
-    select: { id: true, adminConfirmedAt: true },
-  })
-
-  if (!order) {
-    return NextResponse.json({ error: 'Order not found.' }, { status: 404 })
-  }
-
-  if (order.adminConfirmedAt) {
-    return NextResponse.json({ error: 'Already confirmed.' }, { status: 409 })
-  }
-
-  const now = new Date()
-
-  await prisma.$transaction([
-    prisma.order.update({
+    const order = await prisma.order.findUnique({
       where: { id },
-      data: { adminConfirmedAt: now },
-    }),
-    prisma.auditEvent.create({
-      data: {
-        entityType: 'Order',
-        entityId: id,
-        action: 'admin_confirmed',
-        userId,
-        metadata: { confirmedAt: now.toISOString() },
-      },
-    }),
-  ])
+      select: { id: true, adminConfirmedAt: true },
+    })
 
-  return NextResponse.json({
-    success: true,
-    updates: { adminConfirmedAt: now.toISOString() },
-  })
+    if (!order) {
+      return NextResponse.json({ error: 'Order not found.' }, { status: 404 })
+    }
+
+    if (order.adminConfirmedAt) {
+      return NextResponse.json({ error: 'Already confirmed.' }, { status: 409 })
+    }
+
+    const now = new Date()
+
+    await prisma.$transaction([
+      prisma.order.update({
+        where: { id },
+        data: { adminConfirmedAt: now },
+      }),
+      prisma.auditEvent.create({
+        data: {
+          entityType: 'Order',
+          entityId: id,
+          action: 'admin_confirmed',
+          userId,
+          metadata: { confirmedAt: now.toISOString() },
+        },
+      }),
+    ])
+
+    return NextResponse.json({
+      success: true,
+      updates: { adminConfirmedAt: now.toISOString() },
+    })
+  } catch (err) {
+    const { captureWithContext } = await import("@/lib/sentry")
+    captureWithContext(err, { route: "admin/orders/[id]/admin-confirm", action: "patch" })
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+  }
 }

@@ -62,7 +62,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ updated, action });
   } catch (error) {
-    console.error("Error bulk updating clients:", error);
+    const { captureWithContext } = await import("@/lib/sentry");
+    captureWithContext(error, { route: "admin/clients/bulk-update", action: "post" });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

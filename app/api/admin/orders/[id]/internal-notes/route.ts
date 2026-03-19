@@ -55,7 +55,8 @@ export async function PATCH(
 
     return NextResponse.json({ order: updated });
   } catch (error) {
-    console.error("Error updating internal notes:", error);
+    const { captureWithContext } = await import("@/lib/sentry");
+    captureWithContext(error, { route: "admin/orders/[id]/internal-notes", action: "patch" });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

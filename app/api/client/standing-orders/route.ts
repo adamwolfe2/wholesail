@@ -37,7 +37,8 @@ export async function GET() {
 
     return NextResponse.json({ orders })
   } catch (error) {
-    console.error('Error fetching standing orders:', error)
+    const { captureWithContext } = await import("@/lib/sentry")
+    captureWithContext(error, { route: "client/standing-orders", action: "get" })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -111,7 +112,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ order }, { status: 201 })
   } catch (error) {
-    console.error('Error creating standing order:', error)
+    const { captureWithContext } = await import("@/lib/sentry")
+    captureWithContext(error, { route: "client/standing-orders", action: "post" })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

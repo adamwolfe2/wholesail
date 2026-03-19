@@ -110,14 +110,14 @@ export async function POST(req: NextRequest) {
           created++
         }
       } catch (rowErr) {
-        console.error(`bulk-import row error for "${client.name}":`, rowErr)
         errors.push(`Failed to import "${client.name}": ${rowErr instanceof Error ? rowErr.message : 'Unknown error'}`)
       }
     }
 
     return NextResponse.json({ created, updated, errors })
   } catch (err) {
-    console.error('POST /api/admin/clients/bulk-import error:', err)
+    const { captureWithContext } = await import("@/lib/sentry")
+    captureWithContext(err, { route: "admin/clients/bulk-import", action: "post" })
     return NextResponse.json({ error: 'Failed to process import' }, { status: 500 })
   }
 }
