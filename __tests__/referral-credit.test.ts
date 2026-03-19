@@ -221,7 +221,8 @@ describe("referral credit deduction", () => {
     });
 
     it("does not decrement when org.referralCredits is null", () => {
-      const referralCredits = Number(null ?? 0);
+      const orgCredits: number | null = null;
+      const referralCredits = Number(orgCredits ?? 0);
       const applyCredits = true;
 
       const referralCreditToApply =

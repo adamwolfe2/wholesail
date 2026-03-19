@@ -7,7 +7,6 @@ const savedCartItemSchema = z.object({
   productId: z.string(),
   name: z.string(),
   quantity: z.number().int().positive(),
-  unitPrice: z.number().positive(),
 })
 
 const createCartSchema = z.object({
@@ -77,6 +76,23 @@ export async function POST(request: Request) {
 
     const { name, items } = parsed.data
 
+    // Server-side price lookup — never trust client-supplied prices
+    const productIds = items.map((item) => item.productId)
+    const products = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+      select: { id: true, price: true },
+    })
+    const priceMap = new Map(products.map((p) => [p.id, p.price]))
+
+    // Verify all products exist
+    const missingProducts = productIds.filter((id) => !priceMap.has(id))
+    if (missingProducts.length > 0) {
+      return NextResponse.json(
+        { error: 'Invalid products', details: `Products not found: ${missingProducts.join(', ')}` },
+        { status: 400 }
+      )
+    }
+
     const cart = await prisma.savedCart.create({
       data: {
         name: name ?? null,
@@ -87,7 +103,7 @@ export async function POST(request: Request) {
             productId: item.productId,
             name: item.name,
             quantity: item.quantity,
-            unitPrice: item.unitPrice,
+            unitPrice: Number(priceMap.get(item.productId)),
           })),
         },
       },

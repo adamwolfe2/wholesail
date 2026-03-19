@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { captureWithContext } from '@/lib/sentry'
 import { prisma } from '@/lib/db'
 import { sendLapsedClientEmail } from '@/lib/email/index'
 import { sendMessage, toE164 } from '@/lib/integrations/blooio'
@@ -181,6 +182,7 @@ export async function GET(req: NextRequest) {
     })
   } catch (err) {
     console.error('Lapsed client cron error:', err)
+    captureWithContext(err, { route: 'cron/lapsed-clients' })
     return NextResponse.json({ error: 'Cron failed' }, { status: 500 })
   }
 }

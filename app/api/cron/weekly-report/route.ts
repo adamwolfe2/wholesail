@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { captureWithContext } from '@/lib/sentry'
 import { prisma } from '@/lib/db'
 import { Resend } from 'resend'
 import { BRAND_EMAIL, BRAND_NAME as BRAND_NAME_IMPORT } from '@/lib/brand'
@@ -335,6 +336,7 @@ ${BRAND_NAME} Internal Ops`
     })
   } catch (err) {
     console.error('Weekly report cron error:', err)
+    captureWithContext(err, { route: 'cron/weekly-report' })
     return NextResponse.json({ error: 'Cron failed' }, { status: 500 })
   }
 }

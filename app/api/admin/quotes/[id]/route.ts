@@ -135,31 +135,55 @@ export async function PATCH(
       });
       const productDistributorMap = new Map(quoteProducts.map((p) => [p.id, p.distributorOrgId ?? null]));
 
-      const order = await createOrderWithRetry(async (orderNumber) => {
-        return prisma.order.create({
-          data: {
-            orderNumber,
-            organizationId: quote.organizationId,
-            userId: clientUserId,
-            placedByRepId: quote.repId ?? undefined,
-            status: "PENDING",
-            subtotal: quote.subtotal,
-            tax: 0,
-            deliveryFee: 0,
-            total: quote.total,
-            notes: quote.notes,
-            items: {
-              create: quote.items.map((item) => ({
-                productId: item.productId,
-                name: item.name,
-                quantity: item.quantity,
-                unitPrice: item.unitPrice,
-                total: item.total,
-                distributorOrgId: productDistributorMap.get(item.productId) ?? null,
-              })),
+      // Use a transaction to prevent duplicate orders from concurrent convert requests
+      const { order, updated } = await prisma.$transaction(async (tx) => {
+        // Re-check inside the transaction to prevent race conditions
+        const freshQuote = await tx.quote.findUniqueOrThrow({
+          where: { id },
+          select: { convertedOrderId: true },
+        });
+
+        if (freshQuote.convertedOrderId) {
+          throw new Error("ALREADY_CONVERTED");
+        }
+
+        const createdOrder = await createOrderWithRetry(async (orderNumber) => {
+          return tx.order.create({
+            data: {
+              orderNumber,
+              organizationId: quote.organizationId,
+              userId: clientUserId,
+              placedByRepId: quote.repId ?? undefined,
+              status: "PENDING",
+              subtotal: quote.subtotal,
+              tax: 0,
+              deliveryFee: 0,
+              total: quote.total,
+              notes: quote.notes,
+              items: {
+                create: quote.items.map((item) => ({
+                  productId: item.productId,
+                  name: item.name,
+                  quantity: item.quantity,
+                  unitPrice: item.unitPrice,
+                  total: item.total,
+                  distributorOrgId: productDistributorMap.get(item.productId) ?? null,
+                })),
+              },
             },
+          });
+        });
+
+        const updatedQuote = await tx.quote.update({
+          where: { id },
+          data: {
+            status: "ACCEPTED",
+            acceptedAt: new Date(),
+            convertedOrderId: createdOrder.id,
           },
         });
+
+        return { order: createdOrder, updated: updatedQuote };
       });
 
       notifyDistributorsForOrder({
@@ -169,15 +193,6 @@ export async function PATCH(
         clientEmail: quote.organization.email ?? null,
         deliveryAddress: null,
       }).catch(() => {});
-
-      const updated = await prisma.quote.update({
-        where: { id },
-        data: {
-          status: "ACCEPTED",
-          acceptedAt: new Date(),
-          convertedOrderId: order.id,
-        },
-      });
 
       // Audit event
       try {
@@ -199,6 +214,12 @@ export async function PATCH(
 
     return NextResponse.json({ error: "Unknown action" }, { status: 400 });
   } catch (error) {
+    if (error instanceof Error && error.message === "ALREADY_CONVERTED") {
+      return NextResponse.json(
+        { error: "Quote already converted" },
+        { status: 409 }
+      );
+    }
     console.error("Error patching quote:", error);
     return NextResponse.json(
       { error: "Internal server error" },

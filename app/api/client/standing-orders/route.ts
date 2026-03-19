@@ -66,6 +66,31 @@ export async function POST(request: Request) {
 
     const { name, frequency, nextRunDate, items } = parsed.data
 
+    // Validate all products exist and are active
+    const productIds = items.map((item) => item.productId)
+    const products = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+      select: { id: true, available: true, name: true },
+    })
+
+    const productMap = new Map(products.map((p) => [p.id, p]))
+
+    for (const item of items) {
+      const product = productMap.get(item.productId)
+      if (!product) {
+        return NextResponse.json(
+          { error: `Product not found: ${item.productId}` },
+          { status: 404 }
+        )
+      }
+      if (!product.available) {
+        return NextResponse.json(
+          { error: `Product "${product.name}" is not currently available` },
+          { status: 400 }
+        )
+      }
+    }
+
     const order = await prisma.standingOrder.create({
       data: {
         name,

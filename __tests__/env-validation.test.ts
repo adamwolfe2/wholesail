@@ -11,8 +11,7 @@ describe("lib/env.ts — validateEnv", () => {
   });
 
   it("warns on missing env vars in dev mode but does not throw", async () => {
-    const origEnv = process.env.NODE_ENV;
-    process.env.NODE_ENV = "development";
+    vi.stubEnv("NODE_ENV", "development");
     // Clear required vars
     const saved = {
       DATABASE_URL: process.env.DATABASE_URL,
@@ -33,6 +32,6 @@ describe("lib/env.ts — validateEnv", () => {
 
     consoleSpy.mockRestore();
     Object.assign(process.env, saved);
-    process.env.NODE_ENV = origEnv;
+    vi.unstubAllEnvs();
   });
 });

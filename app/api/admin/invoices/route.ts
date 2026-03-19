@@ -39,6 +39,21 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // Validate dueDate is in the future
+    const dueDate = new Date(parsed.data.dueDate);
+    if (isNaN(dueDate.getTime())) {
+      return NextResponse.json(
+        { error: "Invalid due date format" },
+        { status: 400 }
+      );
+    }
+    if (dueDate <= new Date()) {
+      return NextResponse.json(
+        { error: "Due date must be in the future" },
+        { status: 400 }
+      );
+    }
+
     // Check if order exists and doesn't already have an invoice
     const order = await prisma.order.findUnique({
       where: { id: parsed.data.orderId },
@@ -67,7 +82,7 @@ export async function POST(req: NextRequest) {
             invoiceNumber,
             orderId: order.id,
             organizationId: order.organizationId,
-            dueDate: new Date(parsed.data.dueDate),
+            dueDate,
             status: "PENDING",
             subtotal: order.subtotal,
             tax: order.tax,

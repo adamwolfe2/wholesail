@@ -477,7 +477,7 @@ model Order {
   organizationId         String
   organization           Organization  @relation(fields: [organizationId], references: [id], onDelete: Restrict)
   userId                 String
-  user                   User          @relation(fields: [userId], references: [id])
+  user                   User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   placedByRepId          String?
   placedByRep            User?         @relation("RepOrders", fields: [placedByRepId], references: [id])
   status                 OrderStatus   @default(PENDING)
@@ -581,7 +581,7 @@ model AuditEvent {
   entityId   String
   action     String
   userId     String?
-  user       User?    @relation(fields: [userId], references: [id])
+  user       User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   metadata   Json?
   createdAt  DateTime @default(now())
 
@@ -718,6 +718,7 @@ model Quote {
 
   @@index([organizationId])
   @@index([status])
+  @@index([repId])
 }
 
 model QuoteItem {
@@ -774,7 +775,7 @@ model StandingOrder {
   organizationId String
   organization   Organization           @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   userId         String
-  user           User                   @relation("UserStandingOrders", fields: [userId], references: [id])
+  user           User                   @relation("UserStandingOrders", fields: [userId], references: [id], onDelete: Cascade)
   frequency      StandingOrderFrequency
   nextRunDate    DateTime
   isActive       Boolean                @default(true)
@@ -1071,7 +1072,7 @@ model Attachment {
   fileSize     Int
   mimeType     String
   uploadedById String
-  uploadedBy   User     @relation(fields: [uploadedById], references: [id])
+  uploadedBy   User     @relation(fields: [uploadedById], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
 
   @@index([orderId])

@@ -81,10 +81,10 @@ export function PortalNav() {
   useEffect(() => {
     async function fetchCounts() {
       try {
-        const res = await fetch('/api/client/notifications/counts')
+        const res = await fetch('/api/client/notifications/count')
         if (res.ok) {
           const data = await res.json()
-          setCounts({ unreadMessages: data.unreadMessages ?? 0 })
+          setCounts({ unreadMessages: data.unreadCount ?? 0 })
         }
       } catch {
         // Ignore errors — badges just won't show

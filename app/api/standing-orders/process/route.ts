@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { captureWithContext } from '@/lib/sentry'
 import { prisma } from '@/lib/db'
 import { notifyDistributorsForOrder } from '@/lib/db/orders'
 import { createOrderWithRetry } from '@/lib/order-number'
@@ -22,10 +23,8 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: 'Cron secret not configured' }, { status: 503 })
   }
 
-  const authHeader = req.headers instanceof Headers ? req.headers.get('authorization') : null
-  const bearerToken = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null
-
-  if (bearerToken !== cronSecret) {
+  const authHeader = req.headers.get('authorization')
+  if (authHeader !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
@@ -216,6 +215,7 @@ export async function GET(req: Request) {
     })
   } catch (error) {
     console.error('Standing order processing error:', error)
+    captureWithContext(error, { route: 'standing-orders/process' })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
