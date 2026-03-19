@@ -37,7 +37,6 @@ export async function GET(req: NextRequest) {
   const now = new Date()
   const sevenDaysAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000)
   const fourteenDaysAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000)
-  const fortyfiveDaysAgo = new Date(now.getTime() - 45 * 24 * 60 * 60 * 1000)
   const startOfThisWeek = sevenDaysAgo
   const startOfLastWeek = fourteenDaysAgo
 
@@ -335,7 +334,6 @@ ${BRAND_NAME} Internal Ops`
       },
     })
   } catch (err) {
-    console.error('Weekly report cron error:', err)
     captureWithContext(err, { route: 'cron/weekly-report' })
     return NextResponse.json({ error: 'Cron failed' }, { status: 500 })
   }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, Zap, ShoppingCart, CreditCard, BarChart3, MessageSquare, Clock } from "lucide-react";
+import { ArrowRight, CheckCircle2, Zap, ShoppingCart, CreditCard, BarChart3, Clock } from "lucide-react";
 import { NavBar } from "@/components/nav-bar";
 import { IntakeWizard } from "@/components/intake-wizard";
 import { DemoLauncher } from "@/components/demo-launcher";

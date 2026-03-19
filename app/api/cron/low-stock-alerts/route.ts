@@ -62,7 +62,6 @@ export async function GET(req: NextRequest) {
       products: items.map((i) => i.name),
     })
   } catch (err) {
-    console.error('Low stock cron error:', err)
     captureWithContext(err, { route: 'cron/low-stock-alerts' })
     return NextResponse.json({ error: 'Cron failed' }, { status: 500 })
   }

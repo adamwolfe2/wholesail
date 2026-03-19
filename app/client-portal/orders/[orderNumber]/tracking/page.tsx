@@ -64,8 +64,6 @@ const TRACKING_STEPS = [
   { key: 'DELIVERED', label: 'Delivered' },
 ] as const
 
-type TrackingStepKey = typeof TRACKING_STEPS[number]['key']
-
 // Map order status to stepper position for pre-shipment states
 function getStepIndex(orderStatus: string, shipmentStatus?: string): number {
   if (shipmentStatus === 'DELIVERED') return 4

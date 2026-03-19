@@ -119,7 +119,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ attachment }, { status: 201 });
   } catch (error) {
-    console.error("Error uploading attachment:", error);
     captureWithContext(error, { route: "attachments", method: "POST" });
     return NextResponse.json(
       { error: "Failed to upload file" },
@@ -192,7 +191,6 @@ export async function DELETE(req: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (error) {
-    console.error("Error deleting attachment:", error);
     captureWithContext(error, { route: "attachments", method: "DELETE" });
     return NextResponse.json(
       { error: "Failed to delete attachment" },

@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Script from 'next/script'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Instagram, ArrowUpRight } from 'lucide-react'
 
 const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'

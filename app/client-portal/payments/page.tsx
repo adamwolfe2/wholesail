@@ -16,7 +16,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Button } from '@/components/ui/button'
-import { DollarSign, CreditCard, CheckCircle2, Clock, Building2, Loader2, ExternalLink, FileText } from 'lucide-react'
+import { DollarSign, CreditCard, CheckCircle2, Clock, Building2, Loader2, FileText } from 'lucide-react'
 import Link from 'next/link'
 
 interface OutstandingInvoice {

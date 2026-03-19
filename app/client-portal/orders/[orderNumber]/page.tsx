@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/table'
 import { ArrowLeft, Loader2, Package, Check, Truck, MapPin, Clock, User } from 'lucide-react'
 import { ReorderButton } from '@/components/reorder-button'
-import { OrderDeliveryChecklist, type OrderChecklistData } from '@/components/order-delivery-checklist'
+import { OrderDeliveryChecklist } from '@/components/order-delivery-checklist'
 
 interface ShipmentEvent {
   id: string

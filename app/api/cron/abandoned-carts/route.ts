@@ -126,7 +126,6 @@ export async function GET(req: NextRequest) {
       errors: errors.length > 0 ? errors : undefined,
     })
   } catch (err) {
-    console.error('Abandoned cart cron error:', err)
     captureWithContext(err, { route: 'cron/abandoned-carts' })
     return NextResponse.json({ error: 'Cron failed' }, { status: 500 })
   }

@@ -411,7 +411,6 @@ function BulkImportTab({ onImportComplete }: { onImportComplete: () => void }) {
     }
   }
 
-  const PREVIEW_COLS = ['first_name', 'email', 'company', 'website']
   const headers = rows.length > 0 ? Object.keys(rows[0]) : []
 
   if (result) {

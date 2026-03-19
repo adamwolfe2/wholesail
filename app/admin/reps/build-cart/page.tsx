@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -49,7 +49,6 @@ interface CartItem {
 type Step = 1 | 2 | 3;
 
 export default function BuildCartPage() {
-  const router = useRouter();
   const searchParams = useSearchParams();
 
   const [step, setStep] = useState<Step>(1);

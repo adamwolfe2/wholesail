@@ -4,8 +4,7 @@ import { prisma } from "@/lib/db";
 import { format, isPast, isToday } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { CheckSquare, Building2, AlertTriangle, ExternalLink } from "lucide-react";
+import { Building2, AlertTriangle, ExternalLink } from "lucide-react";
 import { NewTaskDialog } from "@/components/new-task-dialog";
 import { TaskActions } from "@/app/admin/reps/[id]/task-actions";
 
@@ -83,8 +82,6 @@ export default async function TaskBoardPage({ searchParams }: PageProps) {
     },
     { URGENT: [], HIGH: [], NORMAL: [], LOW: [] }
   );
-
-  const now = new Date();
 
   return (
     <div className="space-y-6">

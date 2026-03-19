@@ -17,7 +17,7 @@ import { createPostgresStore, createKVStore, connectStoreToProject } from "@/lib
 import { createResendApiKey } from "@/lib/build/resend-admin";
 import { createSentryProject } from "@/lib/build/sentry-admin";
 import { createConnectedAccount } from "@/lib/build/stripe-connect";
-import { provisionClerkApp, isPlatformApiAvailable, generateClerkWebhookInstructions } from "@/lib/build/clerk-admin";
+import { provisionClerkApp, isPlatformApiAvailable } from "@/lib/build/clerk-admin";
 import { sendStripeOnboardingEmail } from "@/lib/email/notifications";
 import { prisma } from "@/lib/db";
 import Anthropic from "@anthropic-ai/sdk";
@@ -472,9 +472,6 @@ export async function POST(
 
     // ── STEP 6: Create Vercel project ──────────────────────────────────────
     let vercelProjectId = project.vercelProject;
-    const vercelUrl = vercelProjectId
-      ? `https://${repoName}.vercel.app`
-      : null;
 
     if (!buildChecklist.vercelProjectCreated && process.env.WS_VERCEL_TOKEN && repoName) {
       try {
@@ -627,7 +624,6 @@ export async function POST(
 
     // ── STEP 11: Create Stripe Connect account ───────────────────────────
     let stripeConnectAccountId: string | null = null;
-    let stripeOnboardingUrl: string | null = null;
     if (!buildChecklist.stripeConnectCreated && process.env.STRIPE_SECRET_KEY) {
       try {
         appendLog("Creating Stripe Express Connected Account...");
@@ -641,7 +637,6 @@ export async function POST(
         });
 
         stripeConnectAccountId = connectResult.accountId;
-        stripeOnboardingUrl = connectResult.onboardingUrl;
 
         await prisma.project.update({
           where: { id: projectId },
@@ -692,7 +687,6 @@ export async function POST(
     // ── STEP 12: Provision Clerk app (Platform API) ────────────────────────
     let clerkPublishableKey: string | null = null;
     let clerkSecretKey: string | null = null;
-    let clerkAppId: string | null = null;
     if (!buildChecklist.clerkAppCreated && isPlatformApiAvailable()) {
       try {
         appendLog("Creating Clerk application via Platform API...");
@@ -704,7 +698,6 @@ export async function POST(
         );
 
         if (clerkResult) {
-          clerkAppId = clerkResult.applicationId;
           clerkPublishableKey = clerkResult.publishableKey;
           clerkSecretKey = clerkResult.secretKey;
 

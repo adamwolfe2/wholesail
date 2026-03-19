@@ -29,25 +29,20 @@ import {
   Phone,
   MapPin,
   ExternalLink,
-  ChevronRight,
   ChevronDown,
   Minus,
   Download,
   Edit,
   Award,
-  Quote,
   Send,
   Shield,
   Snowflake,
   CreditCard,
   Truck,
-  ClipboardList,
   X,
   Trash2,
   Zap,
   Target,
-  Calendar,
-  Receipt,
   Loader2,
   Menu,
   PanelLeftClose,
@@ -2443,7 +2438,6 @@ function DemoPortalInner() {
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  const sidebarOpen = sidebarMode !== "hidden";
   const sidebarCollapsed = sidebarMode === "collapsed";
 
   const toggleSidebar = () => {

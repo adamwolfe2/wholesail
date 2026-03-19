@@ -1472,7 +1472,6 @@ export default function WholesailPage() {
         >
           {STEPS.map((item, i) => {
             const isFirst = i === 0;
-            const isLast = i === STEPS.length - 1;
             return (
               <div
                 key={item.step}

@@ -143,7 +143,6 @@ export async function GET(req: NextRequest) {
       errors: errors.length > 0 ? errors : undefined,
     })
   } catch (err) {
-    console.error('Billing reminders cron error:', err)
     captureWithContext(err, { route: 'cron/billing-reminders' })
     return NextResponse.json({ error: 'Cron failed' }, { status: 500 })
   }

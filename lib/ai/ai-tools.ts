@@ -1180,7 +1180,6 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
     // for the per-org top-products aggregation instead of N+1 per org.
     const { getOverdueReorders } = await import('@/lib/smart-reorder')
     const overdue = await getOverdueReorders()
-    const now = new Date()
     const alerts = overdue.slice(0, limit).map((r) => ({
       client: r.orgName,
       email: '',  // getOverdueReorders doesn't return email; safe default

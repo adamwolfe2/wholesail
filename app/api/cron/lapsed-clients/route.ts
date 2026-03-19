@@ -165,7 +165,6 @@ export async function GET(req: NextRequest) {
 
         emailed++
       } catch (err) {
-        console.error(`Lapsed client error for org ${org.id}:`, err)
         errors.push(`org ${org.id}: ${err instanceof Error ? err.message : 'unknown'}`)
       }
     }
@@ -181,7 +180,6 @@ export async function GET(req: NextRequest) {
       errors: errors.length > 0 ? errors : undefined,
     })
   } catch (err) {
-    console.error('Lapsed client cron error:', err)
     captureWithContext(err, { route: 'cron/lapsed-clients' })
     return NextResponse.json({ error: 'Cron failed' }, { status: 500 })
   }

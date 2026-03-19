@@ -8,7 +8,7 @@ export async function scrapeIntakeWebsite(
 ) {
   const apiKey = process.env.FIRECRAWL_API_KEY;
   if (!apiKey) {
-    console.log("[firecrawl] No API key, skipping scrape");
+    // No API key configured — skip scrape silently
     return;
   }
 

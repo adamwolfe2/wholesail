@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useRouter } from "next/navigation";
-import { Loader2, Pencil, Check, X, TrendingUp, ImageIcon, Search, Download, MoreHorizontal } from "lucide-react";
+import { Loader2, Pencil, Check, X, TrendingUp, ImageIcon, Search, Download } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useBulkSelection } from "@/hooks/use-bulk-selection";
 import {

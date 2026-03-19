@@ -28,9 +28,6 @@ import {
   Tag,
   ToggleLeft,
   ToggleRight,
-  Thermometer,
-  CreditCard,
-  BarChart2,
 } from "lucide-react";
 import { PriceHistoryChart } from "./price-history-chart";
 import { DistributorAssignmentCard } from "./distributor-assignment";

@@ -5,7 +5,6 @@ import { prisma } from "@/lib/db";
 import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -15,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ArrowLeft, XCircle } from "lucide-react";
+import { XCircle } from "lucide-react";
 import { OrderStatusControl } from "./status-control";
 import { SendNotification } from "../../send-notification";
 import { CreateShipmentForm } from "./create-shipment-form";
@@ -37,8 +36,6 @@ export const metadata: Metadata = { title: "Order Details" };
 const statusColors = orderStatusColors;
 
 const STATUS_STEPS = ["PENDING", "CONFIRMED", "PACKED", "SHIPPED", "DELIVERED"] as const;
-type OrderStatus = typeof STATUS_STEPS[number] | "CANCELLED";
-
 function OrderStatusTimeline({ status }: { status: string }) {
   if (status === "CANCELLED") {
     return (

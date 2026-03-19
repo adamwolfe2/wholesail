@@ -51,7 +51,6 @@ export async function GET(req: Request) {
       });
       day1Sent++;
     } catch (err) {
-      console.error(`Onboarding Day 1 email failed for org ${org.id}:`, err);
       captureWithContext(err, { route: "cron/onboarding-drip", step: "day1", orgId: org.id });
       await prisma.auditEvent.create({
         data: {
@@ -88,7 +87,6 @@ export async function GET(req: Request) {
       });
       day7Sent++;
     } catch (err) {
-      console.error(`Onboarding Day 3 nudge failed for org ${org.id}:`, err);
       captureWithContext(err, { route: "cron/onboarding-drip", step: "day3", orgId: org.id });
       await prisma.auditEvent.create({
         data: {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { TOTAL_HOURS_SAVED, MANUAL_PROCESSES } from "@/lib/client-data";
+import { TOTAL_HOURS_SAVED } from "@/lib/client-data";
 
 function fmt(n: number) {
   return "$" + n.toLocaleString();

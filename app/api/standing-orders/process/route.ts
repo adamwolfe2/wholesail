@@ -214,7 +214,6 @@ export async function GET(req: Request) {
       timestamp: new Date().toISOString(),
     })
   } catch (error) {
-    console.error('Standing order processing error:', error)
     captureWithContext(error, { route: 'standing-orders/process' })
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }

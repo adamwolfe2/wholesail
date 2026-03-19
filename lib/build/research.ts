@@ -135,7 +135,7 @@ export async function runResearchPipeline(
 
   // ── Step 1: Tavily searches ──────────────────────────────────────────
   if (!tavilyKey) {
-    console.log("[research] No TAVILY_API_KEY, skipping research pipeline");
+    // No TAVILY_API_KEY configured — skip research pipeline
     return {
       ...EMPTY_RESEARCH_OUTPUT,
       synthesizedBrief:
@@ -180,9 +180,6 @@ export async function runResearchPipeline(
   // ── Step 2: Synthesize with Claude Sonnet ────────────────────────────
   const anthropicKey = process.env.ANTHROPIC_API_KEY;
   if (!anthropicKey) {
-    console.log(
-      "[research] No ANTHROPIC_API_KEY, returning basic Tavily output"
-    );
     return buildBasicOutput(searches, input);
   }
 

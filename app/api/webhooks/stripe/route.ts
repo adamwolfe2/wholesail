@@ -36,7 +36,6 @@ export async function POST(req: NextRequest) {
   try {
     event = await parseWebhookEvent(body, signature);
   } catch (err) {
-    console.error("Webhook signature verification failed:", err);
     captureWithContext(err, { route: "webhooks/stripe", step: "signature_verification" });
     const msg = err instanceof WebhookSignatureError ? err.message : "Invalid signature";
     return NextResponse.json({ error: msg }, { status: 400 });
@@ -54,7 +53,6 @@ export async function POST(req: NextRequest) {
         // Quote pay sessions have type === 'quote_payment' in metadata
         if (session.metadata?.type === "quote_payment") {
           const quoteId = session.metadata?.quoteId;
-          const orgId = session.metadata?.organizationId;
 
           if (!quoteId) {
             console.error("No quoteId in quote_payment session metadata");
@@ -797,7 +795,6 @@ export async function POST(req: NextRequest) {
         console.warn(`Unhandled Stripe event: ${event.type}`);
     }
   } catch (err) {
-    console.error(`Error processing Stripe event ${event.type}:`, err);
     captureWithContext(err, { route: "webhooks/stripe", eventType: event.type });
     // Return 500 so Stripe will retry the event
     return NextResponse.json({ error: "Internal error" }, { status: 500 });

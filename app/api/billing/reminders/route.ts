@@ -41,7 +41,6 @@ export async function GET(req: Request) {
   }
 
   const now = new Date();
-  const fiveDaysFromNow = addDays(now, 5);
   const sevenDaysAgo = addDays(now, -7);
 
   let sent = 0;
@@ -80,10 +79,6 @@ export async function GET(req: Request) {
           continue;
         }
       }
-
-      const subjectPrefix = isOverdue
-        ? `OVERDUE — Invoice ${invoice.invoiceNumber}`
-        : `Payment Due Soon — Invoice ${invoice.invoiceNumber}`;
 
       const dueDateStr = format(dueDate, "MMMM d, yyyy");
 
