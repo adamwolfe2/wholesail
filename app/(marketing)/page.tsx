@@ -30,11 +30,11 @@ import {
   Building2,
   Utensils,
 } from "lucide-react";
-import { IntakeWizard } from "@/components/intake-wizard";
-import { BuildDemo } from "@/components/build-demo";
-import { DemoLauncher } from "@/components/demo-launcher";
+import { LazyIntakeWizard } from "@/components/lazy-intake-wizard";
 import { FAQ } from "@/components/faq";
 import { PainPointExplorer } from "@/components/pain-point-explorer";
+import { LazyBuildDemo } from "@/components/lazy-build-demo";
+import { LazyDemoLauncher } from "@/components/lazy-demo-launcher";
 
 /* ── Wholesail Sail Logo ─────────────────────────────────────────────── */
 function SailLogo({ className = "w-6 h-6" }: { className?: string }) {
@@ -427,7 +427,7 @@ export default function WholesailPage() {
 
           {/* Right side — animated build demo */}
           <div>
-            <BuildDemo />
+            <LazyBuildDemo />
           </div>
         </div>
       </section>
@@ -785,7 +785,7 @@ export default function WholesailPage() {
           </div>
           {/* Right — demo launcher */}
           <div>
-            <DemoLauncher />
+            <LazyDemoLauncher />
           </div>
         </div>
       </section>
@@ -1677,7 +1677,7 @@ export default function WholesailPage() {
             is spent on building your portal, not discovery.
           </p>
         </div>
-        <IntakeWizard />
+        <LazyIntakeWizard />
       </section>
 
       {/* ── Footer ───────────────────────────────────────────────── */}

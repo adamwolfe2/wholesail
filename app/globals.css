@@ -27,9 +27,9 @@ body {
 }
 
 @theme {
-  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
-  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo,
-    Consolas, monospace;
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, "SF Mono",
+    Menlo, Consolas, monospace;
   --color-cream: #F9F7F4;
 }
 

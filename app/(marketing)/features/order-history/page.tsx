@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, X } from "lucide-react";
-import { IntakeWizard } from "@/components/intake-wizard";
+import { LazyIntakeWizard } from "@/components/lazy-intake-wizard";
 
 export const metadata: Metadata = {
   title: "Order History & Reorder for Wholesale Distributors | Wholesail",
@@ -265,7 +265,7 @@ export default function OrderHistoryPage() {
           <p className="font-mono text-sm max-w-xl leading-relaxed mb-10" style={{ color: "var(--text-body)" }}>
             5 minutes. We review your answers before your call so every minute is spent on building your portal, not discovery.
           </p>
-          <IntakeWizard />
+          <LazyIntakeWizard />
         </section>
       </div>
     </div>

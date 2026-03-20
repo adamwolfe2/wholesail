@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Zap, ShoppingCart, CreditCard, BarChart3, Clock } from "lucide-react";
 import { NavBar } from "@/components/nav-bar";
-import { IntakeWizard } from "@/components/intake-wizard";
-import { DemoLauncher } from "@/components/demo-launcher";
+import { LazyIntakeWizard } from "@/components/lazy-intake-wizard";
+import { LazyDemoLauncher } from "@/components/lazy-demo-launcher";
 
 export const metadata: Metadata = {
   title: "What Is AI-ified? | Wholesail",
@@ -633,7 +633,7 @@ export default function AIifiedPage() {
                 </div>
               </div>
               <div>
-                <DemoLauncher />
+                <LazyDemoLauncher />
               </div>
             </div>
           </section>
@@ -659,7 +659,7 @@ export default function AIifiedPage() {
               5 minutes. We review your answers before your call so every minute is spent on
               building your portal, not discovery.
             </p>
-            <IntakeWizard />
+            <LazyIntakeWizard />
           </section>
 
         </div>

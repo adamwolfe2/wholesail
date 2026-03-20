@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { NavBar } from "@/components/nav-bar";
-import { IntakeWizard } from "@/components/intake-wizard";
+import { LazyIntakeWizard } from "@/components/lazy-intake-wizard";
 
 export const metadata: Metadata = {
   title: "About Wholesail | Wholesale Distribution Automation",
@@ -323,7 +323,7 @@ export default function AboutPage() {
               5 minutes. We review your answers before your call so every minute is spent on
               building your portal, not discovery.
             </p>
-            <IntakeWizard />
+            <LazyIntakeWizard />
           </section>
 
         </div>
