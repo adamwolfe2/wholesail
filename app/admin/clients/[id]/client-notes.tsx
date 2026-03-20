@@ -6,6 +6,17 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Loader2, MessageSquare, Plus, Trash2, X } from 'lucide-react'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 interface Note {
   id: string
@@ -83,7 +94,7 @@ export function ClientNotes({
       </CardHeader>
       <CardContent className="space-y-4">
         {adding && (
-          <div className="space-y-2 border rounded-lg p-3 bg-muted/30">
+          <div className="space-y-2 border rounded-none p-3 bg-muted/30">
             <Textarea
               placeholder="Write a note about this client..."
               rows={3}
@@ -116,22 +127,42 @@ export function ClientNotes({
         ) : (
           <div className="space-y-3">
             {notes.map((note) => (
-              <div key={note.id} className="border rounded-lg p-3 text-sm space-y-1">
+              <div key={note.id} className="border rounded-none p-3 text-sm space-y-1">
                 <div className="flex items-start justify-between gap-2">
                   <p className="whitespace-pre-wrap flex-1">{note.content}</p>
                   {(isAdmin || note.author.id === currentUserId) && (
-                    <button
-                      onClick={() => deleteNote(note.id)}
-                      disabled={deletingId === note.id}
-                      className="text-muted-foreground hover:text-red-500 transition-colors shrink-0 mt-0.5"
-                      title="Delete note"
-                    >
-                      {deletingId === note.id ? (
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                      ) : (
-                        <Trash2 className="h-3.5 w-3.5" />
-                      )}
-                    </button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <button
+                          disabled={deletingId === note.id}
+                          className="text-muted-foreground hover:text-red-500 transition-colors shrink-0 mt-0.5"
+                          title="Delete note"
+                        >
+                          {deletingId === note.id ? (
+                            <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          ) : (
+                            <Trash2 className="h-3.5 w-3.5" />
+                          )}
+                        </button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Delete this note?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will permanently delete this note. This action cannot be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => deleteNote(note.id)}
+                            className="bg-red-600 hover:bg-red-700 text-white"
+                          >
+                            Delete Note
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   )}
                 </div>
                 <p className="text-xs text-muted-foreground">

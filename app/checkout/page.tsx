@@ -13,6 +13,7 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { formatCurrency } from '@/lib/utils'
 import { Loader2, AlertTriangle } from 'lucide-react'
 
 interface CreditStatus {
@@ -126,7 +127,7 @@ function CheckoutContent() {
         <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container mx-auto flex h-14 sm:h-16 items-center px-3 sm:px-6 lg:px-8">
             <Link href="/" className="font-serif text-xl tracking-tight">
-              Wholesail
+              {process.env.NEXT_PUBLIC_BRAND_NAME || "Wholesail"}
             </Link>
           </div>
         </header>
@@ -233,7 +234,7 @@ function CheckoutContent() {
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-14 sm:h-16 items-center px-3 sm:px-6 lg:px-8">
           <Link href="/" className="font-serif text-xl tracking-tight">
-            Wholesail
+            {process.env.NEXT_PUBLIC_BRAND_NAME || "Wholesail"}
           </Link>
         </div>
       </header>
@@ -520,10 +521,10 @@ function CheckoutContent() {
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-sm mb-1 text-pretty">{item.name}</p>
                         <p className="text-xs text-muted-foreground">
-                          Qty: {item.quantity} &times; ${item.price.toFixed(2)}
+                          Qty: {item.quantity} &times; {formatCurrency(item.price)}
                         </p>
                       </div>
-                      <p className="font-semibold text-sm shrink-0">${(item.price * item.quantity).toFixed(2)}</p>
+                      <p className="font-semibold text-sm shrink-0">{formatCurrency(item.price * item.quantity)}</p>
                     </div>
                   ))}
                 </div>
@@ -533,12 +534,12 @@ function CheckoutContent() {
                 <div className="space-y-2 pt-2">
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span>${subtotal.toFixed(2)}</span>
+                    <span>{formatCurrency(subtotal)}</span>
                   </div>
                   <div className="flex justify-between items-center text-sm">
                     <span className="text-muted-foreground">Delivery</span>
                     <span className={deliveryFee === 0 ? 'text-foreground font-medium' : ''}>
-                      {deliveryFee === 0 ? 'FREE' : `$${deliveryFee.toFixed(2)}`}
+                      {deliveryFee === 0 ? 'FREE' : formatCurrency(deliveryFee)}
                     </span>
                   </div>
                   {deliveryFee > 0 && (
@@ -565,7 +566,7 @@ function CheckoutContent() {
                         <span>Referral credit</span>
                       </span>
                       <span className={useCredits ? 'text-foreground font-medium' : 'text-muted-foreground'}>
-                        {useCredits ? `-$${creditDiscount.toFixed(2)}` : `$${referralCredits.toFixed(2)} available`}
+                        {useCredits ? `-${formatCurrency(creditDiscount)}` : `${formatCurrency(referralCredits)} available`}
                       </span>
                     </button>
                   )}
@@ -588,14 +589,14 @@ function CheckoutContent() {
                         <span>Loyalty points <span className="text-muted-foreground">({creditStatus?.loyaltyPoints ?? 0} pts)</span></span>
                       </span>
                       <span className={useLoyalty ? 'text-foreground font-medium' : 'text-muted-foreground'}>
-                        {useLoyalty ? `-$${loyaltyDiscount.toFixed(2)}` : `$${loyaltyDollarValue.toFixed(2)} available`}
+                        {useLoyalty ? `-${formatCurrency(loyaltyDiscount)}` : `${formatCurrency(loyaltyDollarValue)} available`}
                       </span>
                     </button>
                   )}
                   <Separator className="my-2" />
                   <div className="flex justify-between items-center">
                     <span className="font-serif text-lg">Total</span>
-                    <span className="font-serif text-2xl">${totalPrice.toFixed(2)}</span>
+                    <span className="font-serif text-2xl">{formatCurrency(totalPrice)}</span>
                   </div>
                   <p className="text-xs leading-relaxed text-muted-foreground border-t border-border pt-3">
                     You&apos;ll be redirected to Stripe for secure payment.

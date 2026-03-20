@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { useRouter } from "next/navigation";
+import { formatCurrency } from "@/lib/utils";
 import { Loader2, Pencil, Check, X, TrendingUp, ImageIcon, Search, Download } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useBulkSelection } from "@/hooks/use-bulk-selection";
@@ -18,6 +19,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import {
   Tooltip,
   TooltipContent,
@@ -205,14 +217,34 @@ export function ProductTable({ products }: { products: Product[] }) {
           >
             Deactivate
           </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={bulkLoading}
-            onClick={() => handleBulkAction("delete")}
-          >
-            Delete
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={bulkLoading}
+              >
+                Delete
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete {bulk.count} product{bulk.count !== 1 ? "s" : ""}?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This will permanently delete the selected product{bulk.count !== 1 ? "s" : ""}. This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={() => handleBulkAction("delete")}
+                  className="bg-red-600 hover:bg-red-700 text-white"
+                >
+                  Delete Product{bulk.count !== 1 ? "s" : ""}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <Button variant="ghost" size="sm" onClick={bulk.clear} className="ml-auto">
             Clear
           </Button>
@@ -372,7 +404,7 @@ export function ProductTable({ products }: { products: Product[] }) {
                         aria-label="Price"
                       />
                     ) : (
-                      <span>${Number(product.price).toFixed(2)}</span>
+                      <span>{formatCurrency(product.price)}</span>
                     )}
                   </td>
                   <td className="py-3 hidden lg:table-cell">
@@ -389,7 +421,7 @@ export function ProductTable({ products }: { products: Product[] }) {
                       />
                     ) : (
                       <span className="text-muted-foreground">
-                        {product.costPrice ? `$${Number(product.costPrice).toFixed(2)}` : "—"}
+                        {product.costPrice ? formatCurrency(product.costPrice) : "—"}
                       </span>
                     )}
                   </td>

@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
 import { Loader2 } from 'lucide-react'
+import { formatCurrency } from '@/lib/utils'
 
 interface OrderData {
   id: string
@@ -224,11 +225,11 @@ function ConfirmationContent() {
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm mb-1 text-pretty">{item.name}</p>
                   <p className="text-xs text-muted-foreground">
-                    Qty: {item.quantity} &times; ${Number(item.unitPrice).toFixed(2)}
+                    Qty: {item.quantity} &times; {formatCurrency(item.unitPrice)}
                     {item.product?.unit ? ` ${item.product.unit}` : ''}
                   </p>
                 </div>
-                <p className="font-semibold text-sm shrink-0">${Number(item.total).toFixed(2)}</p>
+                <p className="font-semibold text-sm shrink-0">{formatCurrency(item.total)}</p>
               </div>
             ))}
           </div>
@@ -238,22 +239,22 @@ function ConfirmationContent() {
           <div className="space-y-2 pt-1">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Subtotal</span>
-              <span>${Number(orderData.subtotal).toFixed(2)}</span>
+              <span>{formatCurrency(orderData.subtotal)}</span>
             </div>
             {Number(orderData.tax) > 0 && (
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Tax</span>
-                <span>${Number(orderData.tax).toFixed(2)}</span>
+                <span>{formatCurrency(orderData.tax)}</span>
               </div>
             )}
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Delivery</span>
-              <span>{Number(orderData.deliveryFee) > 0 ? `$${Number(orderData.deliveryFee).toFixed(2)}` : 'FREE'}</span>
+              <span>{Number(orderData.deliveryFee) > 0 ? formatCurrency(orderData.deliveryFee) : 'FREE'}</span>
             </div>
             <Separator />
             <div className="flex justify-between items-center pt-2">
               <span className="font-serif text-xl">Total</span>
-              <span className="font-serif text-2xl">${Number(orderData.total).toFixed(2)}</span>
+              <span className="font-serif text-2xl">{formatCurrency(orderData.total)}</span>
             </div>
           </div>
         </CardContent>
@@ -288,7 +289,7 @@ export default function ConfirmationPage() {
       <header className="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto flex h-14 sm:h-16 items-center px-3 sm:px-6 lg:px-8">
           <Link href="/" className="font-serif text-xl tracking-tight">
-            Wholesail
+            {process.env.NEXT_PUBLIC_BRAND_NAME || "Wholesail"}
           </Link>
         </div>
       </header>

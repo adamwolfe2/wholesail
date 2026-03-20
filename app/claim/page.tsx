@@ -302,8 +302,8 @@ export default function ClaimPage() {
           </p>
           <p className="text-sm text-[#C8C0B4]">
             Didn&apos;t receive it? Check your spam folder, or email{' '}
-            <a href="mailto:orders@wholesailhub.com" className="underline underline-offset-2">
-              orders@wholesailhub.com
+            <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="underline underline-offset-2">
+              {process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}
             </a>
             .
           </p>
@@ -331,8 +331,8 @@ export default function ClaimPage() {
           </div>
           <p className="mt-8 text-sm text-[#C8C0B4]">
             Having trouble?{' '}
-            <a href="mailto:orders@wholesailhub.com" className="underline underline-offset-2">
-              orders@wholesailhub.com
+            <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="underline underline-offset-2">
+              {process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}
             </a>
           </p>
         </div>
@@ -354,8 +354,8 @@ export default function ClaimPage() {
           </p>
           <p className="text-[#0A0A0A]/70 mb-10 leading-relaxed">
             Email us at{' '}
-            <a href="mailto:orders@wholesailhub.com" className="underline underline-offset-2 text-[#0A0A0A]">
-              orders@wholesailhub.com
+            <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="underline underline-offset-2 text-[#0A0A0A]">
+              {process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}
             </a>{' '}
             and we&apos;ll help you get access.
           </p>
@@ -509,7 +509,7 @@ export default function ClaimPage() {
                       <p className="font-medium mb-1">No account found</p>
                       <p className="text-amber-700">
                         We couldn&apos;t match that information to an existing account. Try a different email or company name, or{' '}
-                        <a href="mailto:orders@wholesailhub.com" className="underline underline-offset-2">
+                        <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="underline underline-offset-2">
                           contact us
                         </a>
                         .
@@ -612,8 +612,8 @@ export default function ClaimPage() {
           <p className="text-sm text-[#0A0A0A]/60 leading-relaxed">
             If you placed orders with us before our new portal launched, your account already exists — just enter the
             email we have on file. Can&apos;t remember which email? Reach us at{' '}
-            <a href="mailto:orders@wholesailhub.com" className="text-[#0A0A0A] underline underline-offset-2">
-              orders@wholesailhub.com
+            <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="text-[#0A0A0A] underline underline-offset-2">
+              {process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}
             </a>{' '}
             and we&apos;ll sort it out.
           </p>
