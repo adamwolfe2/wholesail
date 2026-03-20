@@ -4,6 +4,12 @@ import { requireAdmin } from '@/lib/auth/require-admin'
 import { LeadStatus } from '@prisma/client'
 import { parseCursorParams, buildPrismaCursorArgs, buildCursorResponse } from '@/lib/pagination'
 
+const VALID_LEAD_STATUSES = new Set<string>(Object.values(LeadStatus))
+
+function isValidLeadStatus(value: string): value is LeadStatus {
+  return VALID_LEAD_STATUSES.has(value)
+}
+
 export async function GET(req: NextRequest) {
   const { userId, error } = await requireAdmin()
   if (error) return error
@@ -11,7 +17,11 @@ export async function GET(req: NextRequest) {
   void userId
 
   const { searchParams } = new URL(req.url)
-  const status = searchParams.get('status') as LeadStatus | null
+  const rawStatus = searchParams.get('status')
+  const status: LeadStatus | null = rawStatus && isValidLeadStatus(rawStatus) ? rawStatus : null
+  if (rawStatus && !status) {
+    return NextResponse.json({ error: `Invalid status. Must be one of: ${[...VALID_LEAD_STATUSES].join(', ')}` }, { status: 400 })
+  }
   const { cursor, take } = parseCursorParams(req)
 
   try {
@@ -51,7 +61,7 @@ export async function POST(req: NextRequest) {
         company: company?.trim() || null,
         source: source || 'website',
         notes: notes?.trim() || null,
-        status: (status as LeadStatus) || 'NEW',
+        status: (status && isValidLeadStatus(status)) ? status : 'NEW',
       },
     })
 

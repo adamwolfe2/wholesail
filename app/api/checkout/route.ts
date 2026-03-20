@@ -73,29 +73,40 @@ export async function POST(req: NextRequest) {
       update: {},
     });
 
-    // Get or create organization for this user
+    // Get or create organization for this user (atomic to prevent duplicate orgs on concurrent requests)
     let org = await getOrganizationByUserId(userId);
 
     if (!org) {
-      org = await prisma.organization.create({
-        data: {
-          name: data.businessName,
-          contactPerson: data.contactName,
-          email: data.email,
-          phone: data.phone,
-          members: { connect: { id: userId } },
-          addresses: {
-            create: {
-              type: "SHIPPING",
-              street: data.deliveryAddress,
-              city: data.city,
-              state: data.state,
-              zip: data.zip,
-              isDefault: true,
+      org = await prisma.$transaction(async (tx) => {
+        // Re-check inside transaction to prevent race condition
+        const existingUser = await tx.user.findUnique({
+          where: { id: userId },
+          include: { organization: { include: { addresses: true } } },
+        });
+        if (existingUser?.organization) {
+          return existingUser.organization;
+        }
+
+        return tx.organization.create({
+          data: {
+            name: data.businessName,
+            contactPerson: data.contactName,
+            email: data.email,
+            phone: data.phone,
+            members: { connect: { id: userId } },
+            addresses: {
+              create: {
+                type: "SHIPPING",
+                street: data.deliveryAddress,
+                city: data.city,
+                state: data.state,
+                zip: data.zip,
+                isDefault: true,
+              },
             },
           },
-        },
-        include: { addresses: true },
+          include: { addresses: true },
+        });
       });
     }
 

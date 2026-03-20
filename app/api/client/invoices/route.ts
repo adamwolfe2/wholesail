@@ -10,7 +10,7 @@ export async function GET(req: NextRequest) {
     }
 
     const url = new URL(req.url);
-    const page = Math.max(1, parseInt(url.searchParams.get("page") ?? "1", 10));
+    const page = Math.min(Math.max(1, parseInt(url.searchParams.get("page") ?? "1", 10)), 100);
     const take = 50;
     const skip = (page - 1) * take;
     const statusFilter = url.searchParams.get("status");

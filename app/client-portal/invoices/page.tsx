@@ -111,7 +111,7 @@ function InvoiceDetailModal({ invoice }: { invoice: DbInvoice }) {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {invoice.order.items.map((item) => (
+                {invoice.order?.items?.map((item) => (
                   <TableRow key={item.id} className="border-[#C8C0B4]/30">
                     <TableCell className="font-medium text-[#0A0A0A]">{item.name}</TableCell>
                     <TableCell className="text-right text-[#0A0A0A]/60">{item.quantity}</TableCell>

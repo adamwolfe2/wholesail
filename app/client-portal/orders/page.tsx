@@ -16,6 +16,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { ShoppingBag, Loader2, ArrowRight } from 'lucide-react'
+import { toast } from 'sonner'
 import { ReorderButton } from '@/components/reorder-button'
 
 interface Order {
@@ -97,7 +98,7 @@ export default function ClientOrdersPage() {
         setNextCursor(data.nextCursor ?? null)
       }
     } catch {
-      // silently fail — user can retry
+      toast.error('Failed to load more orders')
     } finally {
       setLoadingMore(false)
     }

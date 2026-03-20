@@ -118,6 +118,7 @@ export default function ClientQuoteDetailPage() {
   }, [fetchQuote]);
 
   async function handleAccept() {
+    if (actionLoading) return;
     setActionLoading("accept");
     setError(null);
     try {
@@ -143,6 +144,7 @@ export default function ClientQuoteDetailPage() {
   }
 
   async function handleDecline() {
+    if (actionLoading) return;
     if (!showDeclineInput) {
       setShowDeclineInput(true);
       return;
@@ -172,6 +174,7 @@ export default function ClientQuoteDetailPage() {
   }
 
   async function handlePay() {
+    if (payLoading) return;
     setPayLoading(true);
     setPayError(null);
     try {

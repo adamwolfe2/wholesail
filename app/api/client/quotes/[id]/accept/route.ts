@@ -55,6 +55,7 @@ export async function POST(
       );
     }
 
+    // Early check outside transaction (non-authoritative, avoids unnecessary work)
     if (quote.convertedOrderId) {
       return NextResponse.json(
         { error: "Quote already converted to an order" },
@@ -78,35 +79,65 @@ export async function POST(
     });
     const acceptDistributorMap = new Map(acceptProducts.map((p) => [p.id, p.distributorOrgId ?? null]));
 
-    // Create order from quote with retry on duplicate order number
-    const order = await createOrderWithRetry(async (orderNumber) => {
-      return prisma.order.create({
-        data: {
-          orderNumber,
-          organizationId: quote.organizationId,
-          userId,
-          placedByRepId: quote.repId ?? undefined,
-          status: "PENDING",
-          subtotal: quote.subtotal,
-          tax: 0,
-          deliveryFee: 0,
-          total: quote.total,
-          shippingAddressId: address?.id,
-          notes: `Created from quote ${quote.quoteNumber}`,
-          items: {
-            create: quote.items.map((item) => ({
-              productId: item.productId,
-              name: item.name,
-              quantity: item.quantity,
-              unitPrice: item.unitPrice,
-              total: item.total,
-              distributorOrgId: acceptDistributorMap.get(item.productId) ?? null,
-            })),
+    // Use a serializable transaction to prevent duplicate order creation.
+    // The authoritative convertedOrderId check is INSIDE the transaction so
+    // two concurrent requests cannot both pass it.
+    const order = await prisma.$transaction(async (tx) => {
+      // Re-read the quote inside the transaction to get a consistent snapshot
+      const freshQuote = await tx.quote.findUnique({
+        where: { id },
+        select: { convertedOrderId: true },
+      });
+
+      if (freshQuote?.convertedOrderId) {
+        throw new Error("QUOTE_ALREADY_CONVERTED");
+      }
+
+      // Create order from quote with retry on duplicate order number
+      const newOrder = await createOrderWithRetry(async (orderNumber) => {
+        return tx.order.create({
+          data: {
+            orderNumber,
+            organizationId: quote.organizationId,
+            userId,
+            placedByRepId: quote.repId ?? undefined,
+            status: "PENDING",
+            subtotal: quote.subtotal,
+            tax: 0,
+            deliveryFee: 0,
+            total: quote.total,
+            shippingAddressId: address?.id,
+            notes: `Created from quote ${quote.quoteNumber}`,
+            items: {
+              create: quote.items.map((item) => ({
+                productId: item.productId,
+                name: item.name,
+                quantity: item.quantity,
+                unitPrice: item.unitPrice,
+                total: item.total,
+                distributorOrgId: acceptDistributorMap.get(item.productId) ?? null,
+              })),
+            },
           },
+        });
+      });
+
+      // Update quote: accepted + linked to order (inside same transaction)
+      await tx.quote.update({
+        where: { id },
+        data: {
+          status: "ACCEPTED",
+          acceptedAt: new Date(),
+          convertedOrderId: newOrder.id,
         },
       });
+
+      return newOrder;
+    }, {
+      isolationLevel: "Serializable",
     });
 
+    // Fire-and-forget side effects AFTER the transaction commits
     notifyDistributorsForOrder({
       orderId: order.id,
       orderNumber: order.orderNumber,
@@ -114,16 +145,6 @@ export async function POST(
       clientEmail: null,
       deliveryAddress: null,
     }).catch(() => {});
-
-    // Update quote: accepted + linked to order
-    await prisma.quote.update({
-      where: { id },
-      data: {
-        status: "ACCEPTED",
-        acceptedAt: new Date(),
-        convertedOrderId: order.id,
-      },
-    });
 
     // Audit event
     try {
@@ -166,6 +187,12 @@ export async function POST(
 
     return NextResponse.json({ orderId: order.id, orderNumber: order.orderNumber });
   } catch (error) {
+    if (error instanceof Error && error.message === "QUOTE_ALREADY_CONVERTED") {
+      return NextResponse.json(
+        { error: "Quote already converted to an order" },
+        { status: 409 }
+      );
+    }
     console.error("Error accepting quote:", error);
     return NextResponse.json(
       { error: "Internal server error" },
