@@ -1,7 +1,5 @@
 'use client'
 
-export const dynamic = 'force-dynamic'
-
 import { useEffect, useState, useCallback } from 'react'
 import { useUser } from '@clerk/nextjs'
 import Link from 'next/link'
@@ -20,6 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Loader2, MapPin, Plus, Star, Trash2, CreditCard, User, Bell, Check, FileText, Building2, Pencil } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface Address {
   id: string
@@ -83,6 +82,7 @@ export default function SettingsPage() {
   const [notifLoading, setNotifLoading] = useState(true)
   const [notifSaving, setNotifSaving] = useState(false)
   const [notifSaved, setNotifSaved] = useState(false)
+  const [fetchError, setFetchError] = useState(false)
 
   const fetchAddresses = useCallback(async () => {
     try {
@@ -92,7 +92,7 @@ export default function SettingsPage() {
         setAddresses(data.addresses || [])
       }
     } catch {
-      // silently fail
+      setFetchError(true)
     } finally {
       setAddressLoading(false)
     }
@@ -107,7 +107,7 @@ export default function SettingsPage() {
         setBizForm({ contactPerson: data.profile.contactPerson, phone: data.profile.phone })
       }
     } catch {
-      // silently fail
+      setFetchError(true)
     } finally {
       setBizLoading(false)
     }
@@ -121,7 +121,7 @@ export default function SettingsPage() {
         setNotifPrefs({ ...NOTIF_DEFAULTS, ...data.prefs })
       }
     } catch {
-      // silently fall back to defaults
+      setFetchError(true)
     } finally {
       setNotifLoading(false)
     }
@@ -164,7 +164,8 @@ export default function SettingsPage() {
   }
 
   async function handleNotifToggle(key: keyof NotificationPrefs) {
-    const updated = { ...notifPrefs, [key]: !notifPrefs[key] }
+    const previous = notifPrefs[key]
+    const updated = { ...notifPrefs, [key]: !previous }
     setNotifPrefs(updated)
     setNotifSaving(true)
     setNotifSaved(false)
@@ -177,9 +178,12 @@ export default function SettingsPage() {
       if (res.ok) {
         setNotifSaved(true)
         setTimeout(() => setNotifSaved(false), 2500)
+      } else {
+        setNotifPrefs(prev => ({ ...prev, [key]: previous }))
       }
     } catch {
-      // silently fail — optimistic update remains
+      setNotifPrefs(prev => ({ ...prev, [key]: previous }))
+      toast.error('Failed to save preference. Please try again.')
     } finally {
       setNotifSaving(false)
     }
@@ -266,6 +270,11 @@ export default function SettingsPage() {
   return (
     <PortalLayout>
       <div className="space-y-6 max-w-2xl">
+        {fetchError && (
+          <div className="mb-4 rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Unable to load data. Please refresh the page or try again later.
+          </div>
+        )}
         <div>
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Account Settings</h1>
           <p className="text-sm text-[#0A0A0A]/50 mt-1">Manage your profile and preferences</p>
@@ -367,7 +376,7 @@ export default function SettingsPage() {
                     required
                     value={bizForm.contactPerson}
                     onChange={(e) => setBizForm((p) => ({ ...p, contactPerson: e.target.value }))}
-                    placeholder="Chef Jean-Pierre"
+                    placeholder="John Smith"
                     className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none text-sm"
                   />
                 </div>

@@ -6,6 +6,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
 import { useCart } from '@/lib/cart-context'
+import { formatCurrency } from '@/lib/utils'
 import { PortalLayout } from '@/components/portal-nav'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -20,6 +21,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Bookmark, ShoppingCart, Trash2, Loader2, Save, Pencil } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface SavedCartItem {
   id: string
@@ -56,6 +58,7 @@ export default function SavedCartsPage() {
   const [renameTarget, setRenameTarget] = useState<SavedCart | null>(null)
   const [renameName, setRenameName] = useState('')
   const [renaming, setRenaming] = useState(false)
+  const [fetchError, setFetchError] = useState(false)
 
   const fetchCarts = useCallback(async () => {
     try {
@@ -65,7 +68,7 @@ export default function SavedCartsPage() {
         setCarts(data.carts || [])
       }
     } catch {
-      // silently fail
+      setFetchError(true)
     } finally {
       setLoading(false)
     }
@@ -87,7 +90,7 @@ export default function SavedCartsPage() {
         setCarts((prev) => prev.filter((c) => c.id !== id))
       }
     } catch {
-      // silently fail
+      toast.error('Failed to delete cart. Please try again.')
     } finally {
       setDeletingId(null)
     }
@@ -134,7 +137,7 @@ export default function SavedCartsPage() {
         await fetchCarts()
       }
     } catch {
-      // silently fail
+      toast.error('Failed to save cart. Please try again.')
     } finally {
       setSaving(false)
     }
@@ -157,7 +160,7 @@ export default function SavedCartsPage() {
         setRenameName('')
       }
     } catch {
-      // silently fail
+      toast.error('Failed to rename cart. Please try again.')
     } finally {
       setRenaming(false)
     }
@@ -166,6 +169,11 @@ export default function SavedCartsPage() {
   return (
     <PortalLayout>
       <div className="space-y-6">
+        {fetchError && (
+          <div className="mb-4 rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Unable to load data. Please refresh the page or try again later.
+          </div>
+        )}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Saved Carts</h1>
@@ -226,7 +234,7 @@ export default function SavedCartsPage() {
                           {cart.name || 'Untitled Cart'}
                         </p>
                         <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
-                          {cart.items.length} item{cart.items.length !== 1 ? 's' : ''} &bull; ${totalValue.toFixed(2)} estimated &bull; Updated {new Date(cart.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          {cart.items.length} item{cart.items.length !== 1 ? 's' : ''} &bull; {formatCurrency(totalValue)} estimated &bull; Updated {new Date(cart.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                         </p>
                         <p className="text-xs text-[#0A0A0A]/40 mt-1 truncate">
                           {cart.items.map((i) => i.name).join(', ')}
@@ -293,7 +301,7 @@ export default function SavedCartsPage() {
               <Label htmlFor="renameName" className="text-[#0A0A0A] text-sm">Cart Name</Label>
               <Input
                 id="renameName"
-                placeholder="e.g. Weekly Truffle Order"
+                placeholder="e.g. Weekly Restock Order"
                 value={renameName}
                 onChange={(e) => setRenameName(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleRename() }}
@@ -335,7 +343,7 @@ export default function SavedCartsPage() {
               <Label htmlFor="cartName" className="text-[#0A0A0A] text-sm">Cart Name (optional)</Label>
               <Input
                 id="cartName"
-                placeholder="e.g. Weekly Truffle Order"
+                placeholder="e.g. Weekly Restock Order"
                 value={saveName}
                 onChange={(e) => setSaveName(e.target.value)}
                 className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none"

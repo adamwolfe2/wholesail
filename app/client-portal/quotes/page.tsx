@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Loader2, FileCheck, ArrowRight } from "lucide-react";
 import { format } from "date-fns";
+import { formatCurrency } from "@/lib/utils";
 
 interface Quote {
   id: string;
@@ -42,6 +43,7 @@ const statusColors: Record<string, string> = {
 export default function ClientQuotesPage() {
   const [quotes, setQuotes] = useState<Quote[] | null>(null);
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
 
   useEffect(() => {
     async function fetchQuotes() {
@@ -55,6 +57,7 @@ export default function ClientQuotesPage() {
         }
       } catch {
         setQuotes([]);
+        setFetchError(true);
       } finally {
         setLoading(false);
       }
@@ -65,6 +68,11 @@ export default function ClientQuotesPage() {
   return (
     <PortalLayout>
       <div className="space-y-6">
+        {fetchError && (
+          <div className="mb-4 rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Unable to load data. Please refresh the page or try again later.
+          </div>
+        )}
         <div>
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
             Quotes
@@ -124,7 +132,7 @@ export default function ClientQuotesPage() {
                     <div className="flex items-center gap-4 shrink-0">
                       <div className="text-right hidden sm:block">
                         <p className="text-sm font-semibold text-[#0A0A0A]">
-                          ${Number(quote.total).toFixed(2)}
+                          {formatCurrency(quote.total)}
                         </p>
                         <p className="text-xs text-[#0A0A0A]/40">
                           {quote.items.length} item{quote.items.length !== 1 ? "s" : ""}

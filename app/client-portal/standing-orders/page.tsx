@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { RefreshCw, Loader2, Plus, Pencil, Trash2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface StandingOrderItem {
   id: string
@@ -103,6 +104,7 @@ export default function StandingOrdersPage() {
   const [creating, setCreating] = useState(false)
   const [updating, setUpdating] = useState(false)
   const [products, setProducts] = useState<Product[]>([])
+  const [fetchError, setFetchError] = useState(false)
 
   // Form state
   const [formName, setFormName] = useState('')
@@ -120,7 +122,7 @@ export default function StandingOrdersPage() {
         setOrders(data.orders || [])
       }
     } catch {
-      // silently fail
+      setFetchError(true)
     } finally {
       setLoading(false)
     }
@@ -152,7 +154,7 @@ export default function StandingOrdersPage() {
         )
       }
     } catch {
-      // silently fail
+      toast.error('Failed to update status. Please try again.')
     } finally {
       setTogglingId(null)
     }
@@ -176,7 +178,7 @@ export default function StandingOrdersPage() {
         setOrderToDelete(null)
       }
     } catch {
-      // silently fail
+      toast.error('Failed to delete. Please try again.')
     } finally {
       setDeleting(false)
     }
@@ -204,7 +206,7 @@ export default function StandingOrdersPage() {
         await fetchOrders()
       }
     } catch {
-      // silently fail
+      toast.error('Failed to create order. Please try again.')
     } finally {
       setCreating(false)
     }
@@ -233,7 +235,7 @@ export default function StandingOrdersPage() {
         await fetchOrders()
       }
     } catch {
-      // silently fail
+      toast.error('Failed to save changes. Please try again.')
     } finally {
       setUpdating(false)
     }
@@ -281,7 +283,7 @@ export default function StandingOrdersPage() {
       <div className="space-y-1.5">
         <Label className="text-[#0A0A0A] text-sm font-medium">Order Name *</Label>
         <Input
-          placeholder="e.g. Weekly Truffle Order"
+          placeholder="e.g. Weekly Standard Order"
           value={formName}
           onChange={(e) => setFormName(e.target.value)}
           className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none"
@@ -399,6 +401,11 @@ export default function StandingOrdersPage() {
   return (
     <PortalLayout>
       <div className="space-y-6">
+        {fetchError && (
+          <div className="mb-4 rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Unable to load data. Please refresh the page or try again later.
+          </div>
+        )}
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>

@@ -7,6 +7,7 @@ import { useUser } from '@clerk/nextjs'
 import { PortalLayout } from '@/components/portal-nav'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { formatCurrency } from '@/lib/utils'
 import {
   Table,
   TableBody,
@@ -72,6 +73,7 @@ export default function PaymentsPage() {
   const [dbPayments, setDbPayments] = useState<DbPayment[]>([])
   const [outstandingInvoices, setOutstandingInvoices] = useState<OutstandingInvoice[]>([])
   const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState(false)
 
   useEffect(() => {
     if (!isLoaded) return
@@ -95,7 +97,7 @@ export default function PaymentsPage() {
           setOutstandingInvoices(data.invoices || [])
         }
       } catch {
-        // silently fail — empty state shows
+        setFetchError(true)
       } finally {
         setLoading(false)
       }
@@ -122,6 +124,11 @@ export default function PaymentsPage() {
   return (
     <PortalLayout>
       <div className="space-y-6">
+        {fetchError && (
+          <div className="mb-4 rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Unable to load data. Please refresh the page or try again later.
+          </div>
+        )}
         <div>
           <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Payments</h1>
           <p className="text-sm text-[#0A0A0A]/50 mt-1">Manage your payments and billing</p>
@@ -159,7 +166,7 @@ export default function PaymentsPage() {
             <CardContent>
               <div className="text-2xl font-bold text-[#0A0A0A]">
                 {outstandingInvoices.length > 0
-                  ? `$${outstandingInvoices.reduce((s, i) => s + Number(i.total), 0).toLocaleString('en-US', { minimumFractionDigits: 2 })}`
+                  ? formatCurrency(outstandingInvoices.reduce((s, i) => s + Number(i.total), 0))
                   : '$0.00'}
               </div>
               <p className="text-xs text-[#0A0A0A]/40 mt-1">{outstandingInvoices.length} awaiting payment</p>

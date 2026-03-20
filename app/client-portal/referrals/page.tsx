@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Badge } from '@/components/ui/badge'
+import { formatCurrency } from '@/lib/utils'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Table,
@@ -16,6 +17,7 @@ import {
 } from '@/components/ui/table'
 import { Copy, Check, Loader2, Gift, Users, DollarSign, Clock } from 'lucide-react'
 import { format } from 'date-fns'
+import { toast } from 'sonner'
 import { PortalLayout } from '@/components/portal-nav'
 
 const APP_URL =
@@ -62,6 +64,7 @@ export default function ReferralsPage() {
   const [sending, setSending] = useState(false)
   const [inviteError, setInviteError] = useState<string | null>(null)
   const [inviteSuccess, setInviteSuccess] = useState(false)
+  const [fetchError, setFetchError] = useState(false)
 
   const fetchData = useCallback(async () => {
     try {
@@ -71,7 +74,7 @@ export default function ReferralsPage() {
         setData(json)
       }
     } catch {
-      // fail silently
+      setFetchError(true)
     } finally {
       setLoading(false)
     }
@@ -92,7 +95,7 @@ export default function ReferralsPage() {
         )
       }
     } catch {
-      // fail silently
+      toast.error('Failed to generate code. Please try again.')
     } finally {
       setGenerating(false)
     }
@@ -151,12 +154,17 @@ export default function ReferralsPage() {
   return (
     <PortalLayout>
     <div className="space-y-8">
+      {fetchError && (
+        <div className="mb-4 rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          Unable to load data. Please refresh the page or try again later.
+        </div>
+      )}
       {/* Page header */}
       <div>
         <p className="text-xs tracking-widest uppercase text-[#C8C0B4] mb-1">Referral Program</p>
         <h1 className="font-serif text-3xl text-[#0A0A0A]">Refer &amp; Earn</h1>
         <p className="text-[#0A0A0A]/60 mt-1 text-sm">
-          Earn $50 credit for every restaurant you refer that places their first order.
+          Earn $50 credit for every business you refer that places their first order.
         </p>
       </div>
 
@@ -169,7 +177,7 @@ export default function ReferralsPage() {
               <span className="text-xs text-[#0A0A0A]/50">Available Credits</span>
             </div>
             <p className="text-2xl font-bold text-[#0A0A0A]">
-              ${loading ? '—' : (data?.totalCredits ?? 0).toFixed(2)}
+              {loading ? '$—' : formatCurrency(data?.totalCredits ?? 0)}
             </p>
           </CardContent>
         </Card>
@@ -180,7 +188,7 @@ export default function ReferralsPage() {
               <span className="text-xs text-[#0A0A0A]/50">Total Earned</span>
             </div>
             <p className="text-2xl font-bold text-[#0A0A0A]">
-              ${loading ? '—' : totalEarned.toFixed(2)}
+              {loading ? '$—' : formatCurrency(totalEarned)}
             </p>
           </CardContent>
         </Card>
@@ -224,7 +232,7 @@ export default function ReferralsPage() {
           ) : data?.code ? (
             <>
               <p className="text-sm text-[#0A0A0A]/60">
-                Share this link with restaurants and culinary professionals. When they apply
+                Share this link with businesses in your network. When they apply
                 and place their first order, you earn $50 in account credit.
               </p>
               <div className="flex gap-2">
@@ -263,7 +271,7 @@ export default function ReferralsPage() {
               <Button
                 onClick={generateCode}
                 disabled={generating}
-                className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#1A1614] rounded-none"
+                className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
               >
                 {generating ? (
                   <>
@@ -302,7 +310,7 @@ export default function ReferralsPage() {
                   required
                   value={inviteEmail}
                   onChange={(e) => setInviteEmail(e.target.value)}
-                  placeholder="chef@restaurant.com"
+                  placeholder="contact@business.com"
                   className="rounded-none border-[#E5E1DB] bg-[#F9F7F4]"
                 />
               </div>
@@ -315,7 +323,7 @@ export default function ReferralsPage() {
                   type="text"
                   value={inviteName}
                   onChange={(e) => setInviteName(e.target.value)}
-                  placeholder="Chef Marco"
+                  placeholder="Jane Smith"
                   className="rounded-none border-[#E5E1DB] bg-[#F9F7F4]"
                 />
               </div>
@@ -335,7 +343,7 @@ export default function ReferralsPage() {
             <Button
               type="submit"
               disabled={sending || !inviteEmail}
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#1A1614] rounded-none"
+              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
             >
               {sending ? (
                 <>
@@ -414,11 +422,11 @@ export default function ReferralsPage() {
                     <TableCell className="text-right">
                       {referral.status === 'CREDITED' ? (
                         <span className="text-sm font-medium text-green-700">
-                          +${referral.creditAmount.toFixed(2)}
+                          +{formatCurrency(referral.creditAmount).slice(1)}
                         </span>
                       ) : (
                         <span className="text-sm text-[#0A0A0A]/40">
-                          ${referral.creditAmount.toFixed(2)}
+                          {formatCurrency(referral.creditAmount)}
                         </span>
                       )}
                     </TableCell>
@@ -439,7 +447,7 @@ export default function ReferralsPage() {
               <p className="text-2xl font-serif text-[#0A0A0A] mb-2">01</p>
               <p className="font-medium text-sm text-[#0A0A0A] mb-1">Share Your Link</p>
               <p className="text-xs text-[#0A0A0A]/60 leading-relaxed">
-                Copy your unique referral link and share it with restaurants, hotels, or culinary professionals.
+                Copy your unique referral link and share it with businesses in your industry.
               </p>
             </div>
             <div>

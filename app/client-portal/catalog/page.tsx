@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic'
 import { useEffect, useState, useMemo, useCallback } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useCart } from '@/lib/cart-context'
+import { formatCurrency } from '@/lib/utils'
 import { PortalLayout } from '@/components/portal-nav'
 import { CartDrawer } from './cart-drawer'
 import { Input } from '@/components/ui/input'
@@ -42,6 +43,7 @@ export default function CatalogPage() {
   const [products, setProducts] = useState<CatalogProduct[]>([])
   const [categories, setCategories] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState(false)
   const [search, setSearch] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [addedIds, setAddedIds] = useState<Set<string>>(new Set())
@@ -56,7 +58,7 @@ export default function CatalogPage() {
           setCategories(data.categories || [])
         }
       } catch {
-        // silently fail
+        setFetchError(true)
       } finally {
         setLoading(false)
       }
@@ -109,6 +111,11 @@ export default function CatalogPage() {
   return (
     <PortalLayout>
       <div className="space-y-6">
+        {fetchError && (
+          <div className="mb-4 rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Unable to load data. Please refresh the page or try again later.
+          </div>
+        )}
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
@@ -199,7 +206,7 @@ export default function CatalogPage() {
                         </span>
                       ) : (
                         <p className="text-base sm:text-lg font-bold leading-none text-[#0A0A0A]">
-                          ${Number(product.price).toFixed(2)}{' '}
+                          {formatCurrency(product.price)}{' '}
                           <span className="text-xs font-normal text-[#0A0A0A]/50">
                             {product.unit}
                           </span>

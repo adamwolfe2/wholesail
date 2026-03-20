@@ -1,13 +1,12 @@
 'use client'
 
-export const dynamic = 'force-dynamic'
-
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useUser } from '@clerk/nextjs'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { formatCurrency } from '@/lib/utils'
 import {
   Table,
   TableBody,
@@ -146,6 +145,7 @@ export default function ClientDashboard() {
   const [aiParserOpen, setAiParserOpen] = useState(false)
   const [creditStatus, setCreditStatus] = useState<CreditStatus | null>(null)
   const [loyaltyStatus, setLoyaltyStatus] = useState<LoyaltyStatus | null>(null)
+  const [fetchError, setFetchError] = useState(false)
 
   useEffect(() => {
     async function fetchData() {
@@ -184,7 +184,7 @@ export default function ClientDashboard() {
           setLoyaltyStatus(data)
         }
       } catch {
-        // DB not connected
+        setFetchError(true)
       }
     }
     if (isLoaded && user) fetchData()
@@ -234,6 +234,11 @@ export default function ClientDashboard() {
   return (
     <PortalLayout>
       <div>
+        {fetchError && (
+          <div className="mb-4 rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Unable to load data. Please refresh the page or try again later.
+          </div>
+        )}
         {/* Welcome Section */}
         <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
@@ -365,7 +370,7 @@ export default function ClientDashboard() {
                         {loyaltyStatus.currentPoints.toLocaleString()}
                       </div>
                       <p className="text-[10px] text-[#0A0A0A]/40 mt-0.5">
-                        ${(loyaltyStatus.currentPoints / 100).toFixed(2)} value
+                        {formatCurrency(loyaltyStatus.currentPoints / 100)} value
                       </p>
                       <div className="flex items-center gap-2 mt-1.5">
                         <Badge
@@ -433,7 +438,7 @@ export default function ClientDashboard() {
                     }`}>
                       {creditStatus.limit === null
                         ? 'Unlimited'
-                        : `$${(creditStatus.available ?? 0).toLocaleString()}`
+                        : formatCurrency(creditStatus.available ?? 0)
                       }
                     </div>
 

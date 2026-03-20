@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import Link from 'next/link'
 import { PortalLayout } from '@/components/portal-nav'
+import { formatCurrency } from '@/lib/utils'
 import {
   Card,
   CardContent,
@@ -131,6 +132,7 @@ export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true)
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [pricingTier, setPricingTier] = useState<PricingTierData | null>(null)
+  const [fetchError, setFetchError] = useState(false)
 
   useEffect(() => {
     if (!isLoaded) return
@@ -149,7 +151,7 @@ export default function AnalyticsPage() {
           }
         }
       } catch {
-        // silently fail — empty state shows
+        setFetchError(true)
       } finally {
         setLoading(false)
       }
@@ -163,7 +165,7 @@ export default function AnalyticsPage() {
           setPricingTier(json)
         }
       } catch {
-        // silently fail
+        setFetchError(true)
       }
     }
 
@@ -185,6 +187,11 @@ export default function AnalyticsPage() {
     return (
       <PortalLayout>
         <div className="space-y-6">
+          {fetchError && (
+            <div className="mb-4 rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+              Unable to load data. Please refresh the page or try again later.
+            </div>
+          )}
           <div>
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
               Analytics
@@ -252,6 +259,11 @@ export default function AnalyticsPage() {
   return (
     <PortalLayout>
       <div className="space-y-6">
+        {fetchError && (
+          <div className="mb-4 rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Unable to load data. Please refresh the page or try again later.
+          </div>
+        )}
         {/* Page header */}
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
@@ -398,12 +410,12 @@ export default function AnalyticsPage() {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Progress to {pricingTier.nextTier}{pricingTier.nextTier === 'VIP' && ' ★'}</p>
-                    <p className="text-xs text-[#0A0A0A]/50">${pricingTier.lifetimeSpend.toLocaleString()} / ${(TIER_NEXT_THRESHOLD[pricingTier.tier] ?? 0).toLocaleString()}</p>
+                    <p className="text-xs text-[#0A0A0A]/50">{formatCurrency(pricingTier.lifetimeSpend)} / {formatCurrency(TIER_NEXT_THRESHOLD[pricingTier.tier] ?? 0)}</p>
                   </div>
                   <div className="h-2 bg-[#E5E1DB] overflow-hidden">
                     <div className={`h-full transition-all ${pricingTier.tier === 'NEW' ? 'bg-[#4A90D9]' : 'bg-[#B8860B]'}`} style={{ width: `${Math.min(100, (pricingTier.lifetimeSpend / (TIER_NEXT_THRESHOLD[pricingTier.tier] ?? 1)) * 100)}%` }} />
                   </div>
-                  <p className="text-xs text-[#0A0A0A]/40 mt-1.5">${pricingTier.spendToNextTier.toLocaleString()} more to unlock <span className="font-medium text-[#0A0A0A]/60">{pricingTier.nextTier}</span> tier pricing</p>
+                  <p className="text-xs text-[#0A0A0A]/40 mt-1.5">{formatCurrency(pricingTier.spendToNextTier)} more to unlock <span className="font-medium text-[#0A0A0A]/60">{pricingTier.nextTier}</span> tier pricing</p>
                 </div>
               )}
               {pricingTier.tier === 'VIP' && (
@@ -455,13 +467,13 @@ export default function AnalyticsPage() {
                 <div>
                   <p className="text-xs text-[#0A0A0A]/40">This year</p>
                   <p className="font-serif font-semibold text-[#0A0A0A]">
-                    ${(yearOverYear?.thisYear ?? 0).toLocaleString()}
+                    {formatCurrency(yearOverYear?.thisYear ?? 0)}
                   </p>
                 </div>
                 <div>
                   <p className="text-xs text-[#0A0A0A]/40">Last year</p>
                   <p className="font-serif font-semibold text-[#0A0A0A]/60">
-                    ${(yearOverYear?.lastYear ?? 0).toLocaleString()}
+                    {formatCurrency(yearOverYear?.lastYear ?? 0)}
                   </p>
                 </div>
               </div>
@@ -567,7 +579,7 @@ export default function AnalyticsPage() {
                   <ChartTooltip
                     content={<ChartTooltipContent />}
                     formatter={(value) => [
-                      `$${Number(value).toLocaleString()}`,
+                      formatCurrency(value),
                       'Revenue',
                     ]}
                   />
@@ -634,7 +646,7 @@ export default function AnalyticsPage() {
                     <ChartTooltip
                       content={<ChartTooltipContent />}
                       formatter={(value) => [
-                        `$${Number(value).toLocaleString()}`,
+                        formatCurrency(value),
                         'Spend',
                       ]}
                     />
@@ -827,7 +839,7 @@ export default function AnalyticsPage() {
                     <ChartTooltip
                       content={<ChartTooltipContent />}
                       formatter={(value) => [
-                        `$${Number(value).toLocaleString()}`,
+                        formatCurrency(value),
                         'Spend',
                       ]}
                     />
@@ -880,7 +892,7 @@ export default function AnalyticsPage() {
                           {product.orders} orders
                         </span>
                         <span className="font-serif font-semibold text-[#0A0A0A]">
-                          ${product.revenue.toLocaleString()}
+                          {formatCurrency(product.revenue)}
                         </span>
                       </div>
                     </div>

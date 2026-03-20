@@ -1,7 +1,5 @@
 'use client'
 
-export const dynamic = 'force-dynamic'
-
 import { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
 import { useSearchParams } from 'next/navigation'
@@ -167,6 +165,7 @@ export default function InvoicesPage() {
   const [dbInvoices, setDbInvoices] = useState<DbInvoice[]>([])
   const [loading, setLoading] = useState(true)
   const [payingId, setPayingId] = useState<string | null>(null)
+  const [fetchError, setFetchError] = useState(false)
 
   useEffect(() => {
     if (!isLoaded) return
@@ -183,7 +182,7 @@ export default function InvoicesPage() {
           setDbInvoices(data.invoices || [])
         }
       } catch {
-        // silently fail — empty state shows
+        setFetchError(true)
       } finally {
         setLoading(false)
       }
@@ -229,6 +228,11 @@ export default function InvoicesPage() {
   return (
     <PortalLayout>
       <div className="space-y-6">
+        {fetchError && (
+          <div className="mb-4 rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+            Unable to load data. Please refresh the page or try again later.
+          </div>
+        )}
         {paidInvoiceNumber && (
           <div className="flex items-center gap-3 bg-green-50 border border-green-200 px-4 py-3 text-sm text-green-800">
             <CheckCircle className="h-4 w-4 shrink-0 text-green-600" />

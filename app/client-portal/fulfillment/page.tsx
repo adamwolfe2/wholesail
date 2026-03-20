@@ -3,6 +3,8 @@
 import { useEffect, useState, useCallback } from 'react'
 import { format } from 'date-fns'
 import { CheckSquare, Square, Package, MapPin, Mail, Phone, Loader2, Settings } from 'lucide-react'
+import { toast } from 'sonner'
+import { formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { PortalLayout } from '@/components/portal-nav'
 
@@ -35,6 +37,7 @@ export default function DistributorFulfillmentPage() {
   const [savingCc, setSavingCc] = useState(false)
   const [ccSaved, setCcSaved] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
+  const [fetchError, setFetchError] = useState(false)
 
   const fetchItems = useCallback(async () => {
     try {
@@ -43,7 +46,7 @@ export default function DistributorFulfillmentPage() {
         const data = await res.json()
         setItems(data.items)
       }
-    } catch { /* ignore */ } finally {
+    } catch { setFetchError(true) } finally {
       setLoading(false)
     }
   }, [])
@@ -56,7 +59,7 @@ export default function DistributorFulfillmentPage() {
         setCcEmail(data.distributorCcEmail ?? '')
         setCcEmailInput(data.distributorCcEmail ?? '')
       }
-    } catch { /* ignore */ }
+    } catch { setFetchError(true) }
   }, [])
 
   useEffect(() => {
@@ -79,7 +82,7 @@ export default function DistributorFulfillmentPage() {
           i.id === item.id ? { ...i, distributorFulfilledAt: data.distributorFulfilledAt } : i
         ))
       }
-    } catch { /* ignore */ } finally {
+    } catch { toast.error('Failed to update. Please try again.') } finally {
       setToggling(null)
     }
   }
@@ -97,7 +100,7 @@ export default function DistributorFulfillmentPage() {
         setCcSaved(true)
         setTimeout(() => setCcSaved(false), 3000)
       }
-    } catch { /* ignore */ } finally {
+    } catch { toast.error('Failed to save. Please try again.') } finally {
       setSavingCc(false)
     }
   }
@@ -118,6 +121,11 @@ export default function DistributorFulfillmentPage() {
   return (
     <PortalLayout>
     <div className="space-y-6">
+      {fetchError && (
+        <div className="mb-4 rounded-none border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          Unable to load data. Please refresh the page or try again later.
+        </div>
+      )}
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
@@ -258,7 +266,7 @@ function FulfillmentItemCard({
                 {item.name}
               </p>
               <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
-                Qty: <strong>{item.quantity}</strong> · ${Number(item.total).toFixed(2)}
+                Qty: <strong>{item.quantity}</strong> · {formatCurrency(item.total)}
               </p>
             </div>
             <div className="text-right shrink-0">
