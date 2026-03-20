@@ -91,7 +91,7 @@ export function ProductImportForm() {
       </form>
 
       {result && (
-        <div className="rounded-lg border p-4 bg-neutral-50 border-neutral-200">
+        <div className="rounded-none border p-4 bg-neutral-50 border-neutral-200">
           <div className="flex items-center gap-2 text-neutral-800">
             <CheckCircle2 className="h-4 w-4" />
             <span className="font-medium">{result.message}</span>
@@ -117,7 +117,7 @@ export function ProductImportForm() {
       )}
 
       {error && (
-        <div className="rounded-lg border p-4 bg-neutral-50 border-neutral-300">
+        <div className="rounded-none border p-4 bg-neutral-50 border-neutral-300">
           <div className="flex items-center gap-2 text-neutral-700">
             <AlertCircle className="h-4 w-4" />
             <span className="text-sm">{error}</span>

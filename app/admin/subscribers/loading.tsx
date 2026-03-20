@@ -7,7 +7,7 @@ export default function SubscribersLoading() {
         <Skeleton className="h-8 w-36" style={{ background: '#E5E1DB' }} />
         <Skeleton className="h-9 w-36" style={{ background: '#E5E1DB' }} />
       </div>
-      <div className="border rounded-lg">
+      <div className="border rounded-none">
         <div className="flex items-center gap-4 px-4 py-3 border-b">
           <Skeleton className="h-4 w-32" style={{ background: '#E5E1DB' }} />
           <Skeleton className="h-4 w-40" style={{ background: '#E5E1DB' }} />

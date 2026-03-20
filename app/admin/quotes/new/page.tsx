@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { formatCurrency } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -307,7 +308,7 @@ export default function NewQuotePage() {
                     </div>
                   </div>
                   <div className="col-span-1 text-right text-sm font-medium text-[#0A0A0A]">
-                    ${(item.unitPrice * item.quantity).toFixed(2)}
+                    {formatCurrency(item.unitPrice * item.quantity)}
                   </div>
                   <div className="col-span-1 text-right">
                     <button
@@ -346,7 +347,7 @@ export default function NewQuotePage() {
                   >
                     <span>{product.name}</span>
                     <span className="text-xs text-[#0A0A0A]/50">
-                      ${parseFloat(product.price).toFixed(2)} / {product.unit}
+                      {formatCurrency(product.price)} / {product.unit}
                     </span>
                   </button>
                 ))}
@@ -363,7 +364,7 @@ export default function NewQuotePage() {
           <div className="space-y-2 pt-2 border-t border-[#E5E1DB]">
             <div className="flex items-center justify-between text-sm">
               <span className="text-[#0A0A0A]/60">Subtotal</span>
-              <span className="text-[#0A0A0A]">${subtotal.toFixed(2)}</span>
+              <span className="text-[#0A0A0A]">{formatCurrency(subtotal)}</span>
             </div>
             <div className="flex items-center justify-between text-sm">
               <span className="text-[#0A0A0A]/60">Discount ($)</span>
@@ -382,7 +383,7 @@ export default function NewQuotePage() {
             <div className="flex items-center justify-between font-semibold">
               <span className="text-[#0A0A0A]">Total</span>
               <span className="font-serif text-xl text-[#0A0A0A]">
-                ${total.toFixed(2)}
+                {formatCurrency(total)}
               </span>
             </div>
           </div>

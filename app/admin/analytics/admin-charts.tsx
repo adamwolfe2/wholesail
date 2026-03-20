@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import {
   Bar,
@@ -172,7 +173,7 @@ export function AdminCharts({
                 <ChartTooltip
                   content={<ChartTooltipContent />}
                   formatter={(value) => [
-                    `$${Number(value).toLocaleString()}`,
+                    formatCurrency(value),
                     "Revenue",
                   ]}
                 />

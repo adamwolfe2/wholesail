@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { formatCurrency } from "@/lib/utils";
 import { getProjectCosts } from "@/lib/db/costs";
 import {
   Card,
@@ -27,7 +28,7 @@ const SERVICE_LABELS: Record<string, string> = {
 };
 
 function formatCents(cents: number): string {
-  return `$${(cents / 100).toFixed(2)}`;
+  return formatCurrency(cents / 100);
 }
 
 export default async function ProjectCostsPage({

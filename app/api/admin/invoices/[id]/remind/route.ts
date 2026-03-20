@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth/require-admin'
 import { prisma } from '@/lib/db'
+import { formatCurrency } from '@/lib/utils'
 import { sendInvoiceEmail } from '@/lib/email'
 import {
   isConfigured,
@@ -46,7 +47,7 @@ export async function POST(
       day: 'numeric',
       year: 'numeric',
     })
-    const totalStr = Number(invoice.total).toFixed(2)
+    const totalStr = formatCurrency(invoice.total)
 
     let emailOk = false
     let smsOk = false

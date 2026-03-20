@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db"
+import { formatCurrency } from "@/lib/utils"
 import { sendMessage } from "@/lib/integrations/blooio"
 import { sendInternalOrderNotification } from "@/lib/email/index"
 import { notifyDistributorsForOrder } from "@/lib/db/orders"
@@ -69,7 +70,7 @@ export async function createDraft(
 
 export function buildConfirmationMessage(items: DraftItem[], orgName: string): string {
   const lines = items.map((item) => {
-    const price = item.marketRate ? "market rate" : `$${(item.unitPrice * item.quantity).toFixed(2)}`
+    const price = item.marketRate ? "market rate" : formatCurrency(item.unitPrice * item.quantity)
     return `• ${item.quantity}× ${item.productName} — ${price}`
   })
   return [
@@ -166,7 +167,7 @@ export async function convertDraftToOrder(
   const hasMarketRate = availableItems.some((i) => i.marketRate)
   const itemLines = availableItems.map(
     (i) =>
-      `${i.quantity}× ${i.productName}${i.marketRate ? " (market rate)" : ` — $${(i.unitPrice * i.quantity).toFixed(2)}`}`
+      `${i.quantity}× ${i.productName}${i.marketRate ? " (market rate)" : ` — ${formatCurrency(i.unitPrice * i.quantity)}`}`
   )
 
   // Email notification to ops

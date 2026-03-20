@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { formatCurrency } from "@/lib/utils";
 import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -347,10 +348,10 @@ export default async function AdminOrderDetailPage({
                   </TableCell>
                   <TableCell className="text-right">{item.quantity}</TableCell>
                   <TableCell className="text-right">
-                    ${Number(item.unitPrice).toFixed(2)}
+                    {formatCurrency(item.unitPrice)}
                   </TableCell>
                   <TableCell className="text-right font-medium">
-                    ${Number(item.total).toFixed(2)}
+                    {formatCurrency(item.total)}
                   </TableCell>
                 </TableRow>
               ))}
@@ -363,24 +364,24 @@ export default async function AdminOrderDetailPage({
           <div className="flex flex-col items-end gap-2 text-sm">
             <div className="flex justify-between w-48">
               <span className="text-muted-foreground">Subtotal</span>
-              <span>${Number(order.subtotal).toFixed(2)}</span>
+              <span>{formatCurrency(order.subtotal)}</span>
             </div>
             {Number(order.tax) > 0 && (
               <div className="flex justify-between w-48">
                 <span className="text-muted-foreground">Tax</span>
-                <span>${Number(order.tax).toFixed(2)}</span>
+                <span>{formatCurrency(order.tax)}</span>
               </div>
             )}
             {Number(order.deliveryFee) > 0 && (
               <div className="flex justify-between w-48">
                 <span className="text-muted-foreground">Delivery</span>
-                <span>${Number(order.deliveryFee).toFixed(2)}</span>
+                <span>{formatCurrency(order.deliveryFee)}</span>
               </div>
             )}
             <Separator className="w-48" />
             <div className="flex justify-between w-48 text-base font-bold">
               <span>Total</span>
-              <span>${Number(order.total).toFixed(2)}</span>
+              <span>{formatCurrency(order.total)}</span>
             </div>
           </div>
         </CardContent>
@@ -421,7 +422,7 @@ export default async function AdminOrderDetailPage({
                       {payment.reference || "—"}
                     </TableCell>
                     <TableCell className="text-right font-medium">
-                      ${Number(payment.amount).toFixed(2)}
+                      {formatCurrency(payment.amount)}
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline" className="capitalize">

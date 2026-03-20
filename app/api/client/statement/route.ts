@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/db'
+import { formatCurrency } from '@/lib/utils'
 import { BRAND_NAME, BRAND_EMAIL } from '@/lib/brand'
 
 // GET /api/client/statement?from=YYYY-MM-DD&to=YYYY-MM-DD
@@ -230,15 +231,15 @@ export async function GET(req: NextRequest) {
   <div style="background:#FFFFFF;border:1px solid #E5E1DB;padding:20px 24px;margin-bottom:32px;display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
     <div>
       <p style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#C8C0B4;margin-bottom:4px">Total Orders</p>
-      <p style="font-size:22px;font-family:Georgia,serif;font-weight:400;color:#0A0A0A">$${totalOrders.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+      <p style="font-size:22px;font-family:Georgia,serif;font-weight:400;color:#0A0A0A">${formatCurrency(totalOrders)}</p>
     </div>
     <div>
       <p style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#C8C0B4;margin-bottom:4px">Payments Received</p>
-      <p style="font-size:22px;font-family:Georgia,serif;font-weight:400;color:#16a34a">($${totalPayments.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })})</p>
+      <p style="font-size:22px;font-family:Georgia,serif;font-weight:400;color:#16a34a">(${formatCurrency(totalPayments)})</p>
     </div>
     <div>
       <p style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#C8C0B4;margin-bottom:4px">Current Balance</p>
-      <p style="font-size:22px;font-family:Georgia,serif;font-weight:700;color:${closingBalance > 0 ? '#0A0A0A' : '#16a34a'}">$${closingBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+      <p style="font-size:22px;font-family:Georgia,serif;font-weight:700;color:${closingBalance > 0 ? '#0A0A0A' : '#16a34a'}">${formatCurrency(closingBalance)}</p>
     </div>
   </div>
 
@@ -262,7 +263,7 @@ export async function GET(req: NextRequest) {
       <tr style="background:#0A0A0A;">
         <td colspan="3" style="padding:10px 12px;font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#F9F7F4;">Closing Balance</td>
         <td></td>
-        <td style="padding:10px 12px;text-align:right;font-size:14px;font-weight:700;color:${closingBalance > 0 ? '#F9F7F4' : '#86efac'}">$${closingBalance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+        <td style="padding:10px 12px;text-align:right;font-size:14px;font-weight:700;color:${closingBalance > 0 ? '#F9F7F4' : '#86efac'}">${formatCurrency(closingBalance)}</td>
       </tr>
     </tfoot>
   </table>

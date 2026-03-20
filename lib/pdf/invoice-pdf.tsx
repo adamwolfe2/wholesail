@@ -5,6 +5,7 @@ import {
   View,
   StyleSheet,
 } from "@react-pdf/renderer"
+import { formatCurrency } from "@/lib/utils"
 
 const COMPANY_NAME = process.env.PORTAL_COMPANY_NAME || process.env.BRAND_NAME || "Wholesail";
 const COMPANY_DOMAIN = process.env.PORTAL_COMPANY_DOMAIN || (process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com").replace(/^https?:\/\//, "");
@@ -188,9 +189,6 @@ function formatDate(dateStr: string) {
   })
 }
 
-function formatCurrency(amount: number) {
-  return `$${amount.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`
-}
 
 export function InvoicePDF({
   invoiceNumber,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { formatCurrency } from "@/lib/utils";
 import {
   LineChart,
   Line,
@@ -43,11 +44,11 @@ function CustomTooltip({
       </p>
       <p className="text-[#0A0A0A]">
         New price:{" "}
-        <span className="font-semibold">${point.price.toFixed(2)}</span>
+        <span className="font-semibold">{formatCurrency(point.price)}</span>
       </p>
       {point.oldPrice !== null && (
         <p className="text-[#0A0A0A]/60">
-          Was: ${point.oldPrice.toFixed(2)}
+          Was: {formatCurrency(point.oldPrice)}
         </p>
       )}
       <p className="text-[#0A0A0A]/50 mt-1">Changed by: {point.changedBy}</p>
@@ -90,7 +91,7 @@ export function PriceHistoryChart({
           appear here.
         </p>
         <p className="text-xs text-[#0A0A0A]/30 mt-1">
-          Current price: ${currentPrice.toFixed(2)}
+          Current price: {formatCurrency(currentPrice)}
         </p>
       </div>
     );

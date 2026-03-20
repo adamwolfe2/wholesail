@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useCart } from '@/lib/cart-context'
+import { formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -145,7 +146,7 @@ export function CartDrawer() {
                             {item.name}
                           </h4>
                           <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
-                            ${item.price.toFixed(2)} {item.unit}
+                            {formatCurrency(item.price)} {item.unit}
                           </p>
                         </div>
                         <button
@@ -181,7 +182,7 @@ export function CartDrawer() {
                           </button>
                         </div>
                         <p className="text-base font-bold text-[#0A0A0A]">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          {formatCurrency(item.price * item.quantity)}
                         </p>
                       </div>
                     </div>
@@ -196,13 +197,13 @@ export function CartDrawer() {
                     Subtotal
                   </span>
                   <span className="font-serif text-2xl font-bold text-[#0A0A0A]">
-                    ${totalPrice.toFixed(2)}
+                    {formatCurrency(totalPrice)}
                   </span>
                 </div>
                 <p className="text-xs text-[#0A0A0A]/40">
                   {totalPrice >= 500
                     ? 'Free delivery included'
-                    : `$${(500 - totalPrice).toFixed(2)} more for free delivery`}
+                    : `${formatCurrency(500 - totalPrice)} more for free delivery`}
                 </p>
 
                 {/* Save Cart */}

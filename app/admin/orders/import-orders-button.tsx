@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
+import { formatCurrency } from '@/lib/utils'
 import { Label } from '@/components/ui/label'
 import {
   Dialog,
@@ -308,7 +309,7 @@ export function ImportOrdersButton({ onSuccess }: { onSuccess?: () => void }) {
                   Order created successfully
                 </div>
                 <p className="text-sm text-[#0A0A0A]/60">
-                  Order <span className="font-mono font-medium">{result.orderNumber}</span> with {result.itemCount} item{result.itemCount !== 1 ? 's' : ''} — ${result.total.toFixed(2)}
+                  Order <span className="font-mono font-medium">{result.orderNumber}</span> with {result.itemCount} item{result.itemCount !== 1 ? 's' : ''} — {formatCurrency(result.total)}
                 </p>
               </div>
             )}

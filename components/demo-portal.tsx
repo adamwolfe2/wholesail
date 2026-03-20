@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
+import { formatCurrency } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import {
   ShoppingCart,
@@ -343,7 +344,7 @@ function generateSeedData(data: ScrapeData): SeedData {
   const clients: SeedClient[] = clientNames.slice(0, 8).map((name, i) => ({
     name,
     tier: tiers[i],
-    spend: `$${spends[i].toLocaleString()}`,
+    spend: formatCurrency(spends[i]),
     health: healths[i],
     orders: [67, 45, 23, 19, 14, 5, 16, 3][i],
     lastOrder: `Feb ${24 - i}`,
@@ -1170,10 +1171,10 @@ function ClientInvoicesView({ brand, seed }: ViewProps) {
       {/* Aging summary */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         {[
-          { label: "Outstanding", value: `$${outstanding.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, color: "#0A0A0A" },
-          { label: "Current", value: `$${current.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, color: brand.color },
-          { label: "Overdue", value: `$${overdue.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, color: "#92400E" },
-          { label: "Paid (Feb)", value: `$${paid.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, color: "#0A0A0A" },
+          { label: "Outstanding", value: formatCurrency(outstanding), color: "#0A0A0A" },
+          { label: "Current", value: formatCurrency(current), color: brand.color },
+          { label: "Overdue", value: formatCurrency(overdue), color: "#92400E" },
+          { label: "Paid (Feb)", value: formatCurrency(paid), color: "#0A0A0A" },
         ].map((s) => (
           <div key={s.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
             <div className="font-mono text-lg font-bold" style={{ color: s.color }}>{s.value}</div>
@@ -1489,7 +1490,7 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
           { label: "Total Revenue", value: `$${(totalRevenue / 1000).toFixed(0)}K`, sub: "Cumulative all-time", icon: DollarSign },
           { label: "YTD Revenue", value: "$61.2K", sub: "+18% vs last year", icon: TrendingUp, change: "+18%" },
           { label: "Revenue (Feb)", value: "$17.4K", sub: "+23% vs Jan", icon: DollarSign, change: "+23%" },
-          { label: "Outstanding AR", value: `$${seed.invoices.filter((i) => i.status !== "Paid").reduce((s, i) => s + i.amount, 0).toLocaleString()}`, sub: `${seed.invoices.filter((i) => i.status === "Overdue").length} overdue`, icon: FileText },
+          { label: "Outstanding AR", value: formatCurrency(seed.invoices.filter((i) => i.status !== "Paid").reduce((s, i) => s + i.amount, 0)), sub: `${seed.invoices.filter((i) => i.status === "Overdue").length} overdue`, icon: FileText },
           { label: "Active Clients", value: seed.clients.length.toString(), sub: "+3 this month", icon: Users, change: "+3" },
           { label: "Orders (Feb)", value: "37", sub: "+15% vs Jan", icon: ShoppingCart, change: "+15%" },
           { label: "30-Day Forecast", value: "$19.8K", sub: "Based on pipeline", icon: Target },
@@ -1747,10 +1748,10 @@ function AdminInvoicesView({ brand, seed }: ViewProps) {
       {/* Aging summary */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         {[
-          { label: "Total Outstanding", value: `$${outstanding.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, color: "#0A0A0A" },
-          { label: "Current", value: `$${current.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, color: brand.color },
-          { label: "Overdue", value: `$${overdue.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, color: "#92400E" },
-          { label: "Paid (Feb)", value: `$${paid.toLocaleString(undefined, { minimumFractionDigits: 2 })}`, color: "#0A0A0A" },
+          { label: "Total Outstanding", value: formatCurrency(outstanding), color: "#0A0A0A" },
+          { label: "Current", value: formatCurrency(current), color: brand.color },
+          { label: "Overdue", value: formatCurrency(overdue), color: "#92400E" },
+          { label: "Paid (Feb)", value: formatCurrency(paid), color: "#0A0A0A" },
         ].map((s) => (
           <div key={s.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
             <div className="font-mono text-lg font-bold" style={{ color: s.color }}>{s.value}</div>
@@ -1955,7 +1956,7 @@ function SmsDemoView({ brand, data }: ViewProps) {
   const total = Math.round((subtotal + tax) * 100) / 100;
 
   const initialMessage = `Hey, I need ${p1Qty} ${p1?.unit || "units"} of the ${p1?.name || "Product A"} and ${p2Qty} ${p2?.unit || "units"} of ${p2?.name || "Product B"}`;
-  const systemResponse = `Got it! Here's what I parsed from your order:\n\n${p1Qty}x ${p1?.name || "Product A"} (${p1?.price || "$49.99"}/${p1?.unit || "unit"}) — $${p1Total.toFixed(2)}\n${p2Qty}x ${p2?.name || "Product B"} (${p2?.price || "$79.99"}/${p2?.unit || "unit"}) — $${p2Total.toFixed(2)}\n\nSubtotal: $${subtotal.toFixed(2)}\nTax (8.75%): $${tax.toFixed(2)}\nTotal: $${total.toFixed(2)}\n\nReply YES to confirm or EDIT to change.`;
+  const systemResponse = `Got it! Here's what I parsed from your order:\n\n${p1Qty}x ${p1?.name || "Product A"} (${p1?.price || "$49.99"}/${p1?.unit || "unit"}) — ${formatCurrency(p1Total)}\n${p2Qty}x ${p2?.name || "Product B"} (${p2?.price || "$79.99"}/${p2?.unit || "unit"}) — ${formatCurrency(p2Total)}\n\nSubtotal: ${formatCurrency(subtotal)}\nTax (8.75%): ${formatCurrency(tax)}\nTotal: ${formatCurrency(total)}\n\nReply YES to confirm or EDIT to change.`;
   const confirmResponse = `Order confirmed! ORD-2026-0848 has been placed.\n\nEstimated delivery: Tomorrow by 2 PM.\nTrack your order at ${brand.domain}/track/0848\n\n— ${data.companyName}`;
 
   const [messages, setMessages] = useState([
@@ -2108,7 +2109,7 @@ function CartSidebar({ cart, brand, onRemove, onUpdateQty, onClose, onCheckout }
                         <Plus className="h-4 w-4" />
                       </button>
                     </div>
-                    <p className="text-lg font-bold text-[#0A0A0A]">${lineTotal.toFixed(2)}</p>
+                    <p className="text-lg font-bold text-[#0A0A0A]">{formatCurrency(lineTotal)}</p>
                   </div>
                 </div>
               );
@@ -2125,7 +2126,7 @@ function CartSidebar({ cart, brand, onRemove, onUpdateQty, onClose, onCheckout }
           <div className="border-t border-[#E5E1DB] px-5 py-5 space-y-4 mt-auto">
             <div className="flex items-center justify-between">
               <span className="text-xl font-bold text-[#0A0A0A]">Total</span>
-              <span className="text-2xl font-bold text-[#0A0A0A]">${totalPrice.toFixed(2)}</span>
+              <span className="text-2xl font-bold text-[#0A0A0A]">{formatCurrency(totalPrice)}</span>
             </div>
             <button onClick={onCheckout} className="w-full h-12 text-base font-medium text-[#F9F7F4] transition-opacity hover:opacity-85" style={{ backgroundColor: brand.color }}>
               Proceed to Checkout
@@ -2191,7 +2192,7 @@ function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
               </div>
               <div className="p-5">
                 <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Total</p>
-                <p className="font-serif text-lg font-bold text-[#0A0A0A]">${total.toFixed(2)}</p>
+                <p className="font-serif text-lg font-bold text-[#0A0A0A]">{formatCurrency(total)}</p>
               </div>
             </div>
             <div className="p-5">
@@ -2200,7 +2201,7 @@ function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
                 {items.map((item) => (
                   <div key={item.product.name} className="flex justify-between text-xs">
                     <span className="text-[#0A0A0A]">{item.quantity}x {item.product.name}</span>
-                    <span className="font-mono text-[#0A0A0A]/70">${(item.quantity * parsePrice(item.product.price)).toFixed(2)}</span>
+                    <span className="font-mono text-[#0A0A0A]/70">{formatCurrency(item.quantity * parsePrice(item.product.price))}</span>
                   </div>
                 ))}
               </div>
@@ -2311,14 +2312,14 @@ function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
                     <p className="text-sm font-medium text-[#0A0A0A]">{item.product.name}</p>
                     <p className="text-xs text-[#C8C0B4]">{item.quantity} x {item.product.price}</p>
                   </div>
-                  <p className="font-mono text-sm font-bold text-[#0A0A0A]">${(item.quantity * parsePrice(item.product.price)).toFixed(2)}</p>
+                  <p className="font-mono text-sm font-bold text-[#0A0A0A]">{formatCurrency(item.quantity * parsePrice(item.product.price))}</p>
                 </div>
               ))}
             </div>
             <div className="px-5 py-4 border-t border-[#E5E1DB] space-y-2">
-              <div className="flex justify-between text-sm"><span className="text-[#C8C0B4]">Subtotal</span><span className="font-mono text-[#0A0A0A]">${subtotal.toFixed(2)}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-[#C8C0B4]">Tax (8.75%)</span><span className="font-mono text-[#0A0A0A]">${tax.toFixed(2)}</span></div>
-              <div className="flex justify-between text-base font-bold pt-2 border-t border-[#E5E1DB]"><span className="text-[#0A0A0A]">Total</span><span className="font-serif text-xl text-[#0A0A0A]">${total.toFixed(2)}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-[#C8C0B4]">Subtotal</span><span className="font-mono text-[#0A0A0A]">{formatCurrency(subtotal)}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-[#C8C0B4]">Tax (8.75%)</span><span className="font-mono text-[#0A0A0A]">{formatCurrency(tax)}</span></div>
+              <div className="flex justify-between text-base font-bold pt-2 border-t border-[#E5E1DB]"><span className="text-[#0A0A0A]">Total</span><span className="font-serif text-xl text-[#0A0A0A]">{formatCurrency(total)}</span></div>
             </div>
             <div className="px-5 pb-5">
               <button

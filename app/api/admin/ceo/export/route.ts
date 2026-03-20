@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireAdminOrRep } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/db";
+import { formatCurrency } from "@/lib/utils";
 
 // GET /api/admin/ceo/export
 // Returns a CSV executive summary snapshot
@@ -178,8 +179,7 @@ export async function GET() {
 
     // Build CSV
     const dateStr = now.toISOString().slice(0, 10);
-    const fmt = (v: number) =>
-      `$${v.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    const fmt = formatCurrency;
 
     const rows: [string, string, string][] = [
       ["Metric", "Value", "Period"],

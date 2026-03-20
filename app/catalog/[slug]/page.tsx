@@ -6,6 +6,7 @@ import { ArrowLeft, Snowflake, BarChart2, CreditCard, Package } from 'lucide-rea
 import Script from 'next/script'
 import { MarketingHeader } from '@/components/marketing-header'
 import { prisma } from '@/lib/db'
+import { formatCurrency } from '@/lib/utils'
 
 import { Instagram } from 'lucide-react'
 import { getCategoryBySlug, catalogCategories } from '@/lib/catalog-categories'
@@ -139,7 +140,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const priceStr = product.marketRate
     ? 'Market Rate — contact for pricing'
-    : `$${Number(product.price).toFixed(2)} / ${product.unit}`
+    : `${formatCurrency(product.price)} / ${product.unit}`
 
   return {
     title: product.name,
@@ -235,7 +236,7 @@ export default async function ProductDetailPage({ params }: Props) {
                       {p.marketRate ? (
                         <span className="text-[10px] tracking-[0.15em] uppercase border border-[#C8C0B4] text-[#C8C0B4] px-2.5 py-1">Market Rate</span>
                       ) : (
-                        <p className="text-xl font-bold">${Number(p.price).toFixed(2)} <span className="text-sm font-normal text-[#0A0A0A]/50">{p.unit}</span></p>
+                        <p className="text-xl font-bold">{formatCurrency(p.price)} <span className="text-sm font-normal text-[#0A0A0A]/50">{p.unit}</span></p>
                       )}
                     </div>
                     <p className="text-sm text-[#0A0A0A]/55 line-clamp-2">{p.description}</p>
@@ -314,7 +315,7 @@ export default async function ProductDetailPage({ params }: Props) {
 
   const priceDisplay = product.marketRate
     ? 'Market Rate'
-    : `$${Number(product.price).toFixed(2)} / ${product.unit}`
+    : `${formatCurrency(product.price)} / ${product.unit}`
 
   // JSON-LD Product structured data
   const productJson = {

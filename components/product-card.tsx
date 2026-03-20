@@ -1,6 +1,7 @@
 'use client'
 
 import type { Product } from '@/lib/products'
+import { formatCurrency } from '@/lib/utils'
 import { useCart } from '@/lib/cart-context'
 import { SignInButton } from '@clerk/nextjs'
 import { ShoppingCart, Check, Snowflake, TrendingUp, CreditCard, Heart } from 'lucide-react'
@@ -76,7 +77,7 @@ export const ProductCard = memo(function ProductCard({ product, isSignedIn = fal
             </span>
           ) : (
             <p className="text-base sm:text-lg font-bold leading-none">
-              ${product.price.toFixed(2)}{' '}
+              {formatCurrency(product.price)}{' '}
               <span className="text-xs font-normal text-muted-foreground">{product.unit}</span>
             </p>
           )}

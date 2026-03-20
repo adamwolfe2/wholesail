@@ -1,6 +1,7 @@
 import type { Tool } from '@anthropic-ai/sdk/resources/messages'
 import type { OrderStatus, Prisma } from '@prisma/client'
 import { prisma } from '@/lib/db'
+import { formatCurrency } from '@/lib/utils'
 import { cachedTool, invalidateToolCache } from '@/lib/ai/tool-cache'
 import { updateOrderStatus } from '@/lib/db/orders'
 import {
@@ -43,8 +44,8 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
         clients: { total: totalOrgs, partners, distributors },
         orders: { total: totalOrders, last30Days: recentOrders, pending: pendingOrders },
         revenue: {
-          thisMonth: `$${Number(revenueMonth._sum.total ?? 0).toFixed(2)}`,
-          allTime: `$${Number(revenueAll._sum.total ?? 0).toFixed(2)}`,
+          thisMonth: formatCurrency(revenueMonth._sum.total ?? 0),
+          allTime: formatCurrency(revenueAll._sum.total ?? 0),
         },
         invoices: { pending: pendingInv, overdue: overdueInv },
       }
@@ -90,7 +91,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       isDistributor: o.isDistributor,
       paymentTerms: o.paymentTerms,
       orderCount: o._count.orders,
-      totalSpend: `$${(spendMap.get(o.id) ?? 0).toFixed(2)}`,
+      totalSpend: formatCurrency(spendMap.get(o.id) ?? 0),
       loyaltyPoints: o.loyaltyPoints,
       link: `/admin/clients/${o.id}`,
     }))
@@ -114,10 +115,10 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       id: org.id, name: org.name, email: org.email, phone: org.phone,
       contactPerson: org.contactPerson, tier: org.tier, isWholesaler: org.isWholesaler,
       paymentTerms: org.paymentTerms,
-      creditLimit: org.creditLimit ? `$${Number(org.creditLimit).toFixed(2)}` : null,
+      creditLimit: org.creditLimit ? formatCurrency(org.creditLimit) : null,
       loyaltyPoints: org.loyaltyPoints, notes: org.notes,
-      recentOrders: org.orders.map(o => ({ ...o, total: `$${Number(o.total).toFixed(2)}`, link: `/admin/orders/${o.id}` })),
-      outstandingInvoices: org.invoices.map(i => ({ ...i, total: `$${Number(i.total).toFixed(2)}` })),
+      recentOrders: org.orders.map(o => ({ ...o, total: formatCurrency(o.total), link: `/admin/orders/${o.id}` })),
+      outstandingInvoices: org.invoices.map(i => ({ ...i, total: formatCurrency(i.total) })),
       members: org.members,
       recentNotes: org.clientNotes.map(n => n.content),
       link: `/admin/clients/${org.id}`,
@@ -138,7 +139,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
     return orders.map(o => ({
       id: o.id, orderNumber: o.orderNumber, status: o.status,
       client: o.organization.name,
-      total: `$${Number(o.total).toFixed(2)}`,
+      total: formatCurrency(o.total),
       items: o.items.map(i => `${i.name} × ${i.quantity}`),
       createdAt: o.createdAt.toISOString().split('T')[0],
       checklist: {
@@ -171,8 +172,8 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
     return {
       id: order.id, orderNumber: order.orderNumber, status: order.status,
       client: order.organization,
-      items: order.items.map(i => ({ name: i.name, qty: i.quantity, total: `$${Number(i.total).toFixed(2)}` })),
-      total: `$${Number(order.total).toFixed(2)}`,
+      items: order.items.map(i => ({ name: i.name, qty: i.quantity, total: formatCurrency(i.total) })),
+      total: formatCurrency(order.total),
       notes: order.notes, internalNotes: order.internalNotes,
       distributor: order.distributorOrg?.name ?? null,
       deliveryChecklist: {
@@ -180,7 +181,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
         distributorConfirmedAt: order.distributorConfirmedAt?.toISOString() ?? null,
         clientConfirmedAt: order.clientConfirmedAt?.toISOString() ?? null,
       },
-      invoice: order.invoice ? { ...order.invoice, total: `$${Number(order.invoice.total).toFixed(2)}` } : null,
+      invoice: order.invoice ? { ...order.invoice, total: formatCurrency(order.invoice.total) } : null,
       shipment: order.shipment,
       createdAt: order.createdAt.toISOString().split('T')[0],
       link: `/admin/orders/${order.id}`,
@@ -228,12 +229,12 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       const count = agg._count
 
       return {
-        period, revenue: `$${total.toFixed(2)}`, orderCount: count,
-        avgOrderValue: count > 0 ? `$${(total / count).toFixed(2)}` : '$0.00',
+        period, revenue: formatCurrency(total), orderCount: count,
+        avgOrderValue: count > 0 ? formatCurrency(total / count) : '$0.00',
         topClients: topOrgs.map(o => ({
           name: orgMap[o.organizationId] ?? 'Unknown',
           orders: o._count,
-          revenue: `$${Number(o._sum.total ?? 0).toFixed(2)}`,
+          revenue: formatCurrency(o._sum.total ?? 0),
           link: `/admin/clients/${o.organizationId}`,
         })),
       }
@@ -258,14 +259,14 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
 
       return {
         count: invoices.length,
-        totalOutstanding: `$${totalAmt.toFixed(2)}`,
+        totalOutstanding: formatCurrency(totalAmt),
         invoices: invoices.map(i => ({
           invoiceNumber: i.invoiceNumber,
           orderNumber: i.order.orderNumber,
           client: i.organization.name,
           email: i.organization.email,
           phone: i.organization.phone,
-          total: `$${Number(i.total).toFixed(2)}`,
+          total: formatCurrency(i.total),
           status: i.status,
           dueDate: i.dueDate.toISOString().split('T')[0],
           daysOverdue: i.status === 'OVERDUE'
@@ -294,7 +295,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
 
     return products.map(p => ({
       name: p.name, category: p.category,
-      price: `$${Number(p.price).toFixed(2)}`, unit: p.unit,
+      price: formatCurrency(p.price), unit: p.unit,
       available: p.available, marketRate: p.marketRate, coldChain: p.coldChainRequired,
       inventory: p.inventoryLevel
         ? { onHand: p.inventoryLevel.quantityOnHand, available: p.inventoryLevel.quantityOnHand - p.inventoryLevel.quantityReserved, lowStock: p.inventoryLevel.quantityOnHand < p.inventoryLevel.lowStockThreshold }
@@ -665,7 +666,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
 
     return {
       success: true, invoiceNumber, orderNumber: order.orderNumber,
-      total: `$${Number(order.total).toFixed(2)}`, dueDate: dueDate.toISOString().split('T')[0],
+      total: formatCurrency(order.total), dueDate: dueDate.toISOString().split('T')[0],
       emailSent: Boolean(order.organization.email),
       link: `/admin/invoices`,
     }
@@ -713,7 +714,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       orderNumber: o.orderNumber,
       client: o.organization.name,
       status: o.status,
-      total: `$${Number(o.total).toFixed(2)}`,
+      total: formatCurrency(o.total),
       items: o.items.map(i => `${i.name} × ${i.quantity}`),
       createdAt: o.createdAt.toISOString().split('T')[0],
       awaitingConfirmation: !o.adminConfirmedAt && ['CONFIRMED', 'PACKED', 'SHIPPED'].includes(o.status),
@@ -805,14 +806,14 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
           rank: i + 1,
           name: productMap[p.productId]?.name ?? 'Unknown',
           category: productMap[p.productId]?.category ?? null,
-          revenue: `$${Number(p._sum.total ?? 0).toFixed(2)}`,
+          revenue: formatCurrency(p._sum.total ?? 0),
           unitsSold: p._sum.quantity ?? 0,
         })),
         thisMonth: thisMonthRaw.map((p, i) => ({
           rank: i + 1,
           name: productMap[p.productId]?.name ?? 'Unknown',
           category: productMap[p.productId]?.category ?? null,
-          revenue: `$${Number(p._sum.total ?? 0).toFixed(2)}`,
+          revenue: formatCurrency(p._sum.total ?? 0),
           unitsSold: p._sum.quantity ?? 0,
         })),
       }
@@ -846,11 +847,11 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
     const pct = (a: number, b: number) => b > 0 ? `${((a - b) / b * 100) >= 0 ? '+' : ''}${((a - b) / b * 100).toFixed(1)}%` : 'N/A'
 
     return {
-      thisMonth: { revenue: `$${tmRev.toFixed(2)}`, orders: thisMonth._count, newClients: newClientsThisMonth },
-      lastMonth: { revenue: `$${lmRev.toFixed(2)}`, orders: lastMonth._count, newClients: newClientsLastMonth },
+      thisMonth: { revenue: formatCurrency(tmRev), orders: thisMonth._count, newClients: newClientsThisMonth },
+      lastMonth: { revenue: formatCurrency(lmRev), orders: lastMonth._count, newClients: newClientsLastMonth },
       monthOverMonth: { revenue: pct(tmRev, lmRev), orders: pct(thisMonth._count, lastMonth._count) },
-      thisWeek: { revenue: `$${twRev.toFixed(2)}`, orders: thisWeek._count },
-      lastWeek: { revenue: `$${lwRev.toFixed(2)}`, orders: lastWeek._count },
+      thisWeek: { revenue: formatCurrency(twRev), orders: thisWeek._count },
+      lastWeek: { revenue: formatCurrency(lwRev), orders: lastWeek._count },
       weekOverWeek: { revenue: pct(twRev, lwRev), orders: pct(thisWeek._count, lastWeek._count) },
     }
     }) // end cachedTool
@@ -893,15 +894,15 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
 
     return {
       name: org.name, tier: org.tier, loyaltyPoints: org.loyaltyPoints,
-      totalRevenue: `$${totalRevenue.toFixed(2)}`,
+      totalRevenue: formatCurrency(totalRevenue),
       orderCount: orders.length,
-      avgOrderValue: `$${avgOrderValue.toFixed(2)}`,
+      avgOrderValue: formatCurrency(avgOrderValue),
       avgDaysBetweenOrders,
       firstOrderDate: firstOrder?.createdAt.toISOString().split('T')[0] ?? 'None',
       lastOrderDate: lastOrder?.createdAt.toISOString().split('T')[0] ?? 'None',
       daysSinceLastOrder: daysSinceLast,
       clientAgeDays,
-      outstandingBalance: `$${outstanding.toFixed(2)}`,
+      outstandingBalance: formatCurrency(outstanding),
       link: `/admin/clients/${orgId}`,
     }
   },
@@ -1169,7 +1170,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
       topReferrers: topReferrers.map((r: { referrerId: string; _count: { id: number } }) => ({
         name: orgMap[r.referrerId]?.name ?? 'Unknown',
         conversions: r._count.id,
-        creditsEarned: `$${Number(orgMap[r.referrerId]?.referralCredits ?? 0).toFixed(2)}`,
+        creditsEarned: formatCurrency(orgMap[r.referrerId]?.referralCredits ?? 0),
       })),
     }
   },

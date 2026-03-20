@@ -4,6 +4,7 @@
 // communication preferences.
 import { Resend } from "resend";
 import { getSiteUrl } from "../get-site-url";
+import { formatCurrency } from "@/lib/utils";
 
 function getResend() {
   if (!process.env.RESEND_API_KEY) return null;
@@ -122,7 +123,7 @@ export async function sendOrderConfirmation(data: OrderEmailData) {
       return `<tr style="background-color:${bg};">
         <td style="padding:10px 12px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;">${item.name}</td>
         <td style="padding:10px 12px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;text-align:center;">${item.quantity}</td>
-        <td style="padding:10px 12px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;text-align:right;">$${item.total.toFixed(2)}</td>
+        <td style="padding:10px 12px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;text-align:right;">${formatCurrency(item.total)}</td>
       </tr>`;
     })
     .join("");
@@ -151,15 +152,15 @@ export async function sendOrderConfirmation(data: OrderEmailData) {
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
       <tr>
         <td style="padding:6px 0;font-size:14px;color:#C8C0B4;">Subtotal</td>
-        <td style="padding:6px 0;font-size:14px;color:#0A0A0A;text-align:right;">$${data.subtotal.toFixed(2)}</td>
+        <td style="padding:6px 0;font-size:14px;color:#0A0A0A;text-align:right;">${formatCurrency(data.subtotal)}</td>
       </tr>
       ${tax > 0 ? `<tr>
         <td style="padding:6px 0;font-size:14px;color:#C8C0B4;">Tax</td>
-        <td style="padding:6px 0;font-size:14px;color:#0A0A0A;text-align:right;">$${tax.toFixed(2)}</td>
+        <td style="padding:6px 0;font-size:14px;color:#0A0A0A;text-align:right;">${formatCurrency(tax)}</td>
       </tr>` : ""}
       <tr style="border-top:2px solid #0A0A0A;">
         <td style="padding:10px 0 4px;font-size:15px;font-weight:700;color:#0A0A0A;">Total</td>
-        <td style="padding:10px 0 4px;font-size:15px;font-weight:700;color:#0A0A0A;text-align:right;">$${data.total.toFixed(2)}</td>
+        <td style="padding:10px 0 4px;font-size:15px;font-weight:700;color:#0A0A0A;text-align:right;">${formatCurrency(data.total)}</td>
       </tr>
     </table>
 
@@ -175,7 +176,7 @@ export async function sendOrderConfirmation(data: OrderEmailData) {
 
   // Plain-text fallback
   const itemRowsText = data.items
-    .map((item) => `  ${item.name} × ${item.quantity} — $${item.total.toFixed(2)}`)
+    .map((item) => `  ${item.name} × ${item.quantity} — ${formatCurrency(item.total)}`)
     .join("\n");
 
   const text = `Hi ${data.customerName},
@@ -185,8 +186,8 @@ Your order ${data.orderNumber} has been received and is being reviewed.
 ITEMS:
 ${itemRowsText}
 
-Subtotal: $${data.subtotal.toFixed(2)}
-Total: $${data.total.toFixed(2)}
+Subtotal: ${formatCurrency(data.subtotal)}
+Total: ${formatCurrency(data.total)}
 
 View your order: ${orderUrl}
 
@@ -356,7 +357,7 @@ export async function sendInvoiceEmail(data: {
           <p style="margin:0 0 20px;font-size:20px;font-family:'Courier New',Courier,monospace;font-weight:700;color:#0A0A0A;letter-spacing:0.05em;">${data.invoiceNumber}</p>
 
           <p style="margin:0 0 4px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#C8C0B4;font-weight:600;">Amount Due</p>
-          <p style="margin:0 0 20px;font-size:32px;font-family:Georgia,serif;font-weight:700;color:#0A0A0A;line-height:1;">$${data.total.toFixed(2)}</p>
+          <p style="margin:0 0 20px;font-size:32px;font-family:Georgia,serif;font-weight:700;color:#0A0A0A;line-height:1;">${formatCurrency(data.total)}</p>
 
           <p style="margin:0 0 4px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#C8C0B4;font-weight:600;">Due Date</p>
           <p style="margin:0;font-size:16px;font-weight:600;color:${data.isReminder ? "#DC2626" : "#0A0A0A"};">${data.dueDate}</p>
@@ -381,7 +382,7 @@ export async function sendInvoiceEmail(data: {
 ${data.isReminder ? "A friendly reminder that the following invoice is outstanding." : "A new invoice has been generated for your account."}
 
 Invoice: ${data.invoiceNumber}
-Amount: $${data.total.toFixed(2)}
+Amount: ${formatCurrency(data.total)}
 Due Date: ${data.dueDate}
 
 View and pay your invoice: ${invoicesUrl}
@@ -396,7 +397,7 @@ Questions? Reply here or message us in your portal.
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.customerEmail,
-      subject: `${reminderPrefix}Invoice ${data.invoiceNumber} — $${data.total.toFixed(2)}`,
+      subject: `${reminderPrefix}Invoice ${data.invoiceNumber} — ${formatCurrency(data.total)}`,
       html,
       text,
     });
@@ -735,11 +736,11 @@ export async function sendAbandonedCartEmail(data: {
   const itemRowsHtml = data.items
     .map((item, i) => {
       const bg = i % 2 === 0 ? "#F9F7F4" : "#FFFFFF";
-      const lineTotal = (item.unitPrice * item.quantity).toFixed(2);
+      const lineTotal = formatCurrency(item.unitPrice * item.quantity);
       return `<tr style="background-color:${bg};">
         <td style="padding:10px 12px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;">${item.name}</td>
         <td style="padding:10px 12px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;text-align:center;">${item.quantity}</td>
-        <td style="padding:10px 12px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;text-align:right;">$${lineTotal}</td>
+        <td style="padding:10px 12px;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;text-align:right;">${lineTotal}</td>
       </tr>`;
     })
     .join("");
@@ -766,7 +767,7 @@ export async function sendAbandonedCartEmail(data: {
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
       <tr style="border-top:2px solid #0A0A0A;">
         <td style="padding:10px 0 4px;font-size:15px;font-weight:700;color:#0A0A0A;">Cart Total</td>
-        <td style="padding:10px 0 4px;font-size:15px;font-weight:700;color:#0A0A0A;text-align:right;">$${data.cartTotal.toFixed(2)}</td>
+        <td style="padding:10px 0 4px;font-size:15px;font-weight:700;color:#0A0A0A;text-align:right;">${formatCurrency(data.cartTotal)}</td>
       </tr>
     </table>
 
@@ -782,7 +783,7 @@ export async function sendAbandonedCartEmail(data: {
   });
 
   const itemLines = data.items
-    .map((i) => `  • ${i.name} × ${i.quantity} — $${(i.unitPrice * i.quantity).toFixed(2)}`)
+    .map((i) => `  • ${i.name} × ${i.quantity} — ${formatCurrency((i.unitPrice * i.quantity))}`)
     .join("\n");
 
   const text = `Hi ${data.name},
@@ -792,7 +793,7 @@ You left some items in your cart — just wanted to make sure they don't slip aw
 Your cart:
 ${itemLines}
 
-Cart total: $${data.cartTotal.toFixed(2)}
+Cart total: ${formatCurrency(data.cartTotal)}
 
 Ready to finish your order?
 ${data.checkoutUrl}
@@ -1056,7 +1057,7 @@ export async function sendInternalOrderNotification(data: OrderEmailData) {
       return `<tr style="background-color:${bg};">
         <td style="padding:8px 12px;font-size:13px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;">${item.name}</td>
         <td style="padding:8px 12px;font-size:13px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;text-align:center;">${item.quantity}</td>
-        <td style="padding:8px 12px;font-size:13px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;text-align:right;">$${item.total.toFixed(2)}</td>
+        <td style="padding:8px 12px;font-size:13px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;text-align:right;">${formatCurrency(item.total)}</td>
       </tr>`;
     })
     .join("");
@@ -1099,7 +1100,7 @@ export async function sendInternalOrderNotification(data: OrderEmailData) {
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:4px;">
       <tr>
         <td style="padding:8px 0;font-size:15px;font-weight:700;color:#0A0A0A;">Order Total</td>
-        <td style="padding:8px 0;font-size:15px;font-weight:700;color:#0A0A0A;text-align:right;">$${data.total.toFixed(2)}</td>
+        <td style="padding:8px 0;font-size:15px;font-weight:700;color:#0A0A0A;text-align:right;">${formatCurrency(data.total)}</td>
       </tr>
     </table>
   `;
@@ -1115,7 +1116,7 @@ export async function sendInternalOrderNotification(data: OrderEmailData) {
 
 Order: ${data.orderNumber}
 Customer: ${data.customerName} (${data.customerEmail})
-Total: $${data.total.toFixed(2)}
+Total: ${formatCurrency(data.total)}
 Items: ${data.items.length}
 
 View in admin: ${adminUrl}`;
@@ -1126,7 +1127,7 @@ View in admin: ${adminUrl}`;
     await r.emails.send({
       from: FROM_EMAIL,
       to: OPS_EMAIL,
-      subject: `New Order: ${data.orderNumber} — $${data.total.toFixed(2)}`,
+      subject: `New Order: ${data.orderNumber} — ${formatCurrency(data.total)}`,
       html,
       text,
     });
@@ -1537,7 +1538,7 @@ export async function sendWeeklyDigestEmail(data: {
                   </td>
                   <td style="padding:10px 14px;background:#F9F7F4;border:1px solid #E5E1DB;border-left:none;width:50%;">
                     <p style="margin:0;font-size:11px;color:#C8C0B4;letter-spacing:0.08em;text-transform:uppercase;">Total Spent</p>
-                    <p style="margin:4px 0 0;font-size:26px;font-family:Georgia,serif;font-weight:400;color:#0A0A0A;">$${data.totalSpentThisMonth.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</p>
+                    <p style="margin:4px 0 0;font-size:26px;font-family:Georgia,serif;font-weight:400;color:#0A0A0A;">${formatCurrency(data.totalSpentThisMonth)}</p>
                   </td>
                 </tr>
               </table>
@@ -1609,7 +1610,7 @@ Hi ${data.name},
 
 YOUR MONTH SO FAR
 Orders this month: ${data.totalOrdersThisMonth}
-Total spent: $${data.totalSpentThisMonth.toFixed(2)}
+Total spent: ${formatCurrency(data.totalSpentThisMonth)}
 ${
     data.newDrops.length > 0
       ? `\nTHIS WEEK'S TOP PICKS\n${data.newDrops
@@ -1819,7 +1820,7 @@ export async function sendQuoteToClientEmail(data: {
   const bodyHtml = `
     <p style="margin:0 0 16px;color:#0A0A0A;font-size:15px;line-height:1.6;">Hi ${data.clientName},</p>
     <p style="margin:0 0 16px;color:#0A0A0A;font-size:15px;line-height:1.6;">
-      We've prepared a custom quote for you — <strong>${data.quoteNumber}</strong> for <strong>$${data.total.toFixed(2)}</strong>. Please review it at your earliest convenience.
+      We've prepared a custom quote for you — <strong>${data.quoteNumber}</strong> for <strong>${formatCurrency(data.total)}</strong>. Please review it at your earliest convenience.
     </p>
     ${expiryLine}
     ${notesLine}
@@ -1836,7 +1837,7 @@ export async function sendQuoteToClientEmail(data: {
   const textParts = [
     `Hi ${data.clientName},`,
     "",
-    `We've prepared a quote for you — ${data.quoteNumber} for $${data.total.toFixed(2)}.`,
+    `We've prepared a quote for you — ${data.quoteNumber} for ${formatCurrency(data.total)}.`,
     data.expiresAt
       ? `Valid until: ${data.expiresAt.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}`
       : "",
@@ -1892,7 +1893,7 @@ export async function sendDistributorOrderNotification(data: {
       return `<tr style="background-color:${bg};">
         <td style="padding:8px 12px;font-size:13px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;">${item.name}</td>
         <td style="padding:8px 12px;font-size:13px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;text-align:center;">${item.quantity}</td>
-        <td style="padding:8px 12px;font-size:13px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;text-align:right;">$${item.total.toFixed(2)}</td>
+        <td style="padding:8px 12px;font-size:13px;color:#0A0A0A;border-bottom:1px solid #E5E1DB;text-align:right;">${formatCurrency(item.total)}</td>
       </tr>`;
     })
     .join('');
@@ -1942,7 +1943,7 @@ export async function sendDistributorOrderNotification(data: {
     <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:4px;">
       <tr>
         <td style="padding:8px 0;font-size:14px;font-weight:700;color:#0A0A0A;">Your Items Total</td>
-        <td style="padding:8px 0;font-size:14px;font-weight:700;color:#0A0A0A;text-align:right;">$${data.itemsTotal.toFixed(2)}</td>
+        <td style="padding:8px 0;font-size:14px;font-weight:700;color:#0A0A0A;text-align:right;">${formatCurrency(data.itemsTotal)}</td>
       </tr>
     </table>
   `;
@@ -1960,9 +1961,9 @@ Order: ${data.orderNumber}
 Client: ${data.clientName}
 ${data.deliveryAddress ? `Deliver to: ${data.deliveryAddress}\n` : ''}
 Your items:
-${data.items.map(i => `  - ${i.name} × ${i.quantity} — $${i.total.toFixed(2)}`).join('\n')}
+${data.items.map(i => `  - ${i.name} × ${i.quantity} — ${formatCurrency(i.total)}`).join('\n')}
 
-Your items total: $${data.itemsTotal.toFixed(2)}
+Your items total: ${formatCurrency(data.itemsTotal)}
 
 View your fulfillment queue: ${portalUrl}`;
 
@@ -2004,7 +2005,7 @@ export async function sendPaymentReceivedEmail(data: {
   const bodyHtml = `
     <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.customerName},</p>
     <p style="margin:0 0 24px;font-size:15px;color:#3D3833;line-height:1.6;">
-      We've received your ${methodLabel} of <strong style="color:#0A0A0A;">$${data.amount.toFixed(2)}</strong> for order
+      We've received your ${methodLabel} of <strong style="color:#0A0A0A;">${formatCurrency(data.amount)}</strong> for order
       <strong style="color:#0A0A0A;">${data.orderNumber}</strong>. Thank you!
     </p>
     <p style="margin:0 0 8px;font-size:13px;color:#C8C0B4;font-style:italic;">
@@ -2021,7 +2022,7 @@ export async function sendPaymentReceivedEmail(data: {
 
   const text = `Hi ${data.customerName},
 
-We've received your ${methodLabel} of $${data.amount.toFixed(2)} for order ${data.orderNumber}. Thank you!
+We've received your ${methodLabel} of ${formatCurrency(data.amount)} for order ${data.orderNumber}. Thank you!
 
 View your order: ${orderUrl}
 
@@ -2061,7 +2062,7 @@ export async function sendRefundConfirmationEmail(data: {
   const bodyHtml = `
     <p style="margin:0 0 20px;font-size:15px;color:#3D3833;line-height:1.6;">Hi ${data.customerName},</p>
     <p style="margin:0 0 24px;font-size:15px;color:#3D3833;line-height:1.6;">
-      A ${refundType} of <strong style="color:#0A0A0A;">$${data.amountRefunded.toFixed(2)}</strong> has been issued for order
+      A ${refundType} of <strong style="color:#0A0A0A;">${formatCurrency(data.amountRefunded)}</strong> has been issued for order
       <strong style="color:#0A0A0A;">${data.orderNumber}</strong>. The refund should appear on your statement within 5–10 business days.
     </p>
     <p style="margin:0 0 8px;font-size:13px;color:#C8C0B4;font-style:italic;">
@@ -2078,7 +2079,7 @@ export async function sendRefundConfirmationEmail(data: {
 
   const text = `Hi ${data.customerName},
 
-A ${refundType} of $${data.amountRefunded.toFixed(2)} has been issued for order ${data.orderNumber}. The refund should appear on your statement within 5-10 business days.
+A ${refundType} of ${formatCurrency(data.amountRefunded)} has been issued for order ${data.orderNumber}. The refund should appear on your statement within 5-10 business days.
 
 View your order: ${orderUrl}
 
@@ -2126,7 +2127,7 @@ export async function sendDisputeAlertEmail(data: {
       <tr><td style="padding:8px 0;font-size:14px;color:#6B6560;border-bottom:1px solid #E8E4DF;">Reason</td>
           <td style="padding:8px 0;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E8E4DF;font-weight:600;">${data.reason}</td></tr>
       <tr><td style="padding:8px 0;font-size:14px;color:#6B6560;border-bottom:1px solid #E8E4DF;">Amount</td>
-          <td style="padding:8px 0;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E8E4DF;font-weight:600;">$${(data.amount / 100).toFixed(2)}</td></tr>
+          <td style="padding:8px 0;font-size:14px;color:#0A0A0A;border-bottom:1px solid #E8E4DF;font-weight:600;">${formatCurrency((data.amount / 100))}</td></tr>
       <tr><td style="padding:8px 0;font-size:14px;color:#6B6560;">Payment Intent</td>
           <td style="padding:8px 0;font-size:14px;color:#0A0A0A;font-weight:600;">${data.paymentIntentId}</td></tr>
     </table>
@@ -2147,7 +2148,7 @@ export async function sendDisputeAlertEmail(data: {
 
 Dispute ID: ${data.disputeId}
 Reason: ${data.reason}
-Amount: $${(data.amount / 100).toFixed(2)}
+Amount: ${formatCurrency((data.amount / 100))}
 Payment Intent: ${data.paymentIntentId}
 
 View in Stripe: ${dashboardUrl}
@@ -2162,7 +2163,7 @@ Respond within 7 days to avoid an automatic loss.
     await r.emails.send({
       from: FROM_EMAIL,
       to: OPS_EMAIL,
-      subject: `DISPUTE OPENED — $${(data.amount / 100).toFixed(2)}${orderRef}`,
+      subject: `DISPUTE OPENED — ${formatCurrency((data.amount / 100))}${orderRef}`,
       html,
       text,
     });

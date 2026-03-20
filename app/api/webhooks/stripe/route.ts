@@ -4,6 +4,7 @@ import { isStripeConfigured, parseWebhookEvent } from "@/lib/stripe/config";
 import { WebhookSignatureError } from "@/lib/stripe/errors";
 import { updateOrderStatus, updateOrderStripeIds } from "@/lib/db/orders";
 import { prisma } from "@/lib/db";
+import { formatCurrency } from "@/lib/utils";
 import {
   sendOrderConfirmation,
   sendInternalOrderNotification,
@@ -668,7 +669,7 @@ export async function POST(req: NextRequest) {
         }
 
         console.info(
-          `Refund recorded for charge ${charge.id}, order ${payment.orderId} (${fullyRefunded ? "full" : "partial"}: $${amountRefunded.toFixed(2)})`
+          `Refund recorded for charge ${charge.id}, order ${payment.orderId} (${fullyRefunded ? "full" : "partial"}: ${formatCurrency(amountRefunded)})`
         );
         break;
       }

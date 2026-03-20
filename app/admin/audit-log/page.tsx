@@ -95,7 +95,7 @@ export default function AuditLogPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
+          <h1 className="text-2xl font-bold font-serif flex items-center gap-2">
             <History className="h-6 w-6" />
             Audit Log
           </h1>

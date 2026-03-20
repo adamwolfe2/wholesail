@@ -268,7 +268,7 @@ export function ProductAddForm() {
           </div>
 
           {error && (
-            <div className="rounded-lg border border-red-200 bg-red-50 p-3 flex items-center gap-2">
+            <div className="rounded-none border border-red-200 bg-red-50 p-3 flex items-center gap-2">
               <AlertCircle className="h-4 w-4 text-red-600 shrink-0" />
               <p className="text-sm text-red-800">{error}</p>
             </div>

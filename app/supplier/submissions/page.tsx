@@ -1,6 +1,7 @@
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import { prisma } from '@/lib/db'
+import { formatCurrency } from '@/lib/utils'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -127,7 +128,7 @@ export default async function SupplierSubmissionsPage() {
                         <TableCell className="text-right text-[#0A0A0A]/60">{sub.quantity}</TableCell>
                         <TableCell className="text-[#0A0A0A]/60">{sub.unit}</TableCell>
                         <TableCell className="text-right font-semibold text-[#0A0A0A]">
-                          ${sub.pricePerUnit.toFixed(2)}
+                          {formatCurrency(sub.pricePerUnit)}
                         </TableCell>
                         <TableCell className="text-[#0A0A0A]/60 hidden lg:table-cell">
                           {new Date(sub.expectedArrival).toLocaleDateString('en-US', {
@@ -166,7 +167,7 @@ export default async function SupplierSubmissionsPage() {
                     </div>
                     <div className="flex items-center justify-between text-xs text-[#0A0A0A]/60">
                       <span>{sub.quantity} {sub.unit}</span>
-                      <span>${sub.pricePerUnit.toFixed(2)}/unit</span>
+                      <span>{formatCurrency(sub.pricePerUnit)}/unit</span>
                     </div>
                     <p className="text-xs text-[#0A0A0A]/50">
                       Expected: {new Date(sub.expectedArrival).toLocaleDateString('en-US', {

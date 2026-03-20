@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/db";
+import { formatCurrency } from "@/lib/utils";
 import { z } from "zod";
 import { sendQuoteToClientEmail } from "@/lib/email";
 import { notifyDistributorsForOrder } from "@/lib/db/orders";
@@ -87,7 +88,7 @@ export async function PATCH(
         quote.organizationId,
         "QUOTE_RECEIVED",
         `New quote ${quote.quoteNumber} received`,
-        `You have a new quote for $${Number(quote.total).toFixed(2)}. Review and accept it to place your order.`,
+        `You have a new quote for ${formatCurrency(quote.total)}. Review and accept it to place your order.`,
         `/client-portal/quotes/${quote.quoteNumber}`,
       ).catch(() => {}); // non-blocking
 

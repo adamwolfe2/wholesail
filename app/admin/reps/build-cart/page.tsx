@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { formatCurrency } from "@/lib/utils";
 import {
   Select,
   SelectContent,
@@ -399,7 +400,7 @@ export default function BuildCartPage() {
                       </div>
                       <div className="text-right">
                         <p className="text-sm font-semibold text-[#0A0A0A]">
-                          ${parseFloat(product.price).toFixed(2)}
+                          {formatCurrency(product.price)}
                         </p>
                         <p className="text-xs text-[#0A0A0A]/40">
                           {product.unit}
@@ -429,7 +430,7 @@ export default function BuildCartPage() {
                       </Button>
                       {qty > 0 && (
                         <span className="text-xs text-[#0A0A0A]/50 ml-1">
-                          = ${(parseFloat(product.price) * qty).toFixed(2)}
+                          = {formatCurrency(parseFloat(product.price) * qty)}
                         </span>
                       )}
                     </div>
@@ -488,12 +489,12 @@ export default function BuildCartPage() {
                         {ci.product.name}
                       </p>
                       <p className="text-xs text-[#0A0A0A]/50">
-                        {ci.quantity} × ${parseFloat(ci.product.price).toFixed(2)}{" "}
+                        {ci.quantity} × {formatCurrency(ci.product.price)}{" "}
                         {ci.product.unit}
                       </p>
                     </div>
                     <p className="text-sm font-semibold text-[#0A0A0A]">
-                      ${(parseFloat(ci.product.price) * ci.quantity).toFixed(2)}
+                      {formatCurrency(parseFloat(ci.product.price) * ci.quantity)}
                     </p>
                   </div>
                 ))}
@@ -502,7 +503,7 @@ export default function BuildCartPage() {
               <div className="flex items-center justify-between pt-2 border-t border-[#E5E1DB]">
                 <span className="text-sm font-medium text-[#0A0A0A]">Subtotal</span>
                 <span className="font-serif font-bold text-lg text-[#0A0A0A]">
-                  ${subtotal.toFixed(2)}
+                  {formatCurrency(subtotal)}
                 </span>
               </div>
 

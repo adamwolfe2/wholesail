@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
+import { formatCurrency } from "@/lib/utils";
 import { getProjectById } from "@/lib/db/projects";
 import { getProjectCosts } from "@/lib/db/costs";
 import {
@@ -36,6 +37,7 @@ import { ProjectAssignee } from "./project-assignee";
 import { ProjectCommunications } from "./project-communications";
 import { StripeConnectBadge } from "./stripe-connect-badge";
 import { ENV_VARS } from "@/lib/client-data";
+import { format } from "date-fns";
 
 export const metadata: Metadata = { title: "Project Details" };
 export const dynamic = "force-dynamic";
@@ -107,7 +109,7 @@ export default async function AdminProjectDetailPage({
       : {};
 
   const totalCostCents = costs.reduce((sum, c) => sum + Number(c.amountCents), 0);
-  const totalCostDollars = (totalCostCents / 100).toFixed(2);
+  const totalCostDollars = formatCurrency(totalCostCents / 100);
   const marginPct =
     project.contractValue > 0
       ? Math.round(((project.contractValue * 100 - totalCostCents) / (project.contractValue * 100)) * 100)
@@ -434,18 +436,18 @@ export default async function AdminProjectDetailPage({
                         <p className="font-mono text-[9px] text-[#0A0A0A]/40">
                           {cost.service}
                           {cost.tokens ? ` · ${cost.tokens.toLocaleString()} tokens` : ""}
-                          {" · "}{new Date(cost.date).toLocaleDateString()}
+                          {" · "}{format(new Date(cost.date), 'MMM d, yyyy')}
                         </p>
                       </div>
                       <p className="font-mono text-xs text-[#0A0A0A] shrink-0">
-                        ${(Number(cost.amountCents) / 100).toFixed(2)}
+                        {formatCurrency(Number(cost.amountCents) / 100)}
                       </p>
                     </div>
                   ))}
                   <div className="pt-3 space-y-1">
                     <div className="flex justify-between font-mono text-xs">
                       <span className="text-[#0A0A0A]/60">Total to date</span>
-                      <span className="font-bold">${totalCostDollars}</span>
+                      <span className="font-bold">{totalCostDollars}</span>
                     </div>
                     {project.contractValue > 0 && (
                       <>
@@ -489,11 +491,7 @@ export default async function AdminProjectDetailPage({
                       <div className="flex-1 min-w-0">
                         <p className="text-sm text-[#0A0A0A]">{note.text}</p>
                         <p className="text-[10px] font-mono text-[#0A0A0A]/40 mt-0.5">
-                          {new Date(note.createdAt).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })}
+                          {format(new Date(note.createdAt), "MMM d, yyyy")}
                         </p>
                       </div>
                     </div>

@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import { formatCurrency } from '@/lib/utils'
 import {
   Table,
   TableBody,
@@ -486,10 +487,10 @@ export default function ClientOrderDetailPage() {
                       </TableCell>
                       <TableCell className="text-right text-[#0A0A0A]/60">{item.quantity}</TableCell>
                       <TableCell className="text-right text-[#0A0A0A]/60 hidden sm:table-cell">
-                        ${Number(item.unitPrice).toFixed(2)}
+                        {formatCurrency(item.unitPrice)}
                       </TableCell>
                       <TableCell className="text-right font-semibold text-[#0A0A0A]">
-                        ${Number(item.total).toFixed(2)}
+                        {formatCurrency(item.total)}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -502,24 +503,24 @@ export default function ClientOrderDetailPage() {
             <div className="flex flex-col items-end gap-2 text-sm">
               <div className="flex justify-between w-full max-w-[200px]">
                 <span className="text-[#0A0A0A]/50">Subtotal</span>
-                <span className="text-[#0A0A0A]">${Number(order.subtotal).toFixed(2)}</span>
+                <span className="text-[#0A0A0A]">{formatCurrency(order.subtotal)}</span>
               </div>
               {Number(order.tax) > 0 && (
                 <div className="flex justify-between w-full max-w-[200px]">
                   <span className="text-[#0A0A0A]/50">Tax</span>
-                  <span className="text-[#0A0A0A]">${Number(order.tax).toFixed(2)}</span>
+                  <span className="text-[#0A0A0A]">{formatCurrency(order.tax)}</span>
                 </div>
               )}
               {Number(order.deliveryFee) > 0 && (
                 <div className="flex justify-between w-full max-w-[200px]">
                   <span className="text-[#0A0A0A]/50">Delivery</span>
-                  <span className="text-[#0A0A0A]">${Number(order.deliveryFee).toFixed(2)}</span>
+                  <span className="text-[#0A0A0A]">{formatCurrency(order.deliveryFee)}</span>
                 </div>
               )}
               <Separator className="w-full max-w-[200px] bg-[#C8C0B4]/50" />
               <div className="flex justify-between w-full max-w-[200px] text-base font-bold text-[#0A0A0A]">
                 <span>Total</span>
-                <span>${Number(order.total).toFixed(2)}</span>
+                <span>{formatCurrency(order.total)}</span>
               </div>
             </div>
           </CardContent>
@@ -568,7 +569,7 @@ export default function ClientOrderDetailPage() {
                           {payment.method.toLowerCase()}
                         </TableCell>
                         <TableCell className="text-right font-semibold text-[#0A0A0A]">
-                          ${Number(payment.amount).toFixed(2)}
+                          {formatCurrency(payment.amount)}
                         </TableCell>
                         <TableCell>
                           <Badge

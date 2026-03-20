@@ -163,7 +163,7 @@ export function SettingsClient() {
               {integrations.map((integration) => (
                 <div
                   key={integration.name}
-                  className="flex items-start gap-4 p-4 rounded-lg border bg-card"
+                  className="flex items-start gap-4 p-4 rounded-none border bg-white"
                 >
                   <div className="rounded-full bg-muted p-2.5">
                     {iconMap[integration.name] || <Globe className="h-5 w-5" />}
@@ -306,7 +306,7 @@ export function SettingsClient() {
               href="https://dashboard.stripe.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+              className="flex items-center gap-3 p-3 rounded-none border hover:bg-[#F9F7F4] transition-colors"
             >
               <CreditCard className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">Stripe Dashboard</span>
@@ -316,7 +316,7 @@ export function SettingsClient() {
               href="https://app.bloo.io"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+              className="flex items-center gap-3 p-3 rounded-none border hover:bg-[#F9F7F4] transition-colors"
             >
               <MessageSquare className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">Bloo.io Dashboard</span>
@@ -326,7 +326,7 @@ export function SettingsClient() {
               href="https://resend.com/emails"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+              className="flex items-center gap-3 p-3 rounded-none border hover:bg-[#F9F7F4] transition-colors"
             >
               <Mail className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">Resend Dashboard</span>
@@ -336,7 +336,7 @@ export function SettingsClient() {
               href="https://dashboard.clerk.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+              className="flex items-center gap-3 p-3 rounded-none border hover:bg-[#F9F7F4] transition-colors"
             >
               <Globe className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">Clerk Dashboard</span>

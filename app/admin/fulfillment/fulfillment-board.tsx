@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Badge } from '@/components/ui/badge'
+import { formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -157,7 +158,7 @@ function OrderCard({
 
       {/* Meta */}
       <div className="flex items-center justify-between text-xs text-[#0A0A0A]/50">
-        <span>{itemCount} item{itemCount !== 1 ? 's' : ''}{total !== undefined ? ` · $${total.toLocaleString('en-US', { minimumFractionDigits: 2 })}` : ''}</span>
+        <span>{itemCount} item{itemCount !== 1 ? 's' : ''}{total !== undefined ? ` · ${formatCurrency(total)}` : ''}</span>
         <span>{timeLabel}</span>
       </div>
 

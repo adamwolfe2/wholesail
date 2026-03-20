@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db";
 import { format } from "date-fns";
 import { Plus, ArrowRight } from "lucide-react";
 import { quoteStatusColors } from "@/lib/status-colors";
+import { formatCurrency } from "@/lib/utils";
 
 export const metadata: Metadata = { title: "Quotes" };
 
@@ -107,7 +108,7 @@ export default async function AdminQuotesPage() {
                         </Badge>
                       </td>
                       <td className="py-3 px-2 text-right font-semibold text-[#0A0A0A]">
-                        ${Number(quote.total).toFixed(2)}
+                        {formatCurrency(quote.total)}
                       </td>
                       <td className="py-3 px-2 text-[#0A0A0A]/50 hidden lg:table-cell">
                         {format(quote.createdAt, "MMM d, yyyy")}

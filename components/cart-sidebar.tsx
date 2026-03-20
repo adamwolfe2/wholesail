@@ -1,6 +1,7 @@
 'use client'
 
 import { useCart } from '@/lib/cart-context'
+import { formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { ShoppingCart, Minus, Plus, Trash2 } from 'lucide-react'
@@ -48,7 +49,7 @@ export function CartSidebar() {
                         <h4 className="font-semibold text-base leading-tight mb-1 text-pretty">{item.name}</h4>
                         <p className="text-sm text-muted-foreground">{item.category}</p>
                         <p className="text-sm font-medium mt-1">
-                          ${item.price.toFixed(2)} {item.unit}
+                          {formatCurrency(item.price)} {item.unit}
                         </p>
                       </div>
                       <Button
@@ -84,7 +85,7 @@ export function CartSidebar() {
                         </Button>
                       </div>
                       <p className="text-lg font-bold">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        {formatCurrency(item.price * item.quantity)}
                       </p>
                     </div>
                   </div>
@@ -95,7 +96,7 @@ export function CartSidebar() {
             <div className="border-t px-5 sm:px-6 py-5 sm:py-6 space-y-4 mt-auto">
               <div className="flex items-center justify-between">
                 <span className="text-xl font-bold">Total</span>
-                <span className="text-2xl font-bold">${totalPrice.toFixed(2)}</span>
+                <span className="text-2xl font-bold">{formatCurrency(totalPrice)}</span>
               </div>
               <Button asChild className="w-full h-12 text-base" size="lg">
                 <Link href="/checkout">Proceed to Checkout</Link>

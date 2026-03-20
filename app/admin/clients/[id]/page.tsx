@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/db'
+import { formatCurrency } from '@/lib/utils'
 import { format, isPast, isToday } from 'date-fns'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -363,7 +364,7 @@ export default async function AdminClientDetailPage({
           <div>
             <span className="text-muted-foreground text-xs">Lifetime spend</span>
             <p className="font-medium">
-              ${totalSpentNum.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              {formatCurrency(totalSpentNum)}
             </p>
           </div>
         </div>
@@ -387,7 +388,7 @@ export default async function AdminClientDetailPage({
               <span className="text-sm text-muted-foreground">Total Spent</span>
             </div>
             <p className="text-2xl font-bold">
-              ${totalSpentNum.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              {formatCurrency(totalSpentNum)}
             </p>
           </CardContent>
         </Card>
@@ -397,7 +398,7 @@ export default async function AdminClientDetailPage({
               <CreditCard className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm text-muted-foreground">Avg Order</span>
             </div>
-            <p className="text-2xl font-bold">${avgOrderValue.toFixed(2)}</p>
+            <p className="text-2xl font-bold">{formatCurrency(avgOrderValue)}</p>
           </CardContent>
         </Card>
         <Card className="card-hover">
@@ -619,7 +620,7 @@ export default async function AdminClientDetailPage({
                     <TableCell className="hidden sm:table-cell">{format(order.createdAt, 'MMM d, yyyy')}</TableCell>
                     <TableCell>{order._count.items}</TableCell>
                     <TableCell className="text-right font-medium">
-                      ${Number(order.total).toFixed(2)}
+                      {formatCurrency(order.total)}
                     </TableCell>
                     <TableCell>
                       <Badge variant="secondary" className={statusColors[order.status] || ''}>
@@ -658,7 +659,7 @@ export default async function AdminClientDetailPage({
                     <TableCell className="font-mono">{inv.invoiceNumber}</TableCell>
                     <TableCell className="hidden sm:table-cell">{format(inv.dueDate, 'MMM d, yyyy')}</TableCell>
                     <TableCell className="text-right font-medium">
-                      ${Number(inv.total).toFixed(2)}
+                      {formatCurrency(inv.total)}
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline" className="capitalize text-xs">
@@ -780,7 +781,7 @@ export default async function AdminClientDetailPage({
             <div>
               <p className="text-xs text-muted-foreground mb-1">Available Credits</p>
               <p className="font-semibold">
-                ${Number(client.referralCredits).toFixed(2)}
+                {formatCurrency(client.referralCredits)}
               </p>
             </div>
             <div>
@@ -846,11 +847,11 @@ export default async function AdminClientDetailPage({
                     <TableCell className="text-right">
                       {ref.status === 'CREDITED' ? (
                         <span className="text-sm font-medium text-green-700">
-                          +${Number(ref.creditAmount).toFixed(2)}
+                          +{formatCurrency(ref.creditAmount).slice(1)}
                         </span>
                       ) : (
                         <span className="text-sm text-muted-foreground">
-                          ${Number(ref.creditAmount).toFixed(2)}
+                          {formatCurrency(ref.creditAmount)}
                         </span>
                       )}
                     </TableCell>

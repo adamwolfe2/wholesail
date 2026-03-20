@@ -5,6 +5,7 @@ import { auth } from '@clerk/nextjs/server'
 import { AlertTriangle, Clock, DollarSign } from 'lucide-react'
 import { EmptyState } from '@/components/empty-state'
 import { SendReminderButton } from './send-reminder-button'
+import { formatCurrency } from '@/lib/utils'
 
 export const metadata: Metadata = { title: "Invoice Aging" };
 export const dynamic = 'force-dynamic'
@@ -40,9 +41,7 @@ function daysBetween(a: Date, b: Date): number {
   return Math.floor((b.getTime() - a.getTime()) / (1000 * 60 * 60 * 24))
 }
 
-function fmt(amount: number) {
-  return amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-}
+const fmt = formatCurrency;
 
 function fmtDate(d: Date) {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })

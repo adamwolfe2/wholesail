@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { formatCurrency } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -133,7 +134,7 @@ export default function AdminSuppliersPage() {
                         {sub.quantity} {sub.unit}
                       </TableCell>
                       <TableCell className="text-right font-semibold text-[#0A0A0A] hidden sm:table-cell">
-                        ${sub.pricePerUnit.toFixed(2)}
+                        {formatCurrency(sub.pricePerUnit)}
                       </TableCell>
                       <TableCell className="text-[#0A0A0A]/60 hidden lg:table-cell">
                         {new Date(sub.expectedArrival).toLocaleDateString('en-US', {

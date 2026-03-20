@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { formatCurrency } from '@/lib/utils'
 import {
   Table,
   TableBody,
@@ -292,7 +293,7 @@ export default function AdminInvoicesPage() {
                     ) : (
                       orders.map(order => (
                         <SelectItem key={order.id} value={order.id}>
-                          {order.orderNumber} — {order.organization.name} (${Number(order.total).toFixed(2)})
+                          {order.orderNumber} — {order.organization.name} ({formatCurrency(order.total)})
                         </SelectItem>
                       ))
                     )}
@@ -308,7 +309,7 @@ export default function AdminInvoicesPage() {
                 />
               </div>
               {error && (
-                <div className="rounded-lg border border-red-200 bg-red-50 p-3 flex items-center gap-2">
+                <div className="rounded-none border border-red-200 bg-red-50 p-3 flex items-center gap-2">
                   <AlertCircle className="h-4 w-4 text-red-600 shrink-0" />
                   <p className="text-sm text-red-800">{error}</p>
                 </div>
@@ -565,7 +566,7 @@ export default function AdminInvoicesPage() {
                       })}
                     </TableCell>
                     <TableCell className="text-right font-semibold">
-                      ${Number(invoice.total).toFixed(2)}
+                      {formatCurrency(invoice.total)}
                     </TableCell>
                     <TableCell>
                       <Badge variant="outline" className={statusColors[invoice.status] || ''}>

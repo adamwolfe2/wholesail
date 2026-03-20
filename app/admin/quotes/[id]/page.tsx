@@ -8,6 +8,7 @@ import { prisma } from "@/lib/db";
 import { format } from "date-fns";
 import { ArrowLeft, ExternalLink, Download } from "lucide-react";
 import { quoteStatusColors } from "@/lib/status-colors";
+import { formatCurrency } from "@/lib/utils";
 import { QuoteActions } from "./quote-actions";
 
 export const metadata: Metadata = { title: "Quote Details" };
@@ -126,10 +127,10 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
                       {item.quantity}
                     </div>
                     <div className="col-span-2 text-right text-sm text-[#0A0A0A]/70">
-                      ${Number(item.unitPrice).toFixed(2)}
+                      {formatCurrency(item.unitPrice)}
                     </div>
                     <div className="col-span-2 text-right text-sm font-semibold text-[#0A0A0A]">
-                      ${Number(item.total).toFixed(2)}
+                      {formatCurrency(item.total)}
                     </div>
                   </div>
                 ))}
@@ -139,18 +140,18 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
               <div className="space-y-2 pt-4 border-t border-[#E5E1DB] mt-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-[#0A0A0A]/60">Subtotal</span>
-                  <span>${Number(quote.subtotal).toFixed(2)}</span>
+                  <span>{formatCurrency(quote.subtotal)}</span>
                 </div>
                 {Number(quote.discount) > 0 && (
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-[#0A0A0A]/60">Discount</span>
-                    <span>−${Number(quote.discount).toFixed(2)}</span>
+                    <span>-{formatCurrency(quote.discount)}</span>
                   </div>
                 )}
                 <div className="flex items-center justify-between font-semibold border-t border-[#E5E1DB] pt-2">
                   <span className="text-[#0A0A0A]">Total</span>
                   <span className="font-serif text-xl text-[#0A0A0A]">
-                    ${Number(quote.total).toFixed(2)}
+                    {formatCurrency(quote.total)}
                   </span>
                 </div>
               </div>

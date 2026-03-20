@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/db";
+import { formatCurrency } from "@/lib/utils";
 import { z } from "zod";
 import {
   sendMessage,
@@ -133,7 +134,7 @@ export async function POST(req: NextRequest) {
           );
         message = invoiceReminderMessage(
           invoice.invoiceNumber,
-          Number(invoice.total).toFixed(2),
+          formatCurrency(invoice.total),
           invoice.dueDate.toLocaleDateString("en-US", {
             month: "long",
             day: "numeric",

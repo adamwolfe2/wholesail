@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Loader2, Star, Plus, Minus } from 'lucide-react'
 import { toast } from 'sonner'
+import { formatCurrency } from '@/lib/utils'
 import { format } from 'date-fns'
 
 type LoyaltyTier = 'Bronze' | 'Silver' | 'Gold' | 'Platinum'
@@ -45,10 +46,10 @@ function formatAction(action: string): string {
 function formatMetadata(action: string, meta: Record<string, unknown> | null): string {
   if (!meta) return ''
   if (action === 'loyalty_points_earned') {
-    return `+${meta.points} pts from order $${Number(meta.orderTotal).toFixed(2)}`
+    return `+${meta.points} pts from order ${formatCurrency(meta.orderTotal)}`
   }
   if (action === 'loyalty_points_redeemed') {
-    return `-${meta.points} pts ($${Number(meta.dollarDiscount).toFixed(2)} discount)`
+    return `-${meta.points} pts (${formatCurrency(meta.dollarDiscount)} discount)`
   }
   if (action === 'loyalty_points_adjusted') {
     const adj = Number(meta.adjustment)
@@ -146,7 +147,7 @@ export function LoyaltyPanel({ organizationId }: { organizationId: string }) {
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Current Balance</p>
                 <p className="text-2xl font-bold">{status.currentPoints.toLocaleString()}</p>
-                <p className="text-xs text-muted-foreground">${status.dollarValue.toFixed(2)} value</p>
+                <p className="text-xs text-muted-foreground">{formatCurrency(status.dollarValue)} value</p>
               </div>
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Lifetime Earned</p>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { verifyWebhookSignature, sendMessage } from "@/lib/integrations/blooio";
 import { prisma } from "@/lib/db";
+import { formatCurrency } from "@/lib/utils";
 import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
 
 // ============================================================
@@ -134,7 +135,7 @@ export async function POST(req: NextRequest) {
             const menuText = featured
               .map(
                 (p) =>
-                  `• ${p.name} — ${p.marketRate ? "Market Rate" : "$" + Number(p.price).toFixed(2) + " " + p.unit}`
+                  `• ${p.name} — ${p.marketRate ? "Market Rate" : formatCurrency(p.price) + " " + p.unit}`
               )
               .join("\n");
             await sendMessage({

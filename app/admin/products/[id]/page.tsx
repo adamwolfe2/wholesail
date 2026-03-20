@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { formatCurrency } from "@/lib/utils";
 import { format } from "date-fns";
 import {
   Card,
@@ -144,7 +145,7 @@ export default async function ProductDetailPage({
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold font-serif text-[#0A0A0A]">
-              ${currentPrice.toFixed(2)}
+              {formatCurrency(currentPrice)}
             </div>
             <p className="text-xs text-[#0A0A0A]/40 mt-1">{product.unit}</p>
           </CardContent>

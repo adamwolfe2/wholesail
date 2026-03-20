@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { formatCurrency } from '@/lib/utils'
 import { Wand2, Loader2, AlertCircle, Check, Minus, Plus, ShoppingCart } from 'lucide-react'
 import {
   Dialog,
@@ -208,7 +209,7 @@ export function AIOrderParser({ open, onOpenChange }: AIOrderParserProps) {
                             <p className="text-[11px] text-[#C8C0B4] mt-0.5">
                               {item.product.marketRate
                                 ? 'Market rate'
-                                : `$${item.product.price.toFixed(2)} ${item.product.unit}`}
+                                : `${formatCurrency(item.product.price)} ${item.product.unit}`}
                             </p>
                           </div>
                           {/* Quantity control */}
@@ -235,7 +236,7 @@ export function AIOrderParser({ open, onOpenChange }: AIOrderParserProps) {
                               <span className="text-[11px] text-[#C8C0B4]">MR</span>
                             ) : (
                               <span className="text-sm font-medium text-[#0A0A0A]">
-                                ${(item.product.price * qty).toFixed(2)}
+                                {formatCurrency(item.product.price * qty)}
                               </span>
                             )}
                           </div>
@@ -268,7 +269,7 @@ export function AIOrderParser({ open, onOpenChange }: AIOrderParserProps) {
                   <div>
                     <p className="text-sm font-medium text-[#0A0A0A]">
                       {totalItems} item{totalItems !== 1 ? 's' : ''}
-                      {totalPrice > 0 && ` · $${totalPrice.toFixed(2)}`}
+                      {totalPrice > 0 && ` · ${formatCurrency(totalPrice)}`}
                     </p>
                     <p className="text-[11px] text-[#C8C0B4]">Market-rate items excluded from total</p>
                   </div>

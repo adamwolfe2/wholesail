@@ -8,7 +8,7 @@ export default function AuditLogLoading() {
         <Skeleton className="h-9 flex-1" style={{ background: '#E5E1DB' }} />
         <Skeleton className="h-9 w-32" style={{ background: '#E5E1DB' }} />
       </div>
-      <div className="border rounded-lg">
+      <div className="border rounded-none">
         {Array.from({ length: 10 }).map((_, i) => (
           <div key={i} className="flex items-center gap-4 px-4 py-3 border-b last:border-0">
             <Skeleton className="h-4 w-32" style={{ background: '#E5E1DB' }} />

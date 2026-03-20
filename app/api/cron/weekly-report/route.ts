@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { captureWithContext } from '@/lib/sentry'
 import { prisma } from '@/lib/db'
+import { formatCurrency } from '@/lib/utils'
 import { Resend } from 'resend'
 import { BRAND_EMAIL, BRAND_NAME as BRAND_NAME_IMPORT } from '@/lib/brand'
 
@@ -162,7 +163,7 @@ export async function GET(req: NextRequest) {
             (p, i) =>
               `<tr style="${i % 2 === 0 ? 'background:#F9F7F4' : ''}">
                 <td style="padding:9px 12px;border-bottom:1px solid #E5E1DB;color:#0A0A0A">${p.name}</td>
-                <td style="padding:9px 12px;border-bottom:1px solid #E5E1DB;color:#0A0A0A;text-align:right;font-weight:600">$${p.revenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td style="padding:9px 12px;border-bottom:1px solid #E5E1DB;color:#0A0A0A;text-align:right;font-weight:600">${formatCurrency(p.revenue)}</td>
               </tr>`
           )
           .join('')
@@ -294,13 +295,13 @@ export async function GET(req: NextRequest) {
     const text = `${BRAND_NAME} Weekly Business Report — ${weekLabel}
 
 WEEK AT A GLANCE
-Revenue: $${revenueThisWeek.toFixed(2)}${revenueChangePct !== null ? ` (${revenueChangePct >= 0 ? '+' : ''}${revenueChangePct.toFixed(1)}% vs last week)` : ''}
+Revenue: ${formatCurrency(revenueThisWeek)}${revenueChangePct !== null ? ` (${revenueChangePct >= 0 ? '+' : ''}${revenueChangePct.toFixed(1)}% vs last week)` : ''}
 Orders: ${ordersThisWeek}
 New clients: ${newClientsCount}
-Overdue AR: $${totalAR.toFixed(2)} (${overdueCount} invoice${overdueCount !== 1 ? 's' : ''})
+Overdue AR: ${formatCurrency(totalAR)} (${overdueCount} invoice${overdueCount !== 1 ? 's' : ''})
 
 TOP 3 PRODUCTS
-${topProducts.map((p) => `• ${p.name}: $${p.revenue.toFixed(2)}`).join('\n') || 'No orders this week'}
+${topProducts.map((p) => `• ${p.name}: ${formatCurrency(p.revenue)}`).join('\n') || 'No orders this week'}
 
 AT-RISK CLIENTS (45+ days no order)
 ${atRiskOrgs.slice(0, 10).map((o) => `• ${o.name} <${o.email}> — ${o.daysSince} days`).join('\n') || 'None'}

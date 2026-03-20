@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { formatCurrency } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -166,10 +167,11 @@ export function OrderTable({ orders }: { orders: OrderRow[] }) {
       </div>
 
       {selected.size > 0 && (
-        <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2 mb-4 p-3 bg-muted/50 rounded-lg border">
+        <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2 mb-4 p-3 bg-muted/50 rounded-none border">
           <span className="text-sm font-medium shrink-0">
             {selected.size} order{selected.size > 1 ? "s" : ""} selected
           </span>
+
           <div className="flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-2">
             <Button
               variant="outline"
@@ -280,7 +282,7 @@ export function OrderTable({ orders }: { orders: OrderRow[] }) {
                   <td className="py-3">{order.organization.name}</td>
                   <td className="py-3 hidden sm:table-cell">{order._count.items}</td>
                   <td className="py-3">
-                    ${Number(order.total).toFixed(2)}
+                    {formatCurrency(order.total)}
                   </td>
                   <td className="py-3">
                     <Badge
