@@ -2,24 +2,21 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft, Snowflake, BarChart2, CreditCard, Package } from 'lucide-react'
+import { ArrowLeft, Snowflake, BarChart2, CreditCard, Package, Instagram } from 'lucide-react'
 import Script from 'next/script'
 import { MarketingHeader } from '@/components/marketing-header'
 import { prisma } from '@/lib/db'
 import { formatCurrency } from '@/lib/utils'
-
-import { Instagram } from 'lucide-react'
 import { getCategoryBySlug, catalogCategories } from '@/lib/catalog-categories'
 import { provenanceEntries } from '@/lib/provenance'
 import { ProductDetailActions } from '@/components/product-detail-actions'
 import { auth } from '@clerk/nextjs/server'
 import type { Product } from '@/lib/products'
+import { getSiteUrl } from '@/lib/get-site-url'
 
 export const dynamic = 'force-dynamic'
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ||
-  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000')
+const SITE_URL = getSiteUrl()
 
 type Props = { params: Promise<{ slug: string }> }
 

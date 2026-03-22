@@ -218,8 +218,36 @@ export const ENV_VARS = [
 export type EnvVarStatus = "configured" | "pending" | "missing";
 export type ClientNote = { date: string; text: string; type: "note" | "update" | "milestone" };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function mapProjectsForDashboard(projects: any[]): ClientProject[] {
+interface ProjectRow {
+  id: string;
+  company: string;
+  shortName: string;
+  contactName: string;
+  contactEmail: string;
+  contactPhone?: string | null;
+  contactRole?: string | null;
+  domain?: string | null;
+  website?: string | null;
+  industry: string;
+  status: string;
+  currentPhase: number;
+  startDate?: Date | string | null;
+  targetLaunchDate?: Date | string | null;
+  launchDate?: Date | string | null;
+  enabledFeatures?: string[] | null;
+  githubRepo?: string | null;
+  vercelProject?: string | null;
+  vercelUrl?: string | null;
+  customDomain?: string | null;
+  envVars?: unknown;
+  contractValue?: number;
+  retainer?: number;
+  monthlyRevenue?: number;
+  notes?: Array<{ createdAt: Date | string; text: string; type: string }>;
+  tasks?: Array<{ id: string; label: string; completed: boolean; phase: number }>;
+}
+
+export function mapProjectsForDashboard(projects: ProjectRow[]): ClientProject[] {
   return projects.map((p) => ({
     id: p.id,
     company: p.company,
@@ -239,14 +267,14 @@ export function mapProjectsForDashboard(projects: any[]): ClientProject[] {
     targetLaunchDate: p.targetLaunchDate ? new Date(p.targetLaunchDate).toISOString().split("T")[0] : "",
     launchDate: p.launchDate ? new Date(p.launchDate).toISOString().split("T")[0] : undefined,
     enabledFeatures: p.enabledFeatures || [],
-    githubRepo: p.githubRepo,
-    vercelProject: p.vercelProject,
-    vercelUrl: p.vercelUrl,
-    customDomain: p.customDomain,
+    githubRepo: p.githubRepo ?? undefined,
+    vercelProject: p.vercelProject ?? undefined,
+    vercelUrl: p.vercelUrl ?? undefined,
+    customDomain: p.customDomain ?? undefined,
     envVars: (typeof p.envVars === "object" && p.envVars !== null ? p.envVars : {}) as Record<string, EnvVarStatus>,
-    contractValue: p.contractValue,
-    retainer: p.retainer,
-    monthlyRevenue: p.monthlyRevenue,
+    contractValue: p.contractValue ?? 0,
+    retainer: p.retainer ?? 0,
+    monthlyRevenue: p.monthlyRevenue ?? 0,
     notes: (p.notes || []).map((n: { createdAt: Date | string; text: string; type: string }) => ({
       date: typeof n.createdAt === "string" ? n.createdAt.split("T")[0] : new Date(n.createdAt).toISOString().split("T")[0],
       text: n.text,

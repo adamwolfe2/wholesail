@@ -51,7 +51,7 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
           <Link
             href="/#intake-form"
             className="font-mono text-[13px] font-semibold btn-blue"
-            style={{ padding: "9px 20px", borderRadius: "6px" }}
+            style={{ padding: "9px 20px" }}
           >
             Get Started
           </Link>
@@ -85,7 +85,7 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
             <Link
               href="/#demo"
               className="inline-flex items-center justify-center gap-2 font-mono text-sm font-semibold btn-blue"
-              style={{ padding: "14px 28px", borderRadius: "6px" }}
+              style={{ padding: "14px 28px" }}
             >
               See the Platform Demo <ArrowRight className="w-4 h-4" />
             </Link>
@@ -94,7 +94,6 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
               className="inline-flex items-center justify-center gap-2 font-mono text-sm font-semibold"
               style={{
                 padding: "14px 28px",
-                borderRadius: "6px",
                 border: "1px solid var(--border-strong)",
                 color: "var(--text-headline)",
               }}

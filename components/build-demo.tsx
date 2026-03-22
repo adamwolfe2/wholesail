@@ -648,7 +648,7 @@ export function BuildDemo() {
           borderTop: "none",
           backgroundColor: "var(--bg-white)",
           boxShadow: "0 4px 24px rgba(15, 21, 35, 0.08)",
-          borderRadius: "0 0 8px 8px",
+          borderRadius: "0",
         }}
       >
         <AnimatePresence mode="wait">

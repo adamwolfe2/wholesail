@@ -49,6 +49,7 @@ const intakeSchema = z.object({
   goLiveTimeline: z.string().optional(),
 
   // Optional scrape data
+  // Prisma Json field — accepts arbitrary JSON; z.any() matches InputJsonValue
   scrapeData: z.any().optional(),
 });
 
