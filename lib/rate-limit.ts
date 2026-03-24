@@ -46,6 +46,15 @@ export const aiCallLimiter = createLimiter(redis, 10, '1 h')
 // 3 CSV imports per userId per minute
 export const csvImportLimiter = createLimiter(redis, 3, '1 m')
 
+// 60 public API read requests per IP per minute (generous, read-only endpoints)
+export const publicApiLimiter = createLimiter(redis, 60, '1 m')
+
+// 10 public alert/notification signups per IP per hour
+export const publicAlertLimiter = createLimiter(redis, 10, '1 h')
+
+// 20 public search requests per IP per minute
+export const publicSearchLimiter = createLimiter(redis, 20, '1 m')
+
 // 60 client read requests per userId per minute
 export const clientReadLimiter = createLimiter(redis, 60, '1 m')
 

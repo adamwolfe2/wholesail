@@ -36,6 +36,9 @@ const securityHeaders = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  experimental: {
+    optimizePackageImports: ["lucide-react"],
+  },
   async redirects() {
     // These TBGC template pages were carried over from the distribution portal
     // template and have luxury food distributor content that doesn't belong on

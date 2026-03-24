@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { z } from 'zod'
 import { prisma } from '@/lib/db'
 import { requireAdmin } from '@/lib/auth/require-admin'
 import { LeadStatus } from '@prisma/client'
 import { parseCursorParams, buildPrismaCursorArgs, buildCursorResponse } from '@/lib/pagination'
+
+const createLeadSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.string().email('Valid email is required'),
+  phone: z.string().optional().nullable(),
+  company: z.string().optional().nullable(),
+  source: z.string().optional().default('website'),
+  notes: z.string().optional().nullable(),
+  status: z.nativeEnum(LeadStatus).optional().default('NEW'),
+})
 
 const VALID_LEAD_STATUSES = new Set<string>(Object.values(LeadStatus))
 
@@ -44,14 +55,14 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json().catch(() => ({}))
-    const { name, email, phone, company, source, notes, status } = body
+    const parsed = createLeadSchema.safeParse(body)
 
-    if (!name || typeof name !== 'string') {
-      return NextResponse.json({ error: 'Name is required' }, { status: 400 })
+    if (!parsed.success) {
+      const message = parsed.error.issues.map((i) => i.message).join(', ')
+      return NextResponse.json({ error: message }, { status: 400 })
     }
-    if (!email || typeof email !== 'string' || !email.includes('@')) {
-      return NextResponse.json({ error: 'Valid email is required' }, { status: 400 })
-    }
+
+    const { name, email, phone, company, source, notes, status } = parsed.data
 
     const lead = await prisma.lead.create({
       data: {
@@ -59,9 +70,9 @@ export async function POST(req: NextRequest) {
         email: email.toLowerCase().trim(),
         phone: phone?.trim() || null,
         company: company?.trim() || null,
-        source: source || 'website',
+        source,
         notes: notes?.trim() || null,
-        status: (status && isValidLeadStatus(status)) ? status : 'NEW',
+        status,
       },
     })
 

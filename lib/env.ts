@@ -42,6 +42,9 @@ const envSchema = z.object({
   // Rate limiting (KV store) — warn if missing in production
   KV_REST_API_URL: z.string().optional(),
   KV_REST_API_TOKEN: z.string().optional(),
+
+  // Public app URL (used by client-side code for canonical URLs, OAuth redirects, etc.)
+  NEXT_PUBLIC_APP_URL: z.string().url("NEXT_PUBLIC_APP_URL must be a valid URL"),
 });
 
 export type Env = z.infer<typeof envSchema>;

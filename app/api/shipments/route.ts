@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { captureWithContext } from "@/lib/sentry";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { z } from "zod";
 import { getSiteUrl } from "@/lib/brand";
@@ -19,8 +20,14 @@ export async function POST(req: NextRequest) {
   const { userId, error } = await requireAdmin();
   if (error) return error;
 
+  let body;
   try {
-    const body = await req.json();
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+
+  try {
     const parsed = createShipmentSchema.safeParse(body);
 
     if (!parsed.success) {
@@ -133,7 +140,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ shipment }, { status: 201 });
   } catch (err) {
-    console.error("Error creating shipment:", err);
+    captureWithContext(err instanceof Error ? err : new Error("Unknown error"), {
+      route: "POST /api/shipments",
+    });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

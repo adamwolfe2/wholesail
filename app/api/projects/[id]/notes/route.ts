@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
+import { captureWithContext } from "@/lib/sentry";
 import { z } from "zod";
 import { addNote } from "@/lib/db/projects";
 
@@ -17,8 +18,14 @@ export async function POST(
 
   const { id } = await params;
 
+  let body;
   try {
-    const body = await req.json();
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+
+  try {
     const data = noteSchema.parse(body);
     const note = await addNote(id, data);
     return NextResponse.json(note, { status: 201 });
@@ -26,7 +33,9 @@ export async function POST(
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: "Validation failed" }, { status: 400 });
     }
-    console.error("[notes] Error:", err);
+    captureWithContext(err instanceof Error ? err : new Error("Unknown error"), {
+      route: "POST /api/projects/[id]/notes",
+    });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

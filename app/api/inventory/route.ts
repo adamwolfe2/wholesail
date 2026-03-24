@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server"
 import { prisma } from "@/lib/db"
+import { captureWithContext } from "@/lib/sentry"
 import { NextResponse } from "next/server"
 
 export async function GET() {
@@ -17,7 +18,10 @@ export async function GET() {
       map[l.productId] = l.quantityOnHand
     }
     return NextResponse.json(map)
-  } catch {
+  } catch (error) {
+    captureWithContext(error instanceof Error ? error : new Error("Unknown error"), {
+      route: "GET /api/inventory",
+    })
     return NextResponse.json({})
   }
 }

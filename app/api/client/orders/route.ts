@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
+import { captureWithContext } from "@/lib/sentry";
 
 const PAGE_SIZE = 50;
 
@@ -52,7 +53,9 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ orders: page, hasMore, nextCursor });
   } catch (error) {
-    console.error("Error fetching client orders:", error);
+    captureWithContext(error instanceof Error ? error : new Error("Unknown error"), {
+      route: "GET /api/client/orders",
+    });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

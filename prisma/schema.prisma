@@ -258,15 +258,15 @@ model Project {
 
   // Stripe Connect — connected account for this client portal build
   stripeAccountId    String?
-  platformFeePercent Decimal?    @default(2.5) @db.Decimal(5, 2)
+  platformFeePercent Decimal? @default(2.5) @db.Decimal(5, 2)
 
   // Per-client service key references — stored for cost attribution queries
   // Shape: { resend: { keyId: "xxx" }, anthropic: { note: "shared+metadata" }, ... }
   serviceKeys Json?
 
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  deletedAt  DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
 
   notes ProjectNote[]
   tasks ProjectTask[]
@@ -416,6 +416,7 @@ model Organization {
 
   @@index([tier])
   @@index([isWholesaler])
+  @@index([email])
   @@index([createdAt(sort: Desc)])
   @@index([accountManagerId])
 }
@@ -523,8 +524,8 @@ model OrderItem {
   id                     String        @id @default(cuid())
   orderId                String
   order                  Order         @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  productId              String
-  product                Product       @relation(fields: [productId], references: [id])
+  productId              String?
+  product                Product?      @relation(fields: [productId], references: [id], onDelete: SetNull)
   name                   String
   quantity               Int
   unitPrice              Decimal       @db.Decimal(10, 2)
@@ -724,17 +725,18 @@ model Quote {
 }
 
 model QuoteItem {
-  id        String  @id @default(cuid())
+  id        String   @id @default(cuid())
   quoteId   String
-  quote     Quote   @relation(fields: [quoteId], references: [id], onDelete: Cascade)
-  productId String
-  product   Product @relation(fields: [productId], references: [id])
+  quote     Quote    @relation(fields: [quoteId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
   name      String
   quantity  Int
-  unitPrice Decimal @db.Decimal(10, 2)
-  total     Decimal @db.Decimal(10, 2)
+  unitPrice Decimal  @db.Decimal(10, 2)
+  total     Decimal  @db.Decimal(10, 2)
 
   @@index([quoteId])
+  @@index([productId])
 }
 
 // ============================================================
@@ -786,6 +788,7 @@ model StandingOrder {
   updatedAt      DateTime               @updatedAt
 
   @@index([organizationId])
+  @@index([userId])
   @@index([nextRunDate])
 }
 
@@ -1086,15 +1089,15 @@ model Attachment {
 // ============================================================
 
 model WebhookEndpoint {
-  id        String          @id @default(cuid())
+  id        String       @id @default(cuid())
   orgId     String?
   url       String
   secret    String
   events    String[] // e.g. ["order.created", "order.status_changed", "invoice.created"]
-  isActive  Boolean         @default(true)
+  isActive  Boolean      @default(true)
   logs      WebhookLog[]
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 
   @@index([isActive])
 }
@@ -1124,9 +1127,9 @@ model Notification {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   title     String
   message   String
-  type      String   // ORDER_UPDATE, INVOICE_DUE, QUOTE_RECEIVED, REFERRAL_CONVERTED, LOW_STOCK
+  type      String // ORDER_UPDATE, INVOICE_DUE, QUOTE_RECEIVED, REFERRAL_CONVERTED, LOW_STOCK
   read      Boolean  @default(false)
-  link      String?  // deep link to relevant page
+  link      String? // deep link to relevant page
   createdAt DateTime @default(now())
 
   @@index([userId, read, createdAt(sort: Desc)])

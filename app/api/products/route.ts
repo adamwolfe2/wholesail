@@ -2,11 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { getCategories } from "@/lib/db/products";
 import { prisma } from "@/lib/db";
+import { captureWithContext } from "@/lib/sentry";
 import { Prisma } from "@prisma/client";
+import { publicApiLimiter, checkRateLimit, getIp } from "@/lib/rate-limit";
 
 type SortParam = "price_asc" | "price_desc" | "name_asc" | "featured";
 
 export async function GET(req: NextRequest) {
+  // Rate limit: 60 requests per IP per minute
+  const { allowed } = await checkRateLimit(publicApiLimiter, getIp(req));
+  if (!allowed) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   const { userId } = await auth();
 
   try {
@@ -49,13 +57,22 @@ export async function GET(req: NextRequest) {
       getCategories(),
     ]);
 
-    const sanitizedProducts = userId
-      ? products
-      : products.map(({ price, costPrice, ...rest }: Record<string, unknown>) => rest);
+    // Always strip costPrice — only admin routes expose it
+    const sanitizedProducts = products.map(
+      ({ costPrice, ...product }: Record<string, unknown>) => {
+        if (!userId) {
+          const { price, ...rest } = product;
+          return rest;
+        }
+        return product;
+      }
+    );
 
     return NextResponse.json({ products: sanitizedProducts, total, page, limit, categories });
   } catch (err) {
-    console.error("[api/products]", err);
+    captureWithContext(err instanceof Error ? err : new Error("Unknown error"), {
+      route: "GET /api/products",
+    });
     // DB not connected — return empty so frontend falls back to static data
     return NextResponse.json({ products: [], categories: [] });
   }

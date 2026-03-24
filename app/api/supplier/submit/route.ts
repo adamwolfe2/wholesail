@@ -1,7 +1,8 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/db'
 import { z } from 'zod'
+import { publicSignupLimiter, checkRateLimit, getIp } from '@/lib/rate-limit'
 
 const submitSchema = z.object({
   productName: z.string().min(1),
@@ -13,7 +14,13 @@ const submitSchema = z.object({
   notes: z.string().optional(),
 })
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  // Rate limit: 5 submissions per IP per hour
+  const { allowed } = await checkRateLimit(publicSignupLimiter, getIp(request))
+  if (!allowed) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+  }
+
   try {
     const { userId } = await auth()
     if (!userId) {

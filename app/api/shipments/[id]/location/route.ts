@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { captureWithContext } from "@/lib/sentry";
 import { z } from "zod";
 
 const locationSchema = z.object({
@@ -37,7 +38,13 @@ export async function POST(
       return NextResponse.json({ error: "Shipment not found" }, { status: 404 });
     }
 
-    const body = await req.json();
+    let body;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+    }
+
     const parsed = locationSchema.safeParse(body);
 
     if (!parsed.success) {
@@ -80,7 +87,9 @@ export async function POST(
 
     return NextResponse.json({ shipment: updatedShipment, event }, { status: 201 });
   } catch (err) {
-    console.error("Error updating shipment location:", err);
+    captureWithContext(err instanceof Error ? err : new Error("Unknown error"), {
+      route: "POST /api/shipments/[id]/location",
+    });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

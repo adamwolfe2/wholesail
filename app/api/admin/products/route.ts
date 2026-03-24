@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
 import { prisma } from "@/lib/db";
+import { captureWithContext } from "@/lib/sentry";
 import { z } from "zod";
 
 const createProductSchema = z.object({
@@ -73,7 +74,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ product }, { status: 201 });
   } catch (error) {
-    console.error("Error creating product:", error);
+    captureWithContext(error instanceof Error ? error : new Error("Unknown error"), {
+      route: "POST /api/admin/products",
+    });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

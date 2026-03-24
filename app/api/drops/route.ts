@@ -1,7 +1,14 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
+import { publicApiLimiter, checkRateLimit, getIp } from '@/lib/rate-limit'
 
-export async function GET() {
+export async function GET(req: NextRequest) {
+  // Rate limit: 60 requests per IP per minute
+  const { allowed } = await checkRateLimit(publicApiLimiter, getIp(req))
+  if (!allowed) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+  }
+
   try {
     const now = new Date()
     const drops = await prisma.productDrop.findMany({

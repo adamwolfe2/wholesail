@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
+import { captureWithContext } from "@/lib/sentry";
 
 export async function GET() {
   try {
@@ -129,7 +130,9 @@ export async function GET() {
       monthlyRevenue,
     });
   } catch (error) {
-    console.error("Error fetching client dashboard:", error);
+    captureWithContext(error instanceof Error ? error : new Error("Unknown error"), {
+      route: "GET /api/client/dashboard",
+    });
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

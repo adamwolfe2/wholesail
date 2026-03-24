@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic'
 const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'
 
 export const metadata: Metadata = {
-  title: { template: `%s | ${BRAND_NAME}`, default: `${BRAND_NAME} Portal` },
+  title: { template: `%s | ${BRAND_NAME}`, default: `Home | ${BRAND_NAME}` },
   robots: { index: false, follow: false },
 }
 

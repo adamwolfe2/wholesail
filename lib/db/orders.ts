@@ -273,7 +273,22 @@ export async function getOrderByNumber(orderNumber: string) {
   return prisma.order.findUnique({
     where: { orderNumber },
     include: {
-      items: { include: { product: true } },
+      items: {
+        include: {
+          product: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              price: true,
+              image: true,
+              unit: true,
+              category: true,
+              available: true,
+            },
+          },
+        },
+      },
       payments: true,
       organization: {
         select: { id: true, name: true, email: true, phone: true, contactPerson: true, tier: true },

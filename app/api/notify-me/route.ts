@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { prisma } from "@/lib/db";
 import { z } from "zod";
-import { publicSignupLimiter, checkRateLimit, getIp } from "@/lib/rate-limit";
+import { publicAlertLimiter, checkRateLimit, getIp } from "@/lib/rate-limit";
 
 const schema = z.object({
   productSlug: z.string().min(1).max(200),
@@ -11,8 +11,8 @@ const schema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  // Rate limit: 5 alerts per IP per hour (shares publicSignupLimiter)
-  const { allowed } = await checkRateLimit(publicSignupLimiter, getIp(req));
+  // Rate limit: 10 alerts per IP per hour
+  const { allowed } = await checkRateLimit(publicAlertLimiter, getIp(req));
   if (!allowed) {
     return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }

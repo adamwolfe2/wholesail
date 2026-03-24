@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-import { publicSignupLimiter, checkRateLimit, getIp } from '@/lib/rate-limit'
+import { publicSearchLimiter, checkRateLimit, getIp } from '@/lib/rate-limit'
 
 // ---------------------------------------------------------------------------
 // Simple IP-based rate limit: max 30 requests per minute
@@ -131,8 +131,8 @@ function scoreOrg(
 export async function GET(req: NextRequest) {
   const ip = getIp(req)
 
-  // Distributed rate limit (Upstash) — 5 per IP per hour
-  const { allowed } = await checkRateLimit(publicSignupLimiter, ip)
+  // Distributed rate limit (Upstash) — 20 per IP per minute
+  const { allowed } = await checkRateLimit(publicSearchLimiter, ip)
   if (!allowed) {
     return NextResponse.json({ error: 'Too many requests.' }, { status: 429 })
   }

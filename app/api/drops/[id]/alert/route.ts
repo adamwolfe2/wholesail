@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
 import { Prisma } from '@prisma/client'
-import { publicSignupLimiter, checkRateLimit, getIp } from '@/lib/rate-limit'
+import { publicAlertLimiter, checkRateLimit, getIp } from '@/lib/rate-limit'
 
 /**
  * POST /api/drops/[id]/alert
@@ -15,7 +15,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { allowed } = await checkRateLimit(publicSignupLimiter, getIp(req))
+    const { allowed } = await checkRateLimit(publicAlertLimiter, getIp(req))
     if (!allowed) {
       return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
     }

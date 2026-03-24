@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
+import { captureWithContext } from "@/lib/sentry";
 import { z } from "zod";
 import { getProjects, createProject } from "@/lib/db/projects";
 import { getIntakeSubmissions } from "@/lib/db/intake";
@@ -45,8 +46,14 @@ export async function POST(req: Request) {
   const { error } = await requireAdmin();
   if (error) return error;
 
+  let body;
   try {
-    const body = await req.json();
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+
+  try {
     const data = createProjectSchema.parse(body);
 
     const project = await createProject(data);
@@ -58,7 +65,9 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-    console.error("[projects] Create error:", err);
+    captureWithContext(err instanceof Error ? err : new Error("Unknown error"), {
+      route: "POST /api/projects",
+    });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

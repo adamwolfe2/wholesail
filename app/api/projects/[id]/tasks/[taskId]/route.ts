@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth/require-admin";
+import { captureWithContext } from "@/lib/sentry";
 import { z } from "zod";
 import { updateTask, deleteTask } from "@/lib/db/projects";
 
@@ -17,8 +18,14 @@ export async function PATCH(
 
   const { taskId } = await params;
 
+  let body;
   try {
-    const body = await req.json();
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
+  }
+
+  try {
     const data = updateTaskSchema.parse(body);
     const task = await updateTask(taskId, data);
     return NextResponse.json(task);
@@ -26,7 +33,9 @@ export async function PATCH(
     if (err instanceof z.ZodError) {
       return NextResponse.json({ error: "Validation failed" }, { status: 400 });
     }
-    console.error("[tasks] Update error:", err);
+    captureWithContext(err instanceof Error ? err : new Error("Unknown error"), {
+      route: "PATCH /api/projects/[id]/tasks/[taskId]",
+    });
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
