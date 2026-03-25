@@ -38,20 +38,20 @@ function CustomTooltip({
   const point = payload[0].payload;
 
   return (
-    <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-3 text-xs shadow-sm">
-      <p className="font-medium text-[#0A0A0A] mb-1">
+    <div className="border border-shell bg-cream p-3 text-xs shadow-sm">
+      <p className="font-medium text-ink mb-1">
         {label ? format(new Date(label), "MMM d, yyyy") : ""}
       </p>
-      <p className="text-[#0A0A0A]">
+      <p className="text-ink">
         New price:{" "}
         <span className="font-semibold">{formatCurrency(point.price)}</span>
       </p>
       {point.oldPrice !== null && (
-        <p className="text-[#0A0A0A]/60">
+        <p className="text-ink/60">
           Was: {formatCurrency(point.oldPrice)}
         </p>
       )}
-      <p className="text-[#0A0A0A]/50 mt-1">Changed by: {point.changedBy}</p>
+      <p className="text-ink/50 mt-1">Changed by: {point.changedBy}</p>
     </div>
   );
 }
@@ -78,19 +78,19 @@ export function PriceHistoryChart({
   if (loading) {
     return (
       <div className="h-48 flex items-center justify-center">
-        <p className="text-sm text-[#0A0A0A]/40">Loading price history...</p>
+        <p className="text-sm text-ink/40">Loading price history...</p>
       </div>
     );
   }
 
   if (history.length === 0) {
     return (
-      <div className="border border-dashed border-[#E5E1DB] p-6 text-center">
-        <p className="text-sm text-[#0A0A0A]/50">
+      <div className="border border-dashed border-shell p-6 text-center">
+        <p className="text-sm text-ink/50">
           No price changes recorded yet — price changes going forward will
           appear here.
         </p>
-        <p className="text-xs text-[#0A0A0A]/30 mt-1">
+        <p className="text-xs text-ink/30 mt-1">
           Current price: {formatCurrency(currentPrice)}
         </p>
       </div>

@@ -90,18 +90,18 @@ export default function SupplierSubmitPage() {
     return (
       <div className="max-w-lg mx-auto mt-16 text-center">
         <div className="flex justify-center mb-4">
-          <CheckCircle2 className="h-14 w-14 text-[#0A0A0A]" />
+          <CheckCircle2 className="h-14 w-14 text-ink" />
         </div>
-        <h2 className="font-serif text-2xl font-bold text-[#0A0A0A] mb-2">
+        <h2 className="font-serif text-2xl font-bold text-ink mb-2">
           Submission Received
         </h2>
-        <p className="text-[#0A0A0A]/60 mb-8">
+        <p className="text-ink/60 mb-8">
           Our team will review your submission within 24 hours.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Button
             variant="outline"
-            className="border-[#C8C0B4] text-[#0A0A0A] hover:bg-[#C8C0B4]/20 rounded-none min-h-[44px]"
+            className="border-sand text-ink hover:bg-sand/20 rounded-none min-h-[44px]"
             onClick={() => {
               setSuccess(false)
               setForm({
@@ -118,7 +118,7 @@ export default function SupplierSubmitPage() {
             Submit Another
           </Button>
           <Button
-            className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none min-h-[44px]"
+            className="bg-ink text-cream hover:bg-ink/80 rounded-none min-h-[44px]"
             onClick={() => router.push('/supplier/submissions')}
           >
             View Submissions
@@ -131,18 +131,18 @@ export default function SupplierSubmitPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
-        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
           New Inventory Submission
         </h1>
-        <p className="text-sm text-[#0A0A0A]/50 mt-1">
+        <p className="text-sm text-ink/50 mt-1">
           Submit product details for our team to review.
         </p>
       </div>
 
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none">
-        <CardHeader className="border-b border-[#E5E1DB]">
-          <CardTitle className="font-serif text-lg text-[#0A0A0A]">Product Details</CardTitle>
-          <CardDescription className="text-[#0A0A0A]/50">
+      <Card className="border-shell bg-cream rounded-none">
+        <CardHeader className="border-b border-shell">
+          <CardTitle className="font-serif text-lg text-ink">Product Details</CardTitle>
+          <CardDescription className="text-ink/50">
             All fields marked * are required.
           </CardDescription>
         </CardHeader>
@@ -150,7 +150,7 @@ export default function SupplierSubmitPage() {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Product Name */}
             <div className="space-y-1.5">
-              <Label htmlFor="productName" className="text-[#0A0A0A] text-sm font-medium">
+              <Label htmlFor="productName" className="text-ink text-sm font-medium">
                 Product Name *
               </Label>
               <Input
@@ -159,13 +159,13 @@ export default function SupplierSubmitPage() {
                 value={form.productName}
                 onChange={(e) => handleChange('productName', e.target.value)}
                 required
-                className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none"
+                className="border-sand bg-cream focus-visible:ring-ink rounded-none"
               />
             </div>
 
             {/* Category */}
             <div className="space-y-1.5">
-              <Label htmlFor="category" className="text-[#0A0A0A] text-sm font-medium">
+              <Label htmlFor="category" className="text-ink text-sm font-medium">
                 Category *
               </Label>
               <Select
@@ -173,10 +173,10 @@ export default function SupplierSubmitPage() {
                 onValueChange={(val) => handleChange('category', val)}
                 required
               >
-                <SelectTrigger className="border-[#C8C0B4] bg-[#F9F7F4] focus:ring-[#0A0A0A] rounded-none">
+                <SelectTrigger className="border-sand bg-cream focus:ring-ink rounded-none">
                   <SelectValue placeholder="Select a category" />
                 </SelectTrigger>
-                <SelectContent className="rounded-none border-[#C8C0B4]">
+                <SelectContent className="rounded-none border-sand">
                   {CATEGORIES.map((cat) => (
                     <SelectItem key={cat} value={cat} className="rounded-none">
                       {cat}
@@ -189,7 +189,7 @@ export default function SupplierSubmitPage() {
             {/* Quantity + Unit */}
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-1.5">
-                <Label htmlFor="quantity" className="text-[#0A0A0A] text-sm font-medium">
+                <Label htmlFor="quantity" className="text-ink text-sm font-medium">
                   Quantity *
                 </Label>
                 <Input
@@ -201,11 +201,11 @@ export default function SupplierSubmitPage() {
                   value={form.quantity}
                   onChange={(e) => handleChange('quantity', e.target.value)}
                   required
-                  className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none"
+                  className="border-sand bg-cream focus-visible:ring-ink rounded-none"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="unit" className="text-[#0A0A0A] text-sm font-medium">
+                <Label htmlFor="unit" className="text-ink text-sm font-medium">
                   Unit *
                 </Label>
                 <Select
@@ -213,10 +213,10 @@ export default function SupplierSubmitPage() {
                   onValueChange={(val) => handleChange('unit', val)}
                   required
                 >
-                  <SelectTrigger className="border-[#C8C0B4] bg-[#F9F7F4] focus:ring-[#0A0A0A] rounded-none">
+                  <SelectTrigger className="border-sand bg-cream focus:ring-ink rounded-none">
                     <SelectValue placeholder="Unit" />
                   </SelectTrigger>
-                  <SelectContent className="rounded-none border-[#C8C0B4]">
+                  <SelectContent className="rounded-none border-sand">
                     {UNITS.map((u) => (
                       <SelectItem key={u} value={u} className="rounded-none">
                         {u}
@@ -229,11 +229,11 @@ export default function SupplierSubmitPage() {
 
             {/* Price Per Unit */}
             <div className="space-y-1.5">
-              <Label htmlFor="pricePerUnit" className="text-[#0A0A0A] text-sm font-medium">
+              <Label htmlFor="pricePerUnit" className="text-ink text-sm font-medium">
                 Price Per Unit ($) *
               </Label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0A0A0A]/40 text-sm">$</span>
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-ink/40 text-sm">$</span>
                 <Input
                   id="pricePerUnit"
                   type="number"
@@ -243,14 +243,14 @@ export default function SupplierSubmitPage() {
                   value={form.pricePerUnit}
                   onChange={(e) => handleChange('pricePerUnit', e.target.value)}
                   required
-                  className="pl-7 border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none"
+                  className="pl-7 border-sand bg-cream focus-visible:ring-ink rounded-none"
                 />
               </div>
             </div>
 
             {/* Expected Arrival Date */}
             <div className="space-y-1.5">
-              <Label htmlFor="expectedArrival" className="text-[#0A0A0A] text-sm font-medium">
+              <Label htmlFor="expectedArrival" className="text-ink text-sm font-medium">
                 Expected Arrival Date *
               </Label>
               <Input
@@ -259,13 +259,13 @@ export default function SupplierSubmitPage() {
                 value={form.expectedArrival}
                 onChange={(e) => handleChange('expectedArrival', e.target.value)}
                 required
-                className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none"
+                className="border-sand bg-cream focus-visible:ring-ink rounded-none"
               />
             </div>
 
             {/* Notes */}
             <div className="space-y-1.5">
-              <Label htmlFor="notes" className="text-[#0A0A0A] text-sm font-medium">
+              <Label htmlFor="notes" className="text-ink text-sm font-medium">
                 Notes
               </Label>
               <Textarea
@@ -274,7 +274,7 @@ export default function SupplierSubmitPage() {
                 value={form.notes}
                 onChange={(e) => handleChange('notes', e.target.value)}
                 rows={4}
-                className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none resize-none"
+                className="border-sand bg-cream focus-visible:ring-ink rounded-none resize-none"
               />
             </div>
 
@@ -287,7 +287,7 @@ export default function SupplierSubmitPage() {
             <Button
               type="submit"
               disabled={loading || !form.productName || !form.category || !form.quantity || !form.unit || !form.pricePerUnit || !form.expectedArrival}
-              className="w-full bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 min-h-[44px] rounded-none"
+              className="w-full bg-ink text-cream hover:bg-ink/80 min-h-[44px] rounded-none"
             >
               {loading ? (
                 <>

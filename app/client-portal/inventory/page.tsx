@@ -129,7 +129,7 @@ export default function DistributorInventoryPage() {
     return (
       <PortalLayout>
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-6 w-6 animate-spin text-[#0A0A0A]/40" />
+          <Loader2 className="h-6 w-6 animate-spin text-ink/40" />
         </div>
       </PortalLayout>
     )
@@ -140,13 +140,13 @@ export default function DistributorInventoryPage() {
       <PortalLayout>
         <div className="space-y-6">
           <div>
-            <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#0A0A0A]">My Inventory</h2>
-            <p className="text-sm text-[#0A0A0A]/50 mt-1">Report your current stock levels</p>
+            <h2 className="font-serif text-2xl sm:text-3xl font-normal text-ink">My Inventory</h2>
+            <p className="text-sm text-ink/50 mt-1">Report your current stock levels</p>
           </div>
-          <div className="border border-[#E5E1DB] bg-white py-16 text-center">
-            <Package className="h-8 w-8 text-[#0A0A0A]/20 mx-auto mb-3" />
-            <p className="text-sm text-[#0A0A0A]/50">No products assigned to your account yet.</p>
-            <p className="text-xs text-[#0A0A0A]/30 mt-1">Contact your admin to get your products configured.</p>
+          <div className="border border-shell bg-white py-16 text-center">
+            <Package className="h-8 w-8 text-ink/20 mx-auto mb-3" />
+            <p className="text-sm text-ink/50">No products assigned to your account yet.</p>
+            <p className="text-xs text-ink/30 mt-1">Contact your admin to get your products configured.</p>
           </div>
         </div>
       </PortalLayout>
@@ -159,15 +159,15 @@ export default function DistributorInventoryPage() {
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#0A0A0A]">My Inventory</h2>
-          <p className="text-sm text-[#0A0A0A]/50 mt-1">
+          <h2 className="font-serif text-2xl sm:text-3xl font-normal text-ink">My Inventory</h2>
+          <p className="text-sm text-ink/50 mt-1">
             Report your current stock so the admin can plan orders accurately.
           </p>
         </div>
         <Button
           onClick={saveAll}
           disabled={saving || dirtyCount === 0}
-          className="shrink-0 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none gap-2"
+          className="shrink-0 bg-ink text-cream hover:bg-ink/80 rounded-none gap-2"
         >
           {saving ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -190,17 +190,17 @@ export default function DistributorInventoryPage() {
       {/* Product groups */}
       {Object.entries(grouped).map(([category, catProducts]) => (
         <div key={category} className="space-y-2">
-          <h3 className="text-xs font-semibold uppercase tracking-wider text-[#0A0A0A]/40">
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-ink/40">
             {category} ({catProducts.length})
           </h3>
 
-          <div className="border border-[#E5E1DB] bg-white divide-y divide-[#E5E1DB]">
+          <div className="border border-shell bg-white divide-y divide-shell">
             {/* Column headers */}
-            <div className="hidden sm:grid sm:grid-cols-[1fr_120px_120px_1fr] gap-4 px-5 py-2.5 bg-[#F9F7F4]">
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-[#0A0A0A]/35">Product</span>
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-[#0A0A0A]/35">On Hand</span>
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-[#0A0A0A]/35">Back Stock</span>
-              <span className="text-[10px] font-semibold uppercase tracking-wider text-[#0A0A0A]/35">Notes</span>
+            <div className="hidden sm:grid sm:grid-cols-[1fr_120px_120px_1fr] gap-4 px-5 py-2.5 bg-cream">
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-ink/35">Product</span>
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-ink/35">On Hand</span>
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-ink/35">Back Stock</span>
+              <span className="text-[10px] font-semibold uppercase tracking-wider text-ink/35">Notes</span>
             </div>
 
             {catProducts.map(product => {
@@ -216,44 +216,44 @@ export default function DistributorInventoryPage() {
                   {/* Mobile: stacked layout */}
                   <div className="sm:hidden space-y-3">
                     <div>
-                      <p className="font-medium text-sm text-[#0A0A0A]">{product.name}</p>
-                      {product.unit && <p className="text-xs text-[#0A0A0A]/40 mt-0.5">Unit: {product.unit}</p>}
+                      <p className="font-medium text-sm text-ink">{product.name}</p>
+                      {product.unit && <p className="text-xs text-ink/40 mt-0.5">Unit: {product.unit}</p>}
                       {lastUpdated && (
-                        <p className="text-[10px] text-[#0A0A0A]/30 mt-0.5">
+                        <p className="text-[10px] text-ink/30 mt-0.5">
                           Last reported {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </p>
                       )}
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div>
-                        <label className="text-[10px] font-semibold uppercase tracking-wider text-[#0A0A0A]/40 block mb-1">On Hand</label>
+                        <label className="text-[10px] font-semibold uppercase tracking-wider text-ink/40 block mb-1">On Hand</label>
                         <input
                           type="number"
                           min="0"
                           value={draft.quantityOnHand}
                           onChange={e => update(product.productId, 'quantityOnHand', e.target.value)}
-                          className="w-full border border-[#E5E1DB] px-3 py-2 text-sm focus:outline-none focus:border-[#0A0A0A] text-[#0A0A0A]"
+                          className="w-full border border-shell px-3 py-2 text-sm focus:outline-none focus:border-ink text-ink"
                         />
                       </div>
                       <div>
-                        <label className="text-[10px] font-semibold uppercase tracking-wider text-[#0A0A0A]/40 block mb-1">Back Stock</label>
+                        <label className="text-[10px] font-semibold uppercase tracking-wider text-ink/40 block mb-1">Back Stock</label>
                         <input
                           type="number"
                           min="0"
                           value={draft.quantityBackstock}
                           onChange={e => update(product.productId, 'quantityBackstock', e.target.value)}
-                          className="w-full border border-[#E5E1DB] px-3 py-2 text-sm focus:outline-none focus:border-[#0A0A0A] text-[#0A0A0A]"
+                          className="w-full border border-shell px-3 py-2 text-sm focus:outline-none focus:border-ink text-ink"
                         />
                       </div>
                     </div>
                     <div>
-                      <label className="text-[10px] font-semibold uppercase tracking-wider text-[#0A0A0A]/40 block mb-1">Notes</label>
+                      <label className="text-[10px] font-semibold uppercase tracking-wider text-ink/40 block mb-1">Notes</label>
                       <input
                         type="text"
                         value={draft.notes}
                         onChange={e => update(product.productId, 'notes', e.target.value)}
                         placeholder="e.g. seasonal gap, new batch arriving Tuesday…"
-                        className="w-full border border-[#E5E1DB] px-3 py-2 text-sm focus:outline-none focus:border-[#0A0A0A] text-[#0A0A0A] placeholder:text-[#0A0A0A]/25"
+                        className="w-full border border-shell px-3 py-2 text-sm focus:outline-none focus:border-ink text-ink placeholder:text-ink/25"
                       />
                     </div>
                   </div>
@@ -261,10 +261,10 @@ export default function DistributorInventoryPage() {
                   {/* Desktop: grid layout */}
                   <div className="hidden sm:grid sm:grid-cols-[1fr_120px_120px_1fr] gap-4 items-center">
                     <div>
-                      <p className="font-medium text-sm text-[#0A0A0A]">{product.name}</p>
-                      {product.unit && <p className="text-xs text-[#0A0A0A]/40 mt-0.5">{product.unit}</p>}
+                      <p className="font-medium text-sm text-ink">{product.name}</p>
+                      {product.unit && <p className="text-xs text-ink/40 mt-0.5">{product.unit}</p>}
                       {lastUpdated && (
-                        <p className="text-[10px] text-[#0A0A0A]/30 mt-0.5">
+                        <p className="text-[10px] text-ink/30 mt-0.5">
                           Updated {new Date(lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                         </p>
                       )}
@@ -274,7 +274,7 @@ export default function DistributorInventoryPage() {
                       min="0"
                       value={draft.quantityOnHand}
                       onChange={e => update(product.productId, 'quantityOnHand', e.target.value)}
-                      className="border border-[#E5E1DB] px-3 py-2 text-sm focus:outline-none focus:border-[#0A0A0A] text-[#0A0A0A] w-full"
+                      className="border border-shell px-3 py-2 text-sm focus:outline-none focus:border-ink text-ink w-full"
                       aria-label={`${product.name} on hand quantity`}
                     />
                     <input
@@ -282,7 +282,7 @@ export default function DistributorInventoryPage() {
                       min="0"
                       value={draft.quantityBackstock}
                       onChange={e => update(product.productId, 'quantityBackstock', e.target.value)}
-                      className="border border-[#E5E1DB] px-3 py-2 text-sm focus:outline-none focus:border-[#0A0A0A] text-[#0A0A0A] w-full"
+                      className="border border-shell px-3 py-2 text-sm focus:outline-none focus:border-ink text-ink w-full"
                       aria-label={`${product.name} back stock quantity`}
                     />
                     <input
@@ -290,7 +290,7 @@ export default function DistributorInventoryPage() {
                       value={draft.notes}
                       onChange={e => update(product.productId, 'notes', e.target.value)}
                       placeholder="Any notes…"
-                      className="border border-[#E5E1DB] px-3 py-2 text-sm focus:outline-none focus:border-[#0A0A0A] text-[#0A0A0A] placeholder:text-[#0A0A0A]/25 w-full"
+                      className="border border-shell px-3 py-2 text-sm focus:outline-none focus:border-ink text-ink placeholder:text-ink/25 w-full"
                       aria-label={`${product.name} notes`}
                     />
                   </div>
@@ -307,7 +307,7 @@ export default function DistributorInventoryPage() {
           <Button
             onClick={saveAll}
             disabled={saving}
-            className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none gap-2 shadow-lg"
+            className="bg-ink text-cream hover:bg-ink/80 rounded-none gap-2 shadow-lg"
           >
             {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             {saving ? 'Saving…' : `Save ${dirtyCount} update${dirtyCount !== 1 ? 's' : ''}`}

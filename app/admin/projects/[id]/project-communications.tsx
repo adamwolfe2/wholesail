@@ -71,10 +71,10 @@ export function ProjectCommunications({ projectId, contactEmail }: Props) {
     <Card>
       <CardHeader>
         <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
-          <Mail className="h-4 w-4 text-[#C8C0B4]" />
+          <Mail className="h-4 w-4 text-sand" />
           Communications
         </CardTitle>
-        <p className="text-[10px] font-mono text-[#0A0A0A]/40 mt-1">
+        <p className="text-[10px] font-mono text-ink/40 mt-1">
           Send to: {contactEmail}
         </p>
       </CardHeader>
@@ -88,14 +88,14 @@ export function ProjectCommunications({ projectId, contactEmail }: Props) {
           return (
             <div
               key={template.id}
-              className="border border-[#E5E1DB] px-3 py-2.5"
+              className="border border-shell px-3 py-2.5"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
-                  <p className="font-mono text-xs text-[#0A0A0A] font-medium">
+                  <p className="font-mono text-xs text-ink font-medium">
                     {template.label}
                   </p>
-                  <p className="text-[10px] text-[#0A0A0A]/40 mt-0.5">
+                  <p className="text-[10px] text-ink/40 mt-0.5">
                     {template.description}
                   </p>
                 </div>
@@ -106,7 +106,7 @@ export function ProjectCommunications({ projectId, contactEmail }: Props) {
                         type="button"
                         onClick={() => handleSend(template.id)}
                         disabled={isSending}
-                        className="text-[9px] font-mono font-semibold bg-[#0A0A0A] text-white px-2 py-1 hover:bg-[#0A0A0A]/80 disabled:opacity-40"
+                        className="text-[9px] font-mono font-semibold bg-ink text-white px-2 py-1 hover:bg-ink/80 disabled:opacity-40"
                       >
                         {isSending ? (
                           <Loader2 className="h-2.5 w-2.5 animate-spin" />
@@ -117,7 +117,7 @@ export function ProjectCommunications({ projectId, contactEmail }: Props) {
                       <button
                         type="button"
                         onClick={() => setConfirming(null)}
-                        className="text-[9px] font-mono text-[#0A0A0A]/50 hover:text-[#0A0A0A] px-1"
+                        className="text-[9px] font-mono text-ink/50 hover:text-ink px-1"
                       >
                         Cancel
                       </button>
@@ -131,7 +131,7 @@ export function ProjectCommunications({ projectId, contactEmail }: Props) {
                     <button
                       type="button"
                       onClick={() => setConfirming(template.id)}
-                      className="text-[9px] font-mono font-semibold border border-[#E5E1DB] px-2 py-1 hover:bg-[#F9F7F4] text-[#0A0A0A]/70 transition-colors"
+                      className="text-[9px] font-mono font-semibold border border-shell px-2 py-1 hover:bg-cream text-ink/70 transition-colors"
                     >
                       Send
                     </button>

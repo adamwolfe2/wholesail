@@ -370,7 +370,7 @@ function statusStyle(status: string, brandColor: string): React.CSSProperties {
     case "Paid":
     case "Champion":
     case "VIP":
-      return { backgroundColor: brandColor, color: "#F9F7F4", borderColor: brandColor };
+      return { backgroundColor: brandColor, color: "var(--color-cream)", borderColor: brandColor };
     case "Shipped":
     case "Healthy":
     case "REPEAT":
@@ -380,12 +380,12 @@ function statusStyle(status: string, brandColor: string): React.CSSProperties {
     case "Pending":
     case "New":
     case "NEW":
-      return { backgroundColor: "transparent", color: "#C8C0B4", borderColor: "#E5E1DB" };
+      return { backgroundColor: "transparent", color: "#C8C0B4", borderColor: "var(--color-shell)" };
     case "Overdue":
     case "At Risk":
       return { backgroundColor: "#FEF3C7", color: "#92400E", borderColor: "#FDE68A" };
     default:
-      return { backgroundColor: "transparent", color: "#C8C0B4", borderColor: "#E5E1DB" };
+      return { backgroundColor: "transparent", color: "#C8C0B4", borderColor: "var(--color-shell)" };
   }
 }
 
@@ -469,24 +469,24 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
   return (
     <div className="space-y-0">
       {/* ── Hero ── */}
-      <section className="px-6 sm:px-10 py-12 sm:py-20 bg-[#F9F7F4] border-b border-[#E5E1DB]">
+      <section className="px-6 sm:px-10 py-12 sm:py-20 bg-cream border-b border-shell">
         <div className="max-w-3xl">
-          <p className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-[#C8C0B4] mb-5">
+          <p className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-sand mb-5">
             Wholesale · Est. {data.location || "United States"}
           </p>
           <h1
-            className="font-serif font-bold leading-[1.02] tracking-tight text-[#0A0A0A] mb-6"
+            className="font-serif font-bold leading-[1.02] tracking-tight text-ink mb-6"
             style={{ fontSize: "clamp(2.2rem, 5vw, 3.8rem)" }}
           >
             {headline}
           </h1>
-          <p className="text-sm sm:text-base text-[#0A0A0A]/50 max-w-lg leading-relaxed mb-8">
+          <p className="text-sm sm:text-base text-ink/50 max-w-lg leading-relaxed mb-8">
             {data.companyDescription || `${brand.company} — your trusted wholesale partner. Browse our catalog, place orders online, and track deliveries in real time.`}
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               onClick={() => onNavigate?.("catalog")}
-              className="h-12 px-8 text-sm font-medium tracking-wide text-[#F9F7F4] transition-opacity hover:opacity-85"
+              className="h-12 px-8 text-sm font-medium tracking-wide text-cream transition-opacity hover:opacity-85"
               style={{ backgroundColor: brand.color }}
             >
               Browse the Catalog
@@ -494,20 +494,20 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
             <button
               className="h-12 px-8 text-sm font-medium tracking-wide border transition-colors"
               style={{ borderColor: brand.color, color: brand.color }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = brand.color; e.currentTarget.style.color = "#F9F7F4"; }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = brand.color; e.currentTarget.style.color = "var(--color-cream)"; }}
               onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = brand.color; }}
             >
               Apply for Wholesale
             </button>
           </div>
           <div className="mt-10 opacity-40">
-            <ChevronDown className="h-5 w-5 text-[#0A0A0A] animate-bounce" />
+            <ChevronDown className="h-5 w-5 text-ink animate-bounce" />
           </div>
         </div>
       </section>
 
       {/* ── Trust Bar / Scrolling Marquee ── */}
-      <div className="text-[#F9F7F4] py-3 overflow-hidden select-none" style={{ backgroundColor: brand.color }}>
+      <div className="text-cream py-3 overflow-hidden select-none" style={{ backgroundColor: brand.color }}>
         <div className="flex whitespace-nowrap" style={{ animation: "ticker 22s linear infinite" }}>
           {[...trustItems, ...trustItems, ...trustItems].map((item, i) => (
             <span key={i} className="mx-6 sm:mx-10 text-[10px] sm:text-xs tracking-[0.18em] uppercase font-medium">
@@ -519,33 +519,33 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
       </div>
 
       {/* ── This Week's Highlights (gap-px grid) ── */}
-      <section className="py-10 sm:py-16 border-b border-[#E5E1DB] bg-[#F9F7F4]/50">
+      <section className="py-10 sm:py-16 border-b border-shell bg-cream/50">
         <div className="px-6 sm:px-10 mb-8">
-          <p className="text-xs tracking-[0.2em] uppercase text-[#C8C0B4] mb-3">Curated Selection</p>
+          <p className="text-xs tracking-[0.2em] uppercase text-sand mb-3">Curated Selection</p>
           <div className="flex items-end justify-between">
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A0A0A]">This Week&apos;s Highlights</h2>
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-ink">This Week&apos;s Highlights</h2>
             <button
               onClick={() => onNavigate?.("catalog")}
-              className="hidden sm:flex items-center gap-1 text-xs tracking-wide text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors"
+              className="hidden sm:flex items-center gap-1 text-xs tracking-wide text-ink/40 hover:text-ink transition-colors"
             >
               View Full Catalog <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
         </div>
-        <div className="mx-6 sm:mx-10 grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#E5E1DB]">
+        <div className="mx-6 sm:mx-10 grid grid-cols-2 lg:grid-cols-4 gap-px bg-shell">
           {displayProducts.map((p, i) => (
-            <div key={`${p.name}-${i}`} className="bg-[#F9F7F4] flex flex-col group hover:bg-[#F0EDE8] transition-colors">
+            <div key={`${p.name}-${i}`} className="bg-cream flex flex-col group hover:bg-cream-hover transition-colors">
               <ProductImage product={p} brandColor={brand.color} size="lg" />
               <div className="p-4 sm:p-5 flex flex-col flex-1">
-                <p className="text-[9px] tracking-[0.18em] uppercase text-[#C8C0B4] mb-1.5">{p.category}</p>
-                <h3 className="font-serif font-bold leading-tight text-sm sm:text-base text-[#0A0A0A] mb-2">{p.name}</h3>
-                <p className="text-xs text-[#0A0A0A]/50 leading-relaxed line-clamp-2 mb-3">{p.description}</p>
-                <p className="text-base font-bold text-[#0A0A0A] mt-auto">
-                  {p.price}<span className="text-xs font-normal text-[#C8C0B4]">{p.unit ? `/${p.unit}` : ""}</span>
+                <p className="text-[9px] tracking-[0.18em] uppercase text-sand mb-1.5">{p.category}</p>
+                <h3 className="font-serif font-bold leading-tight text-sm sm:text-base text-ink mb-2">{p.name}</h3>
+                <p className="text-xs text-ink/50 leading-relaxed line-clamp-2 mb-3">{p.description}</p>
+                <p className="text-base font-bold text-ink mt-auto">
+                  {p.price}<span className="text-xs font-normal text-sand">{p.unit ? `/${p.unit}` : ""}</span>
                 </p>
                 {data.certifications.length > 0 && (
                   <div className="flex flex-wrap gap-1 mt-2">
-                    <span className="text-[9px] tracking-wide uppercase border border-[#E5E1DB] px-1.5 py-0.5 text-[#C8C0B4] inline-flex items-center gap-0.5">
+                    <span className="text-[9px] tracking-wide uppercase border border-shell px-1.5 py-0.5 text-sand inline-flex items-center gap-0.5">
                       <Snowflake className="h-2 w-2" /> Cold Chain
                     </span>
                   </div>
@@ -556,7 +556,7 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
                   onClick={() => onNavigate?.("catalog")}
                   className="w-full h-9 text-xs font-medium border flex items-center justify-center gap-1.5 transition-all"
                   style={{ borderColor: brand.color, color: brand.color }}
-                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = brand.color; e.currentTarget.style.color = "#F9F7F4"; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = brand.color; e.currentTarget.style.color = "var(--color-cream)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = brand.color; }}
                 >
                   <ShoppingCart className="h-3 w-3" /> Add to Order
@@ -568,21 +568,21 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
       </section>
 
       {/* ── How It Works ── */}
-      <section className="border-b border-[#E5E1DB]">
+      <section className="border-b border-shell">
         <div className="px-6 sm:px-10 pt-10 sm:pt-16 mb-8">
-          <p className="text-xs tracking-[0.2em] uppercase text-[#C8C0B4] mb-3">Simple Process</p>
-          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A0A0A]">How It Works</h2>
+          <p className="text-xs tracking-[0.2em] uppercase text-sand mb-3">Simple Process</p>
+          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-ink">How It Works</h2>
         </div>
-        <div className="mx-6 sm:mx-10 mb-10 sm:mb-16 grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#E5E1DB]">
+        <div className="mx-6 sm:mx-10 mb-10 sm:mb-16 grid grid-cols-1 sm:grid-cols-3 gap-px bg-shell">
           {[
             { step: "01", title: "Apply", desc: `Submit a quick wholesale application. We review and approve qualified ${data.industry?.toLowerCase() || "business"} partners within 24 hours.` },
             { step: "02", title: "Order", desc: "Browse the full catalog, build your order online or text it via SMS. We handle the rest — same-week fulfillment." },
             { step: "03", title: "Grow", desc: "Track orders, manage invoices, earn loyalty rewards, and unlock volume pricing as your account grows." },
           ].map((s) => (
-            <div key={s.step} className="bg-[#F9F7F4] p-8 sm:p-10">
-              <p className="font-mono text-4xl sm:text-5xl font-bold text-[#E5E1DB] mb-6 leading-none">{s.step}</p>
-              <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#0A0A0A] mb-3">{s.title}</h3>
-              <p className="text-sm text-[#0A0A0A]/50 leading-relaxed">{s.desc}</p>
+            <div key={s.step} className="bg-cream p-8 sm:p-10">
+              <p className="font-mono text-4xl sm:text-5xl font-bold text-shell mb-6 leading-none">{s.step}</p>
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-ink mb-3">{s.title}</h3>
+              <p className="text-sm text-ink/50 leading-relaxed">{s.desc}</p>
             </div>
           ))}
         </div>
@@ -590,21 +590,21 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
 
       {/* ── Testimonials ── */}
       {data.testimonials.length > 0 && (
-        <section className="py-10 sm:py-16 border-b border-[#E5E1DB]">
+        <section className="py-10 sm:py-16 border-b border-shell">
           <div className="px-6 sm:px-10 mb-8">
-            <p className="text-xs tracking-[0.2em] uppercase text-[#C8C0B4] mb-3">Trusted By</p>
-            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0A0A0A]">What Our Partners Say</h2>
+            <p className="text-xs tracking-[0.2em] uppercase text-sand mb-3">Trusted By</p>
+            <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-ink">What Our Partners Say</h2>
           </div>
-          <div className="mx-6 sm:mx-10 grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#E5E1DB]">
+          <div className="mx-6 sm:mx-10 grid grid-cols-1 sm:grid-cols-3 gap-px bg-shell">
             {data.testimonials.slice(0, 3).map((t, i) => (
-              <div key={i} className="bg-[#F9F7F4] p-8 sm:p-10 flex flex-col justify-between min-h-[200px]">
+              <div key={i} className="bg-cream p-8 sm:p-10 flex flex-col justify-between min-h-[200px]">
                 <div>
-                  <p className="font-serif text-5xl text-[#E5E1DB] leading-none mb-4 select-none">&ldquo;</p>
-                  <p className="text-[15px] leading-relaxed text-[#0A0A0A]/80 italic font-serif">{t.quote}</p>
+                  <p className="font-serif text-5xl text-shell leading-none mb-4 select-none">&ldquo;</p>
+                  <p className="text-[15px] leading-relaxed text-ink/80 italic font-serif">{t.quote}</p>
                 </div>
-                <div className="mt-6 pt-4 border-t border-[#E5E1DB]">
-                  <p className="font-medium text-sm text-[#0A0A0A]">{t.author}</p>
-                  {t.company && <p className="text-[#C8C0B4] text-xs mt-0.5">{t.company}</p>}
+                <div className="mt-6 pt-4 border-t border-shell">
+                  <p className="font-medium text-sm text-ink">{t.author}</p>
+                  {t.company && <p className="text-sand text-xs mt-0.5">{t.company}</p>}
                 </div>
               </div>
             ))}
@@ -613,22 +613,22 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
       )}
 
       {/* ── Newsletter / CTA Section ── */}
-      <section className="border-b border-[#E5E1DB] bg-[#F9F7F4] overflow-hidden">
+      <section className="border-b border-shell bg-cream overflow-hidden">
         <div className="px-6 sm:px-10 py-16 sm:py-24 max-w-lg">
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-5">Stay Connected</p>
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold italic text-[#0A0A0A] leading-none mb-4">
+          <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-5">Stay Connected</p>
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold italic text-ink leading-none mb-4">
             Get the Latest.
           </h2>
-          <p className="text-sm text-[#0A0A0A]/50 leading-relaxed mb-6">
+          <p className="text-sm text-ink/50 leading-relaxed mb-6">
             New products, seasonal drops, and exclusive wholesale pricing — delivered to your inbox weekly.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 max-w-md">
             <input
               type="email"
               placeholder="your@email.com"
-              className="flex-1 h-12 px-4 bg-white border border-[#E5E1DB] text-[#0A0A0A] placeholder:text-[#C8C0B4] text-sm focus:outline-none focus:border-[#0A0A0A]"
+              className="flex-1 h-12 px-4 bg-white border border-shell text-ink placeholder:text-sand text-sm focus:outline-none focus:border-ink"
             />
-            <button className="h-12 px-6 text-[#F9F7F4] text-sm font-medium transition-opacity hover:opacity-85" style={{ backgroundColor: brand.color }}>
+            <button className="h-12 px-6 text-cream text-sm font-medium transition-opacity hover:opacity-85" style={{ backgroundColor: brand.color }}>
               Subscribe
             </button>
           </div>
@@ -636,26 +636,26 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
       </section>
 
       {/* ── Stats Bar ── */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-[#E5E1DB] bg-[#F9F7F4]">
+      <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-shell bg-cream">
         {[
           { stat: `${Math.max(data.products.length, 20)}+`, label: "Products" },
           { stat: "500+", label: "Partners Served" },
           { stat: data.deliveryInfo || "Same Week", label: "Delivery" },
           { stat: data.paymentInfo || "Net 30", label: "Payment Terms" },
         ].map((s) => (
-          <div key={s.label} className="p-6 sm:p-8 text-center border-r border-[#E5E1DB] last:border-r-0">
-            <div className="text-2xl sm:text-3xl font-serif font-bold text-[#0A0A0A] mb-1">{s.stat}</div>
-            <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">{s.label}</div>
+          <div key={s.label} className="p-6 sm:p-8 text-center border-r border-shell last:border-r-0">
+            <div className="text-2xl sm:text-3xl font-serif font-bold text-ink mb-1">{s.stat}</div>
+            <div className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono">{s.label}</div>
           </div>
         ))}
       </div>
 
       {/* ── Certifications ── */}
       {data.certifications.length > 0 && (
-        <div className="px-6 sm:px-10 py-6 border-b border-[#E5E1DB] bg-[#F9F7F4]">
+        <div className="px-6 sm:px-10 py-6 border-b border-shell bg-cream">
           <div className="flex flex-wrap gap-2">
             {data.certifications.map((cert, i) => (
-              <span key={i} className="border border-[#E5E1DB] px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider text-[#C8C0B4] flex items-center gap-1.5">
+              <span key={i} className="border border-shell px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider text-sand flex items-center gap-1.5">
                 <Shield className="w-3 h-3" /> {cert}
               </span>
             ))}
@@ -664,34 +664,34 @@ function MarketingView({ brand, data, onNavigate }: ViewProps) {
       )}
 
       {/* ── Footer ── */}
-      <footer className="bg-[#1A1614] text-[#F9F7F4] px-6 sm:px-10 py-10 sm:py-14">
+      <footer className="bg-ink-dark text-cream px-6 sm:px-10 py-10 sm:py-14">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10">
           <div className="col-span-2">
             <p className="font-serif text-xl font-bold mb-2">{brand.company}</p>
-            <p className="text-[#F9F7F4]/40 text-sm leading-relaxed max-w-xs">
+            <p className="text-cream/40 text-sm leading-relaxed max-w-xs">
               {data.tagline || `Premium ${data.industry?.toLowerCase() || "wholesale"} products, delivered with care.`}
             </p>
           </div>
           <div>
-            <p className="text-[10px] tracking-[0.2em] uppercase text-[#F9F7F4]/30 mb-3 font-medium">Catalog</p>
-            <ul className="space-y-2 text-sm text-[#F9F7F4]/50">
+            <p className="text-[10px] tracking-[0.2em] uppercase text-cream/30 mb-3 font-medium">Catalog</p>
+            <ul className="space-y-2 text-sm text-cream/50">
               {Array.from(new Set(data.products.map((p) => p.category).filter(Boolean))).slice(0, 4).map((cat) => (
-                <li key={cat} className="hover:text-[#F9F7F4] cursor-pointer transition-colors">{cat}</li>
+                <li key={cat} className="hover:text-cream cursor-pointer transition-colors">{cat}</li>
               ))}
             </ul>
           </div>
           <div>
-            <p className="text-[10px] tracking-[0.2em] uppercase text-[#F9F7F4]/30 mb-3 font-medium">Company</p>
-            <ul className="space-y-2 text-sm text-[#F9F7F4]/50">
-              <li className="hover:text-[#F9F7F4] cursor-pointer transition-colors">About</li>
-              <li className="hover:text-[#F9F7F4] cursor-pointer transition-colors">Wholesale</li>
-              <li className="hover:text-[#F9F7F4] cursor-pointer transition-colors">Contact</li>
+            <p className="text-[10px] tracking-[0.2em] uppercase text-cream/30 mb-3 font-medium">Company</p>
+            <ul className="space-y-2 text-sm text-cream/50">
+              <li className="hover:text-cream cursor-pointer transition-colors">About</li>
+              <li className="hover:text-cream cursor-pointer transition-colors">Wholesale</li>
+              <li className="hover:text-cream cursor-pointer transition-colors">Contact</li>
             </ul>
           </div>
         </div>
-        <div className="border-t border-[#F9F7F4]/10 pt-6 flex justify-between items-center">
-          <p className="text-[#F9F7F4]/30 text-xs">&copy; {new Date().getFullYear()} {brand.company}. All rights reserved.</p>
-          <p className="text-[#F9F7F4]/20 text-[10px] font-mono">Powered by Wholesail</p>
+        <div className="border-t border-cream/10 pt-6 flex justify-between items-center">
+          <p className="text-cream/30 text-xs">&copy; {new Date().getFullYear()} {brand.company}. All rights reserved.</p>
+          <p className="text-cream/20 text-[10px] font-mono">Powered by Wholesail</p>
         </div>
       </footer>
     </div>
@@ -725,17 +725,17 @@ function CatalogView({ brand, data, cart, onAddToCart, onOpenCart }: ViewProps) 
   const stockLevels = [24, 8, 156, 89, 203, 67, 45, 3, 120, 15, 78, 92];
 
   return (
-    <div className="bg-[#F9F7F4]">
+    <div className="bg-cream">
       {/* Catalog Hero */}
-      <div className="px-6 sm:px-10 pt-8 pb-6 border-b border-[#E5E1DB]">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-3">Wholesale Catalog</p>
-        <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.05] text-[#0A0A0A]">
+      <div className="px-6 sm:px-10 pt-8 pb-6 border-b border-shell">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-3">Wholesale Catalog</p>
+        <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.05] text-ink">
           The Full Catalog.
         </h1>
       </div>
 
       {/* Filter bar */}
-      <div className="px-6 sm:px-10 py-4 border-b border-[#E5E1DB] flex flex-wrap items-center justify-between gap-3">
+      <div className="px-6 sm:px-10 py-4 border-b border-shell flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-nowrap overflow-x-auto gap-1.5 pb-1">
           {categories.map((cat) => (
             <button
@@ -744,8 +744,8 @@ function CatalogView({ brand, data, cart, onAddToCart, onOpenCart }: ViewProps) 
               className="text-[11px] tracking-wide border px-4 py-2 transition-all whitespace-nowrap"
               style={
                 activeCategory === cat
-                  ? { backgroundColor: "#0A0A0A", color: "#F9F7F4", borderColor: "#0A0A0A" }
-                  : { backgroundColor: "transparent", borderColor: "#E5E1DB", color: "#0A0A0A" }
+                  ? { backgroundColor: "#0A0A0A", color: "var(--color-cream)", borderColor: "#0A0A0A" }
+                  : { backgroundColor: "transparent", borderColor: "var(--color-shell)", color: "#0A0A0A" }
               }
             >
               {cat}
@@ -753,22 +753,22 @@ function CatalogView({ brand, data, cart, onAddToCart, onOpenCart }: ViewProps) 
           ))}
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-xs text-[#0A0A0A]/40">
-            <span className="font-medium text-[#0A0A0A]/70">{filtered.length}</span> products
+          <span className="text-xs text-ink/40">
+            <span className="font-medium text-ink/70">{filtered.length}</span> products
           </span>
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#C8C0B4]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-sand" />
             <input
               placeholder="Search..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="border border-[#E5E1DB] bg-white pl-9 pr-4 py-2 text-xs w-40 focus:outline-none focus:border-[#0A0A0A]"
+              className="border border-shell bg-white pl-9 pr-4 py-2 text-xs w-40 focus:outline-none focus:border-ink"
             />
           </div>
           {cartCount > 0 && (
             <button
               onClick={() => onOpenCart?.()}
-              className="relative h-9 px-4 text-xs font-medium text-[#F9F7F4] flex items-center gap-2"
+              className="relative h-9 px-4 text-xs font-medium text-cream flex items-center gap-2"
               style={{ backgroundColor: brand.color }}
             >
               <ShoppingCart className="w-3.5 h-3.5" />
@@ -779,27 +779,27 @@ function CatalogView({ brand, data, cart, onAddToCart, onOpenCart }: ViewProps) 
       </div>
 
       {/* Product Grid — gap-px technique */}
-      <div className="mx-6 sm:mx-10 my-6 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-[#E5E1DB]">
+      <div className="mx-6 sm:mx-10 my-6 grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-shell">
         {filtered.map((p, i) => {
           const stock = stockLevels[i % stockLevels.length];
           const isAdded = addedItems.has(p.name);
           return (
-            <article key={`${p.name}-${i}`} className="bg-[#F9F7F4] flex flex-col group hover:bg-[#F0EDE8] transition-colors">
+            <article key={`${p.name}-${i}`} className="bg-cream flex flex-col group hover:bg-cream-hover transition-colors">
               <div className="flex flex-col flex-1 p-4 sm:p-5">
-                <p className="text-[9px] tracking-[0.18em] uppercase text-[#C8C0B4] mb-1.5">{p.category}</p>
-                <h3 className="font-serif font-bold leading-tight text-sm sm:text-base text-[#0A0A0A] mb-2">{p.name}</h3>
-                <p className="text-base font-bold text-[#0A0A0A] leading-none">
-                  {p.price}<span className="text-xs font-normal text-[#C8C0B4]">{p.unit ? `/${p.unit}` : ""}</span>
+                <p className="text-[9px] tracking-[0.18em] uppercase text-sand mb-1.5">{p.category}</p>
+                <h3 className="font-serif font-bold leading-tight text-sm sm:text-base text-ink mb-2">{p.name}</h3>
+                <p className="text-base font-bold text-ink leading-none">
+                  {p.price}<span className="text-xs font-normal text-sand">{p.unit ? `/${p.unit}` : ""}</span>
                 </p>
-                <p className="text-xs text-[#0A0A0A]/50 leading-relaxed line-clamp-2 mt-2 mb-auto">{p.description}</p>
+                <p className="text-xs text-ink/50 leading-relaxed line-clamp-2 mt-2 mb-auto">{p.description}</p>
                 <div className="flex flex-wrap gap-1 mt-3">
                   {i % 3 === 0 && (
-                    <span className="text-[9px] tracking-wide uppercase border border-[#E5E1DB] px-1.5 py-0.5 text-[#C8C0B4] inline-flex items-center gap-0.5">
+                    <span className="text-[9px] tracking-wide uppercase border border-shell px-1.5 py-0.5 text-sand inline-flex items-center gap-0.5">
                       <Snowflake className="h-2 w-2" /> Cold Chain
                     </span>
                   )}
                   {i % 4 === 0 && (
-                    <span className="text-[9px] tracking-wide uppercase border border-[#E5E1DB] px-1.5 py-0.5 text-[#C8C0B4] inline-flex items-center gap-0.5">
+                    <span className="text-[9px] tracking-wide uppercase border border-shell px-1.5 py-0.5 text-sand inline-flex items-center gap-0.5">
                       <CreditCard className="h-2 w-2" /> Prepay
                     </span>
                   )}
@@ -810,7 +810,7 @@ function CatalogView({ brand, data, cart, onAddToCart, onOpenCart }: ViewProps) 
                   )}
                 </div>
                 {data.minimumOrder && (
-                  <p className="text-[10px] text-[#C8C0B4] mt-2 pt-2 border-t border-[#E5E1DB]">Min. order: {data.minimumOrder}</p>
+                  <p className="text-[10px] text-sand mt-2 pt-2 border-t border-shell">Min. order: {data.minimumOrder}</p>
                 )}
               </div>
               <div className="px-4 sm:px-5 pb-4 sm:pb-5 mt-auto">
@@ -819,10 +819,10 @@ function CatalogView({ brand, data, cart, onAddToCart, onOpenCart }: ViewProps) 
                   className="w-full h-9 text-xs font-medium flex items-center justify-center gap-1.5 transition-all"
                   style={
                     isAdded
-                      ? { backgroundColor: brand.color, color: "#F9F7F4" }
+                      ? { backgroundColor: brand.color, color: "var(--color-cream)" }
                       : { border: `1px solid ${brand.color}`, color: brand.color }
                   }
-                  onMouseEnter={(e) => { if (!isAdded) { e.currentTarget.style.backgroundColor = brand.color; e.currentTarget.style.color = "#F9F7F4"; } }}
+                  onMouseEnter={(e) => { if (!isAdded) { e.currentTarget.style.backgroundColor = brand.color; e.currentTarget.style.color = "var(--color-cream)"; } }}
                   onMouseLeave={(e) => { if (!isAdded) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = brand.color; } }}
                 >
                   {isAdded ? (
@@ -839,8 +839,8 @@ function CatalogView({ brand, data, cart, onAddToCart, onOpenCart }: ViewProps) 
 
       {filtered.length === 0 && (
         <div className="text-center py-16">
-          <Package className="w-8 h-8 text-[#E5E1DB] mx-auto mb-3" />
-          <p className="text-sm text-[#C8C0B4]">No products found matching your criteria.</p>
+          <Package className="w-8 h-8 text-shell mx-auto mb-3" />
+          <p className="text-sm text-sand">No products found matching your criteria.</p>
         </div>
       )}
     </div>
@@ -855,28 +855,28 @@ function AboutView({ brand, data }: ViewProps) {
   const socials = Object.entries(data.socialLinks || {}).filter(([, url]) => url && url.trim() !== "");
 
   return (
-    <div className="p-6 sm:p-8 bg-[#F9F7F4]">
-      <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">About Us</p>
-      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A] mb-6">{data.companyName}</h2>
+    <div className="p-6 sm:p-8 bg-cream">
+      <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">About Us</p>
+      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink mb-6">{data.companyName}</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         {/* Main content */}
         <div className="sm:col-span-2 space-y-6">
-          <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6">
-            <p className="font-sans text-sm text-[#0A0A0A]/80 leading-relaxed">{data.aboutSnippet || data.companyDescription}</p>
+          <div className="border border-shell bg-cream p-6">
+            <p className="font-sans text-sm text-ink/80 leading-relaxed">{data.aboutSnippet || data.companyDescription}</p>
           </div>
 
           {/* Value Propositions */}
           {data.valuePropositions.length > 0 && (
-            <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6">
-              <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-4">Why Choose Us</p>
+            <div className="border border-shell bg-cream p-6">
+              <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-4">Why Choose Us</p>
               <div className="space-y-3">
                 {data.valuePropositions.map((vp, i) => (
                   <div key={i} className="flex items-start gap-3">
                     <div className="w-5 h-5 flex items-center justify-center flex-shrink-0 mt-0.5" style={{ backgroundColor: `${brand.color}15` }}>
                       <CheckCircle2 className="w-3 h-3" style={{ color: brand.color }} />
                     </div>
-                    <span className="font-sans text-sm text-[#0A0A0A]/80">{vp}</span>
+                    <span className="font-sans text-sm text-ink/80">{vp}</span>
                   </div>
                 ))}
               </div>
@@ -885,11 +885,11 @@ function AboutView({ brand, data }: ViewProps) {
 
           {/* Certifications */}
           {data.certifications.length > 0 && (
-            <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6">
-              <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-4">Certifications</p>
+            <div className="border border-shell bg-cream p-6">
+              <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-4">Certifications</p>
               <div className="flex flex-wrap gap-2">
                 {data.certifications.map((cert, i) => (
-                  <span key={i} className="border border-[#E5E1DB] px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider text-[#0A0A0A]/60 flex items-center gap-1.5">
+                  <span key={i} className="border border-shell px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider text-ink/60 flex items-center gap-1.5">
                     <Award className="w-3 h-3" /> {cert}
                   </span>
                 ))}
@@ -901,50 +901,50 @@ function AboutView({ brand, data }: ViewProps) {
         {/* Sidebar info */}
         <div className="space-y-4">
           {/* Company Info */}
-          <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-5">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-4">Company Info</p>
+          <div className="border border-shell bg-cream p-5">
+            <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-4">Company Info</p>
             <div className="space-y-3">
               {data.yearFounded && (
                 <div className="flex items-center gap-2">
-                  <Clock className="w-3.5 h-3.5 text-[#C8C0B4]" />
-                  <span className="font-mono text-xs text-[#0A0A0A]/70">Founded {data.yearFounded}</span>
+                  <Clock className="w-3.5 h-3.5 text-sand" />
+                  <span className="font-mono text-xs text-ink/70">Founded {data.yearFounded}</span>
                 </div>
               )}
               {data.location && (
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-3.5 h-3.5 text-[#C8C0B4]" />
-                  <span className="font-mono text-xs text-[#0A0A0A]/70">{data.location}</span>
+                  <MapPin className="w-3.5 h-3.5 text-sand" />
+                  <span className="font-mono text-xs text-ink/70">{data.location}</span>
                 </div>
               )}
               {data.industry && (
                 <div className="flex items-center gap-2">
-                  <Building2 className="w-3.5 h-3.5 text-[#C8C0B4]" />
-                  <span className="font-mono text-xs text-[#0A0A0A]/70">{data.industry}</span>
+                  <Building2 className="w-3.5 h-3.5 text-sand" />
+                  <span className="font-mono text-xs text-ink/70">{data.industry}</span>
                 </div>
               )}
             </div>
           </div>
 
           {/* Contact */}
-          <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-5">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-4">Contact</p>
+          <div className="border border-shell bg-cream p-5">
+            <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-4">Contact</p>
             <div className="space-y-3">
               {data.phone && (
                 <div className="flex items-center gap-2">
-                  <Phone className="w-3.5 h-3.5 text-[#C8C0B4]" />
-                  <span className="font-mono text-xs text-[#0A0A0A]/70">{data.phone}</span>
+                  <Phone className="w-3.5 h-3.5 text-sand" />
+                  <span className="font-mono text-xs text-ink/70">{data.phone}</span>
                 </div>
               )}
               {data.email && (
                 <div className="flex items-center gap-2">
-                  <Mail className="w-3.5 h-3.5 text-[#C8C0B4]" />
-                  <span className="font-mono text-xs text-[#0A0A0A]/70">{data.email}</span>
+                  <Mail className="w-3.5 h-3.5 text-sand" />
+                  <span className="font-mono text-xs text-ink/70">{data.email}</span>
                 </div>
               )}
               {data.address && (
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-3.5 h-3.5 text-[#C8C0B4]" />
-                  <span className="font-mono text-xs text-[#0A0A0A]/70">{data.address}</span>
+                  <MapPin className="w-3.5 h-3.5 text-sand" />
+                  <span className="font-mono text-xs text-ink/70">{data.address}</span>
                 </div>
               )}
             </div>
@@ -952,12 +952,12 @@ function AboutView({ brand, data }: ViewProps) {
 
           {/* Social Links */}
           {socials.length > 0 && (
-            <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-5">
-              <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-4">Social</p>
+            <div className="border border-shell bg-cream p-5">
+              <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-4">Social</p>
               <div className="space-y-2">
                 {socials.map(([platform, url]) => (
-                  <a key={platform} href={url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-mono text-xs text-[#0A0A0A]/70 hover:text-[#0A0A0A]">
-                    <ExternalLink className="w-3 h-3 text-[#C8C0B4]" />
+                  <a key={platform} href={url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 font-mono text-xs text-ink/70 hover:text-ink">
+                    <ExternalLink className="w-3 h-3 text-sand" />
                     {platform.charAt(0).toUpperCase() + platform.slice(1)}
                   </a>
                 ))}
@@ -986,18 +986,18 @@ function ClientDashboardView({ brand, data, seed, onNavigate }: ViewProps) {
   const creditPct = Math.round((creditUsed / creditLimit) * 100);
 
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       {/* Welcome header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Welcome back{ctx.greeting ? `, ${ctx.greeting} ${ctx.personName.split(" ")[0]}` : `, ${ctx.personName.split(" ")[0]}`}</h2>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Welcome back{ctx.greeting ? `, ${ctx.greeting} ${ctx.personName.split(" ")[0]}` : `, ${ctx.personName.split(" ")[0]}`}</h2>
           <div className="flex items-center gap-2 mt-1">
-            <span className="text-xs text-[#0A0A0A]/50">{seed.clients[0]?.name || "Restaurant"}</span>
+            <span className="text-xs text-ink/50">{seed.clients[0]?.name || "Restaurant"}</span>
             <span className="border border-amber-300 bg-amber-100 text-amber-800 px-2 py-0.5 text-[9px] uppercase tracking-wider font-medium">Bronze</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <div className="px-3 py-1.5 text-[10px] uppercase tracking-wide text-[#F9F7F4] flex items-center gap-1" style={{ backgroundColor: brand.color }}>
+          <div className="px-3 py-1.5 text-[10px] uppercase tracking-wide text-cream flex items-center gap-1" style={{ backgroundColor: brand.color }}>
             <Star className="w-3 h-3" /> 4,280 Points
           </div>
         </div>
@@ -1011,52 +1011,52 @@ function ClientDashboardView({ brand, data, seed, onNavigate }: ViewProps) {
           { label: "Avg Order Value", value: "$638", icon: TrendingUp },
           { label: "Loyalty Points", value: "4,280", icon: Heart },
         ].map((kpi) => (
-          <div key={kpi.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
+          <div key={kpi.label} className="border border-shell bg-cream p-4">
             <div className="flex items-center justify-between pb-2">
               <kpi.icon className="w-4 h-4" style={{ color: `${brand.color}60` }} strokeWidth={1.5} />
             </div>
             <div className="text-2xl font-bold font-serif" style={{ color: brand.color }}>{kpi.value}</div>
-            <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mt-0.5">{kpi.label}</div>
+            <div className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mt-0.5">{kpi.label}</div>
           </div>
         ))}
       </div>
 
       {/* Credit Utilization */}
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-4 mb-6">
+      <div className="border border-shell bg-cream p-4 mb-6">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Credit Utilization</span>
-          <span className="font-mono text-xs text-[#0A0A0A]">${creditUsed.toLocaleString()} / ${creditLimit.toLocaleString()}</span>
+          <span className="text-xs font-medium text-ink/50 uppercase tracking-wider">Credit Utilization</span>
+          <span className="font-mono text-xs text-ink">${creditUsed.toLocaleString()} / ${creditLimit.toLocaleString()}</span>
         </div>
-        <div className="h-1.5 bg-[#E5E1DB] overflow-hidden">
+        <div className="h-1.5 bg-shell overflow-hidden">
           <div className="h-full transition-all" style={{ width: `${creditPct}%`, backgroundColor: creditPct > 80 ? "#EF4444" : creditPct > 60 ? "#F59E0B" : brand.color }} />
         </div>
-        <p className="text-[10px] text-[#C8C0B4] mt-1">{creditPct}% utilized · Net 30 terms</p>
+        <p className="text-[10px] text-sand mt-1">{creditPct}% utilized · Net 30 terms</p>
       </div>
 
       {/* Quick Reorder — Wholesail style */}
       {top4Products.length > 0 && (
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] mb-6">
-          <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center justify-between">
-            <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Quick Reorder</span>
-            <span className="text-[10px] text-[#C8C0B4]">Your Favorites</span>
+        <div className="border border-shell bg-cream mb-6">
+          <div className="px-4 py-3 border-b border-shell flex items-center justify-between">
+            <span className="text-xs font-medium text-ink/50 uppercase tracking-wider">Quick Reorder</span>
+            <span className="text-[10px] text-sand">Your Favorites</span>
           </div>
           <div className="p-4 flex gap-3 overflow-x-auto pb-1">
             {top4Products.map((p, i) => (
-              <div key={`${p.name}-${i}`} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4 min-w-[180px] flex-shrink-0 flex flex-col gap-3">
+              <div key={`${p.name}-${i}`} className="border border-shell bg-cream p-4 min-w-[180px] flex-shrink-0 flex flex-col gap-3">
                 <div>
-                  <p className="font-medium text-sm text-[#0A0A0A] leading-snug">{p.name}</p>
-                  <p className="text-xs text-[#0A0A0A]/40 mt-0.5">Last ordered {3 + i}d ago</p>
+                  <p className="font-medium text-sm text-ink leading-snug">{p.name}</p>
+                  <p className="text-xs text-ink/40 mt-0.5">Last ordered {3 + i}d ago</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="h-7 w-7 border border-[#C8C0B4] text-[#0A0A0A] flex items-center justify-center hover:bg-[#C8C0B4]/20 transition-colors">
+                  <button className="h-7 w-7 border border-sand text-ink flex items-center justify-center hover:bg-sand/20 transition-colors">
                     <Minus className="w-3 h-3" />
                   </button>
-                  <span className="text-sm font-semibold text-[#0A0A0A] w-6 text-center">{2 + i}</span>
-                  <button className="h-7 w-7 border border-[#C8C0B4] text-[#0A0A0A] flex items-center justify-center hover:bg-[#C8C0B4]/20 transition-colors">
+                  <span className="text-sm font-semibold text-ink w-6 text-center">{2 + i}</span>
+                  <button className="h-7 w-7 border border-sand text-ink flex items-center justify-center hover:bg-sand/20 transition-colors">
                     <Plus className="w-3 h-3" />
                   </button>
                 </div>
-                <button className="text-[#F9F7F4] text-xs min-h-[36px] font-medium transition-opacity hover:opacity-85" style={{ backgroundColor: brand.color }}>
+                <button className="text-cream text-xs min-h-[36px] font-medium transition-opacity hover:opacity-85" style={{ backgroundColor: brand.color }}>
                   Add to Order
                 </button>
               </div>
@@ -1067,19 +1067,19 @@ function ClientDashboardView({ brand, data, seed, onNavigate }: ViewProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Recent Orders */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
-          <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center justify-between">
-            <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Recent Orders</span>
-            <button className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono hover:text-[#0A0A0A]">View All</button>
+        <div className="border border-shell bg-cream">
+          <div className="px-4 py-3 border-b border-shell flex items-center justify-between">
+            <span className="text-xs font-medium text-ink/50 uppercase tracking-wider">Recent Orders</span>
+            <button className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono hover:text-ink">View All</button>
           </div>
           {recentOrders.map((order) => (
-            <div key={order.number} className="px-4 py-3 border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02] transition-colors flex items-center justify-between">
+            <div key={order.number} className="px-4 py-3 border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors flex items-center justify-between">
               <div>
-                <div className="font-mono text-xs font-semibold text-[#0A0A0A]">{order.number}</div>
-                <div className="text-[10px] text-[#C8C0B4]">{order.date} · {order.itemCount} items</div>
+                <div className="font-mono text-xs font-semibold text-ink">{order.number}</div>
+                <div className="text-[10px] text-sand">{order.date} · {order.itemCount} items</div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="font-mono text-xs font-bold text-[#0A0A0A]">${order.total.toLocaleString()}</span>
+                <span className="font-mono text-xs font-bold text-ink">${order.total.toLocaleString()}</span>
                 <StatusBadge status={order.status} brandColor={brand.color} />
               </div>
             </div>
@@ -1087,19 +1087,19 @@ function ClientDashboardView({ brand, data, seed, onNavigate }: ViewProps) {
         </div>
 
         {/* Monthly Spending — horizontal bars (Wholesail style) */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
-          <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider block mb-4">Monthly Spending</span>
+        <div className="border border-shell bg-cream p-4">
+          <span className="text-xs font-medium text-ink/50 uppercase tracking-wider block mb-4">Monthly Spending</span>
           <div className="space-y-2">
             {months.map((m, i) => (
               <div key={m} className="flex items-center gap-3">
-                <div className="w-8 text-xs font-medium text-[#0A0A0A]/50">{m}</div>
-                <div className="flex-1 h-7 bg-[#C8C0B4]/20 overflow-hidden">
+                <div className="w-8 text-xs font-medium text-ink/50">{m}</div>
+                <div className="flex-1 h-7 bg-sand/20 overflow-hidden">
                   <div
                     className="h-full transition-all"
                     style={{ width: `${(spending[i] / maxSpend) * 100}%`, backgroundColor: brand.color }}
                   />
                 </div>
-                <div className="w-14 text-xs font-semibold text-right text-[#0A0A0A]">
+                <div className="w-14 text-xs font-semibold text-right text-ink">
                   ${(spending[i] / 1000).toFixed(1)}k
                 </div>
               </div>
@@ -1117,32 +1117,32 @@ function ClientDashboardView({ brand, data, seed, onNavigate }: ViewProps) {
 
 function ClientOrdersView({ brand, seed }: ViewProps) {
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Order History</p>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Your Orders</h2>
+          <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Order History</p>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Your Orders</h2>
         </div>
-        <button className="px-4 py-2 font-mono text-[10px] uppercase tracking-wide text-[#F9F7F4] border" style={{ backgroundColor: brand.color, borderColor: brand.color }}>
+        <button className="px-4 py-2 font-mono text-[10px] uppercase tracking-wide text-cream border" style={{ backgroundColor: brand.color, borderColor: brand.color }}>
           <Plus className="w-3 h-3 inline mr-1" /> New Order
         </button>
       </div>
 
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
-        <div className="grid grid-cols-6 gap-4 px-4 py-2 border-b border-[#E5E1DB]">
+      <div className="border border-shell bg-cream">
+        <div className="grid grid-cols-6 gap-4 px-4 py-2 border-b border-shell">
           {["Order", "Date", "Items", "Total", "Status", ""].map((h) => (
-            <div key={h || "action"} className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs font-mono">{h}</div>
+            <div key={h || "action"} className="text-ink/50 uppercase tracking-wider text-xs font-mono">{h}</div>
           ))}
         </div>
         {seed.orders.slice(0, 6).map((order) => (
-          <div key={order.number} className="grid grid-cols-6 gap-4 px-4 py-3 border-b border-[#E5E1DB]/50 hover:bg-white/50 cursor-pointer">
+          <div key={order.number} className="grid grid-cols-6 gap-4 px-4 py-3 border-b border-shell/50 hover:bg-white/50 cursor-pointer">
             <div className="font-mono text-xs font-semibold" style={{ color: brand.color }}>{order.number}</div>
-            <div className="font-mono text-xs text-[#0A0A0A]/70">{order.date}</div>
-            <div className="font-mono text-xs text-[#C8C0B4]">{order.itemCount} items</div>
-            <div className="font-mono text-xs font-semibold text-[#0A0A0A]">${order.total.toLocaleString()}</div>
+            <div className="font-mono text-xs text-ink/70">{order.date}</div>
+            <div className="font-mono text-xs text-sand">{order.itemCount} items</div>
+            <div className="font-mono text-xs font-semibold text-ink">${order.total.toLocaleString()}</div>
             <div><StatusBadge status={order.status} brandColor={brand.color} /></div>
             <div>
-              <button className="font-mono text-[10px] text-[#0A0A0A]/40 hover:text-[#0A0A0A] uppercase">View</button>
+              <button className="font-mono text-[10px] text-ink/40 hover:text-ink uppercase">View</button>
             </div>
           </div>
         ))}
@@ -1162,10 +1162,10 @@ function ClientInvoicesView({ brand, seed }: ViewProps) {
   const paid = seed.invoices.filter((i) => i.status === "Paid").reduce((s, i) => s + i.amount, 0);
 
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="mb-6">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Billing</p>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Your Invoices</h2>
+        <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Billing</p>
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Your Invoices</h2>
       </div>
 
       {/* Aging summary */}
@@ -1176,26 +1176,26 @@ function ClientInvoicesView({ brand, seed }: ViewProps) {
           { label: "Overdue", value: formatCurrency(overdue), color: "#92400E" },
           { label: "Paid (Feb)", value: formatCurrency(paid), color: "#0A0A0A" },
         ].map((s) => (
-          <div key={s.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
+          <div key={s.label} className="border border-shell bg-cream p-4">
             <div className="font-mono text-lg font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">{s.label}</div>
+            <div className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono">{s.label}</div>
           </div>
         ))}
       </div>
 
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
-        <div className="grid grid-cols-5 gap-4 px-4 py-2 border-b border-[#E5E1DB]">
+      <div className="border border-shell bg-cream">
+        <div className="grid grid-cols-5 gap-4 px-4 py-2 border-b border-shell">
           {["Invoice", "Description", "Amount", "Status", "Due Date"].map((h) => (
-            <div key={h} className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs font-mono">{h}</div>
+            <div key={h} className="text-ink/50 uppercase tracking-wider text-xs font-mono">{h}</div>
           ))}
         </div>
         {seed.invoices.map((inv) => (
-          <div key={inv.number} className="grid grid-cols-5 gap-4 px-4 py-3 border-b border-[#E5E1DB]/50 hover:bg-white/50 cursor-pointer">
+          <div key={inv.number} className="grid grid-cols-5 gap-4 px-4 py-3 border-b border-shell/50 hover:bg-white/50 cursor-pointer">
             <div className="font-mono text-xs font-semibold" style={{ color: brand.color }}>{inv.number}</div>
-            <div className="font-mono text-xs text-[#0A0A0A]/70">{inv.client}</div>
-            <div className="font-mono text-xs font-semibold text-[#0A0A0A]">${inv.amount.toLocaleString()}</div>
+            <div className="font-mono text-xs text-ink/70">{inv.client}</div>
+            <div className="font-mono text-xs font-semibold text-ink">${inv.amount.toLocaleString()}</div>
             <div><StatusBadge status={inv.status} brandColor={brand.color} /></div>
-            <div className="font-mono text-xs text-[#C8C0B4]">{inv.due}</div>
+            <div className="font-mono text-xs text-sand">{inv.due}</div>
           </div>
         ))}
       </div>
@@ -1215,19 +1215,19 @@ function ClientAnalyticsView({ brand, data }: ViewProps) {
   const orderFreqs = [12, 10, 8, 6, 4];
 
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="mb-6">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Insights</p>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Your Analytics</h2>
+        <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Insights</p>
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Your Analytics</h2>
       </div>
 
       {/* Monthly Spending */}
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6 mb-6">
-        <div className="font-mono text-xs uppercase tracking-wider font-semibold text-[#0A0A0A] mb-4">Monthly Spending</div>
+      <div className="border border-shell bg-cream p-6 mb-6">
+        <div className="font-mono text-xs uppercase tracking-wider font-semibold text-ink mb-4">Monthly Spending</div>
         <div className="flex items-end gap-3 h-40">
           {months.map((m, i) => (
             <div key={m} className="flex-1 flex flex-col items-center gap-1">
-              <div className="font-mono text-[9px] font-semibold text-[#0A0A0A]">${(spending[i] / 1000).toFixed(1)}K</div>
+              <div className="font-mono text-[9px] font-semibold text-ink">${(spending[i] / 1000).toFixed(1)}K</div>
               <div
                 className="w-full transition-all"
                 style={{
@@ -1235,7 +1235,7 @@ function ClientAnalyticsView({ brand, data }: ViewProps) {
                   backgroundColor: i === months.length - 1 ? brand.color : `${brand.color}30`,
                 }}
               />
-              <div className="font-mono text-[9px] text-[#C8C0B4]">{m}</div>
+              <div className="font-mono text-[9px] text-sand">{m}</div>
             </div>
           ))}
         </div>
@@ -1243,39 +1243,39 @@ function ClientAnalyticsView({ brand, data }: ViewProps) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Top Products */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
-          <div className="px-4 py-3 border-b border-[#E5E1DB]">
-            <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#0A0A0A]">Top Products by Frequency</span>
+        <div className="border border-shell bg-cream">
+          <div className="px-4 py-3 border-b border-shell">
+            <span className="font-mono text-xs uppercase tracking-wider font-semibold text-ink">Top Products by Frequency</span>
           </div>
           {topProducts.map((p, i) => (
-            <div key={`${p.name}-${i}`} className="px-4 py-3 border-b border-[#E5E1DB]/50 flex items-center justify-between">
+            <div key={`${p.name}-${i}`} className="px-4 py-3 border-b border-shell/50 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="font-mono text-[10px] text-[#C8C0B4] w-4">{i + 1}.</span>
-                <span className="font-serif text-xs text-[#0A0A0A]">{p.name}</span>
+                <span className="font-mono text-[10px] text-sand w-4">{i + 1}.</span>
+                <span className="font-serif text-xs text-ink">{p.name}</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-16 h-1.5 bg-[#E5E1DB]">
+                <div className="w-16 h-1.5 bg-shell">
                   <div className="h-full" style={{ width: `${(orderFreqs[i] / orderFreqs[0]) * 100}%`, backgroundColor: brand.color }} />
                 </div>
-                <span className="font-mono text-[10px] text-[#C8C0B4]">{orderFreqs[i]} orders</span>
+                <span className="font-mono text-[10px] text-sand">{orderFreqs[i]} orders</span>
               </div>
             </div>
           ))}
         </div>
 
         {/* Order Frequency */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
-          <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#0A0A0A] block mb-4">Order Frequency Trend</span>
+        <div className="border border-shell bg-cream p-4">
+          <span className="font-mono text-xs uppercase tracking-wider font-semibold text-ink block mb-4">Order Frequency Trend</span>
           <div className="space-y-3">
             {months.map((m, i) => {
               const count = [4, 6, 5, 8, 7, 9][i];
               return (
                 <div key={m} className="flex items-center gap-3">
-                  <span className="font-mono text-[10px] text-[#C8C0B4] w-8">{m}</span>
-                  <div className="flex-1 h-2 bg-[#E5E1DB]">
+                  <span className="font-mono text-[10px] text-sand w-8">{m}</span>
+                  <div className="flex-1 h-2 bg-shell">
                     <div className="h-full" style={{ width: `${(count / 9) * 100}%`, backgroundColor: i === months.length - 1 ? brand.color : `${brand.color}50` }} />
                   </div>
-                  <span className="font-mono text-[10px] text-[#0A0A0A] w-4 text-right">{count}</span>
+                  <span className="font-mono text-[10px] text-ink w-4 text-right">{count}</span>
                 </div>
               );
             })}
@@ -1300,22 +1300,22 @@ function ClientReferralsView({ brand, data }: ViewProps) {
   };
 
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="mb-6">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Earn Rewards</p>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Referral Program</h2>
+        <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Earn Rewards</p>
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Referral Program</h2>
       </div>
 
       {/* Referral Code */}
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6 mb-6">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-3">Your Referral Code</p>
+      <div className="border border-shell bg-cream p-6 mb-6">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-3">Your Referral Code</p>
         <div className="flex items-center gap-3">
-          <div className="flex-1 border border-[#E5E1DB] bg-white px-4 py-3">
-            <span className="font-mono text-sm font-semibold tracking-wider text-[#0A0A0A]">{refCode}</span>
+          <div className="flex-1 border border-shell bg-white px-4 py-3">
+            <span className="font-mono text-sm font-semibold tracking-wider text-ink">{refCode}</span>
           </div>
           <button
             onClick={handleCopy}
-            className="px-4 py-3 font-mono text-[10px] uppercase tracking-wide text-[#F9F7F4] border flex items-center gap-2"
+            className="px-4 py-3 font-mono text-[10px] uppercase tracking-wide text-cream border flex items-center gap-2"
             style={{ backgroundColor: brand.color, borderColor: brand.color }}
           >
             {copied ? <CheckCircle2 className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
@@ -1325,8 +1325,8 @@ function ClientReferralsView({ brand, data }: ViewProps) {
       </div>
 
       {/* How it works */}
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6 mb-6">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-4">How It Works</p>
+      <div className="border border-shell bg-cream p-6 mb-6">
+        <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-4">How It Works</p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {[
             { step: "01", title: "Share Your Code", desc: "Send your unique referral code to other businesses in your network" },
@@ -1334,11 +1334,11 @@ function ClientReferralsView({ brand, data }: ViewProps) {
             { step: "03", title: "Earn Rewards", desc: "Get $50 credit for each successful referral — no limit on earnings" },
           ].map((s) => (
             <div key={s.step} className="text-center">
-              <div className="w-10 h-10 mx-auto mb-3 flex items-center justify-center border border-[#E5E1DB]">
+              <div className="w-10 h-10 mx-auto mb-3 flex items-center justify-center border border-shell">
                 <span className="font-mono text-sm font-bold" style={{ color: brand.color }}>{s.step}</span>
               </div>
-              <div className="font-serif text-sm font-semibold text-[#0A0A0A] mb-1">{s.title}</div>
-              <div className="font-sans text-xs text-[#C8C0B4]">{s.desc}</div>
+              <div className="font-serif text-sm font-semibold text-ink mb-1">{s.title}</div>
+              <div className="font-sans text-xs text-sand">{s.desc}</div>
             </div>
           ))}
         </div>
@@ -1351,9 +1351,9 @@ function ClientReferralsView({ brand, data }: ViewProps) {
           { label: "Successful", value: "5" },
           { label: "Credits Earned", value: "$250" },
         ].map((s) => (
-          <div key={s.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4 text-center">
-            <div className="font-mono text-xl font-bold text-[#0A0A0A]">{s.value}</div>
-            <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">{s.label}</div>
+          <div key={s.label} className="border border-shell bg-cream p-4 text-center">
+            <div className="font-mono text-xl font-bold text-ink">{s.value}</div>
+            <div className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono">{s.label}</div>
           </div>
         ))}
       </div>
@@ -1368,18 +1368,18 @@ function ClientReferralsView({ brand, data }: ViewProps) {
 function ClientSettingsView({ brand, data, seed }: ViewProps) {
   const ctx = getIndustryContext(data.industry);
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="mb-6">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Account</p>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Settings</h2>
+        <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Account</p>
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Settings</h2>
       </div>
 
       <div className="space-y-4 max-w-2xl">
         {/* Profile */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6">
+        <div className="border border-shell bg-cream p-6">
           <div className="flex items-center justify-between mb-4">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">Profile Information</p>
-            <button className="font-mono text-[10px] uppercase tracking-wide text-[#0A0A0A]/60 hover:text-[#0A0A0A] flex items-center gap-1">
+            <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono">Profile Information</p>
+            <button className="font-mono text-[10px] uppercase tracking-wide text-ink/60 hover:text-ink flex items-center gap-1">
               <Edit className="w-3 h-3" /> Edit
             </button>
           </div>
@@ -1393,16 +1393,16 @@ function ClientSettingsView({ brand, data, seed }: ViewProps) {
               { label: "Net Terms", value: "Net 30" },
             ].map((f) => (
               <div key={f.label}>
-                <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">{f.label}</div>
-                <div className="font-mono text-xs text-[#0A0A0A]">{f.value}</div>
+                <div className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">{f.label}</div>
+                <div className="font-mono text-xs text-ink">{f.value}</div>
               </div>
             ))}
           </div>
         </div>
 
         {/* Notifications */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6">
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-4">Notification Preferences</p>
+        <div className="border border-shell bg-cream p-6">
+          <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-4">Notification Preferences</p>
           <div className="space-y-3">
             {[
               { label: "Order confirmations", enabled: true },
@@ -1412,17 +1412,17 @@ function ClientSettingsView({ brand, data, seed }: ViewProps) {
               { label: "Price change alerts", enabled: true },
             ].map((n) => (
               <div key={n.label} className="flex items-center justify-between py-1">
-                <span className="font-sans text-xs text-[#0A0A0A]/80">{n.label}</span>
+                <span className="font-sans text-xs text-ink/80">{n.label}</span>
                 <div
                   className="w-8 h-4 border relative cursor-pointer"
-                  style={{ borderColor: n.enabled ? brand.color : "#E5E1DB", backgroundColor: n.enabled ? brand.color : "transparent" }}
+                  style={{ borderColor: n.enabled ? brand.color : "var(--color-shell)", backgroundColor: n.enabled ? brand.color : "transparent" }}
                 >
                   <div
                     className="w-3 h-3 border absolute top-0"
                     style={{
                       left: n.enabled ? "calc(100% - 12px)" : "0px",
-                      backgroundColor: n.enabled ? "#F9F7F4" : "#C8C0B4",
-                      borderColor: n.enabled ? brand.color : "#E5E1DB",
+                      backgroundColor: n.enabled ? "var(--color-cream)" : "#C8C0B4",
+                      borderColor: n.enabled ? brand.color : "var(--color-shell)",
                     }}
                   />
                 </div>
@@ -1432,10 +1432,10 @@ function ClientSettingsView({ brand, data, seed }: ViewProps) {
         </div>
 
         {/* Addresses */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6">
+        <div className="border border-shell bg-cream p-6">
           <div className="flex items-center justify-between mb-4">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">Delivery Addresses</p>
-            <button className="font-mono text-[10px] uppercase tracking-wide text-[#F9F7F4] px-3 py-1 flex items-center gap-1" style={{ backgroundColor: brand.color }}>
+            <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono">Delivery Addresses</p>
+            <button className="font-mono text-[10px] uppercase tracking-wide text-cream px-3 py-1 flex items-center gap-1" style={{ backgroundColor: brand.color }}>
               <Plus className="w-3 h-3" /> Add
             </button>
           </div>
@@ -1444,12 +1444,12 @@ function ClientSettingsView({ brand, data, seed }: ViewProps) {
               { label: ctx.locationLabel, address: ctx.locationAddr },
               { label: ctx.secondaryLabel, address: ctx.secondaryAddr },
             ].map((a) => (
-              <div key={a.label} className="flex items-center justify-between py-2 border-b border-[#E5E1DB]/50 last:border-0">
+              <div key={a.label} className="flex items-center justify-between py-2 border-b border-shell/50 last:border-0">
                 <div>
-                  <div className="font-mono text-xs font-semibold text-[#0A0A0A]">{a.label}</div>
-                  <div className="font-mono text-[10px] text-[#C8C0B4]">{a.address}</div>
+                  <div className="font-mono text-xs font-semibold text-ink">{a.label}</div>
+                  <div className="font-mono text-[10px] text-sand">{a.address}</div>
                 </div>
-                <button className="font-mono text-[10px] text-[#0A0A0A]/40 hover:text-[#0A0A0A] uppercase">Edit</button>
+                <button className="font-mono text-[10px] text-ink/40 hover:text-ink uppercase">Edit</button>
               </div>
             ))}
           </div>
@@ -1473,13 +1473,13 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
   const maxCatRev = Math.max(...catRevenues);
 
   return (
-    <div className="p-3 sm:p-6 bg-[#F9F7F4]">
+    <div className="p-3 sm:p-6 bg-cream">
       <div className="flex items-center justify-between mb-4 sm:mb-6 gap-2">
         <div className="min-w-0">
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Executive Overview</p>
-          <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-[#0A0A0A]">CEO Command Center</h2>
+          <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Executive Overview</p>
+          <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-ink">CEO Command Center</h2>
         </div>
-        <button className="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-[#E5E1DB] bg-[#F9F7F4] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors flex-shrink-0">
+        <button className="hidden sm:inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-shell bg-cream text-ink hover:bg-ink hover:text-cream transition-colors flex-shrink-0">
           <Download className="w-3.5 h-3.5" /> Export Summary
         </button>
       </div>
@@ -1495,13 +1495,13 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
           { label: "Orders (Feb)", value: "37", sub: "+15% vs Jan", icon: ShoppingCart, change: "+15%" },
           { label: "30-Day Forecast", value: "$19.8K", sub: "Based on pipeline", icon: Target },
         ].map((kpi) => (
-          <div key={kpi.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-2.5 sm:p-4">
+          <div key={kpi.label} className="border border-shell bg-cream p-2.5 sm:p-4">
             <div className="flex items-center justify-between pb-1.5 sm:pb-2">
-              <span className="text-[8px] sm:text-[9px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider leading-tight">{kpi.label}</span>
+              <span className="text-[8px] sm:text-[9px] font-medium text-ink/50 uppercase tracking-wider leading-tight">{kpi.label}</span>
               <kpi.icon className="h-3 w-3 sm:h-3.5 sm:w-3.5 flex-shrink-0" style={{ color: `${brand.color}60` }} />
             </div>
             <div className="text-lg sm:text-2xl md:text-3xl font-bold font-serif leading-tight" style={{ color: brand.color }}>{kpi.value}</div>
-            <p className="text-[9px] sm:text-[10px] text-[#0A0A0A]/40 mt-1 leading-tight">
+            <p className="text-[9px] sm:text-[10px] text-ink/40 mt-1 leading-tight">
               {kpi.change && <span className="text-emerald-600 font-medium">{kpi.change} </span>}
               {kpi.sub}
             </p>
@@ -1510,29 +1510,29 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
       </div>
 
       {/* NRR Card */}
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-5 mb-6">
+      <div className="border border-shell bg-cream p-5 mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <span className="text-[9px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Net Revenue Retention</span>
+            <span className="text-[9px] font-medium text-ink/50 uppercase tracking-wider">Net Revenue Retention</span>
             <div className="text-3xl font-bold font-serif text-emerald-600 mt-1">108%</div>
-            <p className="text-[10px] text-[#0A0A0A]/40 mt-0.5">Expansion outpacing churn — healthy growth</p>
+            <p className="text-[10px] text-ink/40 mt-0.5">Expansion outpacing churn — healthy growth</p>
           </div>
           <div className="text-right">
-            <div className="text-xs text-[#0A0A0A]/50">Expansion: <span className="font-semibold text-emerald-600">+$8.2K</span></div>
-            <div className="text-xs text-[#0A0A0A]/50">Contraction: <span className="font-semibold text-red-500">-$1.4K</span></div>
-            <div className="text-xs text-[#0A0A0A]/50">Churned: <span className="font-semibold text-red-500">-$0.6K</span></div>
+            <div className="text-xs text-ink/50">Expansion: <span className="font-semibold text-emerald-600">+$8.2K</span></div>
+            <div className="text-xs text-ink/50">Contraction: <span className="font-semibold text-red-500">-$1.4K</span></div>
+            <div className="text-xs text-ink/50">Churned: <span className="font-semibold text-red-500">-$0.6K</span></div>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
         {/* Revenue Trend */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-5">
-          <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Revenue Trend (12 Months)</span>
+        <div className="border border-shell bg-cream p-5">
+          <span className="text-xs font-medium text-ink/50 uppercase tracking-wider">Revenue Trend (12 Months)</span>
           <div className="flex items-end gap-1.5 h-36 mt-4">
             {months.map((m, i) => (
               <div key={m} className="flex-1 flex flex-col items-center gap-1">
-                <div className="font-mono text-[8px] font-semibold text-[#0A0A0A]">${monthlyRev[i]}K</div>
+                <div className="font-mono text-[8px] font-semibold text-ink">${monthlyRev[i]}K</div>
                 <div
                   className="w-full transition-all"
                   style={{
@@ -1541,20 +1541,20 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
                     opacity: i === months.length - 1 ? 1 : i >= months.length - 3 ? 0.6 : 0.3,
                   }}
                 />
-                <div className="font-mono text-[8px] text-[#C8C0B4]">{m}</div>
+                <div className="font-mono text-[8px] text-sand">{m}</div>
               </div>
             ))}
           </div>
         </div>
 
         {/* Revenue by Category */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-5">
-          <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Revenue by Category</span>
+        <div className="border border-shell bg-cream p-5">
+          <span className="text-xs font-medium text-ink/50 uppercase tracking-wider">Revenue by Category</span>
           <div className="space-y-3 mt-4">
             {categories.slice(0, 6).map((cat, i) => (
               <div key={cat} className="flex items-center gap-3">
-                <span className="text-xs text-[#0A0A0A] w-28 truncate font-medium">{cat}</span>
-                <div className="flex-1 h-6 bg-[#E5E1DB]/40 overflow-hidden">
+                <span className="text-xs text-ink w-28 truncate font-medium">{cat}</span>
+                <div className="flex-1 h-6 bg-shell/40 overflow-hidden">
                   <div
                     className="h-full transition-all"
                     style={{
@@ -1564,7 +1564,7 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
                     }}
                   />
                 </div>
-                <span className="font-mono text-xs font-bold text-[#0A0A0A] w-12 text-right">${catRevenues[i]}K</span>
+                <span className="font-mono text-xs font-bold text-ink w-12 text-right">${catRevenues[i]}K</span>
               </div>
             ))}
           </div>
@@ -1573,19 +1573,19 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Top Clients */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
-          <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center justify-between">
-            <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Top Clients by Revenue</span>
-            <button className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono hover:text-[#0A0A0A]">View All</button>
+        <div className="border border-shell bg-cream">
+          <div className="px-4 py-3 border-b border-shell flex items-center justify-between">
+            <span className="text-xs font-medium text-ink/50 uppercase tracking-wider">Top Clients by Revenue</span>
+            <button className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono hover:text-ink">View All</button>
           </div>
           <table className="w-full text-sm">
             <tbody>
               {seed.clients.slice(0, 5).map((client, i) => (
-                <tr key={client.name} className="border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02] transition-colors">
-                  <td className="px-4 py-3 font-mono text-[#C8C0B4] w-6">{i + 1}</td>
-                  <td className="py-3 font-medium text-[#0A0A0A]">{client.name}</td>
+                <tr key={client.name} className="border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors">
+                  <td className="px-4 py-3 font-mono text-sand w-6">{i + 1}</td>
+                  <td className="py-3 font-medium text-ink">{client.name}</td>
                   <td className="py-3"><StatusBadge status={client.tier} brandColor={brand.color} /></td>
-                  <td className="px-4 py-3 text-right font-mono font-bold text-[#0A0A0A]">{client.spend}</td>
+                  <td className="px-4 py-3 text-right font-mono font-bold text-ink">{client.spend}</td>
                 </tr>
               ))}
             </tbody>
@@ -1593,19 +1593,19 @@ function AdminDashboardView({ brand, data, seed }: ViewProps) {
         </div>
 
         {/* Recent Orders */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
-          <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center justify-between">
-            <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Recent Orders</span>
-            <button className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono hover:text-[#0A0A0A]">View All</button>
+        <div className="border border-shell bg-cream">
+          <div className="px-4 py-3 border-b border-shell flex items-center justify-between">
+            <span className="text-xs font-medium text-ink/50 uppercase tracking-wider">Recent Orders</span>
+            <button className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono hover:text-ink">View All</button>
           </div>
           {seed.orders.slice(0, 5).map((order) => (
-            <div key={order.number} className="px-4 py-3 border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02] transition-colors flex items-center justify-between">
+            <div key={order.number} className="px-4 py-3 border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors flex items-center justify-between">
               <div>
-                <div className="font-mono text-xs font-semibold text-[#0A0A0A]">{order.number}</div>
-                <div className="font-mono text-[10px] text-[#C8C0B4]">{order.client} · {order.date}</div>
+                <div className="font-mono text-xs font-semibold text-ink">{order.number}</div>
+                <div className="font-mono text-[10px] text-sand">{order.client} · {order.date}</div>
               </div>
               <div className="flex items-center gap-3">
-                <span className="font-mono text-xs font-bold text-[#0A0A0A]">${order.total.toLocaleString()}</span>
+                <span className="font-mono text-xs font-bold text-ink">${order.total.toLocaleString()}</span>
                 <StatusBadge status={order.status} brandColor={brand.color} />
               </div>
             </div>
@@ -1626,17 +1626,17 @@ function AdminOrdersView({ brand, seed }: ViewProps) {
   const filtered = filter === "All" ? seed.orders : seed.orders.filter((o) => o.status === filter);
 
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Management</p>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Order Management</h2>
+          <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Management</p>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Order Management</h2>
         </div>
         <div className="flex gap-2">
-          <button className="px-3 py-2 font-mono text-[10px] uppercase tracking-wide border border-[#E5E1DB] text-[#C8C0B4] hover:border-[#0A0A0A] hover:text-[#0A0A0A] flex items-center gap-1">
+          <button className="px-3 py-2 font-mono text-[10px] uppercase tracking-wide border border-shell text-sand hover:border-ink hover:text-ink flex items-center gap-1">
             <Download className="w-3 h-3" /> Export CSV
           </button>
-          <button className="px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-[#F9F7F4] border" style={{ backgroundColor: brand.color, borderColor: brand.color }}>
+          <button className="px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-cream border" style={{ backgroundColor: brand.color, borderColor: brand.color }}>
             <Plus className="w-3 h-3 inline mr-1" /> New Order
           </button>
         </div>
@@ -1650,8 +1650,8 @@ function AdminOrdersView({ brand, seed }: ViewProps) {
             className="px-3 py-1.5 font-mono text-[10px] uppercase tracking-wide border transition-colors"
             style={
               filter === f
-                ? { backgroundColor: "#0A0A0A", color: "#F9F7F4", borderColor: "#0A0A0A" }
-                : { backgroundColor: "transparent", borderColor: "#E5E1DB", color: "#C8C0B4" }
+                ? { backgroundColor: "#0A0A0A", color: "var(--color-cream)", borderColor: "#0A0A0A" }
+                : { backgroundColor: "transparent", borderColor: "var(--color-shell)", color: "#C8C0B4" }
             }
           >
             {f} {f === "All" ? `(${seed.orders.length})` : `(${seed.orders.filter((o) => o.status === f).length})`}
@@ -1659,20 +1659,20 @@ function AdminOrdersView({ brand, seed }: ViewProps) {
         ))}
       </div>
 
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
-        <div className="grid grid-cols-6 gap-4 px-4 py-2 border-b border-[#E5E1DB]">
+      <div className="border border-shell bg-cream">
+        <div className="grid grid-cols-6 gap-4 px-4 py-2 border-b border-shell">
           {["Order", "Client", "Items", "Total", "Status", "Date"].map((h) => (
-            <div key={h} className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs font-mono">{h}</div>
+            <div key={h} className="text-ink/50 uppercase tracking-wider text-xs font-mono">{h}</div>
           ))}
         </div>
         {filtered.map((order) => (
-          <div key={order.number} className="grid grid-cols-6 gap-4 px-4 py-3 border-b border-[#E5E1DB]/50 hover:bg-white/50 cursor-pointer">
+          <div key={order.number} className="grid grid-cols-6 gap-4 px-4 py-3 border-b border-shell/50 hover:bg-white/50 cursor-pointer">
             <div className="font-mono text-xs font-semibold" style={{ color: brand.color }}>{order.number}</div>
-            <div className="font-mono text-xs text-[#0A0A0A]">{order.client}</div>
-            <div className="font-mono text-xs text-[#C8C0B4]">{order.itemCount} items</div>
-            <div className="font-mono text-xs font-semibold text-[#0A0A0A]">${order.total.toLocaleString()}</div>
+            <div className="font-mono text-xs text-ink">{order.client}</div>
+            <div className="font-mono text-xs text-sand">{order.itemCount} items</div>
+            <div className="font-mono text-xs font-semibold text-ink">${order.total.toLocaleString()}</div>
             <div><StatusBadge status={order.status} brandColor={brand.color} /></div>
-            <div className="font-mono text-xs text-[#C8C0B4]">{order.date}</div>
+            <div className="font-mono text-xs text-sand">{order.date}</div>
           </div>
         ))}
       </div>
@@ -1686,31 +1686,31 @@ function AdminOrdersView({ brand, seed }: ViewProps) {
 
 function AdminClientsView({ brand, seed }: ViewProps) {
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">CRM</p>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Client Directory</h2>
+          <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">CRM</p>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Client Directory</h2>
         </div>
-        <button className="px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-[#F9F7F4] border" style={{ backgroundColor: brand.color, borderColor: brand.color }}>
+        <button className="px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-cream border" style={{ backgroundColor: brand.color, borderColor: brand.color }}>
           <Plus className="w-3 h-3 inline mr-1" /> Invite Client
         </button>
       </div>
 
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
-        <div className="grid grid-cols-6 gap-4 px-4 py-2 border-b border-[#E5E1DB]">
+      <div className="border border-shell bg-cream">
+        <div className="grid grid-cols-6 gap-4 px-4 py-2 border-b border-shell">
           {["Client", "Tier", "Lifetime Spend", "Health", "Orders", "Last Order"].map((h) => (
-            <div key={h} className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs font-mono">{h}</div>
+            <div key={h} className="text-ink/50 uppercase tracking-wider text-xs font-mono">{h}</div>
           ))}
         </div>
         {seed.clients.map((client) => (
-          <div key={client.name} className="grid grid-cols-6 gap-4 px-4 py-3 border-b border-[#E5E1DB]/50 hover:bg-white/50 cursor-pointer">
-            <div className="font-mono text-xs font-semibold text-[#0A0A0A]">{client.name}</div>
+          <div key={client.name} className="grid grid-cols-6 gap-4 px-4 py-3 border-b border-shell/50 hover:bg-white/50 cursor-pointer">
+            <div className="font-mono text-xs font-semibold text-ink">{client.name}</div>
             <div><StatusBadge status={client.tier} brandColor={brand.color} /></div>
-            <div className="font-mono text-xs font-semibold text-[#0A0A0A]">{client.spend}</div>
+            <div className="font-mono text-xs font-semibold text-ink">{client.spend}</div>
             <div><StatusBadge status={client.health} brandColor={brand.color} /></div>
-            <div className="font-mono text-xs text-[#C8C0B4]">{client.orders}</div>
-            <div className="font-mono text-xs text-[#C8C0B4]">{client.lastOrder}</div>
+            <div className="font-mono text-xs text-sand">{client.orders}</div>
+            <div className="font-mono text-xs text-sand">{client.lastOrder}</div>
           </div>
         ))}
       </div>
@@ -1729,17 +1729,17 @@ function AdminInvoicesView({ brand, seed }: ViewProps) {
   const paid = seed.invoices.filter((i) => i.status === "Paid").reduce((s, i) => s + i.amount, 0);
 
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Billing</p>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Invoice Management</h2>
+          <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Billing</p>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Invoice Management</h2>
         </div>
         <div className="flex gap-2">
-          <button className="px-3 py-2 font-mono text-[10px] uppercase tracking-wide border border-[#E5E1DB] text-[#C8C0B4] hover:border-[#0A0A0A] hover:text-[#0A0A0A] flex items-center gap-1">
+          <button className="px-3 py-2 font-mono text-[10px] uppercase tracking-wide border border-shell text-sand hover:border-ink hover:text-ink flex items-center gap-1">
             <Send className="w-3 h-3" /> Send Reminders
           </button>
-          <button className="px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-[#F9F7F4] border" style={{ backgroundColor: brand.color, borderColor: brand.color }}>
+          <button className="px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-cream border" style={{ backgroundColor: brand.color, borderColor: brand.color }}>
             <Plus className="w-3 h-3 inline mr-1" /> New Invoice
           </button>
         </div>
@@ -1753,26 +1753,26 @@ function AdminInvoicesView({ brand, seed }: ViewProps) {
           { label: "Overdue", value: formatCurrency(overdue), color: "#92400E" },
           { label: "Paid (Feb)", value: formatCurrency(paid), color: "#0A0A0A" },
         ].map((s) => (
-          <div key={s.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
+          <div key={s.label} className="border border-shell bg-cream p-4">
             <div className="font-mono text-lg font-bold" style={{ color: s.color }}>{s.value}</div>
-            <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">{s.label}</div>
+            <div className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono">{s.label}</div>
           </div>
         ))}
       </div>
 
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
-        <div className="grid grid-cols-5 gap-4 px-4 py-2 border-b border-[#E5E1DB]">
+      <div className="border border-shell bg-cream">
+        <div className="grid grid-cols-5 gap-4 px-4 py-2 border-b border-shell">
           {["Invoice", "Client", "Amount", "Status", "Due Date"].map((h) => (
-            <div key={h} className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs font-mono">{h}</div>
+            <div key={h} className="text-ink/50 uppercase tracking-wider text-xs font-mono">{h}</div>
           ))}
         </div>
         {seed.invoices.map((inv) => (
-          <div key={inv.number} className="grid grid-cols-5 gap-4 px-4 py-3 border-b border-[#E5E1DB]/50 hover:bg-white/50 cursor-pointer">
+          <div key={inv.number} className="grid grid-cols-5 gap-4 px-4 py-3 border-b border-shell/50 hover:bg-white/50 cursor-pointer">
             <div className="font-mono text-xs font-semibold" style={{ color: brand.color }}>{inv.number}</div>
-            <div className="font-mono text-xs text-[#0A0A0A]">{inv.client}</div>
-            <div className="font-mono text-xs font-semibold text-[#0A0A0A]">${inv.amount.toLocaleString()}</div>
+            <div className="font-mono text-xs text-ink">{inv.client}</div>
+            <div className="font-mono text-xs font-semibold text-ink">${inv.amount.toLocaleString()}</div>
             <div><StatusBadge status={inv.status} brandColor={brand.color} /></div>
-            <div className="font-mono text-xs text-[#C8C0B4]">{inv.due}</div>
+            <div className="font-mono text-xs text-sand">{inv.due}</div>
           </div>
         ))}
       </div>
@@ -1786,13 +1786,13 @@ function AdminInvoicesView({ brand, seed }: ViewProps) {
 
 function AdminProductsView({ brand, data }: ViewProps) {
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Catalog</p>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Product Management</h2>
+          <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Catalog</p>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Product Management</h2>
         </div>
-        <button className="px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-[#F9F7F4] border" style={{ backgroundColor: brand.color, borderColor: brand.color }}>
+        <button className="px-3 py-2 font-mono text-[10px] uppercase tracking-wide text-cream border" style={{ backgroundColor: brand.color, borderColor: brand.color }}>
           <Plus className="w-3 h-3 inline mr-1" /> Add Product
         </button>
       </div>
@@ -1801,21 +1801,21 @@ function AdminProductsView({ brand, data }: ViewProps) {
         {data.products.map((p, i) => {
           const stockLevel = [24, 8, 156, 89, 203, 67, 45, 31, 120, 15, 78, 92][i % 12];
           return (
-            <div key={`${p.name}-${i}`} className="border border-[#E5E1DB] bg-[#F9F7F4] hover:border-[#C8C0B4] transition-colors">
+            <div key={`${p.name}-${i}`} className="border border-shell bg-cream hover:border-sand transition-colors">
               <ProductImage product={p} brandColor={brand.color} size="lg" />
               <div className="p-4">
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <div className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono">{p.category}</div>
-                    <div className="font-serif text-sm text-[#0A0A0A] mt-0.5">{p.name}</div>
+                    <div className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono">{p.category}</div>
+                    <div className="font-serif text-sm text-ink mt-0.5">{p.name}</div>
                   </div>
-                  <button className="p-1.5 border border-[#E5E1DB] text-[#C8C0B4] hover:text-[#0A0A0A] hover:border-[#0A0A0A]">
+                  <button className="p-1.5 border border-shell text-sand hover:text-ink hover:border-ink">
                     <Edit className="w-3 h-3" />
                   </button>
                 </div>
                 <div className="flex items-center justify-between mt-2">
-                  <span className="font-mono text-xs font-semibold text-[#0A0A0A]">{p.price}{p.unit ? `/${p.unit}` : ""}</span>
-                  <span className="font-mono text-[10px] text-[#C8C0B4] flex items-center gap-1">
+                  <span className="font-mono text-xs font-semibold text-ink">{p.price}{p.unit ? `/${p.unit}` : ""}</span>
+                  <span className="font-mono text-[10px] text-sand flex items-center gap-1">
                     <span className={`w-1.5 h-1.5 ${stockLevel > 20 ? "bg-green-500" : stockLevel > 5 ? "bg-amber-400" : "bg-red-400"}`} />
                     {stockLevel} in stock
                   </span>
@@ -1826,12 +1826,12 @@ function AdminProductsView({ brand, data }: ViewProps) {
         })}
 
         {/* Add Product CTA card */}
-        <div className="border border-dashed border-[#E5E1DB] bg-[#F9F7F4] flex items-center justify-center min-h-[200px] cursor-pointer hover:border-[#C8C0B4] transition-colors">
+        <div className="border border-dashed border-shell bg-cream flex items-center justify-center min-h-[200px] cursor-pointer hover:border-sand transition-colors">
           <div className="text-center">
-            <div className="w-10 h-10 mx-auto mb-2 flex items-center justify-center border border-[#E5E1DB]">
-              <Plus className="w-5 h-5 text-[#C8C0B4]" />
+            <div className="w-10 h-10 mx-auto mb-2 flex items-center justify-center border border-shell">
+              <Plus className="w-5 h-5 text-sand" />
             </div>
-            <span className="font-mono text-[10px] uppercase tracking-wider text-[#C8C0B4]">Add Product</span>
+            <span className="font-mono text-[10px] uppercase tracking-wider text-sand">Add Product</span>
           </div>
         </div>
       </div>
@@ -1850,10 +1850,10 @@ function AdminAnalyticsView({ brand, data, seed }: ViewProps) {
   const categories = Array.from(new Set(data.products.map((p) => p.category).filter(Boolean)));
 
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="mb-6">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Intelligence</p>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Business Analytics</h2>
+        <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Intelligence</p>
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Business Analytics</h2>
       </div>
 
       {/* KPIs */}
@@ -1864,9 +1864,9 @@ function AdminAnalyticsView({ brand, data, seed }: ViewProps) {
           { label: "Active Clients", value: "89", change: "+8", icon: Users },
           { label: "Avg Order Value", value: "$663", change: "+12%", icon: TrendingUp },
         ].map((kpi) => (
-          <div key={kpi.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
+          <div key={kpi.label} className="border border-shell bg-cream p-4">
             <div className="flex items-center justify-between pb-2">
-              <span className="text-[9px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">{kpi.label}</span>
+              <span className="text-[9px] font-medium text-ink/50 uppercase tracking-wider">{kpi.label}</span>
               <kpi.icon className="h-3.5 w-3.5" style={{ color: `${brand.color}60` }} strokeWidth={1.5} />
             </div>
             <div className="text-2xl font-bold font-serif" style={{ color: brand.color }}>{kpi.value}</div>
@@ -1876,12 +1876,12 @@ function AdminAnalyticsView({ brand, data, seed }: ViewProps) {
       </div>
 
       {/* Revenue chart */}
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6 mb-6">
-        <span className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Monthly Revenue</span>
+      <div className="border border-shell bg-cream p-6 mb-6">
+        <span className="text-xs font-medium text-ink/50 uppercase tracking-wider">Monthly Revenue</span>
         <div className="flex items-end gap-1.5 h-40 mt-4">
           {months.map((m, i) => (
             <div key={m} className="flex-1 flex flex-col items-center gap-1">
-              <div className="font-mono text-[8px] font-semibold text-[#0A0A0A]">${revenues[i]}K</div>
+              <div className="font-mono text-[8px] font-semibold text-ink">${revenues[i]}K</div>
               <div
                 className="w-full transition-all"
                 style={{
@@ -1890,7 +1890,7 @@ function AdminAnalyticsView({ brand, data, seed }: ViewProps) {
                   opacity: i === months.length - 1 ? 1 : i >= months.length - 3 ? 0.6 : 0.3,
                 }}
               />
-              <div className="font-mono text-[8px] text-[#C8C0B4]">{m}</div>
+              <div className="font-mono text-[8px] text-sand">{m}</div>
             </div>
           ))}
         </div>
@@ -1898,36 +1898,36 @@ function AdminAnalyticsView({ brand, data, seed }: ViewProps) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Top clients */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
-          <div className="px-4 py-3 border-b border-[#E5E1DB]">
-            <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#0A0A0A]">Top Clients by Revenue</span>
+        <div className="border border-shell bg-cream">
+          <div className="px-4 py-3 border-b border-shell">
+            <span className="font-mono text-xs uppercase tracking-wider font-semibold text-ink">Top Clients by Revenue</span>
           </div>
           {seed.clients.slice(0, 5).map((client, i) => (
-            <div key={client.name} className="px-4 py-3 border-b border-[#E5E1DB]/50 flex items-center justify-between">
+            <div key={client.name} className="px-4 py-3 border-b border-shell/50 flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <span className="font-mono text-[10px] text-[#C8C0B4] w-4">{i + 1}.</span>
-                <span className="font-mono text-xs font-semibold text-[#0A0A0A]">{client.name}</span>
+                <span className="font-mono text-[10px] text-sand w-4">{i + 1}.</span>
+                <span className="font-mono text-xs font-semibold text-ink">{client.name}</span>
                 <StatusBadge status={client.tier} brandColor={brand.color} />
               </div>
-              <span className="font-mono text-xs font-semibold text-[#0A0A0A]">{client.spend}</span>
+              <span className="font-mono text-xs font-semibold text-ink">{client.spend}</span>
             </div>
           ))}
         </div>
 
         {/* Category breakdown */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
-          <span className="font-mono text-xs uppercase tracking-wider font-semibold text-[#0A0A0A] block mb-4">Category Breakdown</span>
+        <div className="border border-shell bg-cream p-4">
+          <span className="font-mono text-xs uppercase tracking-wider font-semibold text-ink block mb-4">Category Breakdown</span>
           <div className="space-y-3">
             {categories.slice(0, 6).map((cat, i) => {
               const count = data.products.filter((p) => p.category === cat).length;
               const pct = Math.round((count / data.products.length) * 100);
               return (
                 <div key={cat} className="flex items-center gap-3">
-                  <span className="font-mono text-[10px] text-[#0A0A0A] w-28 truncate">{cat}</span>
-                  <div className="flex-1 h-2 bg-[#E5E1DB]">
+                  <span className="font-mono text-[10px] text-ink w-28 truncate">{cat}</span>
+                  <div className="flex-1 h-2 bg-shell">
                     <div className="h-full" style={{ width: `${pct}%`, backgroundColor: i === 0 ? brand.color : `${brand.color}${60 - i * 10}` }} />
                   </div>
-                  <span className="font-mono text-[10px] text-[#C8C0B4] w-10 text-right">{count} ({pct}%)</span>
+                  <span className="font-mono text-[10px] text-sand w-10 text-right">{count} ({pct}%)</span>
                 </div>
               );
             })}
@@ -1994,16 +1994,16 @@ function SmsDemoView({ brand, data }: ViewProps) {
   }, [step]);
 
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="mb-6">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">AI-Powered</p>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">SMS / iMessage Ordering</h2>
-        <p className="font-sans text-xs text-[#C8C0B4] mt-1">Clients text their orders in natural language. AI parses, confirms, and fulfills.</p>
+        <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">AI-Powered</p>
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">SMS / iMessage Ordering</h2>
+        <p className="font-sans text-xs text-sand mt-1">Clients text their orders in natural language. AI parses, confirms, and fulfills.</p>
       </div>
 
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] max-w-lg mx-auto">
+      <div className="border border-shell bg-cream max-w-lg mx-auto">
         {/* Phone header */}
-        <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center gap-3" style={{ backgroundColor: brand.color }}>
+        <div className="px-4 py-3 border-b border-shell flex items-center gap-3" style={{ backgroundColor: brand.color }}>
           <MessageSquare className="w-4 h-4 text-white" />
           <span className="font-mono text-xs text-white font-semibold">{data.companyName} SMS</span>
           <span className="ml-auto font-mono text-[9px] text-white/50">AI-Powered</span>
@@ -2014,11 +2014,11 @@ function SmsDemoView({ brand, data }: ViewProps) {
           {messages.map((msg, i) => (
             <div key={i} className={`flex ${msg.from === "client" ? "justify-end" : "justify-start"}`}>
               <div
-                className={`max-w-[85%] px-3 py-2 ${msg.from === "client" ? "text-white" : "bg-white border border-[#E5E1DB]"}`}
+                className={`max-w-[85%] px-3 py-2 ${msg.from === "client" ? "text-white" : "bg-white border border-shell"}`}
                 style={msg.from === "client" ? { backgroundColor: brand.color } : {}}
               >
                 <div className="font-mono text-[11px] whitespace-pre-line leading-relaxed">{msg.text}</div>
-                <div className={`font-mono text-[8px] mt-1 ${msg.from === "client" ? "text-white/50" : "text-[#C8C0B4]"}`}>{msg.time}</div>
+                <div className={`font-mono text-[8px] mt-1 ${msg.from === "client" ? "text-white/50" : "text-sand"}`}>{msg.time}</div>
               </div>
             </div>
           ))}
@@ -2026,7 +2026,7 @@ function SmsDemoView({ brand, data }: ViewProps) {
             <div className="flex justify-start">
               <div className="flex gap-1 px-3 py-2">
                 {[0, 1, 2].map((d) => (
-                  <div key={d} className="w-1.5 h-1.5 bg-[#C8C0B4] animate-pulse" style={{ animationDelay: `${d * 200}ms` }} />
+                  <div key={d} className="w-1.5 h-1.5 bg-sand animate-pulse" style={{ animationDelay: `${d * 200}ms` }} />
                 ))}
               </div>
             </div>
@@ -2034,7 +2034,7 @@ function SmsDemoView({ brand, data }: ViewProps) {
         </div>
 
         {step >= 3 && (
-          <div className="px-4 py-3 border-t border-[#E5E1DB]" style={{ backgroundColor: `${brand.color}10` }}>
+          <div className="px-4 py-3 border-t border-shell" style={{ backgroundColor: `${brand.color}10` }}>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4" style={{ color: brand.color }} />
               <span className="font-mono text-xs font-semibold" style={{ color: brand.color }}>Order ORD-2026-0848 created in admin panel</span>
@@ -2050,9 +2050,9 @@ function SmsDemoView({ brand, data }: ViewProps) {
           { label: "AI Parsing", desc: "Products + quantities" },
           { label: "Instant Confirm", desc: "Auto-creates order" },
         ].map((f) => (
-          <div key={f.label} className="border border-[#E5E1DB] bg-[#F9F7F4] p-3 text-center">
-            <div className="font-mono text-[10px] font-semibold text-[#0A0A0A] uppercase">{f.label}</div>
-            <div className="font-mono text-[9px] text-[#C8C0B4]">{f.desc}</div>
+          <div key={f.label} className="border border-shell bg-cream p-3 text-center">
+            <div className="font-mono text-[10px] font-semibold text-ink uppercase">{f.label}</div>
+            <div className="font-mono text-[9px] text-sand">{f.desc}</div>
           </div>
         ))}
       </div>
@@ -2078,57 +2078,57 @@ function CartSidebar({ cart, brand, onRemove, onUpdateQty, onClose, onCheckout }
   return (
     <div className="fixed inset-0 z-50 flex justify-end">
       <div className="absolute inset-0 bg-black/20" onClick={onClose} />
-      <div className="relative w-full sm:max-w-lg bg-[#F9F7F4] border-l border-[#E5E1DB] flex flex-col h-full">
-        <div className="px-5 pt-5 pb-4 border-b border-[#E5E1DB] flex items-center justify-between">
-          <h3 className="text-xl font-bold text-[#0A0A0A]">Your Order ({totalItems} items)</h3>
-          <button onClick={onClose} className="p-1 text-[#C8C0B4] hover:text-[#0A0A0A]"><X className="w-5 h-5" /></button>
+      <div className="relative w-full sm:max-w-lg bg-cream border-l border-shell flex flex-col h-full">
+        <div className="px-5 pt-5 pb-4 border-b border-shell flex items-center justify-between">
+          <h3 className="text-xl font-bold text-ink">Your Order ({totalItems} items)</h3>
+          <button onClick={onClose} className="p-1 text-sand hover:text-ink"><X className="w-5 h-5" /></button>
         </div>
         <div className="flex-1 overflow-y-auto py-4">
           <div className="space-y-6 px-5">
             {cart.map((item) => {
               const lineTotal = item.quantity * parsePrice(item.product.price);
               return (
-                <div key={item.product.name} className="space-y-3 pb-6 border-b border-[#E5E1DB] last:border-0">
+                <div key={item.product.name} className="space-y-3 pb-6 border-b border-shell last:border-0">
                   <div className="flex gap-3">
                     <div className="flex-1 min-w-0">
-                      <h4 className="font-semibold text-base leading-tight mb-1 text-[#0A0A0A]">{item.product.name}</h4>
-                      <p className="text-sm text-[#C8C0B4]">{item.product.category}</p>
-                      <p className="text-sm font-medium mt-1 text-[#0A0A0A]">{item.product.price}{item.product.unit ? `/${item.product.unit}` : ""}</p>
+                      <h4 className="font-semibold text-base leading-tight mb-1 text-ink">{item.product.name}</h4>
+                      <p className="text-sm text-sand">{item.product.category}</p>
+                      <p className="text-sm font-medium mt-1 text-ink">{item.product.price}{item.product.unit ? `/${item.product.unit}` : ""}</p>
                     </div>
-                    <button onClick={() => onRemove(item.product.name)} className="h-8 w-8 flex items-center justify-center text-[#C8C0B4] hover:text-[#0A0A0A]">
+                    <button onClick={() => onRemove(item.product.name)} className="h-8 w-8 flex items-center justify-center text-sand hover:text-ink">
                       <Trash2 className="h-4 w-4" />
                     </button>
                   </div>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <button onClick={() => onUpdateQty(item.product.name, Math.max(1, item.quantity - 1))} className="h-10 w-10 border border-[#E5E1DB] flex items-center justify-center hover:border-[#0A0A0A] transition-colors">
+                      <button onClick={() => onUpdateQty(item.product.name, Math.max(1, item.quantity - 1))} className="h-10 w-10 border border-shell flex items-center justify-center hover:border-ink transition-colors">
                         <Minus className="h-4 w-4" />
                       </button>
-                      <span className="text-base font-semibold w-10 text-center text-[#0A0A0A]">{item.quantity}</span>
-                      <button onClick={() => onUpdateQty(item.product.name, item.quantity + 1)} className="h-10 w-10 border border-[#E5E1DB] flex items-center justify-center hover:border-[#0A0A0A] transition-colors">
+                      <span className="text-base font-semibold w-10 text-center text-ink">{item.quantity}</span>
+                      <button onClick={() => onUpdateQty(item.product.name, item.quantity + 1)} className="h-10 w-10 border border-shell flex items-center justify-center hover:border-ink transition-colors">
                         <Plus className="h-4 w-4" />
                       </button>
                     </div>
-                    <p className="text-lg font-bold text-[#0A0A0A]">{formatCurrency(lineTotal)}</p>
+                    <p className="text-lg font-bold text-ink">{formatCurrency(lineTotal)}</p>
                   </div>
                 </div>
               );
             })}
             {cart.length === 0 && (
               <div className="text-center py-12">
-                <ShoppingCart className="w-8 h-8 text-[#E5E1DB] mx-auto mb-3" />
-                <p className="text-sm text-[#C8C0B4]">Your cart is empty</p>
+                <ShoppingCart className="w-8 h-8 text-shell mx-auto mb-3" />
+                <p className="text-sm text-sand">Your cart is empty</p>
               </div>
             )}
           </div>
         </div>
         {cart.length > 0 && (
-          <div className="border-t border-[#E5E1DB] px-5 py-5 space-y-4 mt-auto">
+          <div className="border-t border-shell px-5 py-5 space-y-4 mt-auto">
             <div className="flex items-center justify-between">
-              <span className="text-xl font-bold text-[#0A0A0A]">Total</span>
-              <span className="text-2xl font-bold text-[#0A0A0A]">{formatCurrency(totalPrice)}</span>
+              <span className="text-xl font-bold text-ink">Total</span>
+              <span className="text-2xl font-bold text-ink">{formatCurrency(totalPrice)}</span>
             </div>
-            <button onClick={onCheckout} className="w-full h-12 text-base font-medium text-[#F9F7F4] transition-opacity hover:opacity-85" style={{ backgroundColor: brand.color }}>
+            <button onClick={onCheckout} className="w-full h-12 text-base font-medium text-cream transition-opacity hover:opacity-85" style={{ backgroundColor: brand.color }}>
               Proceed to Checkout
             </button>
           </div>
@@ -2159,49 +2159,49 @@ function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
 
   if (orderPlaced) {
     return (
-      <div className="p-6 bg-[#F9F7F4]">
+      <div className="p-6 bg-cream">
         <div className="max-w-lg mx-auto py-10 text-center">
           <div className="w-16 h-16 mx-auto mb-6 flex items-center justify-center" style={{ backgroundColor: `${brand.color}12` }}>
             <CheckCircle2 className="w-8 h-8" style={{ color: brand.color }} />
           </div>
-          <h2 className="font-serif text-3xl font-bold text-[#0A0A0A] mb-2">Order Confirmed!</h2>
-          <p className="text-sm text-[#0A0A0A]/50 mb-8">
+          <h2 className="font-serif text-3xl font-bold text-ink mb-2">Order Confirmed!</h2>
+          <p className="text-sm text-ink/50 mb-8">
             Your order has been placed successfully. A confirmation email has been sent.
           </p>
 
           {/* Order & Invoice details */}
-          <div className="border border-[#E5E1DB] bg-white text-left mb-6">
-            <div className="grid grid-cols-2 border-b border-[#E5E1DB]">
-              <div className="p-5 border-r border-[#E5E1DB]">
-                <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Order Number</p>
-                <p className="font-mono text-sm font-bold text-[#0A0A0A]">{orderNum}</p>
+          <div className="border border-shell bg-white text-left mb-6">
+            <div className="grid grid-cols-2 border-b border-shell">
+              <div className="p-5 border-r border-shell">
+                <p className="text-[9px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Order Number</p>
+                <p className="font-mono text-sm font-bold text-ink">{orderNum}</p>
               </div>
               <div className="p-5">
-                <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Invoice Created</p>
-                <p className="font-mono text-sm font-bold text-[#0A0A0A]">{invoiceNum}</p>
+                <p className="text-[9px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Invoice Created</p>
+                <p className="font-mono text-sm font-bold text-ink">{invoiceNum}</p>
               </div>
             </div>
-            <div className="grid grid-cols-3 border-b border-[#E5E1DB]">
-              <div className="p-5 border-r border-[#E5E1DB]">
-                <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Payment</p>
-                <p className="text-xs font-medium text-[#0A0A0A]">Net 30 Invoice</p>
+            <div className="grid grid-cols-3 border-b border-shell">
+              <div className="p-5 border-r border-shell">
+                <p className="text-[9px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Payment</p>
+                <p className="text-xs font-medium text-ink">Net 30 Invoice</p>
               </div>
-              <div className="p-5 border-r border-[#E5E1DB]">
-                <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Items</p>
-                <p className="text-xs font-medium text-[#0A0A0A]">{items.length} products</p>
+              <div className="p-5 border-r border-shell">
+                <p className="text-[9px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Items</p>
+                <p className="text-xs font-medium text-ink">{items.length} products</p>
               </div>
               <div className="p-5">
-                <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Total</p>
-                <p className="font-serif text-lg font-bold text-[#0A0A0A]">{formatCurrency(total)}</p>
+                <p className="text-[9px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Total</p>
+                <p className="font-serif text-lg font-bold text-ink">{formatCurrency(total)}</p>
               </div>
             </div>
             <div className="p-5">
-              <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-2">Items Ordered</p>
+              <p className="text-[9px] tracking-[0.25em] uppercase text-sand font-mono mb-2">Items Ordered</p>
               <div className="space-y-2">
                 {items.map((item) => (
                   <div key={item.product.name} className="flex justify-between text-xs">
-                    <span className="text-[#0A0A0A]">{item.quantity}x {item.product.name}</span>
-                    <span className="font-mono text-[#0A0A0A]/70">{formatCurrency(item.quantity * parsePrice(item.product.price))}</span>
+                    <span className="text-ink">{item.quantity}x {item.product.name}</span>
+                    <span className="font-mono text-ink/70">{formatCurrency(item.quantity * parsePrice(item.product.price))}</span>
                   </div>
                 ))}
               </div>
@@ -2209,8 +2209,8 @@ function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
           </div>
 
           {/* Status timeline */}
-          <div className="border border-[#E5E1DB] bg-white text-left p-5 mb-6">
-            <p className="text-[9px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-3">Order Status</p>
+          <div className="border border-shell bg-white text-left p-5 mb-6">
+            <p className="text-[9px] tracking-[0.25em] uppercase text-sand font-mono mb-3">Order Status</p>
             <div className="space-y-3">
               {[
                 { label: "Order Placed", time: "Just now", done: true },
@@ -2223,10 +2223,10 @@ function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
                   {step.done ? (
                     <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: brand.color }} />
                   ) : (
-                    <Clock className="w-4 h-4 flex-shrink-0 text-[#E5E1DB]" />
+                    <Clock className="w-4 h-4 flex-shrink-0 text-shell" />
                   )}
-                  <span className={`text-xs flex-1 ${step.done ? "text-[#0A0A0A] font-medium" : "text-[#C8C0B4]"}`}>{step.label}</span>
-                  <span className="text-[9px] font-mono text-[#C8C0B4]">{step.time}</span>
+                  <span className={`text-xs flex-1 ${step.done ? "text-ink font-medium" : "text-sand"}`}>{step.label}</span>
+                  <span className="text-[9px] font-mono text-sand">{step.time}</span>
                 </div>
               ))}
             </div>
@@ -2242,7 +2242,7 @@ function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
             </button>
             <button
               onClick={() => onNavigate?.("catalog")}
-              className="flex-1 h-12 text-sm font-medium border border-[#E5E1DB] text-[#0A0A0A] hover:border-[#C8C0B4] transition-colors"
+              className="flex-1 h-12 text-sm font-medium border border-shell text-ink hover:border-sand transition-colors"
             >
               Continue Shopping
             </button>
@@ -2253,16 +2253,16 @@ function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
   }
 
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="mb-6">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Checkout</p>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Complete Your Order</h2>
+        <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Checkout</p>
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Complete Your Order</h2>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         {/* Order Form */}
         <div className="lg:col-span-3 space-y-4">
-          <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6">
-            <p className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider mb-4">Order Information</p>
+          <div className="border border-shell bg-cream p-6">
+            <p className="text-xs font-medium text-ink/50 uppercase tracking-wider mb-4">Order Information</p>
             <div className="grid grid-cols-2 gap-4">
               {[
                 { label: "Business Name", placeholder: ctx.businessPlaceholder },
@@ -2271,29 +2271,29 @@ function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
                 { label: "Phone", placeholder: "(555) 000-0000" },
               ].map((f) => (
                 <div key={f.label}>
-                  <label className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4] mb-1.5 block">{f.label}</label>
-                  <input placeholder={f.placeholder} className="w-full h-10 px-3 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none" style={{ borderColor: undefined }} onFocus={(e) => e.currentTarget.style.borderColor = brand.color} onBlur={(e) => e.currentTarget.style.borderColor = "#E5E1DB"} />
+                  <label className="text-[10px] tracking-[0.2em] uppercase text-sand mb-1.5 block">{f.label}</label>
+                  <input placeholder={f.placeholder} className="w-full h-10 px-3 border border-shell bg-white text-sm text-ink placeholder:text-sand focus:outline-none" style={{ borderColor: undefined }} onFocus={(e) => e.currentTarget.style.borderColor = brand.color} onBlur={(e) => e.currentTarget.style.borderColor = "var(--color-shell)"} />
                 </div>
               ))}
               <div className="col-span-2">
-                <label className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4] mb-1.5 block">Delivery Address</label>
-                <input placeholder="Street address, city, state, zip" className="w-full h-10 px-3 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none" onFocus={(e) => e.currentTarget.style.borderColor = brand.color} onBlur={(e) => e.currentTarget.style.borderColor = "#E5E1DB"} />
+                <label className="text-[10px] tracking-[0.2em] uppercase text-sand mb-1.5 block">Delivery Address</label>
+                <input placeholder="Street address, city, state, zip" className="w-full h-10 px-3 border border-shell bg-white text-sm text-ink placeholder:text-sand focus:outline-none" onFocus={(e) => e.currentTarget.style.borderColor = brand.color} onBlur={(e) => e.currentTarget.style.borderColor = "var(--color-shell)"} />
               </div>
               <div className="col-span-2">
-                <label className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4] mb-1.5 block">Order Notes</label>
-                <textarea rows={3} placeholder="Special instructions, delivery preferences..." className="w-full px-3 py-2 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none resize-none" onFocus={(e) => e.currentTarget.style.borderColor = brand.color} onBlur={(e) => e.currentTarget.style.borderColor = "#E5E1DB"} />
+                <label className="text-[10px] tracking-[0.2em] uppercase text-sand mb-1.5 block">Order Notes</label>
+                <textarea rows={3} placeholder="Special instructions, delivery preferences..." className="w-full px-3 py-2 border border-shell bg-white text-sm text-ink placeholder:text-sand focus:outline-none resize-none" onFocus={(e) => e.currentTarget.style.borderColor = brand.color} onBlur={(e) => e.currentTarget.style.borderColor = "var(--color-shell)"} />
               </div>
             </div>
           </div>
-          <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6">
-            <p className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider mb-4">Payment Method</p>
+          <div className="border border-shell bg-cream p-6">
+            <p className="text-xs font-medium text-ink/50 uppercase tracking-wider mb-4">Payment Method</p>
             <div className="space-y-3">
               {["Net 30 Invoice", "Credit Card (Stripe)", "ACH Bank Transfer"].map((method, i) => (
-                <label key={method} className="flex items-center gap-3 p-3 border border-[#E5E1DB] cursor-pointer hover:border-[#C8C0B4] transition-colors">
-                  <div className="w-4 h-4 border-2 flex items-center justify-center" style={{ borderColor: i === 0 ? brand.color : "#E5E1DB" }}>
+                <label key={method} className="flex items-center gap-3 p-3 border border-shell cursor-pointer hover:border-sand transition-colors">
+                  <div className="w-4 h-4 border-2 flex items-center justify-center" style={{ borderColor: i === 0 ? brand.color : "var(--color-shell)" }}>
                     {i === 0 && <div className="w-2 h-2" style={{ backgroundColor: brand.color }} />}
                   </div>
-                  <span className="text-sm text-[#0A0A0A]">{method}</span>
+                  <span className="text-sm text-ink">{method}</span>
                 </label>
               ))}
             </div>
@@ -2301,31 +2301,31 @@ function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
         </div>
         {/* Order Summary */}
         <div className="lg:col-span-2">
-          <div className="border border-[#E5E1DB] bg-[#F9F7F4] sticky top-16">
-            <div className="px-5 py-4 border-b border-[#E5E1DB]">
-              <p className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Order Summary</p>
+          <div className="border border-shell bg-cream sticky top-16">
+            <div className="px-5 py-4 border-b border-shell">
+              <p className="text-xs font-medium text-ink/50 uppercase tracking-wider">Order Summary</p>
             </div>
             <div className="px-5 py-4 space-y-3">
               {items.map((item) => (
-                <div key={item.product.name} className="flex items-center justify-between py-2 border-b border-[#E5E1DB]/50 last:border-0">
+                <div key={item.product.name} className="flex items-center justify-between py-2 border-b border-shell/50 last:border-0">
                   <div>
-                    <p className="text-sm font-medium text-[#0A0A0A]">{item.product.name}</p>
-                    <p className="text-xs text-[#C8C0B4]">{item.quantity} x {item.product.price}</p>
+                    <p className="text-sm font-medium text-ink">{item.product.name}</p>
+                    <p className="text-xs text-sand">{item.quantity} x {item.product.price}</p>
                   </div>
-                  <p className="font-mono text-sm font-bold text-[#0A0A0A]">{formatCurrency(item.quantity * parsePrice(item.product.price))}</p>
+                  <p className="font-mono text-sm font-bold text-ink">{formatCurrency(item.quantity * parsePrice(item.product.price))}</p>
                 </div>
               ))}
             </div>
-            <div className="px-5 py-4 border-t border-[#E5E1DB] space-y-2">
-              <div className="flex justify-between text-sm"><span className="text-[#C8C0B4]">Subtotal</span><span className="font-mono text-[#0A0A0A]">{formatCurrency(subtotal)}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-[#C8C0B4]">Tax (8.75%)</span><span className="font-mono text-[#0A0A0A]">{formatCurrency(tax)}</span></div>
-              <div className="flex justify-between text-base font-bold pt-2 border-t border-[#E5E1DB]"><span className="text-[#0A0A0A]">Total</span><span className="font-serif text-xl text-[#0A0A0A]">{formatCurrency(total)}</span></div>
+            <div className="px-5 py-4 border-t border-shell space-y-2">
+              <div className="flex justify-between text-sm"><span className="text-sand">Subtotal</span><span className="font-mono text-ink">{formatCurrency(subtotal)}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-sand">Tax (8.75%)</span><span className="font-mono text-ink">{formatCurrency(tax)}</span></div>
+              <div className="flex justify-between text-base font-bold pt-2 border-t border-shell"><span className="text-ink">Total</span><span className="font-serif text-xl text-ink">{formatCurrency(total)}</span></div>
             </div>
             <div className="px-5 pb-5">
               <button
                 onClick={handlePlaceOrder}
                 disabled={processing}
-                className="w-full h-12 text-[#F9F7F4] text-sm font-medium transition-opacity hover:opacity-85 disabled:opacity-60 flex items-center justify-center gap-2"
+                className="w-full h-12 text-cream text-sm font-medium transition-opacity hover:opacity-85 disabled:opacity-60 flex items-center justify-center gap-2"
                 style={{ backgroundColor: brand.color }}
               >
                 {processing ? (
@@ -2344,15 +2344,15 @@ function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
 
 function PlaceholderView({ brand, title, description }: { brand: Brand; title: string; description: string }) {
   return (
-    <div className="p-6 bg-[#F9F7F4]">
+    <div className="p-6 bg-cream">
       <div className="mb-6">
-        <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono mb-1">Included Module</p>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">{title}</h2>
+        <p className="text-[10px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Included Module</p>
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">{title}</h2>
       </div>
-      <div className="border border-dashed border-[#E5E1DB] bg-[#F9F7F4] p-10 text-center">
-        <Package className="w-10 h-10 text-[#E5E1DB] mx-auto mb-4" />
-        <p className="text-sm text-[#0A0A0A]/60 mb-2">{description}</p>
-        <p className="text-xs text-[#C8C0B4]">This module is fully built during your portal deployment.</p>
+      <div className="border border-dashed border-shell bg-cream p-10 text-center">
+        <Package className="w-10 h-10 text-shell mx-auto mb-4" />
+        <p className="text-sm text-ink/60 mb-2">{description}</p>
+        <p className="text-xs text-sand">This module is fully built during your portal deployment.</p>
       </div>
     </div>
   );
@@ -2386,30 +2386,30 @@ function TourOverlay({
 }) {
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[420px] max-w-[calc(100vw-2rem)]">
-      <div className="text-[#F9F7F4] p-5 shadow-2xl" style={{ backgroundColor: brandColor, border: "1px solid rgba(255,255,255,0.15)" }}>
+      <div className="text-cream p-5 shadow-2xl" style={{ backgroundColor: brandColor, border: "1px solid rgba(255,255,255,0.15)" }}>
         <div className="flex items-center justify-between mb-2">
-          <span className="font-mono text-[9px] uppercase tracking-widest text-[#F9F7F4]/40">
+          <span className="font-mono text-[9px] uppercase tracking-widest text-cream/40">
             Tour · {step + 1} of {total}
           </span>
-          <button onClick={onSkip} className="font-mono text-[10px] text-[#F9F7F4]/40 hover:text-[#F9F7F4] transition-colors">
+          <button onClick={onSkip} className="font-mono text-[10px] text-cream/40 hover:text-cream transition-colors">
             Skip Tour
           </button>
         </div>
         <div className="font-serif text-lg mb-1">{title}</div>
-        <p className="font-mono text-xs text-[#F9F7F4]/60 leading-relaxed mb-4">{description}</p>
+        <p className="font-mono text-xs text-cream/60 leading-relaxed mb-4">{description}</p>
         <div className="flex items-center justify-between">
           <div className="flex gap-1">
             {Array.from({ length: total }).map((_, i) => (
               <div
                 key={i}
                 className="h-1 w-6"
-                style={{ backgroundColor: i <= step ? "#F9F7F4" : "rgba(249,247,244,0.15)" }}
+                style={{ backgroundColor: i <= step ? "var(--color-cream)" : "rgba(249,247,244,0.15)" }}
               />
             ))}
           </div>
           <button
             onClick={onNext}
-            className="font-mono text-xs font-semibold bg-[#F9F7F4] text-[#0A0A0A] px-4 py-2 flex items-center gap-1.5 hover:bg-white transition-colors"
+            className="font-mono text-xs font-semibold bg-cream text-ink px-4 py-2 flex items-center gap-1.5 hover:bg-white transition-colors"
           >
             {step < total - 1 ? "Next" : "Start Exploring"} <ArrowRight className="w-3 h-3" />
           </button>
@@ -2485,7 +2485,7 @@ function DemoPortalInner() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F9F7F4] flex flex-col">
+    <div className="min-h-screen bg-cream flex flex-col">
       {/* Demo banner */}
       <div className="px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2" style={{ backgroundColor: brand.color, borderBottom: `1px solid ${brand.color}` }}>
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
@@ -2516,17 +2516,17 @@ function DemoPortalInner() {
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar — collapsible: expanded (240px), collapsed (52px icons only), hidden (0px) */}
         <aside
-          className="flex-shrink-0 border-r border-[#E5E1DB] bg-[#F9F7F4] overflow-y-auto overflow-x-hidden transition-all duration-200"
+          className="flex-shrink-0 border-r border-shell bg-cream overflow-y-auto overflow-x-hidden transition-all duration-200"
           style={{ width: sidebarMode === "expanded" ? 240 : sidebarMode === "collapsed" ? 52 : 0 }}
         >
           {/* Header */}
           <div
-            className="border-b border-[#E5E1DB] flex items-center flex-shrink-0"
+            className="border-b border-shell flex items-center flex-shrink-0"
             style={{ height: 56, minWidth: sidebarCollapsed ? 52 : 240, padding: sidebarCollapsed ? "0 10px" : "0 16px", gap: sidebarCollapsed ? 0 : 12 }}
           >
             {sidebarCollapsed ? (
               <button onClick={toggleSidebar} className="w-8 h-8 flex items-center justify-center mx-auto" aria-label="Toggle sidebar">
-                <Menu className="w-4 h-4 text-[#0A0A0A]/60" />
+                <Menu className="w-4 h-4 text-ink/60" />
               </button>
             ) : (
               <>
@@ -2540,10 +2540,10 @@ function DemoPortalInner() {
                   />
                 )}
                 <div className="min-w-0 flex-1">
-                  <span className="font-serif font-bold text-[15px] text-[#0A0A0A] leading-tight block truncate">{brand.company}</span>
-                  <span className="font-serif italic text-xs text-[#C8C0B4] leading-tight">Wholesale</span>
+                  <span className="font-serif font-bold text-[15px] text-ink leading-tight block truncate">{brand.company}</span>
+                  <span className="font-serif italic text-xs text-sand leading-tight">Wholesale</span>
                 </div>
-                <button onClick={toggleSidebar} className="flex-shrink-0 p-1 text-[#C8C0B4] hover:text-[#0A0A0A]">
+                <button onClick={toggleSidebar} className="flex-shrink-0 p-1 text-sand hover:text-ink">
                   <PanelLeftClose className="w-3.5 h-3.5" />
                 </button>
               </>
@@ -2554,7 +2554,7 @@ function DemoPortalInner() {
             {groups.map((group) => (
               <div key={group} className="mb-3">
                 {!sidebarCollapsed && (
-                  <div className="text-[8px] tracking-[0.25em] uppercase text-[#C8C0B4] font-mono px-3 mb-1.5">{group}</div>
+                  <div className="text-[8px] tracking-[0.25em] uppercase text-sand font-mono px-3 mb-1.5">{group}</div>
                 )}
                 <div className="space-y-0.5">
                   {NAV_ITEMS.filter((n) => n.group === group).map((item) => {
@@ -2568,7 +2568,7 @@ function DemoPortalInner() {
                         className={`w-full flex items-center text-sm font-medium transition-colors relative ${sidebarCollapsed ? "justify-center px-0 py-2" : "gap-3 px-3 py-2"}`}
                         style={
                           active
-                            ? { backgroundColor: brand.color, color: "#F9F7F4" }
+                            ? { backgroundColor: brand.color, color: "var(--color-cream)" }
                             : { color: "rgba(10,10,10,0.6)" }
                         }
                         onMouseEnter={(e) => { if (!active) { e.currentTarget.style.backgroundColor = `${brand.color}0A`; e.currentTarget.style.color = "#0A0A0A"; } }}
@@ -2579,14 +2579,14 @@ function DemoPortalInner() {
                         {item.badge && !sidebarCollapsed && (
                           <span
                             className="ml-auto text-[10px] font-bold px-1.5 py-0.5 min-w-[18px] text-center leading-tight"
-                            style={active ? { backgroundColor: "#F9F7F4", color: brand.color } : { backgroundColor: brand.color, color: "#F9F7F4" }}
+                            style={active ? { backgroundColor: "var(--color-cream)", color: brand.color } : { backgroundColor: brand.color, color: "var(--color-cream)" }}
                           >
                             {item.badge}
                           </span>
                         )}
                         {item.badge && sidebarCollapsed && (
                           <span
-                            className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 text-[7px] font-bold flex items-center justify-center text-[#F9F7F4]"
+                            className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 text-[7px] font-bold flex items-center justify-center text-cream"
                             style={{ backgroundColor: brand.color, borderRadius: "50%" }}
                           >
                             {item.badge}
@@ -2604,34 +2604,34 @@ function DemoPortalInner() {
         {/* Main content */}
         <main className="flex-1 overflow-auto">
           {/* Top bar */}
-          <div className="px-3 py-2 border-b border-[#E5E1DB] bg-[#F9F7F4]/95 backdrop-blur-sm flex items-center justify-between sticky top-0 z-10">
+          <div className="px-3 py-2 border-b border-shell bg-cream/95 backdrop-blur-sm flex items-center justify-between sticky top-0 z-10">
             <button
               onClick={toggleSidebar}
-              className="text-xs text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors flex items-center gap-1.5"
+              className="text-xs text-sand hover:text-ink transition-colors flex items-center gap-1.5"
             >
               {sidebarCollapsed ? <><Menu className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Expand</span></> : <><PanelLeftClose className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Collapse</span></>}
             </button>
             <div className="flex items-center gap-3">
               {cartCount > 0 && (
                 <button onClick={() => setCartOpen(true)} className="relative p-1">
-                  <ShoppingCart className="w-4 h-4 text-[#0A0A0A]/60 hover:text-[#0A0A0A]" />
-                  <span className="absolute -top-1 -right-1 h-4 w-4 text-[#F9F7F4] text-[9px] font-bold flex items-center justify-center" style={{ backgroundColor: brand.color }}>
+                  <ShoppingCart className="w-4 h-4 text-ink/60 hover:text-ink" />
+                  <span className="absolute -top-1 -right-1 h-4 w-4 text-cream text-[9px] font-bold flex items-center justify-center" style={{ backgroundColor: brand.color }}>
                     {cartCount}
                   </span>
                 </button>
               )}
               <div className="relative">
-                <Bell className="w-4 h-4 text-[#C8C0B4] cursor-pointer hover:text-[#0A0A0A]" />
+                <Bell className="w-4 h-4 text-sand cursor-pointer hover:text-ink" />
                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2" style={{ backgroundColor: brand.color }} />
               </div>
-              <div className="w-7 h-7 flex items-center justify-center font-mono text-[10px] text-[#F9F7F4]" style={{ backgroundColor: brand.color }}>
+              <div className="w-7 h-7 flex items-center justify-center font-mono text-[10px] text-cream" style={{ backgroundColor: brand.color }}>
                 A
               </div>
             </div>
           </div>
 
           {/* Content */}
-          <div className="bg-[#F9F7F4]">
+          <div className="bg-cream">
             {view === "marketing" && <MarketingView {...viewProps} />}
             {view === "catalog" && <CatalogView {...viewProps} />}
             {view === "about" && <AboutView {...viewProps} />}
@@ -2699,10 +2699,10 @@ export function DemoPortal() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#F9F7F4] flex items-center justify-center">
+        <div className="min-h-screen bg-cream flex items-center justify-center">
           <div className="text-center">
-            <div className="w-6 h-6 border border-[#E5E1DB] border-t-[#2A52BE] animate-spin mx-auto mb-3" />
-            <div className="font-mono text-sm text-[#C8C0B4]">Loading your demo...</div>
+            <div className="w-6 h-6 border border-shell border-t-[#2A52BE] animate-spin mx-auto mb-3" />
+            <div className="font-mono text-sm text-sand">Loading your demo...</div>
           </div>
         </div>
       }

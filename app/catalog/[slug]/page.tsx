@@ -192,7 +192,7 @@ export default async function ProductDetailPage({ params }: Props) {
     }
 
     return (
-      <div className="min-h-screen bg-[#F9F7F4]">
+      <div className="min-h-screen bg-cream">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
@@ -202,41 +202,41 @@ export default async function ProductDetailPage({ params }: Props) {
 
         <div className="mx-auto max-w-6xl px-6 py-16 pt-28 sm:pt-32">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-xs text-[#C8C0B4] mb-12">
-            <Link href="/" className="hover:text-[#0A0A0A] transition-colors">Home</Link>
+          <nav className="flex items-center gap-2 text-xs text-sand mb-12">
+            <Link href="/" className="hover:text-ink transition-colors">Home</Link>
             <span>/</span>
-            <Link href="/catalog" className="hover:text-[#0A0A0A] transition-colors">Catalog</Link>
+            <Link href="/catalog" className="hover:text-ink transition-colors">Catalog</Link>
             <span>/</span>
-            <span className="text-[#0A0A0A]">{category.name}</span>
+            <span className="text-ink">{category.name}</span>
           </nav>
 
           {/* Header */}
           <div className="mb-12 max-w-2xl">
-            <p className="text-xs tracking-widest uppercase text-[#C8C0B4] mb-4">Wholesale</p>
-            <h1 className="font-serif text-5xl font-normal text-[#0A0A0A] mb-6">{category.headline}</h1>
-            <p className="text-lg text-[#0A0A0A]/60 leading-relaxed">{category.body}</p>
+            <p className="text-xs tracking-widest uppercase text-sand mb-4">Wholesale</p>
+            <h1 className="font-serif text-5xl font-normal text-ink mb-6">{category.headline}</h1>
+            <p className="text-lg text-ink/60 leading-relaxed">{category.body}</p>
           </div>
 
-          <div className="border-t border-[#E5E1DB] mb-12" />
+          <div className="border-t border-shell mb-12" />
 
           {/* Product grid */}
           {products.length === 0 ? (
-            <p className="text-[#0A0A0A]/50">No products currently available in this category. Check back soon.</p>
+            <p className="text-ink/50">No products currently available in this category. Check back soon.</p>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-[#E5E1DB]">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-shell">
               {products.map(p => (
-                <div key={p.id} className="bg-[#F9F7F4]">
-                  <Link href={`/catalog/${p.slug}`} className="block h-full hover:bg-[#F0EDE8] transition-colors p-6">
-                    <p className="text-[10px] tracking-[0.18em] uppercase text-[#C8C0B4] mb-2">{category.name}</p>
+                <div key={p.id} className="bg-cream">
+                  <Link href={`/catalog/${p.slug}`} className="block h-full hover:bg-cream-hover transition-colors p-6">
+                    <p className="text-[10px] tracking-[0.18em] uppercase text-sand mb-2">{category.name}</p>
                     <h3 className="font-serif text-lg font-bold leading-tight mb-3">{p.name}</h3>
                     <div className="h-10 flex items-center mb-4">
                       {p.marketRate ? (
-                        <span className="text-[10px] tracking-[0.15em] uppercase border border-[#C8C0B4] text-[#C8C0B4] px-2.5 py-1">Market Rate</span>
+                        <span className="text-[10px] tracking-[0.15em] uppercase border border-sand text-sand px-2.5 py-1">Market Rate</span>
                       ) : (
-                        <p className="text-xl font-bold">{formatCurrency(p.price)} <span className="text-sm font-normal text-[#0A0A0A]/50">{p.unit}</span></p>
+                        <p className="text-xl font-bold">{formatCurrency(p.price)} <span className="text-sm font-normal text-ink/50">{p.unit}</span></p>
                       )}
                     </div>
-                    <p className="text-sm text-[#0A0A0A]/55 line-clamp-2">{p.description}</p>
+                    <p className="text-sm text-ink/55 line-clamp-2">{p.description}</p>
                   </Link>
                 </div>
               ))}
@@ -244,11 +244,11 @@ export default async function ProductDetailPage({ params }: Props) {
           )}
 
           {/* CTA */}
-          <div className="mt-16 border-t border-[#E5E1DB] pt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <p className="text-[#0A0A0A]/50 text-sm">Don&apos;t see what you need? We source on request.</p>
+          <div className="mt-16 border-t border-shell pt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <p className="text-ink/50 text-sm">Don&apos;t see what you need? We source on request.</p>
             <Link
               href="/partner"
-              className="inline-flex items-center gap-2 bg-[#0A0A0A] text-[#F9F7F4] px-6 py-3 text-sm tracking-wide hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 bg-ink text-cream px-6 py-3 text-sm tracking-wide hover:opacity-90 transition-opacity"
             >
               Apply for Wholesale Access
             </Link>
@@ -256,18 +256,18 @@ export default async function ProductDetailPage({ params }: Props) {
         </div>
 
         {/* FOOTER */}
-        <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10 mt-16">
+        <footer className="border-t border-shell bg-ink-dark text-cream py-10 mt-16">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
-            <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
-              <Link href="/catalog" className="hover:text-[#F9F7F4] transition-colors">Catalog</Link>
-              <Link href="/about" className="hover:text-[#F9F7F4] transition-colors">About</Link>
-              <Link href="/partner" className="hover:text-[#F9F7F4] transition-colors">Wholesale</Link>
+            <div className="flex items-center gap-6 text-sm text-cream/40">
+              <Link href="/catalog" className="hover:text-cream transition-colors">Catalog</Link>
+              <Link href="/about" className="hover:text-cream transition-colors">About</Link>
+              <Link href="/partner" className="hover:text-cream transition-colors">Wholesale</Link>
               <a
                 href="https://www.instagram.com/wholesailhub/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-[#F9F7F4] transition-colors flex items-center gap-1.5"
+                className="hover:text-cream transition-colors flex items-center gap-1.5"
               >
                 <Instagram className="h-3.5 w-3.5" />
                 @wholesailhub
@@ -350,7 +350,7 @@ export default async function ProductDetailPage({ params }: Props) {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F7F4]">
+    <div className="min-h-screen bg-cream">
       <Script
         id={`product-schema-${product.slug}`}
         type="application/ld+json"
@@ -360,20 +360,20 @@ export default async function ProductDetailPage({ params }: Props) {
       <MarketingHeader />
 
       {/* BREADCRUMB */}
-      <div className="pt-20 sm:pt-24 border-b border-[#E5E1DB]">
+      <div className="pt-20 sm:pt-24 border-b border-shell">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center gap-2 text-xs text-[#C8C0B4]">
-            <Link href="/" className="hover:text-[#0A0A0A] transition-colors">Home</Link>
+          <div className="flex items-center gap-2 text-xs text-sand">
+            <Link href="/" className="hover:text-ink transition-colors">Home</Link>
             <span>/</span>
-            <Link href="/catalog" className="hover:text-[#0A0A0A] transition-colors">Catalog</Link>
+            <Link href="/catalog" className="hover:text-ink transition-colors">Catalog</Link>
             <span>/</span>
-            <span className="text-[#0A0A0A]">{product.name}</span>
+            <span className="text-ink">{product.name}</span>
           </div>
         </div>
       </div>
 
       {/* PRODUCT DETAIL */}
-      <section className="py-12 sm:py-16 border-b border-[#E5E1DB]">
+      <section className="py-12 sm:py-16 border-b border-shell">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
 
@@ -389,7 +389,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   priority
                 />
               ) : (
-                <div className="w-full h-full bg-[#0A0A0A] flex items-center justify-center">
+                <div className="w-full h-full bg-ink flex items-center justify-center">
                   <div className="text-center">
                     <p className="font-serif text-6xl sm:text-8xl font-bold text-white/10 select-none mb-4">
                       {product.category?.slice(0, 2).toUpperCase() || 'TB'}
@@ -404,29 +404,29 @@ export default async function ProductDetailPage({ params }: Props) {
 
             {/* Right — product info */}
             <div className="flex flex-col justify-center">
-              <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-4">
+              <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-4">
                 {product.category}
               </p>
-              <h1 className="font-serif text-4xl sm:text-5xl font-bold text-[#0A0A0A] leading-tight mb-5">
+              <h1 className="font-serif text-4xl sm:text-5xl font-bold text-ink leading-tight mb-5">
                 {product.name}
               </h1>
 
               {product.description && (
-                <p className="text-[#0A0A0A]/60 text-base leading-relaxed mb-8">
+                <p className="text-ink/60 text-base leading-relaxed mb-8">
                   {product.description}
                 </p>
               )}
 
               {/* Price */}
-              <div className="border-t border-[#E5E1DB] pt-6 mb-6">
-                <p className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4] mb-2">
+              <div className="border-t border-shell pt-6 mb-6">
+                <p className="text-[10px] tracking-[0.2em] uppercase text-sand mb-2">
                   Wholesale Price
                 </p>
-                <p className="font-serif text-3xl font-bold text-[#0A0A0A]">
+                <p className="font-serif text-3xl font-bold text-ink">
                   {priceDisplay}
                 </p>
                 {product.marketRate && (
-                  <p className="text-xs text-[#0A0A0A]/40 mt-1">
+                  <p className="text-xs text-ink/40 mt-1">
                     Fluctuates with commodity market — contact us for today&apos;s rate.
                   </p>
                 )}
@@ -435,55 +435,55 @@ export default async function ProductDetailPage({ params }: Props) {
               {/* Attributes */}
               <div className="grid grid-cols-2 gap-3 mb-8">
                 {product.coldChainRequired && (
-                  <div className="flex items-start gap-2.5 bg-white border border-[#E5E1DB] p-3">
-                    <Snowflake className="h-4 w-4 text-[#C8C0B4] mt-0.5 shrink-0" />
+                  <div className="flex items-start gap-2.5 bg-white border border-shell p-3">
+                    <Snowflake className="h-4 w-4 text-sand mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-[10px] tracking-wider uppercase text-[#C8C0B4]">Storage</p>
-                      <p className="text-xs font-medium text-[#0A0A0A] mt-0.5">Cold Chain Required</p>
+                      <p className="text-[10px] tracking-wider uppercase text-sand">Storage</p>
+                      <p className="text-xs font-medium text-ink mt-0.5">Cold Chain Required</p>
                     </div>
                   </div>
                 )}
                 {product.minimumOrder && (
-                  <div className="flex items-start gap-2.5 bg-white border border-[#E5E1DB] p-3">
-                    <Package className="h-4 w-4 text-[#C8C0B4] mt-0.5 shrink-0" />
+                  <div className="flex items-start gap-2.5 bg-white border border-shell p-3">
+                    <Package className="h-4 w-4 text-sand mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-[10px] tracking-wider uppercase text-[#C8C0B4]">Minimum</p>
-                      <p className="text-xs font-medium text-[#0A0A0A] mt-0.5">{product.minimumOrder}</p>
+                      <p className="text-[10px] tracking-wider uppercase text-sand">Minimum</p>
+                      <p className="text-xs font-medium text-ink mt-0.5">{product.minimumOrder}</p>
                     </div>
                   </div>
                 )}
                 {product.packaging && (
-                  <div className="flex items-start gap-2.5 bg-white border border-[#E5E1DB] p-3">
-                    <Package className="h-4 w-4 text-[#C8C0B4] mt-0.5 shrink-0" />
+                  <div className="flex items-start gap-2.5 bg-white border border-shell p-3">
+                    <Package className="h-4 w-4 text-sand mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-[10px] tracking-wider uppercase text-[#C8C0B4]">Packaging</p>
-                      <p className="text-xs font-medium text-[#0A0A0A] mt-0.5">{product.packaging}</p>
+                      <p className="text-[10px] tracking-wider uppercase text-sand">Packaging</p>
+                      <p className="text-xs font-medium text-ink mt-0.5">{product.packaging}</p>
                     </div>
                   </div>
                 )}
                 {product.prepayRequired && (
-                  <div className="flex items-start gap-2.5 bg-white border border-[#E5E1DB] p-3">
-                    <CreditCard className="h-4 w-4 text-[#C8C0B4] mt-0.5 shrink-0" />
+                  <div className="flex items-start gap-2.5 bg-white border border-shell p-3">
+                    <CreditCard className="h-4 w-4 text-sand mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-[10px] tracking-wider uppercase text-[#C8C0B4]">Payment</p>
-                      <p className="text-xs font-medium text-[#0A0A0A] mt-0.5">Prepay Required</p>
+                      <p className="text-[10px] tracking-wider uppercase text-sand">Payment</p>
+                      <p className="text-xs font-medium text-ink mt-0.5">Prepay Required</p>
                     </div>
                   </div>
                 )}
                 {product.marketRate && (
-                  <div className="flex items-start gap-2.5 bg-white border border-[#E5E1DB] p-3">
-                    <BarChart2 className="h-4 w-4 text-[#C8C0B4] mt-0.5 shrink-0" />
+                  <div className="flex items-start gap-2.5 bg-white border border-shell p-3">
+                    <BarChart2 className="h-4 w-4 text-sand mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-[10px] tracking-wider uppercase text-[#C8C0B4]">Pricing</p>
-                      <p className="text-xs font-medium text-[#0A0A0A] mt-0.5">Market Rate</p>
+                      <p className="text-[10px] tracking-wider uppercase text-sand">Pricing</p>
+                      <p className="text-xs font-medium text-ink mt-0.5">Market Rate</p>
                     </div>
                   </div>
                 )}
               </div>
 
               {/* Availability */}
-              <div className={`inline-flex items-center gap-2 text-xs mb-8 ${product.available ? 'text-[#0A0A0A]/60' : 'text-[#C8C0B4]'}`}>
-                <span className={`w-2 h-2 rounded-full ${product.available ? 'bg-green-600' : 'bg-[#C8C0B4]'}`} />
+              <div className={`inline-flex items-center gap-2 text-xs mb-8 ${product.available ? 'text-ink/60' : 'text-sand'}`}>
+                <span className={`w-2 h-2 rounded-full ${product.available ? 'bg-green-600' : 'bg-sand'}`} />
                 {product.available ? 'In Stock — Available to Order' : 'Currently Unavailable'}
               </div>
 
@@ -491,7 +491,7 @@ export default async function ProductDetailPage({ params }: Props) {
               <div className="mb-4">
                 <Link
                   href="/catalog"
-                  className="inline-flex items-center gap-1.5 text-xs text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs text-sand hover:text-ink transition-colors"
                 >
                   <ArrowLeft className="h-3.5 w-3.5" />
                   Back to Catalog
@@ -520,16 +520,16 @@ export default async function ProductDetailPage({ params }: Props) {
 
       {/* PROVENANCE LINK */}
       {matchedProvenanceSlug && (
-        <section className="py-8 border-b border-[#E5E1DB]">
+        <section className="py-8 border-b border-shell">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between py-4 px-5 border border-[#E5E1DB] bg-white max-w-xl">
+            <div className="flex items-center justify-between py-4 px-5 border border-shell bg-white max-w-xl">
               <div>
-                <p className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4] mb-0.5">Sourcing</p>
-                <p className="text-sm text-[#0A0A0A] font-medium">Where does this come from?</p>
+                <p className="text-[10px] tracking-[0.2em] uppercase text-sand mb-0.5">Sourcing</p>
+                <p className="text-sm text-ink font-medium">Where does this come from?</p>
               </div>
               <Link
                 href={`/provenance/${matchedProvenanceSlug}`}
-                className="text-xs text-[#0A0A0A]/60 hover:text-[#0A0A0A] transition-colors underline underline-offset-2 shrink-0 ml-4"
+                className="text-xs text-ink/60 hover:text-ink transition-colors underline underline-offset-2 shrink-0 ml-4"
               >
                 Learn about our sourcing
               </Link>
@@ -539,15 +539,15 @@ export default async function ProductDetailPage({ params }: Props) {
       )}
 
       {/* WHY WHOLESAIL */}
-      <section className="py-14 sm:py-20 border-b border-[#E5E1DB]">
+      <section className="py-14 sm:py-20 border-b border-shell">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-3">
+          <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-3">
             Why Wholesail
           </p>
-          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#0A0A0A] mb-10">
+          <h2 className="font-serif text-3xl sm:text-4xl font-bold text-ink mb-10">
             The Wholesail Difference
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#E5E1DB]">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-shell">
             {[
               {
                 title: 'Direct-Sourced',
@@ -562,9 +562,9 @@ export default async function ProductDetailPage({ params }: Props) {
                 body: 'SoCal next-day. Nationwide 24–48 hours. Fresh ingredients arrive when you need them, not when it\'s convenient for us.',
               },
             ].map(item => (
-              <div key={item.title} className="bg-[#F9F7F4] p-8 sm:p-10">
-                <h3 className="font-serif text-xl font-bold text-[#0A0A0A] mb-3">{item.title}</h3>
-                <p className="text-sm text-[#0A0A0A]/55 leading-relaxed">{item.body}</p>
+              <div key={item.title} className="bg-cream p-8 sm:p-10">
+                <h3 className="font-serif text-xl font-bold text-ink mb-3">{item.title}</h3>
+                <p className="text-sm text-ink/55 leading-relaxed">{item.body}</p>
               </div>
             ))}
           </div>
@@ -572,18 +572,18 @@ export default async function ProductDetailPage({ params }: Props) {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
+      <footer className="border-t border-shell bg-ink-dark text-cream py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
-          <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
-            <Link href="/catalog" className="hover:text-[#F9F7F4] transition-colors">Catalog</Link>
-            <Link href="/about" className="hover:text-[#F9F7F4] transition-colors">About</Link>
-            <Link href="/partner" className="hover:text-[#F9F7F4] transition-colors">Wholesale</Link>
+          <div className="flex items-center gap-6 text-sm text-cream/40">
+            <Link href="/catalog" className="hover:text-cream transition-colors">Catalog</Link>
+            <Link href="/about" className="hover:text-cream transition-colors">About</Link>
+            <Link href="/partner" className="hover:text-cream transition-colors">Wholesale</Link>
             <a
               href="https://www.instagram.com/wholesailhub/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-[#F9F7F4] transition-colors flex items-center gap-1.5"
+              className="hover:text-cream transition-colors flex items-center gap-1.5"
             >
               <Instagram className="h-3.5 w-3.5" />
               @wholesailhub

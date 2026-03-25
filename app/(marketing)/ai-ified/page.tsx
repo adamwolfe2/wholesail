@@ -98,7 +98,7 @@ function InvoiceMock() {
     { client: "Riverside Restaurant", amount: "$1,240", due: "Due in 3 days", status: "Reminder sent", color: "#f59e0b" },
     { client: "Oak & Vine Bistro", amount: "$845", due: "Due today", status: "Auto-reminder", color: "#f59e0b" },
     { client: "Harbor Fish House", amount: "$2,100", due: "Paid", status: "Collected", color: "#10b981" },
-    { client: "Metro Café Group", amount: "$620", due: "3 days overdue", status: "Escalated", color: "#dc2626" },
+    { client: "Metro Café Group", amount: "$620", due: "3 days overdue", status: "Escalated", color: 'var(--color-error)' },
   ];
   return (
     <div
@@ -159,7 +159,7 @@ function AdminMock() {
         {[
           { stat: "$48,200", label: "MRR", color: "var(--text-headline)" },
           { stat: "94%", label: "On-time", color: "#10b981" },
-          { stat: "2 at risk", label: "Flagged", color: "#dc2626" },
+          { stat: "2 at risk", label: "Flagged", color: 'var(--color-error)' },
         ].map((m) => (
           <div
             key={m.label}
@@ -548,7 +548,7 @@ export default function AIifiedPage() {
                     <div key={item} className="flex items-start gap-3">
                       <Clock
                         className="w-3.5 h-3.5 flex-shrink-0 mt-0.5"
-                        style={{ color: "#dc2626" }}
+                        style={{ color: 'var(--color-error)' }}
                         strokeWidth={2}
                       />
                       <span className="font-mono text-xs leading-relaxed" style={{ color: "var(--text-body)" }}>

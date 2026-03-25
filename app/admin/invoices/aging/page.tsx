@@ -122,49 +122,49 @@ export default async function ARAgingPage() {
     <div className="space-y-6">
       {/* Page header */}
       <div>
-        <h1 className="font-serif text-2xl font-bold text-[#0A0A0A]">AR Aging</h1>
-        <p className="text-sm text-[#0A0A0A]/50 mt-0.5">
+        <h1 className="font-serif text-2xl font-bold text-ink">AR Aging</h1>
+        <p className="text-sm text-ink/50 mt-0.5">
           Outstanding accounts receivable — as of {fmtDate(now)}
         </p>
       </div>
 
       {/* Summary cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="bg-[#F9F7F4] border border-[#E5E1DB] p-4">
+        <div className="bg-cream border border-shell p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-medium uppercase tracking-wide text-[#0A0A0A]/50">
+            <span className="text-xs font-medium uppercase tracking-wide text-ink/50">
               Total AR
             </span>
-            <DollarSign className="h-4 w-4 text-[#C8C0B4]" />
+            <DollarSign className="h-4 w-4 text-sand" />
           </div>
-          <p className="font-serif text-2xl font-bold text-[#0A0A0A]">{fmt(totalAR)}</p>
-          <p className="text-xs text-[#0A0A0A]/40 mt-1">
+          <p className="font-serif text-2xl font-bold text-ink">{fmt(totalAR)}</p>
+          <p className="text-xs text-ink/40 mt-1">
             {invoices.length} {invoices.length === 1 ? 'invoice' : 'invoices'} open
           </p>
         </div>
 
-        <div className="bg-[#F9F7F4] border border-[#E5E1DB] p-4">
+        <div className="bg-cream border border-shell p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-medium uppercase tracking-wide text-[#0A0A0A]/50">
+            <span className="text-xs font-medium uppercase tracking-wide text-ink/50">
               Overdue Total
             </span>
-            <AlertTriangle className="h-4 w-4 text-[#C8C0B4]" />
+            <AlertTriangle className="h-4 w-4 text-sand" />
           </div>
-          <p className="font-serif text-2xl font-bold text-[#0A0A0A]">{fmt(overdueTotal)}</p>
-          <p className="text-xs text-[#0A0A0A]/40 mt-1">
+          <p className="font-serif text-2xl font-bold text-ink">{fmt(overdueTotal)}</p>
+          <p className="text-xs text-ink/40 mt-1">
             {overdueCount} {overdueCount === 1 ? 'invoice' : 'invoices'} past due
           </p>
         </div>
 
-        <div className="bg-[#F9F7F4] border border-[#E5E1DB] p-4">
+        <div className="bg-cream border border-shell p-4">
           <div className="flex items-center justify-between mb-2">
-            <span className="text-xs font-medium uppercase tracking-wide text-[#0A0A0A]/50">
+            <span className="text-xs font-medium uppercase tracking-wide text-ink/50">
               Overdue Count
             </span>
-            <Clock className="h-4 w-4 text-[#C8C0B4]" />
+            <Clock className="h-4 w-4 text-sand" />
           </div>
-          <p className="font-serif text-2xl font-bold text-[#0A0A0A]">{overdueCount}</p>
-          <p className="text-xs text-[#0A0A0A]/40 mt-1">
+          <p className="font-serif text-2xl font-bold text-ink">{overdueCount}</p>
+          <p className="text-xs text-ink/40 mt-1">
             {invoices.length > 0
               ? `${Math.round((overdueCount / invoices.length) * 100)}% of open invoices`
               : 'No open invoices'}
@@ -186,19 +186,19 @@ export default async function ARAgingPage() {
             if (bucket.rows.length === 0) return null
             const isOverdueBucket = bucket.min >= 1
             return (
-              <div key={bucket.label} className="bg-[#F9F7F4] border border-[#E5E1DB]">
+              <div key={bucket.label} className="bg-cream border border-shell">
                 {/* Bucket header */}
-                <div className="flex items-center justify-between px-4 py-3 border-b border-[#E5E1DB]">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-shell">
                   <div className="flex items-center gap-2">
                     {isOverdueBucket && (
-                      <span className="inline-block w-2 h-2 bg-[#0A0A0A] rounded-full" />
+                      <span className="inline-block w-2 h-2 bg-ink rounded-full" />
                     )}
-                    <span className="text-sm font-semibold text-[#0A0A0A]">{bucket.label}</span>
-                    <span className="text-xs text-[#0A0A0A]/40">
+                    <span className="text-sm font-semibold text-ink">{bucket.label}</span>
+                    <span className="text-xs text-ink/40">
                       ({bucket.rows.length})
                     </span>
                   </div>
-                  <span className="text-sm font-semibold text-[#0A0A0A]">
+                  <span className="text-sm font-semibold text-ink">
                     {fmt(bucket.total)}
                   </span>
                 </div>
@@ -207,23 +207,23 @@ export default async function ARAgingPage() {
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-[#E5E1DB]">
-                        <th className="text-left px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-[#0A0A0A]/50">
+                      <tr className="border-b border-shell">
+                        <th className="text-left px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-ink/50">
                           Client
                         </th>
-                        <th className="text-left px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-[#0A0A0A]/50">
+                        <th className="text-left px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-ink/50">
                           Invoice #
                         </th>
-                        <th className="text-right px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-[#0A0A0A]/50">
+                        <th className="text-right px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-ink/50">
                           Amount
                         </th>
-                        <th className="text-left px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-[#0A0A0A]/50 hidden sm:table-cell">
+                        <th className="text-left px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-ink/50 hidden sm:table-cell">
                           Due Date
                         </th>
-                        <th className="text-right px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-[#0A0A0A]/50 hidden md:table-cell">
+                        <th className="text-right px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-ink/50 hidden md:table-cell">
                           Days Overdue
                         </th>
-                        <th className="text-left px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-[#0A0A0A]/50 hidden lg:table-cell">
+                        <th className="text-left px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-ink/50 hidden lg:table-cell">
                           Last Reminder
                         </th>
                         <th className="px-4 py-2.5" />
@@ -235,20 +235,20 @@ export default async function ARAgingPage() {
                           key={inv.id}
                           className={
                             idx < bucket.rows.length - 1
-                              ? 'border-b border-[#E5E1DB]/60'
+                              ? 'border-b border-shell/60'
                               : ''
                           }
                         >
-                          <td className="px-4 py-3 font-medium text-[#0A0A0A]">
+                          <td className="px-4 py-3 font-medium text-ink">
                             {inv.organization.name}
                           </td>
-                          <td className="px-4 py-3 font-mono text-xs text-[#0A0A0A]/60">
+                          <td className="px-4 py-3 font-mono text-xs text-ink/60">
                             {inv.invoiceNumber}
                           </td>
-                          <td className="px-4 py-3 text-right font-semibold text-[#0A0A0A]">
+                          <td className="px-4 py-3 text-right font-semibold text-ink">
                             {fmt(inv.total)}
                           </td>
-                          <td className="px-4 py-3 text-[#0A0A0A]/60 hidden sm:table-cell">
+                          <td className="px-4 py-3 text-ink/60 hidden sm:table-cell">
                             {fmtDate(inv.dueDate)}
                           </td>
                           <td className="px-4 py-3 text-right hidden md:table-cell">
@@ -256,17 +256,17 @@ export default async function ARAgingPage() {
                               <span
                                 className={
                                   inv.daysOverdue > 60
-                                    ? 'font-semibold text-[#0A0A0A]'
-                                    : 'text-[#0A0A0A]/60'
+                                    ? 'font-semibold text-ink'
+                                    : 'text-ink/60'
                                 }
                               >
                                 {inv.daysOverdue}d
                               </span>
                             ) : (
-                              <span className="text-[#0A0A0A]/40">—</span>
+                              <span className="text-ink/40">—</span>
                             )}
                           </td>
-                          <td className="px-4 py-3 text-[#0A0A0A]/40 text-xs hidden lg:table-cell">
+                          <td className="px-4 py-3 text-ink/40 text-xs hidden lg:table-cell">
                             {inv.reminderSentAt ? fmtDate(inv.reminderSentAt) : 'Never'}
                           </td>
                           <td className="px-4 py-3 text-right">
@@ -280,14 +280,14 @@ export default async function ARAgingPage() {
                     </tbody>
                     {/* Bucket total row */}
                     <tfoot>
-                      <tr className="border-t border-[#E5E1DB] bg-[#F9F7F4]">
+                      <tr className="border-t border-shell bg-cream">
                         <td
                           colSpan={2}
-                          className="px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-[#0A0A0A]/50"
+                          className="px-4 py-2.5 text-xs font-medium uppercase tracking-wide text-ink/50"
                         >
                           Subtotal — {bucket.label}
                         </td>
-                        <td className="px-4 py-2.5 text-right font-semibold text-[#0A0A0A]">
+                        <td className="px-4 py-2.5 text-right font-semibold text-ink">
                           {fmt(bucket.total)}
                         </td>
                         <td colSpan={4} />

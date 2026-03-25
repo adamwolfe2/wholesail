@@ -50,7 +50,7 @@ export function TaskActions({ taskId }: TaskActionsProps) {
         variant="outline"
         onClick={handleComplete}
         disabled={completing}
-        className="border-[#E5E1DB] text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none text-xs"
+        className="border-shell text-ink/60 hover:text-ink hover:bg-ink/[0.04] rounded-none text-xs"
       >
         {completing ? (
           <Loader2 className="h-3 w-3 animate-spin" />

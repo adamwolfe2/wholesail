@@ -261,7 +261,7 @@ export default function SettingsPage() {
     return (
       <PortalLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <Loader2 className="h-8 w-8 animate-spin text-[#C8C0B4]" />
+          <Loader2 className="h-8 w-8 animate-spin text-sand" />
         </div>
       </PortalLayout>
     )
@@ -276,18 +276,18 @@ export default function SettingsPage() {
           </div>
         )}
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Account Settings</h1>
-          <p className="text-sm text-[#0A0A0A]/50 mt-1">Manage your profile and preferences</p>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Account Settings</h1>
+          <p className="text-sm text-ink/50 mt-1">Manage your profile and preferences</p>
         </div>
 
         {/* 1. Profile */}
-        <Card className="border-[#C8C0B4] bg-[#F9F7F4] rounded-none">
-          <CardHeader className="border-b border-[#C8C0B4]/50">
+        <Card className="border-sand bg-cream rounded-none">
+          <CardHeader className="border-b border-sand/50">
             <div className="flex items-center gap-2">
-              <User className="h-4 w-4 text-[#C8C0B4]" />
-              <CardTitle className="font-serif text-lg text-[#0A0A0A]">Profile</CardTitle>
+              <User className="h-4 w-4 text-sand" />
+              <CardTitle className="font-serif text-lg text-ink">Profile</CardTitle>
             </div>
-            <CardDescription className="text-[#0A0A0A]/50">Your Clerk account information</CardDescription>
+            <CardDescription className="text-ink/50">Your Clerk account information</CardDescription>
           </CardHeader>
           <CardContent className="pt-5 space-y-4">
             {user ? (
@@ -298,39 +298,39 @@ export default function SettingsPage() {
                     <img
                       src={user.imageUrl}
                       alt="Avatar"
-                      className="h-12 w-12 rounded-none object-cover border border-[#C8C0B4]"
+                      className="h-12 w-12 rounded-none object-cover border border-sand"
                     />
                   )}
                   <div>
-                    <p className="font-medium text-[#0A0A0A]">
+                    <p className="font-medium text-ink">
                       {user.fullName || user.firstName || 'No name set'}
                     </p>
-                    <p className="text-sm text-[#0A0A0A]/50">
+                    <p className="text-sm text-ink/50">
                       {user.primaryEmailAddress?.emailAddress}
                     </p>
                   </div>
                 </div>
-                <p className="text-xs text-[#0A0A0A]/40 bg-[#C8C0B4]/10 px-3 py-2 border border-[#C8C0B4]/30">
+                <p className="text-xs text-ink/40 bg-sand/10 px-3 py-2 border border-sand/30">
                   Profile details are managed through Clerk. Use the account button in the sidebar to update your name, email, or password.
                 </p>
               </>
             ) : (
-              <p className="text-sm text-[#0A0A0A]/50">Not signed in.</p>
+              <p className="text-sm text-ink/50">Not signed in.</p>
             )}
           </CardContent>
         </Card>
 
         {/* 2. Business Information */}
-        <Card className="border-[#C8C0B4] bg-[#F9F7F4] rounded-none">
-          <CardHeader className="border-b border-[#C8C0B4]/50">
+        <Card className="border-sand bg-cream rounded-none">
+          <CardHeader className="border-b border-sand/50">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-2">
-                <Building2 className="h-4 w-4 text-[#C8C0B4]" />
-                <CardTitle className="font-serif text-lg text-[#0A0A0A]">Business Information</CardTitle>
+                <Building2 className="h-4 w-4 text-sand" />
+                <CardTitle className="font-serif text-lg text-ink">Business Information</CardTitle>
               </div>
               <div className="flex items-center gap-2">
                 {bizSaved && (
-                  <span className="flex items-center gap-1 text-xs text-[#0A0A0A]/60">
+                  <span className="flex items-center gap-1 text-xs text-ink/60">
                     <Check className="h-3.5 w-3.5" />
                     Saved
                   </span>
@@ -344,7 +344,7 @@ export default function SettingsPage() {
                       setBizEditing(true)
                       setBizError('')
                     }}
-                    className="border-[#C8C0B4] text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#C8C0B4]/20 rounded-none text-xs min-h-[32px]"
+                    className="border-sand text-ink/60 hover:text-ink hover:bg-sand/20 rounded-none text-xs min-h-[32px]"
                   >
                     <Pencil className="h-3 w-3 mr-1" />
                     Edit
@@ -352,36 +352,36 @@ export default function SettingsPage() {
                 )}
               </div>
             </div>
-            <CardDescription className="text-[#0A0A0A]/50">
+            <CardDescription className="text-ink/50">
               Your business contact details. Contact your rep to update your business name.
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-5">
             {bizLoading ? (
               <div className="flex justify-center py-6">
-                <Loader2 className="h-5 w-5 animate-spin text-[#C8C0B4]" />
+                <Loader2 className="h-5 w-5 animate-spin text-sand" />
               </div>
             ) : bizEditing ? (
               <form onSubmit={handleBizSave} className="space-y-4">
                 <div className="space-y-1.5">
-                  <Label className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider">Business Name</Label>
-                  <p className="text-sm text-[#0A0A0A]/50 bg-[#C8C0B4]/10 px-3 py-2 border border-[#C8C0B4]/30">
+                  <Label className="text-xs text-ink/60 uppercase tracking-wider">Business Name</Label>
+                  <p className="text-sm text-ink/50 bg-sand/10 px-3 py-2 border border-sand/30">
                     {bizProfile?.name} <span className="text-xs">(contact your rep to update)</span>
                   </p>
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="contactPerson" className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider">Contact Person *</Label>
+                  <Label htmlFor="contactPerson" className="text-xs text-ink/60 uppercase tracking-wider">Contact Person *</Label>
                   <Input
                     id="contactPerson"
                     required
                     value={bizForm.contactPerson}
                     onChange={(e) => setBizForm((p) => ({ ...p, contactPerson: e.target.value }))}
                     placeholder="John Smith"
-                    className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none text-sm"
+                    className="border-sand bg-cream focus-visible:ring-ink rounded-none text-sm"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label htmlFor="bizPhone" className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider">Phone *</Label>
+                  <Label htmlFor="bizPhone" className="text-xs text-ink/60 uppercase tracking-wider">Phone *</Label>
                   <Input
                     id="bizPhone"
                     required
@@ -389,7 +389,7 @@ export default function SettingsPage() {
                     value={bizForm.phone}
                     onChange={(e) => setBizForm((p) => ({ ...p, phone: e.target.value }))}
                     placeholder="(310) 555-0100"
-                    className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none text-sm"
+                    className="border-sand bg-cream focus-visible:ring-ink rounded-none text-sm"
                   />
                 </div>
                 {bizError && (
@@ -399,7 +399,7 @@ export default function SettingsPage() {
                   <Button
                     type="submit"
                     disabled={bizSaving}
-                    className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none min-h-[36px] text-sm"
+                    className="bg-ink text-cream hover:bg-ink/80 rounded-none min-h-[36px] text-sm"
                   >
                     {bizSaving ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : null}
                     Save Changes
@@ -408,7 +408,7 @@ export default function SettingsPage() {
                     type="button"
                     variant="outline"
                     onClick={() => { setBizEditing(false); setBizError('') }}
-                    className="border-[#C8C0B4] text-[#0A0A0A] hover:bg-[#C8C0B4]/20 rounded-none min-h-[36px] text-sm"
+                    className="border-sand text-ink hover:bg-sand/20 rounded-none min-h-[36px] text-sm"
                   >
                     Cancel
                   </Button>
@@ -417,36 +417,36 @@ export default function SettingsPage() {
             ) : bizProfile ? (
               <div className="space-y-3 text-sm">
                 <div>
-                  <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">Business Name</p>
-                  <p className="text-[#0A0A0A] font-medium">{bizProfile.name}</p>
+                  <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">Business Name</p>
+                  <p className="text-ink font-medium">{bizProfile.name}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">Contact Person</p>
-                  <p className="text-[#0A0A0A]">{bizProfile.contactPerson}</p>
+                  <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">Contact Person</p>
+                  <p className="text-ink">{bizProfile.contactPerson}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">Phone</p>
-                  <p className="text-[#0A0A0A]">{bizProfile.phone}</p>
+                  <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">Phone</p>
+                  <p className="text-ink">{bizProfile.phone}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">Email</p>
-                  <p className="text-[#0A0A0A]">{bizProfile.email}</p>
+                  <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">Email</p>
+                  <p className="text-ink">{bizProfile.email}</p>
                 </div>
               </div>
             ) : (
-              <p className="text-sm text-[#0A0A0A]/50">No business profile on file.</p>
+              <p className="text-sm text-ink/50">No business profile on file.</p>
             )}
           </CardContent>
         </Card>
 
         {/* 4. Delivery Preferences */}
-        <Card className="border-[#C8C0B4] bg-[#F9F7F4] rounded-none">
-          <CardHeader className="border-b border-[#C8C0B4]/50">
+        <Card className="border-sand bg-cream rounded-none">
+          <CardHeader className="border-b border-sand/50">
             <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-[#C8C0B4]" />
-              <CardTitle className="font-serif text-lg text-[#0A0A0A]">Delivery Preferences</CardTitle>
+              <MapPin className="h-4 w-4 text-sand" />
+              <CardTitle className="font-serif text-lg text-ink">Delivery Preferences</CardTitle>
             </div>
-            <CardDescription className="text-[#0A0A0A]/50">
+            <CardDescription className="text-ink/50">
               Manage your shipping and billing addresses
             </CardDescription>
           </CardHeader>
@@ -456,28 +456,28 @@ export default function SettingsPage() {
             )}
             {addressLoading ? (
               <div className="flex justify-center py-6">
-                <Loader2 className="h-5 w-5 animate-spin text-[#C8C0B4]" />
+                <Loader2 className="h-5 w-5 animate-spin text-sand" />
               </div>
             ) : addresses.length === 0 && !showAddForm ? (
-              <p className="text-sm text-[#0A0A0A]/50">No addresses on file.</p>
+              <p className="text-sm text-ink/50">No addresses on file.</p>
             ) : (
               <div className="space-y-2">
                 {addresses.map((address) => (
                   <div
                     key={address.id}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border border-[#C8C0B4]/50"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border border-sand/50"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
-                        <Badge variant="outline" className="border-[#C8C0B4] text-[#0A0A0A]/60 rounded-none text-xs">
+                        <Badge variant="outline" className="border-sand text-ink/60 rounded-none text-xs">
                           {address.type}
                         </Badge>
                         {address.isDefault && (
-                          <Badge className="bg-[#0A0A0A] text-[#F9F7F4] rounded-none text-xs">Default</Badge>
+                          <Badge className="bg-ink text-cream rounded-none text-xs">Default</Badge>
                         )}
                       </div>
-                      <p className="text-sm text-[#0A0A0A]">{address.street}</p>
-                      <p className="text-xs text-[#0A0A0A]/50">
+                      <p className="text-sm text-ink">{address.street}</p>
+                      <p className="text-xs text-ink/50">
                         {address.city}, {address.state} {address.zip}
                       </p>
                     </div>
@@ -486,7 +486,7 @@ export default function SettingsPage() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="border-[#C8C0B4] text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#C8C0B4]/20 rounded-none min-h-[36px] text-xs px-2"
+                          className="border-sand text-ink/60 hover:text-ink hover:bg-sand/20 rounded-none min-h-[36px] text-xs px-2"
                           onClick={() => handleSetDefault(address.id)}
                           disabled={settingDefaultId === address.id}
                         >
@@ -501,7 +501,7 @@ export default function SettingsPage() {
                       <Button
                         size="sm"
                         variant="outline"
-                        className="border-[#C8C0B4] text-[#0A0A0A]/40 hover:text-[#0A0A0A] hover:bg-[#C8C0B4]/20 rounded-none min-h-[36px] px-2"
+                        className="border-sand text-ink/40 hover:text-ink hover:bg-sand/20 rounded-none min-h-[36px] px-2"
                         onClick={() => handleDeleteAddress(address.id)}
                         disabled={deletingId === address.id}
                       >
@@ -519,63 +519,63 @@ export default function SettingsPage() {
             )}
 
             {showAddForm ? (
-              <form onSubmit={handleAddAddress} className="space-y-3 border border-[#C8C0B4]/50 p-4">
-                <p className="text-sm font-medium text-[#0A0A0A]">Add New Address</p>
+              <form onSubmit={handleAddAddress} className="space-y-3 border border-sand/50 p-4">
+                <p className="text-sm font-medium text-ink">Add New Address</p>
                 <div className="space-y-1.5">
-                  <Label className="text-xs text-[#0A0A0A]/60">Type</Label>
+                  <Label className="text-xs text-ink/60">Type</Label>
                   <Select
                     value={newAddress.type}
                     onValueChange={(v) => setNewAddress((p) => ({ ...p, type: v as 'BILLING' | 'SHIPPING' }))}
                   >
-                    <SelectTrigger className="border-[#C8C0B4] bg-[#F9F7F4] focus:ring-[#0A0A0A] rounded-none text-sm">
+                    <SelectTrigger className="border-sand bg-cream focus:ring-ink rounded-none text-sm">
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="rounded-none border-[#C8C0B4]">
+                    <SelectContent className="rounded-none border-sand">
                       <SelectItem value="SHIPPING" className="rounded-none">Shipping</SelectItem>
                       <SelectItem value="BILLING" className="rounded-none">Billing</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs text-[#0A0A0A]/60">Street *</Label>
+                  <Label className="text-xs text-ink/60">Street *</Label>
                   <Input
                     required
                     value={newAddress.street}
                     onChange={(e) => setNewAddress((p) => ({ ...p, street: e.target.value }))}
                     placeholder="123 Main St"
-                    className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none text-sm"
+                    className="border-sand bg-cream focus-visible:ring-ink rounded-none text-sm"
                   />
                 </div>
                 <div className="grid grid-cols-3 gap-2">
                   <div className="space-y-1.5 col-span-1">
-                    <Label className="text-xs text-[#0A0A0A]/60">City *</Label>
+                    <Label className="text-xs text-ink/60">City *</Label>
                     <Input
                       required
                       value={newAddress.city}
                       onChange={(e) => setNewAddress((p) => ({ ...p, city: e.target.value }))}
                       placeholder="New York"
-                      className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none text-sm"
+                      className="border-sand bg-cream focus-visible:ring-ink rounded-none text-sm"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-xs text-[#0A0A0A]/60">State *</Label>
+                    <Label className="text-xs text-ink/60">State *</Label>
                     <Input
                       required
                       value={newAddress.state}
                       onChange={(e) => setNewAddress((p) => ({ ...p, state: e.target.value }))}
                       placeholder="NY"
                       maxLength={2}
-                      className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none text-sm"
+                      className="border-sand bg-cream focus-visible:ring-ink rounded-none text-sm"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-xs text-[#0A0A0A]/60">ZIP *</Label>
+                    <Label className="text-xs text-ink/60">ZIP *</Label>
                     <Input
                       required
                       value={newAddress.zip}
                       onChange={(e) => setNewAddress((p) => ({ ...p, zip: e.target.value }))}
                       placeholder="10001"
-                      className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none text-sm"
+                      className="border-sand bg-cream focus-visible:ring-ink rounded-none text-sm"
                     />
                   </div>
                 </div>
@@ -583,7 +583,7 @@ export default function SettingsPage() {
                   <Button
                     type="submit"
                     disabled={addingAddress}
-                    className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none min-h-[36px] text-sm"
+                    className="bg-ink text-cream hover:bg-ink/80 rounded-none min-h-[36px] text-sm"
                   >
                     {addingAddress ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : null}
                     Save Address
@@ -592,7 +592,7 @@ export default function SettingsPage() {
                     type="button"
                     variant="outline"
                     onClick={() => setShowAddForm(false)}
-                    className="border-[#C8C0B4] text-[#0A0A0A] hover:bg-[#C8C0B4]/20 rounded-none min-h-[36px] text-sm"
+                    className="border-sand text-ink hover:bg-sand/20 rounded-none min-h-[36px] text-sm"
                   >
                     Cancel
                   </Button>
@@ -603,7 +603,7 @@ export default function SettingsPage() {
                 variant="outline"
                 size="sm"
                 onClick={() => setShowAddForm(true)}
-                className="border-[#C8C0B4] text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#C8C0B4]/20 rounded-none"
+                className="border-sand text-ink/60 hover:text-ink hover:bg-sand/20 rounded-none"
               >
                 <Plus className="h-4 w-4 mr-1" />
                 Add Address
@@ -613,31 +613,31 @@ export default function SettingsPage() {
         </Card>
 
         {/* 5. Notification Preferences */}
-        <Card className="border-[#C8C0B4] bg-[#F9F7F4] rounded-none">
-          <CardHeader className="border-b border-[#C8C0B4]/50">
+        <Card className="border-sand bg-cream rounded-none">
+          <CardHeader className="border-b border-sand/50">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-2">
-                <Bell className="h-4 w-4 text-[#C8C0B4]" />
-                <CardTitle className="font-serif text-lg text-[#0A0A0A]">Notification Preferences</CardTitle>
+                <Bell className="h-4 w-4 text-sand" />
+                <CardTitle className="font-serif text-lg text-ink">Notification Preferences</CardTitle>
               </div>
               {notifSaved && (
-                <span className="flex items-center gap-1 text-xs text-[#0A0A0A]/60">
+                <span className="flex items-center gap-1 text-xs text-ink/60">
                   <Check className="h-3.5 w-3.5" />
                   Saved
                 </span>
               )}
               {notifSaving && !notifSaved && (
-                <Loader2 className="h-3.5 w-3.5 animate-spin text-[#C8C0B4]" />
+                <Loader2 className="h-3.5 w-3.5 animate-spin text-sand" />
               )}
             </div>
-            <CardDescription className="text-[#0A0A0A]/50">
+            <CardDescription className="text-ink/50">
               Choose which notifications you receive. Changes save automatically.
             </CardDescription>
           </CardHeader>
-          <CardContent className="pt-5 space-y-0 divide-y divide-[#C8C0B4]/30">
+          <CardContent className="pt-5 space-y-0 divide-y divide-sand/30">
             {notifLoading ? (
               <div className="flex justify-center py-6">
-                <Loader2 className="h-5 w-5 animate-spin text-[#C8C0B4]" />
+                <Loader2 className="h-5 w-5 animate-spin text-sand" />
               </div>
             ) : (
               ([
@@ -667,14 +667,14 @@ export default function SettingsPage() {
                   className="flex items-center justify-between py-4"
                 >
                   <div>
-                    <p className="text-sm font-medium text-[#0A0A0A]">{item.label}</p>
-                    <p className="text-xs text-[#0A0A0A]/50 mt-0.5">{item.desc}</p>
+                    <p className="text-sm font-medium text-ink">{item.label}</p>
+                    <p className="text-xs text-ink/50 mt-0.5">{item.desc}</p>
                   </div>
                   <Switch
                     checked={notifPrefs[item.key]}
                     onCheckedChange={() => handleNotifToggle(item.key)}
                     disabled={notifSaving}
-                    className="data-[state=checked]:bg-[#0A0A0A] ml-4 shrink-0"
+                    className="data-[state=checked]:bg-ink ml-4 shrink-0"
                   />
                 </div>
               ))
@@ -683,23 +683,23 @@ export default function SettingsPage() {
         </Card>
 
         {/* 6. Payment History */}
-        <Card className="border-[#C8C0B4] bg-[#F9F7F4] rounded-none">
-          <CardHeader className="border-b border-[#C8C0B4]/50">
+        <Card className="border-sand bg-cream rounded-none">
+          <CardHeader className="border-b border-sand/50">
             <div className="flex items-center gap-2">
-              <CreditCard className="h-4 w-4 text-[#C8C0B4]" />
-              <CardTitle className="font-serif text-lg text-[#0A0A0A]">Payments</CardTitle>
+              <CreditCard className="h-4 w-4 text-sand" />
+              <CardTitle className="font-serif text-lg text-ink">Payments</CardTitle>
             </div>
-            <CardDescription className="text-[#0A0A0A]/50">
+            <CardDescription className="text-ink/50">
               View your payment history and transaction records
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-5 space-y-4">
-            <p className="text-sm text-[#0A0A0A]/60">
+            <p className="text-sm text-ink/60">
               All payments are processed securely. View your full payment history, transaction references, and invoice links.
             </p>
             <Button
               asChild
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none min-h-[44px]"
+              className="bg-ink text-cream hover:bg-ink/80 rounded-none min-h-[44px]"
             >
               <Link href="/client-portal/payments">
                 <CreditCard className="h-4 w-4 mr-2" />
@@ -710,28 +710,28 @@ export default function SettingsPage() {
         </Card>
 
         {/* 7. Documents */}
-        <Card className="border-[#C8C0B4] bg-[#F9F7F4] rounded-none">
-          <CardHeader className="border-b border-[#C8C0B4]/50">
+        <Card className="border-sand bg-cream rounded-none">
+          <CardHeader className="border-b border-sand/50">
             <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-[#C8C0B4]" />
-              <CardTitle className="font-serif text-lg text-[#0A0A0A]">Documents</CardTitle>
+              <FileText className="h-4 w-4 text-sand" />
+              <CardTitle className="font-serif text-lg text-ink">Documents</CardTitle>
             </div>
-            <CardDescription className="text-[#0A0A0A]/50">
+            <CardDescription className="text-ink/50">
               Download your personalized wholesale documents
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-5 space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border border-[#C8C0B4]/50">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border border-sand/50">
               <div>
-                <p className="text-sm font-medium text-[#0A0A0A]">Wholesale Price List</p>
-                <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+                <p className="text-sm font-medium text-ink">Wholesale Price List</p>
+                <p className="text-xs text-ink/50 mt-0.5">
                   Your personalized price list with tier discounts applied. PDF format.
                 </p>
               </div>
               <Button
                 asChild
                 variant="outline"
-                className="border-[#C8C0B4] text-[#0A0A0A] hover:bg-[#C8C0B4]/20 rounded-none min-h-[40px] shrink-0"
+                className="border-sand text-ink hover:bg-sand/20 rounded-none min-h-[40px] shrink-0"
               >
                 <a href="/api/client/price-list" download>
                   <FileText className="h-4 w-4 mr-2" />

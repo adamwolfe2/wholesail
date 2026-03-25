@@ -49,14 +49,14 @@ export function AdminMobileNav({ navBadges = {} }: { navBadges?: Record<string, 
                 className={cn(
                   "flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors",
                   isActive
-                    ? "bg-[#0A0A0A] text-[#F9F7F4]"
-                    : "text-[#0A0A0A]/60 hover:bg-[#0A0A0A]/[0.06] hover:text-[#0A0A0A]"
+                    ? "bg-ink text-cream"
+                    : "text-ink/60 hover:bg-ink/[0.06] hover:text-ink"
                 )}
               >
                 <item.icon className="h-4 w-4" />
                 {item.label}
                 {badgeCount > 0 && (
-                  <span className="ml-auto text-[10px] font-bold bg-[#0A0A0A] text-[#F9F7F4] px-1.5 py-0.5 min-w-[18px] text-center leading-tight rounded-sm">
+                  <span className="ml-auto text-[10px] font-bold bg-ink text-cream px-1.5 py-0.5 min-w-[18px] text-center leading-tight rounded-sm">
                     {badgeCount > 99 ? "99+" : badgeCount}
                   </span>
                 )}

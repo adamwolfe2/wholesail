@@ -199,7 +199,7 @@ export function ProductTable({ products }: { products: Product[] }) {
     <div>
       {/* Bulk Actions Bar */}
       {bulk.count > 0 && (
-        <div className="flex items-center gap-3 mb-3 p-3 border border-[#E5E1DB] bg-[#F9F7F4]">
+        <div className="flex items-center gap-3 mb-3 p-3 border border-shell bg-cream">
           <span className="text-sm font-medium">{bulk.count} selected</span>
           <Button
             variant="outline"

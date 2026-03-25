@@ -47,7 +47,7 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
               variant="ghost"
               size="sm"
               asChild
-              className="text-[#0A0A0A]/50 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none -ml-2"
+              className="text-ink/50 hover:text-ink hover:bg-ink/[0.04] rounded-none -ml-2"
             >
               <Link href="/admin/quotes">
                 <ArrowLeft className="h-4 w-4 mr-1" />
@@ -56,7 +56,7 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
             </Button>
           </div>
           <div className="flex items-center gap-3 flex-wrap">
-            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+            <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
               {quote.quoteNumber}
             </h2>
             <Badge
@@ -66,7 +66,7 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
               {quote.status}
             </Badge>
           </div>
-          <p className="text-sm text-[#0A0A0A]/50 mt-1">
+          <p className="text-sm text-ink/50 mt-1">
             {quote.organization.name}
             {quote.rep && <> &bull; Rep: {quote.rep.name}</>}
           </p>
@@ -75,7 +75,7 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
           <Button
             variant="outline"
             asChild
-            className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none"
+            className="border-shell text-ink hover:bg-ink/[0.04] rounded-none"
           >
             <a href={`/api/admin/quotes/${quote.id}/pdf`} download>
               <Download className="h-4 w-4 mr-2" />
@@ -86,7 +86,7 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
             <Button
               variant="outline"
               asChild
-              className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none"
+              className="border-shell text-ink hover:bg-ink/[0.04] rounded-none"
             >
               <Link href={`/admin/orders/${quote.convertedOrderId}`}>
                 <ExternalLink className="h-4 w-4 mr-2" />
@@ -101,15 +101,15 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
         {/* Left column: Items + Totals */}
         <div className="lg:col-span-2 space-y-6">
           {/* Line Items */}
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card className="border-shell bg-cream">
             <CardHeader>
-              <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+              <CardTitle className="font-serif text-lg text-ink">
                 Line Items
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-0">
-                <div className="grid grid-cols-12 gap-2 text-xs text-[#0A0A0A]/50 uppercase tracking-wider pb-2 border-b border-[#E5E1DB]">
+                <div className="grid grid-cols-12 gap-2 text-xs text-ink/50 uppercase tracking-wider pb-2 border-b border-shell">
                   <div className="col-span-6">Product</div>
                   <div className="col-span-2 text-center">Qty</div>
                   <div className="col-span-2 text-right">Unit Price</div>
@@ -118,18 +118,18 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
                 {quote.items.map((item) => (
                   <div
                     key={item.id}
-                    className="grid grid-cols-12 gap-2 py-3 border-b border-[#E5E1DB] last:border-0"
+                    className="grid grid-cols-12 gap-2 py-3 border-b border-shell last:border-0"
                   >
-                    <div className="col-span-6 text-sm font-medium text-[#0A0A0A]">
+                    <div className="col-span-6 text-sm font-medium text-ink">
                       {item.name}
                     </div>
-                    <div className="col-span-2 text-center text-sm text-[#0A0A0A]/70">
+                    <div className="col-span-2 text-center text-sm text-ink/70">
                       {item.quantity}
                     </div>
-                    <div className="col-span-2 text-right text-sm text-[#0A0A0A]/70">
+                    <div className="col-span-2 text-right text-sm text-ink/70">
                       {formatCurrency(item.unitPrice)}
                     </div>
-                    <div className="col-span-2 text-right text-sm font-semibold text-[#0A0A0A]">
+                    <div className="col-span-2 text-right text-sm font-semibold text-ink">
                       {formatCurrency(item.total)}
                     </div>
                   </div>
@@ -137,20 +137,20 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
               </div>
 
               {/* Totals */}
-              <div className="space-y-2 pt-4 border-t border-[#E5E1DB] mt-2">
+              <div className="space-y-2 pt-4 border-t border-shell mt-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-[#0A0A0A]/60">Subtotal</span>
+                  <span className="text-ink/60">Subtotal</span>
                   <span>{formatCurrency(quote.subtotal)}</span>
                 </div>
                 {Number(quote.discount) > 0 && (
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-[#0A0A0A]/60">Discount</span>
+                    <span className="text-ink/60">Discount</span>
                     <span>-{formatCurrency(quote.discount)}</span>
                   </div>
                 )}
-                <div className="flex items-center justify-between font-semibold border-t border-[#E5E1DB] pt-2">
-                  <span className="text-[#0A0A0A]">Total</span>
-                  <span className="font-serif text-xl text-[#0A0A0A]">
+                <div className="flex items-center justify-between font-semibold border-t border-shell pt-2">
+                  <span className="text-ink">Total</span>
+                  <span className="font-serif text-xl text-ink">
                     {formatCurrency(quote.total)}
                   </span>
                 </div>
@@ -160,14 +160,14 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
 
           {/* Notes */}
           {quote.notes && (
-            <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+            <Card className="border-shell bg-cream">
               <CardHeader>
-                <CardTitle className="font-serif text-base text-[#0A0A0A]">
+                <CardTitle className="font-serif text-base text-ink">
                   Notes
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-sm text-[#0A0A0A]/70 whitespace-pre-line">
+                <p className="text-sm text-ink/70 whitespace-pre-line">
                   {quote.notes}
                 </p>
               </CardContent>
@@ -177,14 +177,14 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
           {/* Client Response Banner */}
           {(quote.status === "ACCEPTED" || quote.status === "DECLINED") && (
             <Card
-              className={`border-[#E5E1DB] ${
+              className={`border-shell ${
                 quote.status === "ACCEPTED"
-                  ? "bg-[#F0FDF4] border-green-200"
-                  : "bg-[#FFF7F7] border-red-100"
+                  ? "bg-success/5 border-green-200"
+                  : "bg-error/5 border-red-100"
               }`}
             >
               <CardContent className="pt-4 pb-4">
-                <p className="text-sm font-medium text-[#0A0A0A]">
+                <p className="text-sm font-medium text-ink">
                   {quote.status === "ACCEPTED" ? (
                     <>
                       Client accepted this quote
@@ -217,7 +217,7 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
                     ? (declineEvent.metadata as Record<string, string>).reason
                     : null;
                   return reason ? (
-                    <p className="text-xs text-[#0A0A0A]/60 mt-1 italic">&ldquo;{reason}&rdquo;</p>
+                    <p className="text-xs text-ink/60 mt-1 italic">&ldquo;{reason}&rdquo;</p>
                   ) : null;
                 })()}
               </CardContent>
@@ -237,68 +237,68 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
         {/* Right column: Details + Status History */}
         <div className="space-y-6">
           {/* Details */}
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card className="border-shell bg-cream">
             <CardHeader>
-              <CardTitle className="font-serif text-base text-[#0A0A0A]">
+              <CardTitle className="font-serif text-base text-ink">
                 Details
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm">
               <div>
-                <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                   Client
                 </p>
                 <Link
                   href={`/admin/clients/${quote.organization.id}`}
-                  className="font-medium text-[#0A0A0A] hover:underline"
+                  className="font-medium text-ink hover:underline"
                 >
                   {quote.organization.name}
                 </Link>
               </div>
               {quote.rep && (
                 <div>
-                  <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                  <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                     Sales Rep
                   </p>
-                  <p className="text-[#0A0A0A]">{quote.rep.name}</p>
+                  <p className="text-ink">{quote.rep.name}</p>
                 </div>
               )}
               <div>
-                <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                   Created
                 </p>
-                <p className="text-[#0A0A0A]">
+                <p className="text-ink">
                   {format(quote.createdAt, "MMM d, yyyy 'at' h:mm a")}
                 </p>
               </div>
               {quote.sentAt && (
                 <div>
-                  <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                  <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                     Sent
                   </p>
-                  <p className="text-[#0A0A0A]">
+                  <p className="text-ink">
                     {format(quote.sentAt, "MMM d, yyyy 'at' h:mm a")}
                   </p>
                 </div>
               )}
               {quote.expiresAt && (
                 <div>
-                  <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                  <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                     Expires
                   </p>
-                  <p className="text-[#0A0A0A]">
+                  <p className="text-ink">
                     {format(quote.expiresAt, "MMM d, yyyy")}
                   </p>
                 </div>
               )}
               {quote.convertedOrderId && (
                 <div>
-                  <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                  <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                     Converted Order
                   </p>
                   <Link
                     href={`/admin/orders/${quote.convertedOrderId}`}
-                    className="font-medium text-[#0A0A0A] hover:underline"
+                    className="font-medium text-ink hover:underline"
                   >
                     View Order
                   </Link>
@@ -308,9 +308,9 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
           </Card>
 
           {/* Status History */}
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card className="border-shell bg-cream">
             <CardHeader>
-              <CardTitle className="font-serif text-base text-[#0A0A0A]">
+              <CardTitle className="font-serif text-base text-ink">
                 Status History
               </CardTitle>
             </CardHeader>
@@ -320,21 +320,21 @@ export default async function QuoteDetailPage({ params }: QuoteDetailPageProps) 
                   <div key={i} className="flex items-start gap-3">
                     <div
                       className={`w-2 h-2 mt-1.5 shrink-0 ${
-                        event.active ? "bg-[#0A0A0A]" : "bg-[#C8C0B4]"
+                        event.active ? "bg-ink" : "bg-sand"
                       }`}
                     />
                     <div className="flex-1 min-w-0">
                       <p
                         className={`text-sm font-medium ${
-                          event.active ? "text-[#0A0A0A]" : "text-[#0A0A0A]/40"
+                          event.active ? "text-ink" : "text-ink/40"
                         }`}
                       >
                         {event.label}
                       </p>
                       {event.actor && (
-                        <p className="text-xs text-[#0A0A0A]/40 truncate">{event.actor}</p>
+                        <p className="text-xs text-ink/40 truncate">{event.actor}</p>
                       )}
-                      <p className="text-xs text-[#0A0A0A]/50">
+                      <p className="text-xs text-ink/50">
                         {format(event.date, "MMM d, yyyy 'at' h:mm a")}
                       </p>
                     </div>

@@ -61,11 +61,11 @@ function StatusIndicator({ status }: { status: ApplicationResult['status'] }) {
 
   if (status === 'REJECTED') {
     return (
-      <div className="flex items-start gap-4 p-5 border border-[#E5E1DB] bg-[#F9F7F4]">
-        <div className="mt-0.5 h-3 w-3 shrink-0 bg-[#C8C0B4]" />
+      <div className="flex items-start gap-4 p-5 border border-shell bg-cream">
+        <div className="mt-0.5 h-3 w-3 shrink-0 bg-sand" />
         <div>
-          <p className="font-medium text-[#0A0A0A] mb-1">Application Not Approved</p>
-          <p className="text-sm text-[#0A0A0A]/60 leading-relaxed">
+          <p className="font-medium text-ink mb-1">Application Not Approved</p>
+          <p className="text-sm text-ink/60 leading-relaxed">
             Unfortunately, we&apos;re unable to approve your application at this time. You&apos;re welcome to reapply in 90 days or reach us at{' '}
             <a href="mailto:orders@wholesailhub.com" className="underline underline-offset-2">
               orders@wholesailhub.com
@@ -78,13 +78,13 @@ function StatusIndicator({ status }: { status: ApplicationResult['status'] }) {
 
   if (status === 'NOT_FOUND') {
     return (
-      <div className="flex items-start gap-4 p-5 border border-[#E5E1DB] bg-[#F9F7F4]">
-        <div className="mt-0.5 h-3 w-3 shrink-0 bg-[#C8C0B4]" />
+      <div className="flex items-start gap-4 p-5 border border-shell bg-cream">
+        <div className="mt-0.5 h-3 w-3 shrink-0 bg-sand" />
         <div>
-          <p className="font-medium text-[#0A0A0A] mb-1">No Application Found</p>
-          <p className="text-sm text-[#0A0A0A]/60 leading-relaxed">
+          <p className="font-medium text-ink mb-1">No Application Found</p>
+          <p className="text-sm text-ink/60 leading-relaxed">
             No application was found for this email address.{' '}
-            <Link href="/partner" className="underline underline-offset-2 text-[#0A0A0A]">
+            <Link href="/partner" className="underline underline-offset-2 text-ink">
               Apply for wholesale access
             </Link>.
           </p>
@@ -128,42 +128,42 @@ export default function ApplicationStatusPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F7F4]">
+    <div className="min-h-screen bg-cream">
       {/* Header */}
-      <header className="border-b border-[#E5E1DB] bg-[#F9F7F4]">
+      <header className="border-b border-shell bg-cream">
         <div className="container mx-auto flex h-14 items-center px-4 sm:px-6">
-          <Link href="/" className="font-serif text-xl tracking-tight text-[#0A0A0A]">
+          <Link href="/" className="font-serif text-xl tracking-tight text-ink">
             Wholesail
           </Link>
-          <span className="mx-3 text-[#C8C0B4]">/</span>
-          <span className="text-sm text-[#0A0A0A]/50">Application Status</span>
+          <span className="mx-3 text-sand">/</span>
+          <span className="text-sm text-ink/50">Application Status</span>
         </div>
       </header>
 
       {/* Main */}
       <div className="container mx-auto px-4 sm:px-6 py-16 sm:py-24 max-w-lg">
         <div className="text-center mb-10">
-          <p className="text-xs tracking-widest uppercase text-[#C8C0B4] mb-3">
+          <p className="text-xs tracking-widest uppercase text-sand mb-3">
             Wholesale Partnership
           </p>
-          <h1 className="font-serif text-3xl sm:text-4xl text-[#0A0A0A] mb-3">
+          <h1 className="font-serif text-3xl sm:text-4xl text-ink mb-3">
             Check Application Status
           </h1>
-          <p className="text-sm text-[#0A0A0A]/50 leading-relaxed">
+          <p className="text-sm text-ink/50 leading-relaxed">
             Enter the email address you used when you applied.
           </p>
         </div>
 
-        <Card className="border-[#E5E1DB] bg-white">
-          <CardHeader className="border-b border-[#E5E1DB] pb-4">
-            <CardTitle className="font-serif text-lg font-normal text-[#0A0A0A]">
+        <Card className="border-shell bg-white">
+          <CardHeader className="border-b border-shell pb-4">
+            <CardTitle className="font-serif text-lg font-normal text-ink">
               Your Application
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
             <form onSubmit={handleCheck} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-[#0A0A0A]/70">
+                <Label htmlFor="email" className="text-ink/70">
                   Email Address
                 </Label>
                 <Input
@@ -173,7 +173,7 @@ export default function ApplicationStatusPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@company.com"
-                  className="rounded-none border-[#E5E1DB] bg-[#F9F7F4] focus:border-[#0A0A0A]"
+                  className="rounded-none border-shell bg-cream focus:border-ink"
                 />
               </div>
 
@@ -185,7 +185,7 @@ export default function ApplicationStatusPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none h-11"
+                className="w-full bg-ink text-cream hover:bg-ink/80 rounded-none h-11"
                 disabled={loading}
               >
                 {loading ? (
@@ -202,16 +202,16 @@ export default function ApplicationStatusPage() {
             {/* Result */}
             {result && (
               <div className="mt-6 space-y-4">
-                <div className="border-t border-[#E5E1DB] pt-6">
+                <div className="border-t border-shell pt-6">
                   {result.businessName && (
-                    <p className="text-xs text-[#0A0A0A]/40 uppercase tracking-widest mb-3">
+                    <p className="text-xs text-ink/40 uppercase tracking-widest mb-3">
                       {result.businessName}
                     </p>
                   )}
                   <StatusIndicator status={result.status} />
 
                   {result.submittedAt && (
-                    <p className="text-xs text-[#0A0A0A]/40 mt-3">
+                    <p className="text-xs text-ink/40 mt-3">
                       Submitted{' '}
                       {new Date(result.submittedAt).toLocaleDateString('en-US', {
                         month: 'long',
@@ -222,11 +222,11 @@ export default function ApplicationStatusPage() {
                   )}
 
                   {result.reviewNotes && (
-                    <div className="mt-3 border border-[#E5E1DB] bg-[#F9F7F4] px-4 py-3">
-                      <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-widest mb-1">
+                    <div className="mt-3 border border-shell bg-cream px-4 py-3">
+                      <p className="text-xs text-ink/50 uppercase tracking-widest mb-1">
                         Notes
                       </p>
-                      <p className="text-sm text-[#0A0A0A]/70 leading-relaxed">
+                      <p className="text-sm text-ink/70 leading-relaxed">
                         {result.reviewNotes}
                       </p>
                     </div>
@@ -237,11 +237,11 @@ export default function ApplicationStatusPage() {
           </CardContent>
         </Card>
 
-        <p className="text-center text-xs text-[#C8C0B4] mt-8">
+        <p className="text-center text-xs text-sand mt-8">
           Questions?{' '}
           <a
             href="mailto:orders@wholesailhub.com"
-            className="underline underline-offset-2 hover:text-[#0A0A0A]/50 transition-colors"
+            className="underline underline-offset-2 hover:text-ink/50 transition-colors"
           >
             orders@wholesailhub.com
           </a>

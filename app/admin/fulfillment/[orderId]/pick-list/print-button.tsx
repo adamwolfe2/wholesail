@@ -7,7 +7,7 @@ export function PrintButton() {
   return (
     <Button
       onClick={() => window.print()}
-      className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80"
+      className="bg-ink text-cream hover:bg-ink/80"
       size="sm"
     >
       <Printer className="h-4 w-4 mr-2" />

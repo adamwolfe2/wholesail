@@ -41,14 +41,14 @@ export function DropsAlertForm({ dropId, compact = false }: Props) {
   if (submitted) {
     return (
       <div className="flex items-start gap-3">
-        <div className="h-7 w-7 border border-[#0A0A0A] flex items-center justify-center shrink-0 mt-0.5">
-          <Check className="h-3.5 w-3.5 text-[#0A0A0A]" />
+        <div className="h-7 w-7 border border-ink flex items-center justify-center shrink-0 mt-0.5">
+          <Check className="h-3.5 w-3.5 text-ink" />
         </div>
         <div>
-          <p className="font-medium text-[#0A0A0A] text-sm">
+          <p className="font-medium text-ink text-sm">
             {"You're on the list."}
           </p>
-          <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+          <p className="text-xs text-ink/50 mt-0.5">
             {"We'll reach out before this drop."}
           </p>
         </div>
@@ -65,13 +65,13 @@ export function DropsAlertForm({ dropId, compact = false }: Props) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
-          className="w-full h-10 px-3 bg-white border border-[#E5E1DB] text-[#0A0A0A] placeholder:text-[#C8C0B4] text-sm focus:outline-none focus:border-[#0A0A0A] transition-colors"
+          className="w-full h-10 px-3 bg-white border border-shell text-ink placeholder:text-sand text-sm focus:outline-none focus:border-ink transition-colors"
         />
         {error && <p className="text-red-600 text-xs">{error}</p>}
         <button
           type="submit"
           disabled={loading}
-          className="w-full h-10 bg-[#0A0A0A] text-[#F9F7F4] text-xs font-medium uppercase tracking-wider hover:bg-[#0A0A0A]/80 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+          className="w-full h-10 bg-ink text-cream text-xs font-medium uppercase tracking-wider hover:bg-ink/80 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
         >
           {loading && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
           {loading ? 'Signing up…' : 'Notify Me'}
@@ -88,7 +88,7 @@ export function DropsAlertForm({ dropId, compact = false }: Props) {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Your name (optional)"
-          className="h-12 px-4 bg-white border border-[#E5E1DB] text-[#0A0A0A] placeholder:text-[#C8C0B4] text-sm focus:outline-none focus:border-[#0A0A0A] transition-colors"
+          className="h-12 px-4 bg-white border border-shell text-ink placeholder:text-sand text-sm focus:outline-none focus:border-ink transition-colors"
         />
         <input
           type="email"
@@ -96,19 +96,19 @@ export function DropsAlertForm({ dropId, compact = false }: Props) {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
-          className="h-12 px-4 bg-white border border-[#E5E1DB] text-[#0A0A0A] placeholder:text-[#C8C0B4] text-sm focus:outline-none focus:border-[#0A0A0A] transition-colors"
+          className="h-12 px-4 bg-white border border-shell text-ink placeholder:text-sand text-sm focus:outline-none focus:border-ink transition-colors"
         />
       </div>
       {error && <p className="text-red-600 text-xs">{error}</p>}
       <button
         type="submit"
         disabled={loading}
-        className="h-12 px-8 bg-[#0A0A0A] text-[#F9F7F4] text-sm font-medium hover:bg-[#0A0A0A]/80 transition-colors disabled:opacity-60 flex items-center gap-2"
+        className="h-12 px-8 bg-ink text-cream text-sm font-medium hover:bg-ink/80 transition-colors disabled:opacity-60 flex items-center gap-2"
       >
         {loading && <Loader2 className="h-4 w-4 animate-spin" />}
         Sign Me Up
       </button>
-      <p className="text-[#C8C0B4] text-xs tracking-wide">
+      <p className="text-sand text-xs tracking-wide">
         No spam. Just early access. Unsubscribe anytime.
       </p>
     </form>

@@ -284,7 +284,7 @@ export default function MessagesPage() {
     return (
       <PortalLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <Loader2 className="h-8 w-8 animate-spin text-[#C8C0B4]" />
+          <Loader2 className="h-8 w-8 animate-spin text-sand" />
         </div>
       </PortalLayout>
     )
@@ -295,18 +295,18 @@ export default function MessagesPage() {
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Messages</h1>
-            <p className="text-sm text-[#0A0A0A]/50 mt-1">Communicate with your account team</p>
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Messages</h1>
+            <p className="text-sm text-ink/50 mt-1">Communicate with your account team</p>
           </div>
           <div className="flex items-center gap-2 mt-1">
             {totalUnread > 0 && (
-              <Badge className="bg-[#0A0A0A] text-[#F9F7F4] shrink-0">
+              <Badge className="bg-ink text-cream shrink-0">
                 {totalUnread} unread
               </Badge>
             )}
             <Button
               size="sm"
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 shrink-0"
+              className="bg-ink text-cream hover:bg-ink/80 shrink-0"
               onClick={() => setShowNewConvo(true)}
             >
               <Plus className="h-4 w-4 mr-1" />
@@ -317,13 +317,13 @@ export default function MessagesPage() {
 
         {/* New conversation modal */}
         {showNewConvo && (
-          <Card className="border-[#C8C0B4] bg-[#F9F7F4] p-4 space-y-3">
+          <Card className="border-sand bg-cream p-4 space-y-3">
             <div className="flex items-center justify-between">
               <h3 className="font-semibold text-sm">New Conversation</h3>
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7 text-[#0A0A0A]/50 hover:text-[#0A0A0A]"
+                className="h-7 w-7 text-ink/50 hover:text-ink"
                 onClick={() => { setShowNewConvo(false); setNewSubject(''); setNewBody(''); setNewConvoError(null) }}
                 aria-label="Close new conversation"
               >
@@ -334,7 +334,7 @@ export default function MessagesPage() {
               placeholder="Subject"
               value={newSubject}
               onChange={e => setNewSubject(e.target.value)}
-              className="bg-[#F9F7F4] border-[#C8C0B4] text-[#0A0A0A] placeholder:text-[#0A0A0A]/40 focus-visible:ring-[#0A0A0A]"
+              className="bg-cream border-sand text-ink placeholder:text-ink/40 focus-visible:ring-ink"
               aria-label="Conversation subject"
             />
             <Textarea
@@ -342,7 +342,7 @@ export default function MessagesPage() {
               value={newBody}
               onChange={e => setNewBody(e.target.value)}
               rows={3}
-              className="bg-[#F9F7F4] border-[#C8C0B4] text-[#0A0A0A] placeholder:text-[#0A0A0A]/40 focus-visible:ring-[#0A0A0A] resize-none"
+              className="bg-cream border-sand text-ink placeholder:text-ink/40 focus-visible:ring-ink resize-none"
             />
             {newConvoError && (
               <p className="text-xs text-red-600 bg-red-50 border border-red-200 px-3 py-2">
@@ -353,14 +353,14 @@ export default function MessagesPage() {
               <Button
                 variant="outline"
                 size="sm"
-                className="border-[#C8C0B4]"
+                className="border-sand"
                 onClick={() => { setShowNewConvo(false); setNewSubject(''); setNewBody(''); setNewConvoError(null) }}
               >
                 Cancel
               </Button>
               <Button
                 size="sm"
-                className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80"
+                className="bg-ink text-cream hover:bg-ink/80"
                 disabled={!newSubject.trim() || !newBody.trim() || newConvoLoading}
                 onClick={createConversation}
               >
@@ -370,22 +370,22 @@ export default function MessagesPage() {
           </Card>
         )}
 
-        <Card className="overflow-hidden border-[#C8C0B4] bg-[#F9F7F4]">
+        <Card className="overflow-hidden border-sand bg-cream">
           <div className="flex" style={{ height: 'calc(100svh - 280px)', minHeight: '500px', maxHeight: '720px' }}>
 
             {/* ─── Conversation List ─────────────── */}
             <div className={cn(
-              'w-full sm:w-72 lg:w-80 border-r border-[#C8C0B4] flex flex-col bg-[#F9F7F4]',
+              'w-full sm:w-72 lg:w-80 border-r border-sand flex flex-col bg-cream',
               mobileShowThread && 'hidden sm:flex'
             )}>
-              <div className="p-3 border-b border-[#C8C0B4]">
+              <div className="p-3 border-b border-sand">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#0A0A0A]/40" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-ink/40" />
                   <Input
                     placeholder="Search conversations..."
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
-                    className="pl-8 h-9 bg-[#F9F7F4] border-[#C8C0B4] text-[#0A0A0A] placeholder:text-[#0A0A0A]/40 focus-visible:ring-[#0A0A0A] text-sm"
+                    className="pl-8 h-9 bg-cream border-sand text-ink placeholder:text-ink/40 focus-visible:ring-ink text-sm"
                   />
                 </div>
               </div>
@@ -393,15 +393,15 @@ export default function MessagesPage() {
               <ScrollArea className="flex-1">
                 {listLoading ? (
                   <div className="flex items-center justify-center py-16">
-                    <Loader2 className="h-5 w-5 animate-spin text-[#C8C0B4]" />
+                    <Loader2 className="h-5 w-5 animate-spin text-sand" />
                   </div>
                 ) : filteredConvos.length === 0 ? (
                   <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
-                    <MessageSquare className="h-8 w-8 text-[#C8C0B4] mb-3" />
-                    <p className="font-serif text-base text-[#0A0A0A] mb-1">
+                    <MessageSquare className="h-8 w-8 text-sand mb-3" />
+                    <p className="font-serif text-base text-ink mb-1">
                       {searchQuery ? 'No results' : 'No messages yet'}
                     </p>
-                    <p className="text-xs text-[#C8C0B4] leading-relaxed">
+                    <p className="text-xs text-sand leading-relaxed">
                       {searchQuery
                         ? 'Try a different search term.'
                         : 'Start a conversation with your account team using the New button above.'}
@@ -413,19 +413,19 @@ export default function MessagesPage() {
                       key={convo.id}
                       onClick={() => { setSelectedId(convo.id); setMobileShowThread(true); setSendError(null) }}
                       className={cn(
-                        'w-full text-left px-4 py-3.5 border-b border-[#C8C0B4]/50 transition-colors',
+                        'w-full text-left px-4 py-3.5 border-b border-sand/50 transition-colors',
                         selectedId === convo.id
-                          ? 'bg-[#0A0A0A] text-[#F9F7F4]'
+                          ? 'bg-ink text-cream'
                           : convo.unreadCount > 0
-                            ? 'hover:bg-[#C8C0B4]/20 bg-[#F9F7F4]'
-                            : 'hover:bg-[#C8C0B4]/15 text-[#0A0A0A]'
+                            ? 'hover:bg-sand/20 bg-cream'
+                            : 'hover:bg-sand/15 text-ink'
                       )}
                     >
                       <div className="flex items-start justify-between gap-2 mb-1">
                         <h4 className={cn(
                           'text-sm leading-tight line-clamp-1',
                           convo.unreadCount > 0 ? 'font-bold' : 'font-semibold',
-                          selectedId === convo.id ? 'text-[#F9F7F4]' : 'text-[#0A0A0A]'
+                          selectedId === convo.id ? 'text-cream' : 'text-ink'
                         )}>
                           {convo.subject}
                         </h4>
@@ -433,8 +433,8 @@ export default function MessagesPage() {
                           <span className={cn(
                             'h-5 min-w-[20px] rounded-full px-1.5 text-[10px] font-bold shrink-0 flex items-center justify-center',
                             selectedId === convo.id
-                              ? 'bg-[#F9F7F4] text-[#0A0A0A]'
-                              : 'bg-[#0A0A0A] text-[#F9F7F4]'
+                              ? 'bg-cream text-ink'
+                              : 'bg-ink text-cream'
                           )}>
                             {convo.unreadCount}
                           </span>
@@ -442,21 +442,21 @@ export default function MessagesPage() {
                       </div>
                       <p className={cn(
                         'text-xs line-clamp-1 mb-1',
-                        selectedId === convo.id ? 'text-[#F9F7F4]/70' : 'text-[#0A0A0A]/50'
+                        selectedId === convo.id ? 'text-cream/70' : 'text-ink/50'
                       )}>
                         {convo.lastMessage || 'No messages yet'}
                       </p>
                       <div className="flex items-center gap-1.5">
                         <p className={cn(
                           'text-[10px]',
-                          selectedId === convo.id ? 'text-[#F9F7F4]/50' : 'text-[#0A0A0A]/40'
+                          selectedId === convo.id ? 'text-cream/50' : 'text-ink/40'
                         )}>
                           {formatTimestamp(convo.lastMessageAt)}
                         </p>
                         {!convo.isOpen && (
                           <span className={cn(
                             'text-[10px] uppercase tracking-wider',
-                            selectedId === convo.id ? 'text-[#F9F7F4]/40' : 'text-[#C8C0B4]'
+                            selectedId === convo.id ? 'text-cream/40' : 'text-sand'
                           )}>
                             · Closed
                           </span>
@@ -470,35 +470,35 @@ export default function MessagesPage() {
 
             {/* ─── Message Thread ────────────────── */}
             <div className={cn(
-              'flex flex-col flex-1 bg-[#F9F7F4]',
+              'flex flex-col flex-1 bg-cream',
               !mobileShowThread && 'hidden sm:flex'
             )}>
               {!selectedId ? (
                 <div className="flex flex-col items-center justify-center flex-1 text-center px-8">
-                  <MessageSquare className="h-10 w-10 text-[#C8C0B4] mb-4" />
-                  <p className="font-serif text-lg text-[#0A0A0A] mb-2">Select a conversation</p>
-                  <p className="text-sm text-[#C8C0B4]">
+                  <MessageSquare className="h-10 w-10 text-sand mb-4" />
+                  <p className="font-serif text-lg text-ink mb-2">Select a conversation</p>
+                  <p className="text-sm text-sand">
                     Choose a conversation on the left, or start a new one.
                   </p>
                 </div>
               ) : (
                 <>
                   {/* Thread Header */}
-                  <div className="px-4 py-3 border-b border-[#C8C0B4] flex items-center gap-3 bg-[#F9F7F4]">
+                  <div className="px-4 py-3 border-b border-sand flex items-center gap-3 bg-cream">
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="sm:hidden shrink-0 h-8 w-8 text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#C8C0B4]/20"
+                      className="sm:hidden shrink-0 h-8 w-8 text-ink/60 hover:text-ink hover:bg-sand/20"
                       onClick={() => setMobileShowThread(false)}
                       aria-label="Back to conversations"
                     >
                       <ArrowLeft className="h-4 w-4" />
                     </Button>
                     <div className="min-w-0 flex-1">
-                      <h3 className="font-semibold text-sm text-[#0A0A0A] truncate">
+                      <h3 className="font-semibold text-sm text-ink truncate">
                         {thread?.subject ?? convos.find(c => c.id === selectedId)?.subject ?? ''}
                       </h3>
-                      <p className="text-xs text-[#0A0A0A]/50">Wholesail Account Team</p>
+                      <p className="text-xs text-ink/50">Wholesail Account Team</p>
                     </div>
                     {thread && !thread.isOpen && (
                       <Badge variant="secondary" className="text-xs shrink-0">Closed</Badge>
@@ -507,8 +507,8 @@ export default function MessagesPage() {
 
                   {/* Rep claimed banner */}
                   {repIsActive && (
-                    <div className="flex items-center gap-2 px-4 py-2 bg-[#F9F7F4] border-b border-[#C8C0B4]/50 text-xs text-[#0A0A0A]/60">
-                      <ShieldCheck className="h-3.5 w-3.5 text-[#0A0A0A]/50 shrink-0" />
+                    <div className="flex items-center gap-2 px-4 py-2 bg-cream border-b border-sand/50 text-xs text-ink/60">
+                      <ShieldCheck className="h-3.5 w-3.5 text-ink/50 shrink-0" />
                       Your dedicated rep is handling this conversation
                     </div>
                   )}
@@ -520,10 +520,10 @@ export default function MessagesPage() {
                   >
                     {threadLoading ? (
                       <div className="flex items-center justify-center h-full">
-                        <Loader2 className="h-5 w-5 animate-spin text-[#C8C0B4]" />
+                        <Loader2 className="h-5 w-5 animate-spin text-sand" />
                       </div>
                     ) : !thread?.messages?.length ? (
-                      <div className="flex items-center justify-center h-full text-sm text-[#C8C0B4]">
+                      <div className="flex items-center justify-center h-full text-sm text-sand">
                         No messages yet
                       </div>
                     ) : (
@@ -535,7 +535,7 @@ export default function MessagesPage() {
                           if (isSystem) {
                             return (
                               <div key={msg.id} className="flex justify-center">
-                                <p className="text-[10px] text-[#0A0A0A]/40 bg-[#C8C0B4]/20 px-3 py-1.5 uppercase tracking-wider">
+                                <p className="text-[10px] text-ink/40 bg-sand/20 px-3 py-1.5 uppercase tracking-wider">
                                   {msg.content}
                                 </p>
                               </div>
@@ -547,26 +547,26 @@ export default function MessagesPage() {
                               <div className={cn('flex items-center gap-2 mb-1.5', isClient ? 'flex-row-reverse' : 'flex-row')}>
                                 <div className={cn(
                                   'h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0',
-                                  isClient ? 'bg-[#0A0A0A] text-[#F9F7F4]' : 'bg-[#C8C0B4] text-[#0A0A0A]'
+                                  isClient ? 'bg-ink text-cream' : 'bg-sand text-ink'
                                 )}>
                                   {msg.senderName.charAt(0)}
                                 </div>
-                                <span className="text-xs font-medium text-[#0A0A0A]/60">{msg.senderName}</span>
-                                <span className="text-[10px] tracking-wide uppercase text-[#C8C0B4]">
+                                <span className="text-xs font-medium text-ink/60">{msg.senderName}</span>
+                                <span className="text-[10px] tracking-wide uppercase text-sand">
                                   {formatTimestamp(msg.createdAt)}
                                 </span>
                               </div>
                               <div className={cn(
                                 'max-w-[82%] sm:max-w-[75%] px-4 py-2.5 text-sm leading-relaxed',
                                 isClient
-                                  ? 'bg-[#0A0A0A] text-[#F9F7F4]'
-                                  : 'bg-white text-[#0A0A0A] border border-[#E5E1DB]'
+                                  ? 'bg-ink text-cream'
+                                  : 'bg-white text-ink border border-shell'
                               )}>
                                 {msg.content}
                               </div>
                               {/* Read receipt: show under client messages that staff has read */}
                               {isClient && msg.readAt && (
-                                <span className="text-[10px] text-[#C8C0B4] mt-0.5 mr-0.5">
+                                <span className="text-[10px] text-sand mt-0.5 mr-0.5">
                                   Read {formatReadAt(msg.readAt)}
                                 </span>
                               )}
@@ -579,7 +579,7 @@ export default function MessagesPage() {
 
                   {/* Compose */}
                   {thread?.isOpen !== false && (
-                    <div className="border-t border-[#C8C0B4] p-3 sm:p-4 bg-[#F9F7F4]">
+                    <div className="border-t border-sand p-3 sm:p-4 bg-cream">
                       {sendError && (
                         <p className="text-xs text-red-600 bg-red-50 border border-red-200 px-3 py-2 mb-2 max-w-2xl mx-auto">
                           {sendError}
@@ -591,7 +591,7 @@ export default function MessagesPage() {
                           value={newMessage}
                           onChange={e => { setNewMessage(e.target.value); if (sendError) setSendError(null) }}
                           rows={1}
-                          className="flex-1 bg-[#F9F7F4] border-[#C8C0B4] text-[#0A0A0A] placeholder:text-[#0A0A0A]/40 focus-visible:ring-[#0A0A0A] resize-none min-h-[44px] max-h-[120px]"
+                          className="flex-1 bg-cream border-sand text-ink placeholder:text-ink/40 focus-visible:ring-ink resize-none min-h-[44px] max-h-[120px]"
                           onKeyDown={e => {
                             if (e.key === 'Enter' && !e.shiftKey && newMessage.trim()) {
                               e.preventDefault()
@@ -601,7 +601,7 @@ export default function MessagesPage() {
                         />
                         <Button
                           size="icon"
-                          className="shrink-0 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 min-h-[44px] min-w-[44px]"
+                          className="shrink-0 bg-ink text-cream hover:bg-ink/80 min-h-[44px] min-w-[44px]"
                           disabled={!newMessage.trim() || sendLoading}
                           onClick={sendMessage}
                           aria-label="Send message"

@@ -40,7 +40,7 @@ export function SendReminderButton({ invoiceId, invoiceNumber }: SendReminderBut
       variant="outline"
       disabled={loading || sent}
       onClick={handleClick}
-      className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.06] h-7 px-2.5 text-xs font-medium"
+      className="border-shell text-ink hover:bg-ink/[0.06] h-7 px-2.5 text-xs font-medium"
     >
       {loading ? (
         <Loader2 className="h-3 w-3 animate-spin" />

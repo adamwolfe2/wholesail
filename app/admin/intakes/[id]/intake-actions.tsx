@@ -212,7 +212,7 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
               ) : (
                 <Circle className="h-4 w-4 text-neutral-400 shrink-0" />
               )}
-              <span className={isReviewed ? "text-[#0A0A0A]" : "text-[#0A0A0A]/50"}>
+              <span className={isReviewed ? "text-ink" : "text-ink/50"}>
                 {isReviewed ? "Reviewed" : "Pending review"}
               </span>
             </div>
@@ -222,13 +222,13 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
               ) : (
                 <Circle className="h-4 w-4 text-neutral-400 shrink-0" />
               )}
-              <span className={isConverted ? "text-[#0A0A0A]" : "text-[#0A0A0A]/50"}>
+              <span className={isConverted ? "text-ink" : "text-ink/50"}>
                 {isConverted ? "Converted to project" : "Not converted"}
               </span>
             </div>
           </div>
 
-          <div className="border-t border-[#E5E1DB] pt-4 space-y-2">
+          <div className="border-t border-shell pt-4 space-y-2">
             {/* Convert to Project */}
             {isConverted ? (
               <>
@@ -245,7 +245,7 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
                 </Button>
                 <Button
                   size="sm"
-                  className="w-full bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 justify-between"
+                  className="w-full bg-ink text-cream hover:bg-ink/80 justify-between"
                   onClick={handleStartBuild}
                   disabled={isBuildStarting}
                 >
@@ -268,7 +268,7 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
             ) : (
               <Button
                 size="sm"
-                className="w-full bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80"
+                className="w-full bg-ink text-cream hover:bg-ink/80"
                 onClick={handleConvert}
                 disabled={isConverting}
               >
@@ -333,7 +333,7 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="w-full text-[#0A0A0A]/50 hover:text-[#0A0A0A]"
+                  className="w-full text-ink/50 hover:text-ink"
                   disabled={isArchiving}
                 >
                   {isArchiving ? (
@@ -368,7 +368,7 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
             <Button
               variant="ghost"
               size="sm"
-              className="w-full text-[#0A0A0A]/50 hover:text-[#0A0A0A] flex items-center gap-2"
+              className="w-full text-ink/50 hover:text-ink flex items-center gap-2"
               onClick={handleCopyStatusLink}
             >
               <Link2 className="h-4 w-4" />
@@ -388,7 +388,7 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
           </SheetHeader>
 
           <div className="flex-1 overflow-hidden mt-4">
-            <pre className="text-xs font-mono overflow-auto max-h-[60vh] bg-neutral-50 border border-[#E5E1DB] p-4 whitespace-pre">
+            <pre className="text-xs font-mono overflow-auto max-h-[60vh] bg-neutral-50 border border-shell p-4 whitespace-pre">
               {configContent}
             </pre>
           </div>
@@ -428,22 +428,22 @@ export function IntakeActions({ intake }: { intake: SerializedIntake }) {
           <div className="flex-1 overflow-y-auto mt-4 space-y-3">
             {buildResult?.pendingManualActions && buildResult.pendingManualActions.length > 0 ? (
               <>
-                <p className="text-xs text-[#0A0A0A]/50 font-mono">Pending manual steps:</p>
+                <p className="text-xs text-ink/50 font-mono">Pending manual steps:</p>
                 {buildResult.pendingManualActions.map((action, i) => (
                   <div key={i} className="flex items-center gap-2 text-sm">
-                    <Circle className="h-4 w-4 text-[#0A0A0A]/30 shrink-0" />
+                    <Circle className="h-4 w-4 text-ink/30 shrink-0" />
                     <span>{action}</span>
                   </div>
                 ))}
               </>
             ) : (
-              <p className="text-sm text-[#0A0A0A]/50">No manual steps required.</p>
+              <p className="text-sm text-ink/50">No manual steps required.</p>
             )}
           </div>
 
           <SheetFooter className="mt-4">
             {buildResult?.githubRepo || buildResult?.vercelUrl ? (
-              <div className="flex flex-col gap-2 w-full text-xs font-mono text-[#0A0A0A]/60">
+              <div className="flex flex-col gap-2 w-full text-xs font-mono text-ink/60">
                 {buildResult.githubRepo && (
                   <p>Repo: {buildResult.githubRepo}</p>
                 )}

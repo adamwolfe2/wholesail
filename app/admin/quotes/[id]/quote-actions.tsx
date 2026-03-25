@@ -65,7 +65,7 @@ export function QuoteActions({ quoteId, status, convertedOrderId }: QuoteActions
           <Button
             onClick={() => doAction("send")}
             disabled={!!loading}
-            className="bg-[#4A90D9] text-white hover:bg-[#3A80C9] rounded-none"
+            className="bg-sky text-white hover:bg-sky/90 rounded-none"
           >
             {loading === "send" ? (
               <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -80,7 +80,7 @@ export function QuoteActions({ quoteId, status, convertedOrderId }: QuoteActions
             <Button
               onClick={() => doAction("accept")}
               disabled={!!loading}
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+              className="bg-ink text-cream hover:bg-ink/80 rounded-none"
             >
               {loading === "accept" ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -93,7 +93,7 @@ export function QuoteActions({ quoteId, status, convertedOrderId }: QuoteActions
               onClick={() => doAction("decline")}
               disabled={!!loading}
               variant="outline"
-              className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none"
+              className="border-shell text-ink hover:bg-ink/[0.04] rounded-none"
             >
               {loading === "decline" ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -106,7 +106,7 @@ export function QuoteActions({ quoteId, status, convertedOrderId }: QuoteActions
               onClick={() => doAction("convert")}
               disabled={!!loading}
               variant="outline"
-              className="border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] rounded-none"
+              className="border-ink text-ink hover:bg-ink hover:text-cream rounded-none"
             >
               {loading === "convert" ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />

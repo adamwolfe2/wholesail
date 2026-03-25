@@ -128,7 +128,7 @@ export function StatePage({ config }: { config: StateConfig }) {
               <div className="space-y-5">
                 {config.painPoints.map((p, i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <X className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: "#dc2626" }} strokeWidth={2.5} />
+                    <X className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: 'var(--color-error)' }} strokeWidth={2.5} />
                     <p className="font-mono text-xs leading-relaxed" style={{ color: "var(--text-body)" }}>{p.before}</p>
                   </div>
                 ))}

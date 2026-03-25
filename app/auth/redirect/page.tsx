@@ -51,9 +51,9 @@ export default function AuthRedirectPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-[#F9F7F4] flex items-center justify-center">
+      <div className="min-h-screen bg-cream flex items-center justify-center">
         <div className="text-center max-w-sm">
-          <p className="text-sm text-[#0A0A0A]/60 mb-4">
+          <p className="text-sm text-ink/60 mb-4">
             {error === 'no-role'
               ? 'Your account is not set up yet. Please contact your administrator.'
               : 'There was a problem verifying your account. Please try again.'}
@@ -61,7 +61,7 @@ export default function AuthRedirectPage() {
           <div className="flex gap-3 justify-center">
             <a
               href="/"
-              className="px-4 py-2 text-sm font-medium border border-[#E5E1DB] bg-white hover:bg-[#F9F7F4] transition-colors"
+              className="px-4 py-2 text-sm font-medium border border-shell bg-white hover:bg-cream transition-colors"
             >
               Go home
             </a>
@@ -70,7 +70,7 @@ export default function AuthRedirectPage() {
                 setError(null)
                 window.location.reload()
               }}
-              className="px-4 py-2 text-sm font-medium bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/90 transition-colors"
+              className="px-4 py-2 text-sm font-medium bg-ink text-cream hover:bg-ink/90 transition-colors"
             >
               Try again
             </button>
@@ -81,8 +81,8 @@ export default function AuthRedirectPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F7F4] flex items-center justify-center">
-      <p className="text-sm text-[#0A0A0A]/40">Redirecting…</p>
+    <div className="min-h-screen bg-cream flex items-center justify-center">
+      <p className="text-sm text-ink/40">Redirecting…</p>
     </div>
   )
 }

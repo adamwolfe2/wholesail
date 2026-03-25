@@ -70,7 +70,7 @@ export default async function ProjectCostsPage({
       <div className="flex items-center gap-3">
         <Link
           href={`/admin/projects/${id}`}
-          className="text-[#0A0A0A]/40 hover:text-[#0A0A0A] transition-colors"
+          className="text-ink/40 hover:text-ink transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />
         </Link>
@@ -87,18 +87,18 @@ export default async function ProjectCostsPage({
       {/* Summary Cards */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         {/* Total */}
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">
               Total Cost
             </CardTitle>
-            <DollarSign className="h-4 w-4 text-[#C8C0B4]" />
+            <DollarSign className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[#0A0A0A]">
+            <div className="text-2xl font-bold text-ink">
               {formatCents(totalCents)}
             </div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">
+            <p className="text-xs text-ink/40 mt-1">
               {costs.length} record{costs.length !== 1 ? "s" : ""}
             </p>
           </CardContent>
@@ -106,18 +106,18 @@ export default async function ProjectCostsPage({
 
         {/* Top 3 services */}
         {sortedServices.slice(0, 3).map(([service, cents]) => (
-          <Card key={service} className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card key={service} className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+              <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">
                 {SERVICE_LABELS[service] ?? service}
               </CardTitle>
-              <DollarSign className="h-4 w-4 text-[#C8C0B4]" />
+              <DollarSign className="h-4 w-4 text-sand" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#0A0A0A]">
+              <div className="text-2xl font-bold text-ink">
                 {formatCents(cents)}
               </div>
-              <p className="text-xs text-[#0A0A0A]/40 mt-1">
+              <p className="text-xs text-ink/40 mt-1">
                 {totalCents > 0
                   ? `${((cents / totalCents) * 100).toFixed(0)}% of total`
                   : "—"}
@@ -129,7 +129,7 @@ export default async function ProjectCostsPage({
 
       {/* Per-Service Breakdown */}
       {sortedServices.length > 0 && (
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader>
             <CardTitle className="font-serif text-lg">
               Cost by Service
@@ -148,9 +148,9 @@ export default async function ProjectCostsPage({
                     <span className="text-sm font-medium w-40 shrink-0">
                       {SERVICE_LABELS[service] ?? service}
                     </span>
-                    <div className="flex-1 h-2 bg-[#E5E1DB] rounded-full overflow-hidden">
+                    <div className="flex-1 h-2 bg-shell rounded-full overflow-hidden">
                       <div
-                        className="h-full bg-[#0A0A0A] rounded-full"
+                        className="h-full bg-ink rounded-full"
                         style={{ width: `${pct}%` }}
                       />
                     </div>
@@ -166,7 +166,7 @@ export default async function ProjectCostsPage({
       )}
 
       {/* Cost Records Table */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader>
           <CardTitle className="font-serif text-lg">All Cost Records</CardTitle>
           <CardDescription>
@@ -176,11 +176,11 @@ export default async function ProjectCostsPage({
         <CardContent>
           {costs.length === 0 ? (
             <div className="text-center py-12">
-              <DollarSign className="h-12 w-12 text-[#C8C0B4] mx-auto mb-4" />
-              <h3 className="font-serif text-lg font-medium mb-2 text-[#0A0A0A]">
+              <DollarSign className="h-12 w-12 text-sand mx-auto mb-4" />
+              <h3 className="font-serif text-lg font-medium mb-2 text-ink">
                 No costs recorded
               </h3>
-              <p className="text-[#0A0A0A]/50 text-sm">
+              <p className="text-ink/50 text-sm">
                 Costs are logged automatically during the build pipeline.
               </p>
             </div>
@@ -202,7 +202,7 @@ export default async function ProjectCostsPage({
                   {costs.map((cost) => (
                     <tr
                       key={cost.id}
-                      className="border-b border-[#E5E1DB] hover:bg-[#F4F1EC]"
+                      className="border-b border-shell hover:bg-cream-hover"
                     >
                       <td className="py-3 text-muted-foreground whitespace-nowrap">
                         {cost.date.toLocaleDateString("en-US", {
@@ -212,7 +212,7 @@ export default async function ProjectCostsPage({
                         })}
                       </td>
                       <td className="py-3">
-                        <span className="inline-flex items-center rounded border border-[#E5E1DB] bg-[#F4F1EC] px-2 py-0.5 text-xs font-medium">
+                        <span className="inline-flex items-center rounded border border-shell bg-cream-hover px-2 py-0.5 text-xs font-medium">
                           {SERVICE_LABELS[cost.service] ?? cost.service}
                         </span>
                       </td>

@@ -146,72 +146,72 @@ export default async function InventoryPage() {
 
   return (
     <div className="space-y-6">
-      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
         Inventory
       </h2>
 
       {/* KPI Row */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               SKUs Tracked
             </CardTitle>
-            <Package className="h-4 w-4 text-[#C8C0B4]" />
+            <Package className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold font-serif text-[#0A0A0A]">{totalTracked}</div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">With inventory levels</p>
+            <div className="text-3xl font-bold font-serif text-ink">{totalTracked}</div>
+            <p className="text-xs text-ink/40 mt-1">With inventory levels</p>
           </CardContent>
         </Card>
 
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               In Stock
             </CardTitle>
-            <Package className="h-4 w-4 text-[#C8C0B4]" />
+            <Package className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold font-serif text-[#0A0A0A]">{inStock}</div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">Qty on hand &gt; 0</p>
+            <div className="text-3xl font-bold font-serif text-ink">{inStock}</div>
+            <p className="text-xs text-ink/40 mt-1">Qty on hand &gt; 0</p>
           </CardContent>
         </Card>
 
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               Low Stock
             </CardTitle>
-            <TrendingDown className="h-4 w-4 text-[#C8C0B4]" />
+            <TrendingDown className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold font-serif text-[#0A0A0A]">{lowStock}</div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">At or below threshold</p>
+            <div className="text-3xl font-bold font-serif text-ink">{lowStock}</div>
+            <p className="text-xs text-ink/40 mt-1">At or below threshold</p>
           </CardContent>
         </Card>
 
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               Out of Stock
             </CardTitle>
-            <AlertTriangle className="h-4 w-4 text-[#C8C0B4]" />
+            <AlertTriangle className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold font-serif text-[#0A0A0A]">{outOfStock}</div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">Qty on hand = 0</p>
+            <div className="text-3xl font-bold font-serif text-ink">{outOfStock}</div>
+            <p className="text-xs text-ink/40 mt-1">Qty on hand = 0</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Alert Banner */}
       {hasAlerts && (
-        <div className="border border-[#0A0A0A]/20 bg-[#0A0A0A]/5 p-4 flex items-start gap-3">
-          <AlertCircle className="h-5 w-5 text-[#0A0A0A]/60 shrink-0 mt-0.5" />
+        <div className="border border-ink/20 bg-ink/5 p-4 flex items-start gap-3">
+          <AlertCircle className="h-5 w-5 text-ink/60 shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-semibold text-[#0A0A0A]">Inventory Alert</p>
-            <p className="text-sm text-[#0A0A0A]/60 mt-0.5">
+            <p className="text-sm font-semibold text-ink">Inventory Alert</p>
+            <p className="text-sm text-ink/60 mt-0.5">
               {outOfStock > 0 && (
                 <span>{outOfStock} product{outOfStock > 1 ? "s are" : " is"} out of stock. </span>
               )}
@@ -229,9 +229,9 @@ export default async function InventoryPage() {
 
       {/* Upcoming Restocks */}
       {upcomingRestocks.length > 0 && (
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
-          <CardHeader className="border-b border-[#E5E1DB] pb-3">
-            <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+        <Card className="border-shell bg-cream">
+          <CardHeader className="border-b border-shell pb-3">
+            <CardTitle className="font-serif text-lg text-ink">
               Upcoming Restocks
             </CardTitle>
           </CardHeader>
@@ -239,29 +239,29 @@ export default async function InventoryPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#E5E1DB]">
-                    <th className="text-left pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Product</th>
-                    <th className="text-left pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Category</th>
-                    <th className="text-right pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Qty</th>
-                    <th className="text-left pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Expected</th>
-                    <th className="text-left pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden md:table-cell">Notes</th>
+                  <tr className="border-b border-shell">
+                    <th className="text-left pb-2 text-xs font-medium text-ink/50 uppercase tracking-wider">Product</th>
+                    <th className="text-left pb-2 text-xs font-medium text-ink/50 uppercase tracking-wider">Category</th>
+                    <th className="text-right pb-2 text-xs font-medium text-ink/50 uppercase tracking-wider">Qty</th>
+                    <th className="text-left pb-2 text-xs font-medium text-ink/50 uppercase tracking-wider">Expected</th>
+                    <th className="text-left pb-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden md:table-cell">Notes</th>
                     <th className="pb-2"></th>
                   </tr>
                 </thead>
                 <tbody>
                   {upcomingRestocks.map((restock) => (
-                    <tr key={restock.id} className="border-b border-[#E5E1DB] last:border-0">
-                      <td className="py-3 font-medium text-[#0A0A0A]">{restock.productName}</td>
+                    <tr key={restock.id} className="border-b border-shell last:border-0">
+                      <td className="py-3 font-medium text-ink">{restock.productName}</td>
                       <td className="py-3">
-                        <Badge variant="outline" className="text-xs border-[#E5E1DB] text-[#0A0A0A]/60">
+                        <Badge variant="outline" className="text-xs border-shell text-ink/60">
                           {restock.category}
                         </Badge>
                       </td>
-                      <td className="py-3 text-right font-semibold text-[#0A0A0A]">{restock.quantity}</td>
-                      <td className="py-3 text-[#0A0A0A]/70">
+                      <td className="py-3 text-right font-semibold text-ink">{restock.quantity}</td>
+                      <td className="py-3 text-ink/70">
                         {format(new Date(restock.expectedDate), "MMM d, yyyy")}
                       </td>
-                      <td className="py-3 text-[#0A0A0A]/50 hidden md:table-cell text-xs">
+                      <td className="py-3 text-ink/50 hidden md:table-cell text-xs">
                         {restock.notes ?? "—"}
                       </td>
                       <td className="py-3">
@@ -278,14 +278,14 @@ export default async function InventoryPage() {
 
       {/* Add Inventory Tracking for untracked products */}
       {untrackedItems.length > 0 && (
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
-          <CardHeader className="border-b border-[#E5E1DB] pb-3">
-            <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+        <Card className="border-shell bg-cream">
+          <CardHeader className="border-b border-shell pb-3">
+            <CardTitle className="font-serif text-lg text-ink">
               Add Inventory Tracking
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-4">
-            <p className="text-sm text-[#0A0A0A]/50 mb-4">
+            <p className="text-sm text-ink/50 mb-4">
               {untrackedItems.length} product{untrackedItems.length > 1 ? "s are" : " is"} not yet tracked. Add inventory tracking to monitor stock levels.
             </p>
             <AddTrackingButtons products={untrackedItems} />
@@ -294,60 +294,60 @@ export default async function InventoryPage() {
       )}
 
       {/* Distributor Self-Reported Stock */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
-        <CardHeader className="border-b border-[#E5E1DB] pb-3">
+      <Card className="border-shell bg-cream">
+        <CardHeader className="border-b border-shell pb-3">
           <div className="flex items-center gap-2">
-            <Boxes className="h-4 w-4 text-[#0A0A0A]/40" />
-            <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+            <Boxes className="h-4 w-4 text-ink/40" />
+            <CardTitle className="font-serif text-lg text-ink">
               Distributor-Reported Stock
             </CardTitle>
           </div>
-          <p className="text-sm text-[#0A0A0A]/50 mt-1">
+          <p className="text-sm text-ink/50 mt-1">
             Stock levels self-reported by your distributor partners. Updated by them from their portal.
           </p>
         </CardHeader>
         <CardContent className="pt-4">
           {data.distributorStock.length === 0 ? (
-            <p className="text-sm text-[#0A0A0A]/40 py-4 text-center">
+            <p className="text-sm text-ink/40 py-4 text-center">
               No distributor stock reports yet. Distributors can report their inventory from the portal under &ldquo;My Inventory&rdquo;.
             </p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#E5E1DB]">
-                    <th className="text-left pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Distributor</th>
-                    <th className="text-left pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Product</th>
-                    <th className="text-right pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">On Hand</th>
-                    <th className="text-right pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Back Stock</th>
-                    <th className="text-left pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden md:table-cell">Notes</th>
-                    <th className="text-left pb-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden lg:table-cell">Last Updated</th>
+                  <tr className="border-b border-shell">
+                    <th className="text-left pb-2 text-xs font-medium text-ink/50 uppercase tracking-wider">Distributor</th>
+                    <th className="text-left pb-2 text-xs font-medium text-ink/50 uppercase tracking-wider">Product</th>
+                    <th className="text-right pb-2 text-xs font-medium text-ink/50 uppercase tracking-wider">On Hand</th>
+                    <th className="text-right pb-2 text-xs font-medium text-ink/50 uppercase tracking-wider">Back Stock</th>
+                    <th className="text-left pb-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden md:table-cell">Notes</th>
+                    <th className="text-left pb-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden lg:table-cell">Last Updated</th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.distributorStock.map((row) => (
-                    <tr key={row.id} className="border-b border-[#E5E1DB] last:border-0">
-                      <td className="py-3 font-medium text-[#0A0A0A]">{row.distributor.name}</td>
-                      <td className="py-3 text-[#0A0A0A]/70">
+                    <tr key={row.id} className="border-b border-shell last:border-0">
+                      <td className="py-3 font-medium text-ink">{row.distributor.name}</td>
+                      <td className="py-3 text-ink/70">
                         <div>{row.product.name}</div>
-                        <Badge variant="outline" className="text-[10px] border-[#E5E1DB] text-[#0A0A0A]/40 mt-0.5">
+                        <Badge variant="outline" className="text-[10px] border-shell text-ink/40 mt-0.5">
                           {row.product.category}
                         </Badge>
                       </td>
                       <td className="py-3 text-right">
-                        <span className={`font-semibold tabular-nums ${row.quantityOnHand === 0 ? 'text-red-600' : row.quantityOnHand <= 5 ? 'text-amber-600' : 'text-[#0A0A0A]'}`}>
+                        <span className={`font-semibold tabular-nums ${row.quantityOnHand === 0 ? 'text-red-600' : row.quantityOnHand <= 5 ? 'text-amber-600' : 'text-ink'}`}>
                           {row.quantityOnHand}
                         </span>
-                        {row.product.unit && <span className="text-xs text-[#0A0A0A]/30 ml-1">{row.product.unit}</span>}
+                        {row.product.unit && <span className="text-xs text-ink/30 ml-1">{row.product.unit}</span>}
                       </td>
-                      <td className="py-3 text-right font-semibold tabular-nums text-[#0A0A0A]">
+                      <td className="py-3 text-right font-semibold tabular-nums text-ink">
                         {row.quantityBackstock}
-                        {row.product.unit && <span className="text-xs text-[#0A0A0A]/30 ml-1">{row.product.unit}</span>}
+                        {row.product.unit && <span className="text-xs text-ink/30 ml-1">{row.product.unit}</span>}
                       </td>
-                      <td className="py-3 text-[#0A0A0A]/50 hidden md:table-cell text-xs max-w-[200px] truncate">
+                      <td className="py-3 text-ink/50 hidden md:table-cell text-xs max-w-[200px] truncate">
                         {row.notes ?? "—"}
                       </td>
-                      <td className="py-3 text-[#0A0A0A]/40 hidden lg:table-cell text-xs">
+                      <td className="py-3 text-ink/40 hidden lg:table-cell text-xs">
                         {format(new Date(row.updatedAt), "MMM d, yyyy")}
                       </td>
                     </tr>

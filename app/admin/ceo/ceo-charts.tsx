@@ -50,9 +50,9 @@ function CustomTooltip({
 }) {
   if (active && payload && payload.length) {
     return (
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-2 text-xs font-mono shadow-sm">
-        <p className="text-[#0A0A0A]/60 mb-1">{label}</p>
-        <p className="font-bold text-[#0A0A0A]">
+      <div className="border border-shell bg-cream p-2 text-xs font-mono shadow-sm">
+        <p className="text-ink/60 mb-1">{label}</p>
+        <p className="font-bold text-ink">
           ${payload[0].value.toLocaleString("en-US")}
         </p>
       </div>
@@ -72,9 +72,9 @@ function CategoryTooltip({
 }) {
   if (active && payload && payload.length) {
     return (
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-2 text-xs font-mono shadow-sm">
-        <p className="text-[#0A0A0A]/60 mb-1">{label}</p>
-        <p className="font-bold text-[#0A0A0A]">
+      <div className="border border-shell bg-cream p-2 text-xs font-mono shadow-sm">
+        <p className="text-ink/60 mb-1">{label}</p>
+        <p className="font-bold text-ink">
           ${payload[0].value.toLocaleString("en-US")}
         </p>
       </div>
@@ -90,15 +90,15 @@ export function CeoCharts({ monthlyRevenue, categoryRevenue }: CeoChartsProps) {
   return (
     <div className="space-y-6">
       {/* Revenue Trend — Area Chart */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader className="pb-3">
-          <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+          <CardTitle className="font-serif text-lg text-ink">
             Revenue Trend — Last 12 Months
           </CardTitle>
         </CardHeader>
         <CardContent>
           {!hasRevenueData ? (
-            <p className="text-sm text-[#0A0A0A]/40 py-8 text-center">
+            <p className="text-sm text-ink/40 py-8 text-center">
               No revenue data yet. Charts will populate once orders are placed.
             </p>
           ) : (
@@ -148,15 +148,15 @@ export function CeoCharts({ monthlyRevenue, categoryRevenue }: CeoChartsProps) {
       </Card>
 
       {/* Category Revenue — Horizontal Bar Chart */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader className="pb-3">
-          <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+          <CardTitle className="font-serif text-lg text-ink">
             Revenue by Category
           </CardTitle>
         </CardHeader>
         <CardContent>
           {!hasCategoryData ? (
-            <p className="text-sm text-[#0A0A0A]/40 py-8 text-center">
+            <p className="text-sm text-ink/40 py-8 text-center">
               No category data yet.
             </p>
           ) : (

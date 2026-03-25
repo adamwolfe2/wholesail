@@ -138,7 +138,7 @@ export default function WebhooksPage() {
         </div>
         <Button
           onClick={() => { setShowForm(!showForm); setNewSecret(null); }}
-          className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+          className="bg-ink text-cream hover:bg-ink/80 rounded-none"
         >
           <Plus className="h-4 w-4 mr-2" />
           Add Endpoint
@@ -169,7 +169,7 @@ export default function WebhooksPage() {
 
       {/* Create Form */}
       {showForm && (
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader>
             <CardTitle className="font-serif text-lg">New Webhook Endpoint</CardTitle>
           </CardHeader>
@@ -196,8 +196,8 @@ export default function WebhooksPage() {
                     onClick={() => toggleEvent(event)}
                     className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs border transition-colors ${
                       newEvents.has(event)
-                        ? "bg-[#0A0A0A] text-[#F9F7F4] border-[#0A0A0A]"
-                        : "bg-transparent text-[#0A0A0A]/60 border-[#C8C0B4]"
+                        ? "bg-ink text-cream border-ink"
+                        : "bg-transparent text-ink/60 border-sand"
                     }`}
                   >
                     {newEvents.has(event) && <Check className="h-3 w-3" />}
@@ -211,7 +211,7 @@ export default function WebhooksPage() {
               <Button
                 onClick={createEndpoint}
                 disabled={creating || !newUrl || newEvents.size === 0}
-                className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+                className="bg-ink text-cream hover:bg-ink/80 rounded-none"
               >
                 {creating ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
                 Create Endpoint
@@ -229,7 +229,7 @@ export default function WebhooksPage() {
       )}
 
       {/* Endpoints List */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader>
           <CardTitle className="font-serif text-lg">Endpoints</CardTitle>
           <CardDescription>{endpoints.length} configured</CardDescription>
@@ -237,20 +237,20 @@ export default function WebhooksPage() {
         <CardContent>
           {loading ? (
             <div className="flex justify-center py-12">
-              <Loader2 className="h-6 w-6 animate-spin text-[#C8C0B4]" />
+              <Loader2 className="h-6 w-6 animate-spin text-sand" />
             </div>
           ) : endpoints.length === 0 ? (
             <div className="text-center py-12">
-              <Webhook className="h-12 w-12 text-[#C8C0B4] mx-auto mb-4" />
-              <h3 className="font-serif text-lg font-medium mb-2 text-[#0A0A0A]">No webhooks configured</h3>
-              <p className="text-[#0A0A0A]/50 text-sm">
+              <Webhook className="h-12 w-12 text-sand mx-auto mb-4" />
+              <h3 className="font-serif text-lg font-medium mb-2 text-ink">No webhooks configured</h3>
+              <p className="text-ink/50 text-sm">
                 Add an endpoint to receive real-time event notifications.
               </p>
             </div>
           ) : (
             <div className="space-y-3">
               {endpoints.map((ep) => (
-                <div key={ep.id} className="flex items-start justify-between border border-[#C8C0B4]/50 p-4">
+                <div key={ep.id} className="flex items-start justify-between border border-sand/50 p-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <code className="text-sm font-mono truncate">{ep.url}</code>
@@ -258,7 +258,7 @@ export default function WebhooksPage() {
                         variant="outline"
                         className={ep.isActive
                           ? "bg-green-50 text-green-700 border-green-200"
-                          : "bg-transparent text-[#0A0A0A]/40 border-[#C8C0B4]"
+                          : "bg-transparent text-ink/40 border-sand"
                         }
                       >
                         {ep.isActive ? "Active" : "Paused"}
@@ -266,7 +266,7 @@ export default function WebhooksPage() {
                     </div>
                     <div className="flex flex-wrap gap-1.5 mt-2">
                       {ep.events.map((ev) => (
-                        <span key={ev} className="text-[10px] px-1.5 py-0.5 bg-[#0A0A0A]/5 text-[#0A0A0A]/60 border border-[#C8C0B4]/30">
+                        <span key={ev} className="text-[10px] px-1.5 py-0.5 bg-ink/5 text-ink/60 border border-sand/30">
                           {ev}
                         </span>
                       ))}

@@ -32,15 +32,15 @@ export default async function AdminPricingPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
           Pricing Rules
         </h2>
-        <p className="text-xs text-[#0A0A0A]/50">
+        <p className="text-xs text-ink/50">
           {rules.length} rule{rules.length !== 1 ? "s" : ""} configured
         </p>
       </div>
 
-      <p className="text-sm text-[#0A0A0A]/60 max-w-2xl">
+      <p className="text-sm text-ink/60 max-w-2xl">
         Configure discount percentages by client tier and product category. A
         specific category rule always takes precedence over an "All Categories"
         rule for the same tier.

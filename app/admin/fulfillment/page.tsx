@@ -189,30 +189,30 @@ export default async function FulfillmentPage() {
 
   return (
     <div className="space-y-6">
-      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
         Fulfillment Console
       </h2>
 
       {/* Today's Delivery Summary Bar */}
-      <div className="border border-[#E5E1DB] bg-[#0A0A0A] text-[#F9F7F4] px-5 py-3">
+      <div className="border border-shell bg-ink text-cream px-5 py-3">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
-          <span className="text-[#F9F7F4]/50 text-xs uppercase tracking-wider font-medium">
+          <span className="text-cream/50 text-xs uppercase tracking-wider font-medium">
             {format(new Date(), "MMM d")} Summary
           </span>
           <div className="flex items-center gap-1.5">
-            <Truck className="h-3.5 w-3.5 text-[#C8C0B4]" />
+            <Truck className="h-3.5 w-3.5 text-sand" />
             <span className="font-semibold">{data.allShipped}</span>
-            <span className="text-[#F9F7F4]/60">in transit</span>
+            <span className="text-cream/60">in transit</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Package className="h-3.5 w-3.5 text-[#C8C0B4]" />
+            <Package className="h-3.5 w-3.5 text-sand" />
             <span className="font-semibold">{data.packedOrders.length}</span>
-            <span className="text-[#F9F7F4]/60">packed &amp; ready</span>
+            <span className="text-cream/60">packed &amp; ready</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <CheckCircle className="h-3.5 w-3.5 text-[#C8C0B4]" />
+            <CheckCircle className="h-3.5 w-3.5 text-sand" />
             <span className="font-semibold">{data.deliveredToday.length}</span>
-            <span className="text-[#F9F7F4]/60">delivered today</span>
+            <span className="text-cream/60">delivered today</span>
           </div>
         </div>
       </div>
@@ -220,16 +220,16 @@ export default async function FulfillmentPage() {
       {/* KPI Row */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
         {kpis.map((kpi) => (
-          <Card key={kpi.label} className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card key={kpi.label} className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
                 {kpi.label}
               </CardTitle>
-              <kpi.icon className="h-4 w-4 text-[#C8C0B4]" />
+              <kpi.icon className="h-4 w-4 text-sand" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold font-serif text-[#0A0A0A]">{kpi.value}</div>
-              <p className="text-xs text-[#0A0A0A]/40 mt-1">{kpi.description}</p>
+              <div className="text-3xl font-bold font-serif text-ink">{kpi.value}</div>
+              <p className="text-xs text-ink/40 mt-1">{kpi.description}</p>
             </CardContent>
           </Card>
         ))}

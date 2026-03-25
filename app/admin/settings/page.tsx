@@ -37,7 +37,7 @@ export default async function AdminSettingsPage() {
 
   return (
     <div className="space-y-6">
-      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+      <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
         Settings
       </h2>
 
@@ -47,28 +47,28 @@ export default async function AdminSettingsPage() {
       {/* Quick Links */}
       <div className="grid gap-4 sm:grid-cols-2">
         <Link href="/admin/settings/team">
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4] hover:bg-[#F9F7F4]/80 transition-colors cursor-pointer">
+          <Card className="border-shell bg-cream hover:bg-cream/80 transition-colors cursor-pointer">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">Team Management</CardTitle>
-              <Users className="h-4 w-4 text-[#C8C0B4]" />
+              <Users className="h-4 w-4 text-sand" />
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">View and manage admin users, reps, and roles</p>
-              <span className="text-xs text-[#0A0A0A] font-medium inline-flex items-center gap-1 mt-2">
+              <span className="text-xs text-ink font-medium inline-flex items-center gap-1 mt-2">
                 Manage <ArrowRight className="h-3 w-3" />
               </span>
             </CardContent>
           </Card>
         </Link>
         <Link href="/admin/settings/webhooks">
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4] hover:bg-[#F9F7F4]/80 transition-colors cursor-pointer">
+          <Card className="border-shell bg-cream hover:bg-cream/80 transition-colors cursor-pointer">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
               <CardTitle className="text-sm font-medium">Webhooks</CardTitle>
-              <Webhook className="h-4 w-4 text-[#C8C0B4]" />
+              <Webhook className="h-4 w-4 text-sand" />
             </CardHeader>
             <CardContent>
               <p className="text-xs text-muted-foreground">Configure webhook endpoints for event notifications</p>
-              <span className="text-xs text-[#0A0A0A] font-medium inline-flex items-center gap-1 mt-2">
+              <span className="text-xs text-ink font-medium inline-flex items-center gap-1 mt-2">
                 Configure <ArrowRight className="h-3 w-3" />
               </span>
             </CardContent>

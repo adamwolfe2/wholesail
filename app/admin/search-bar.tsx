@@ -40,26 +40,26 @@ type SearchResults = {
 };
 
 const TIER_COLORS: Record<string, string> = {
-  VIP: "bg-[#0A0A0A] text-[#F9F7F4]",
-  REPEAT: "bg-[#E5E1DB] text-[#0A0A0A]",
-  NEW: "bg-[#F3F0EB] text-[#0A0A0A]/60",
+  VIP: "bg-ink text-cream",
+  REPEAT: "bg-shell text-ink",
+  NEW: "bg-cream-hover text-ink/60",
 };
 
 const STATUS_COLORS: Record<string, string> = {
   OVERDUE: "bg-red-100 text-red-700",
   PENDING: "bg-amber-100 text-amber-700",
   PAID: "bg-emerald-100 text-emerald-700",
-  DRAFT: "bg-[#F3F0EB] text-[#0A0A0A]/60",
+  DRAFT: "bg-cream-hover text-ink/60",
   SHIPPED: "bg-blue-100 text-blue-700",
   DELIVERED: "bg-emerald-100 text-emerald-700",
   CONFIRMED: "bg-sky-100 text-sky-700",
-  CANCELLED: "bg-[#E5E1DB] text-[#0A0A0A]/40",
+  CANCELLED: "bg-shell text-ink/40",
   PACKED: "bg-violet-100 text-violet-700",
 };
 
 function Badge({ label }: { label: string }) {
   const colorClass =
-    TIER_COLORS[label] ?? STATUS_COLORS[label] ?? "bg-[#E5E1DB] text-[#0A0A0A]/60";
+    TIER_COLORS[label] ?? STATUS_COLORS[label] ?? "bg-shell text-ink/60";
   return (
     <span
       className={`inline-block text-[10px] font-semibold px-1.5 py-0.5 leading-tight uppercase tracking-wide ${colorClass}`}
@@ -93,42 +93,42 @@ function SearchPanel({
   return (
     <>
       <div className="relative">
-        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#0A0A0A]/30 pointer-events-none" />
+        <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-ink/30 pointer-events-none" />
         <Input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search clients, orders..."
-          className="pl-8 pr-8 h-8 text-sm border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A] placeholder:text-[#0A0A0A]/30"
+          className="pl-8 pr-8 h-8 text-sm border-shell bg-white focus-visible:ring-0 focus-visible:border-ink placeholder:text-ink/30"
           autoFocus
         />
         {loading && (
-          <Loader2 className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#0A0A0A]/30 animate-spin" />
+          <Loader2 className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-ink/30 animate-spin" />
         )}
       </div>
 
       {open && (
-        <div className="bg-[#F9F7F4] border border-[#E5E1DB] shadow-sm mt-2">
+        <div className="bg-cream border border-shell shadow-sm mt-2">
           {!hasResults ? (
-            <p className="px-3 py-4 text-sm text-[#0A0A0A]/40 text-center">
+            <p className="px-3 py-4 text-sm text-ink/40 text-center">
               No results for &ldquo;{query}&rdquo;
             </p>
           ) : (
             <>
               {results.organizations.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-medium uppercase tracking-wider text-[#0A0A0A]/40 px-3 py-2 border-b border-[#E5E1DB]">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell">
                     Clients
                   </p>
                   {results.organizations.map((org) => (
                     <button
                       key={org.id}
                       onClick={() => navigate(`/admin/clients/${org.id}`)}
-                      className="w-full px-3 py-2.5 text-sm text-[#0A0A0A] hover:bg-[#0A0A0A]/5 cursor-pointer flex items-center justify-between gap-2 text-left"
+                      className="w-full px-3 py-2.5 text-sm text-ink hover:bg-ink/5 cursor-pointer flex items-center justify-between gap-2 text-left"
                     >
                       <span className="truncate">
-                        <span className="text-[#0A0A0A]/40 mr-1.5">›</span>
+                        <span className="text-ink/40 mr-1.5">›</span>
                         {org.name}
-                        <span className="ml-1.5 text-xs text-[#0A0A0A]/40">
+                        <span className="ml-1.5 text-xs text-ink/40">
                           {org.email}
                         </span>
                       </span>
@@ -139,19 +139,19 @@ function SearchPanel({
               )}
               {results.orders.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-medium uppercase tracking-wider text-[#0A0A0A]/40 px-3 py-2 border-b border-[#E5E1DB] border-t border-t-[#E5E1DB]">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell border-t border-t-[#E5E1DB]">
                     Orders
                   </p>
                   {results.orders.map((order) => (
                     <button
                       key={order.id}
                       onClick={() => navigate(`/admin/orders/${order.id}`)}
-                      className="w-full px-3 py-2.5 text-sm text-[#0A0A0A] hover:bg-[#0A0A0A]/5 cursor-pointer flex items-center justify-between gap-2 text-left"
+                      className="w-full px-3 py-2.5 text-sm text-ink hover:bg-ink/5 cursor-pointer flex items-center justify-between gap-2 text-left"
                     >
                       <span className="truncate">
-                        <span className="text-[#0A0A0A]/40 mr-1.5">›</span>
+                        <span className="text-ink/40 mr-1.5">›</span>
                         {order.orderNumber}
-                        <span className="ml-1.5 text-xs text-[#0A0A0A]/40">
+                        <span className="ml-1.5 text-xs text-ink/40">
                           {order.organization.name}
                         </span>
                       </span>
@@ -162,19 +162,19 @@ function SearchPanel({
               )}
               {results.invoices.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-medium uppercase tracking-wider text-[#0A0A0A]/40 px-3 py-2 border-b border-[#E5E1DB] border-t border-t-[#E5E1DB]">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell border-t border-t-[#E5E1DB]">
                     Invoices
                   </p>
                   {results.invoices.map((inv) => (
                     <button
                       key={inv.id}
                       onClick={() => navigate(`/admin/invoices?search=${encodeURIComponent(inv.invoiceNumber)}`)}
-                      className="w-full px-3 py-2.5 text-sm text-[#0A0A0A] hover:bg-[#0A0A0A]/5 cursor-pointer flex items-center justify-between gap-2 text-left"
+                      className="w-full px-3 py-2.5 text-sm text-ink hover:bg-ink/5 cursor-pointer flex items-center justify-between gap-2 text-left"
                     >
                       <span className="truncate">
-                        <span className="text-[#0A0A0A]/40 mr-1.5">›</span>
+                        <span className="text-ink/40 mr-1.5">›</span>
                         {inv.invoiceNumber}
-                        <span className="ml-1.5 text-xs text-[#0A0A0A]/40">
+                        <span className="ml-1.5 text-xs text-ink/40">
                           {inv.organization.name}
                         </span>
                       </span>
@@ -286,14 +286,14 @@ export function AdminSearchBar() {
         onClick={() => setMobileOpen(true)}
         aria-label="Search"
       >
-        <Search className="h-4 w-4 text-[#0A0A0A]/60" />
+        <Search className="h-4 w-4 text-ink/60" />
       </Button>
 
       {/* Mobile search dialog */}
       <Dialog open={mobileOpen} onOpenChange={handleMobileClose}>
-        <DialogContent className="bg-[#F9F7F4] border-[#E5E1DB] sm:max-w-md top-[10%] translate-y-0 max-h-[80vh] overflow-y-auto">
+        <DialogContent className="bg-cream border-shell sm:max-w-md top-[10%] translate-y-0 max-h-[80vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="font-serif text-base text-[#0A0A0A]">Search</DialogTitle>
+            <DialogTitle className="font-serif text-base text-ink">Search</DialogTitle>
           </DialogHeader>
           <SearchPanel
             query={query}
@@ -310,45 +310,45 @@ export function AdminSearchBar() {
       <div ref={containerRef} className="relative hidden md:block w-64">
         {/* Input */}
         <div className="relative">
-          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#0A0A0A]/30 pointer-events-none" />
+          <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-ink/30 pointer-events-none" />
           <Input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search clients, orders..."
-            className="pl-8 pr-8 h-8 text-sm border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A] placeholder:text-[#0A0A0A]/30"
+            className="pl-8 pr-8 h-8 text-sm border-shell bg-white focus-visible:ring-0 focus-visible:border-ink placeholder:text-ink/30"
           />
           {loading && (
-            <Loader2 className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#0A0A0A]/30 animate-spin" />
+            <Loader2 className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-ink/30 animate-spin" />
           )}
         </div>
 
         {/* Dropdown */}
         {open && (
-          <div className="absolute top-full mt-1 left-0 right-0 bg-[#F9F7F4] border border-[#E5E1DB] shadow-sm z-50 min-w-[280px]">
+          <div className="absolute top-full mt-1 left-0 right-0 bg-cream border border-shell shadow-sm z-50 min-w-[280px]">
             {!(results &&
               (results.organizations.length > 0 ||
                 results.orders.length > 0 ||
                 results.invoices.length > 0)) ? (
-              <p className="px-3 py-4 text-sm text-[#0A0A0A]/40 text-center">
+              <p className="px-3 py-4 text-sm text-ink/40 text-center">
                 No results for &ldquo;{query}&rdquo;
               </p>
             ) : (
               <>
                 {results.organizations.length > 0 && (
                   <div>
-                    <p className="text-[10px] font-medium uppercase tracking-wider text-[#0A0A0A]/40 px-3 py-2 border-b border-[#E5E1DB]">
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell">
                       Clients
                     </p>
                     {results.organizations.map((org) => (
                       <button
                         key={org.id}
                         onClick={() => navigate(`/admin/clients/${org.id}`)}
-                        className="w-full px-3 py-2.5 text-sm text-[#0A0A0A] hover:bg-[#0A0A0A]/5 cursor-pointer flex items-center justify-between gap-2 text-left"
+                        className="w-full px-3 py-2.5 text-sm text-ink hover:bg-ink/5 cursor-pointer flex items-center justify-between gap-2 text-left"
                       >
                         <span className="truncate">
-                          <span className="text-[#0A0A0A]/40 mr-1.5">›</span>
+                          <span className="text-ink/40 mr-1.5">›</span>
                           {org.name}
-                          <span className="ml-1.5 text-xs text-[#0A0A0A]/40">
+                          <span className="ml-1.5 text-xs text-ink/40">
                             {org.email}
                           </span>
                         </span>
@@ -359,19 +359,19 @@ export function AdminSearchBar() {
                 )}
                 {results.orders.length > 0 && (
                   <div>
-                    <p className="text-[10px] font-medium uppercase tracking-wider text-[#0A0A0A]/40 px-3 py-2 border-b border-[#E5E1DB] border-t border-t-[#E5E1DB]">
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell border-t border-t-[#E5E1DB]">
                       Orders
                     </p>
                     {results.orders.map((order) => (
                       <button
                         key={order.id}
                         onClick={() => navigate(`/admin/orders/${order.id}`)}
-                        className="w-full px-3 py-2.5 text-sm text-[#0A0A0A] hover:bg-[#0A0A0A]/5 cursor-pointer flex items-center justify-between gap-2 text-left"
+                        className="w-full px-3 py-2.5 text-sm text-ink hover:bg-ink/5 cursor-pointer flex items-center justify-between gap-2 text-left"
                       >
                         <span className="truncate">
-                          <span className="text-[#0A0A0A]/40 mr-1.5">›</span>
+                          <span className="text-ink/40 mr-1.5">›</span>
                           {order.orderNumber}
-                          <span className="ml-1.5 text-xs text-[#0A0A0A]/40">
+                          <span className="ml-1.5 text-xs text-ink/40">
                             {order.organization.name}
                           </span>
                         </span>
@@ -382,19 +382,19 @@ export function AdminSearchBar() {
                 )}
                 {results.invoices.length > 0 && (
                   <div>
-                    <p className="text-[10px] font-medium uppercase tracking-wider text-[#0A0A0A]/40 px-3 py-2 border-b border-[#E5E1DB] border-t border-t-[#E5E1DB]">
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell border-t border-t-[#E5E1DB]">
                       Invoices
                     </p>
                     {results.invoices.map((inv) => (
                       <button
                         key={inv.id}
                         onClick={() => navigate(`/admin/invoices?search=${encodeURIComponent(inv.invoiceNumber)}`)}
-                        className="w-full px-3 py-2.5 text-sm text-[#0A0A0A] hover:bg-[#0A0A0A]/5 cursor-pointer flex items-center justify-between gap-2 text-left"
+                        className="w-full px-3 py-2.5 text-sm text-ink hover:bg-ink/5 cursor-pointer flex items-center justify-between gap-2 text-left"
                       >
                         <span className="truncate">
-                          <span className="text-[#0A0A0A]/40 mr-1.5">›</span>
+                          <span className="text-ink/40 mr-1.5">›</span>
                           {inv.invoiceNumber}
-                          <span className="ml-1.5 text-xs text-[#0A0A0A]/40">
+                          <span className="ml-1.5 text-xs text-ink/40">
                             {inv.organization.name}
                           </span>
                         </span>

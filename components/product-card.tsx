@@ -45,16 +45,16 @@ export const ProductCard = memo(function ProductCard({ product, isSignedIn = fal
       <div className="flex flex-col flex-1 p-4 sm:p-5">
         {/* Category + Favorite */}
         <div className="flex items-center justify-between mb-1.5">
-          <p className="text-[9px] tracking-[0.18em] uppercase text-[#C8C0B4]">
+          <p className="text-[9px] tracking-[0.18em] uppercase text-sand">
             {product.category}
           </p>
           {isSignedIn && onToggleFavorite !== undefined && (
             <button
               onClick={(e) => { e.preventDefault(); onToggleFavorite(product.id) }}
-              className="h-9 w-9 sm:h-10 sm:w-10 -mr-1 flex items-center justify-center text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors"
+              className="h-9 w-9 sm:h-10 sm:w-10 -mr-1 flex items-center justify-center text-sand hover:text-ink transition-colors"
               aria-label={isFavorited ? 'Remove from favorites' : 'Add to favorites'}
             >
-              <Heart className={`h-3.5 w-3.5 ${isFavorited ? 'fill-[#0A0A0A] text-[#0A0A0A]' : ''}`} />
+              <Heart className={`h-3.5 w-3.5 ${isFavorited ? 'fill-ink text-ink' : ''}`} />
             </button>
           )}
         </div>
@@ -71,7 +71,7 @@ export const ProductCard = memo(function ProductCard({ product, isSignedIn = fal
         {/* Price / Market Rate */}
         <div className="mb-3 flex items-center">
           {product.marketRate ? (
-            <span className="inline-flex items-center gap-1 text-[9px] tracking-[0.15em] uppercase border border-[#C8C0B4] text-[#C8C0B4] px-2 py-0.5">
+            <span className="inline-flex items-center gap-1 text-[9px] tracking-[0.15em] uppercase border border-sand text-sand px-2 py-0.5">
               <TrendingUp className="h-2.5 w-2.5" />
               Market Rate
             </span>

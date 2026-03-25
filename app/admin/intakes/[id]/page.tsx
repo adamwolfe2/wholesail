@@ -125,7 +125,7 @@ export default async function AdminIntakeDetailPage({
       <div>
         <h2 className="font-serif text-2xl sm:text-3xl font-normal">{intake.companyName}</h2>
         <div className="flex items-center gap-3 mt-1 flex-wrap">
-          <p className="text-sm text-[#0A0A0A]/50">
+          <p className="text-sm text-ink/50">
             Submitted{" "}
             {new Date(intake.createdAt).toLocaleDateString("en-US", {
               month: "long",
@@ -149,25 +149,25 @@ export default async function AdminIntakeDetailPage({
           <Card>
             <CardHeader>
               <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
-                <Building2 className="h-4 w-4 text-[#C8C0B4]" />
+                <Building2 className="h-4 w-4 text-sand" />
                 Company &amp; Contact
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm">
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Company Name</p>
+                  <p className="text-ink/50 text-xs mb-0.5">Company Name</p>
                   <p className="font-medium">{intake.companyName}</p>
                 </div>
                 {intake.shortName && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Short Name</p>
+                    <p className="text-ink/50 text-xs mb-0.5">Short Name</p>
                     <p className="font-medium">{intake.shortName}</p>
                   </div>
                 )}
                 {intake.website && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                       <Globe className="h-3 w-3" /> Website
                     </p>
                     <a
@@ -178,7 +178,7 @@ export default async function AdminIntakeDetailPage({
                       }
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:underline text-[#0A0A0A]"
+                      className="hover:underline text-ink"
                     >
                       {intake.website}
                     </a>
@@ -186,7 +186,7 @@ export default async function AdminIntakeDetailPage({
                 )}
                 {intake.location && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                       <MapPin className="h-3 w-3" /> Location
                     </p>
                     <p>{intake.location}</p>
@@ -194,7 +194,7 @@ export default async function AdminIntakeDetailPage({
                 )}
                 {intake.annualRevenue && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                       <DollarSign className="h-3 w-3" /> Annual Revenue
                     </p>
                     <p>{intake.annualRevenue}</p>
@@ -206,13 +206,13 @@ export default async function AdminIntakeDetailPage({
 
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                  <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                     <User className="h-3 w-3" /> Contact Name
                   </p>
                   <p className="font-medium">{intake.contactName}</p>
                 </div>
                 <div>
-                  <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                  <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                     <Mail className="h-3 w-3" /> Email
                   </p>
                   <a href={`mailto:${intake.contactEmail}`} className="hover:underline">
@@ -221,7 +221,7 @@ export default async function AdminIntakeDetailPage({
                 </div>
                 {intake.contactPhone && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                       <Phone className="h-3 w-3" /> Phone
                     </p>
                     <a href={`tel:${intake.contactPhone}`} className="hover:underline">
@@ -231,7 +231,7 @@ export default async function AdminIntakeDetailPage({
                 )}
                 {intake.contactRole && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                       <Briefcase className="h-3 w-3" /> Role
                     </p>
                     <p>{intake.contactRole}</p>
@@ -245,21 +245,21 @@ export default async function AdminIntakeDetailPage({
           <Card>
             <CardHeader>
               <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
-                <Truck className="h-4 w-4 text-[#C8C0B4]" />
+                <Truck className="h-4 w-4 text-sand" />
                 Distribution Details
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm">
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <p className="text-[#0A0A0A]/50 text-xs mb-1">Industry</p>
+                  <p className="text-ink/50 text-xs mb-1">Industry</p>
                   <Badge variant="outline" className="text-xs">
                     {intake.industry}
                   </Badge>
                 </div>
                 {intake.skuCount && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                       <Package className="h-3 w-3" /> SKU Count
                     </p>
                     <p>{intake.skuCount}</p>
@@ -267,7 +267,7 @@ export default async function AdminIntakeDetailPage({
                 )}
                 {intake.activeClients && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                       <Users className="h-3 w-3" /> Active Clients
                     </p>
                     <p>{intake.activeClients}</p>
@@ -275,7 +275,7 @@ export default async function AdminIntakeDetailPage({
                 )}
                 {intake.avgOrderValue && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                       <DollarSign className="h-3 w-3" /> Avg Order Value
                     </p>
                     <p>{intake.avgOrderValue}</p>
@@ -283,14 +283,14 @@ export default async function AdminIntakeDetailPage({
                 )}
                 {intake.deliveryCoverage && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                       <MapPin className="h-3 w-3" /> Delivery Coverage
                     </p>
                     <p>{intake.deliveryCoverage}</p>
                   </div>
                 )}
                 <div>
-                  <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                  <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                     <Thermometer className="h-3 w-3" /> Cold Chain
                   </p>
                   <p>{intake.coldChain === "yes" ? "Required" : "Not required"}</p>
@@ -301,7 +301,7 @@ export default async function AdminIntakeDetailPage({
                 <>
                   <Separator />
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-1.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-1.5 flex items-center gap-1">
                       <CreditCard className="h-3 w-3" /> Payment Terms
                     </p>
                     <div className="flex flex-wrap gap-1.5">
@@ -319,7 +319,7 @@ export default async function AdminIntakeDetailPage({
                 <>
                   <Separator />
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-1.5">
+                    <p className="text-ink/50 text-xs mb-1.5">
                       Current Ordering Methods
                     </p>
                     <div className="flex flex-wrap gap-1.5">
@@ -337,10 +337,10 @@ export default async function AdminIntakeDetailPage({
                 <>
                   <Separator />
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                       <Layers className="h-3 w-3" /> Product Categories
                     </p>
-                    <p className="text-[#0A0A0A]/80">{intake.productCategories}</p>
+                    <p className="text-ink/80">{intake.productCategories}</p>
                   </div>
                 </>
               )}
@@ -352,14 +352,14 @@ export default async function AdminIntakeDetailPage({
             <CardHeader>
               <CardTitle className="font-serif text-lg font-normal">
                 Selected Features
-                <span className="ml-2 text-sm font-normal text-[#0A0A0A]/40">
+                <span className="ml-2 text-sm font-normal text-ink/40">
                   ({intake.selectedFeatures.length})
                 </span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               {intake.selectedFeatures.length === 0 ? (
-                <p className="text-sm text-[#0A0A0A]/50">No features selected.</p>
+                <p className="text-sm text-ink/50">No features selected.</p>
               ) : (
                 <div className="flex flex-wrap gap-2">
                   {intake.selectedFeatures.map((feature) => (
@@ -380,7 +380,7 @@ export default async function AdminIntakeDetailPage({
           <Card>
             <CardHeader>
               <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
-                <Palette className="h-4 w-4 text-[#C8C0B4]" />
+                <Palette className="h-4 w-4 text-sand" />
                 Branding
               </CardTitle>
             </CardHeader>
@@ -389,11 +389,11 @@ export default async function AdminIntakeDetailPage({
                 {intake.primaryColor && (
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-10 h-10 border border-[#E5E1DB] shrink-0"
+                      className="w-10 h-10 border border-shell shrink-0"
                       style={{ backgroundColor: intake.primaryColor }}
                     />
                     <div>
-                      <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Primary Color</p>
+                      <p className="text-ink/50 text-xs mb-0.5">Primary Color</p>
                       <p className="font-mono font-medium">{intake.primaryColor}</p>
                     </div>
                   </div>
@@ -401,11 +401,11 @@ export default async function AdminIntakeDetailPage({
                 {intake.brandSecondaryColor && (
                   <div className="flex items-center gap-3">
                     <div
-                      className="w-10 h-10 border border-[#E5E1DB] shrink-0"
+                      className="w-10 h-10 border border-shell shrink-0"
                       style={{ backgroundColor: intake.brandSecondaryColor }}
                     />
                     <div>
-                      <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Secondary Color</p>
+                      <p className="text-ink/50 text-xs mb-0.5">Secondary Color</p>
                       <p className="font-mono font-medium">{intake.brandSecondaryColor}</p>
                     </div>
                   </div>
@@ -414,14 +414,14 @@ export default async function AdminIntakeDetailPage({
 
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                  <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                     <FileText className="h-3 w-3" /> Brand Guidelines
                   </p>
                   <p>{intake.hasBrandGuidelines || "Not specified"}</p>
                 </div>
                 {intake.logoUrl && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Logo URL</p>
+                    <p className="text-ink/50 text-xs mb-0.5">Logo URL</p>
                     <a
                       href={intake.logoUrl}
                       target="_blank"
@@ -438,7 +438,7 @@ export default async function AdminIntakeDetailPage({
                 <>
                   <Separator />
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-1.5">Inspiration Sites</p>
+                    <p className="text-ink/50 text-xs mb-1.5">Inspiration Sites</p>
                     <div className="space-y-1">
                       {intake.inspirationUrls.filter(Boolean).map((url, i) => (
                         <a
@@ -446,7 +446,7 @@ export default async function AdminIntakeDetailPage({
                           href={url.startsWith("http") ? url : `https://${url}`}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 text-xs font-mono hover:underline text-[#0A0A0A]/70"
+                          className="flex items-center gap-1.5 text-xs font-mono hover:underline text-ink/70"
                         >
                           <Globe className="h-3 w-3" />
                           {url}
@@ -461,8 +461,8 @@ export default async function AdminIntakeDetailPage({
                 <>
                   <Separator />
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-1">Additional Notes</p>
-                    <p className="text-[#0A0A0A]/80 whitespace-pre-wrap leading-relaxed">
+                    <p className="text-ink/50 text-xs mb-1">Additional Notes</p>
+                    <p className="text-ink/80 whitespace-pre-wrap leading-relaxed">
                       {intake.additionalNotes}
                     </p>
                   </div>
@@ -475,7 +475,7 @@ export default async function AdminIntakeDetailPage({
           <Card>
             <CardHeader>
               <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
-                <Search className="h-4 w-4 text-[#C8C0B4]" />
+                <Search className="h-4 w-4 text-sand" />
                 Website Intelligence
               </CardTitle>
             </CardHeader>

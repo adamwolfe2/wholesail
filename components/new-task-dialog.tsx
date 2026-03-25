@@ -124,14 +124,14 @@ export function NewTaskDialog({
       }}
     >
       <DialogTrigger asChild>
-        <Button className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none">
+        <Button className="bg-ink text-cream hover:bg-ink/80 rounded-none">
           <Plus className="h-4 w-4 mr-2" />
           {triggerLabel}
         </Button>
       </DialogTrigger>
-      <DialogContent className="bg-[#F9F7F4] border-[#E5E1DB] rounded-none max-w-lg">
+      <DialogContent className="bg-cream border-shell rounded-none max-w-lg">
         <DialogHeader>
-          <DialogTitle className="font-serif text-lg text-[#0A0A0A]">
+          <DialogTitle className="font-serif text-lg text-ink">
             New Task
           </DialogTitle>
         </DialogHeader>
@@ -141,7 +141,7 @@ export function NewTaskDialog({
           <div className="space-y-2">
             <Label
               htmlFor="nt-title"
-              className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider"
+              className="text-xs text-ink/60 uppercase tracking-wider"
             >
               Title *
             </Label>
@@ -151,7 +151,7 @@ export function NewTaskDialog({
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Task title"
               required
-              className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A]"
+              className="border-shell bg-cream rounded-none focus:border-ink"
             />
           </div>
 
@@ -159,7 +159,7 @@ export function NewTaskDialog({
           <div className="space-y-2">
             <Label
               htmlFor="nt-desc"
-              className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider"
+              className="text-xs text-ink/60 uppercase tracking-wider"
             >
               Description
             </Label>
@@ -169,18 +169,18 @@ export function NewTaskDialog({
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Optional details"
               rows={2}
-              className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A] resize-none"
+              className="border-shell bg-cream rounded-none focus:border-ink resize-none"
             />
           </div>
 
           {/* Priority + Due Date */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider">
+              <Label className="text-xs text-ink/60 uppercase tracking-wider">
                 Priority
               </Label>
               <Select value={priority} onValueChange={setPriority}>
-                <SelectTrigger className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none">
+                <SelectTrigger className="border-shell bg-cream rounded-none">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -195,7 +195,7 @@ export function NewTaskDialog({
             <div className="space-y-2">
               <Label
                 htmlFor="nt-due"
-                className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider"
+                className="text-xs text-ink/60 uppercase tracking-wider"
               >
                 Due Date
               </Label>
@@ -204,18 +204,18 @@ export function NewTaskDialog({
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A]"
+                className="border-shell bg-cream rounded-none focus:border-ink"
               />
             </div>
           </div>
 
           {/* Assign to Rep */}
           <div className="space-y-2">
-            <Label className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider">
+            <Label className="text-xs text-ink/60 uppercase tracking-wider">
               Assign to Rep *
             </Label>
             <Select value={repId} onValueChange={setRepId}>
-              <SelectTrigger className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none">
+              <SelectTrigger className="border-shell bg-cream rounded-none">
                 <SelectValue placeholder="Select a rep" />
               </SelectTrigger>
               <SelectContent>
@@ -230,11 +230,11 @@ export function NewTaskDialog({
 
           {/* Link to Client */}
           <div className="space-y-2">
-            <Label className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider">
+            <Label className="text-xs text-ink/60 uppercase tracking-wider">
               Link to Client (Optional)
             </Label>
             <Select value={organizationId} onValueChange={setOrganizationId}>
-              <SelectTrigger className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none">
+              <SelectTrigger className="border-shell bg-cream rounded-none">
                 <SelectValue placeholder="None" />
               </SelectTrigger>
               <SelectContent>
@@ -254,7 +254,7 @@ export function NewTaskDialog({
             <Button
               type="submit"
               disabled={loading || !title.trim() || !repId}
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+              className="bg-ink text-cream hover:bg-ink/80 rounded-none"
             >
               {loading ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -270,7 +270,7 @@ export function NewTaskDialog({
                 resetForm();
                 setOpen(false);
               }}
-              className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none"
+              className="border-shell text-ink hover:bg-ink/[0.04] rounded-none"
             >
               Cancel
             </Button>

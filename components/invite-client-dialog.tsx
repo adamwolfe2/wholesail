@@ -54,7 +54,7 @@ export function InviteClientDialog({ organizationId, organizationName }: Props) 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80">
+        <Button size="sm" className="bg-ink text-cream hover:bg-ink/80">
           <UserPlus className="h-4 w-4 mr-2" />
           Invite User
         </Button>
@@ -103,7 +103,7 @@ export function InviteClientDialog({ organizationId, organizationName }: Props) 
             <Button type="button" variant="outline" className="flex-1" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" className="flex-1 bg-[#0A0A0A] text-[#F9F7F4]" disabled={loading}>
+            <Button type="submit" className="flex-1 bg-ink text-cream" disabled={loading}>
               {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
               Send Invitation
             </Button>

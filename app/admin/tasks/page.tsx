@@ -31,9 +31,9 @@ const priorityConfig: Record<
   },
   NORMAL: {
     label: "Normal",
-    headerClass: "bg-[#F9F7F4] border-[#E5E1DB] text-[#0A0A0A]",
-    badgeClass: "bg-[#C8C0B4]/30 text-[#0A0A0A] border-[#C8C0B4]",
-    borderClass: "border-[#E5E1DB]",
+    headerClass: "bg-cream border-shell text-ink",
+    badgeClass: "bg-sand/30 text-ink border-sand",
+    borderClass: "border-shell",
   },
   LOW: {
     label: "Low",
@@ -88,10 +88,10 @@ export default async function TaskBoardPage({ searchParams }: PageProps) {
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
             Task Board
           </h2>
-          <p className="text-sm text-[#0A0A0A]/50 mt-0.5">
+          <p className="text-sm text-ink/50 mt-0.5">
             {tasks.length} open task{tasks.length !== 1 ? "s" : ""} across all reps
           </p>
         </div>
@@ -99,22 +99,22 @@ export default async function TaskBoardPage({ searchParams }: PageProps) {
       </div>
 
       {/* Filter Bar */}
-      <div className="flex flex-wrap gap-3 items-center border border-[#E5E1DB] bg-[#F9F7F4] p-3">
-        <span className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider font-medium">
+      <div className="flex flex-wrap gap-3 items-center border border-shell bg-cream p-3">
+        <span className="text-xs text-ink/50 uppercase tracking-wider font-medium">
           Filter:
         </span>
 
         {/* By Rep */}
         <div className="flex items-center gap-2">
-          <span className="text-xs text-[#0A0A0A]/50">Rep:</span>
+          <span className="text-xs text-ink/50">Rep:</span>
           <div className="flex gap-1 flex-wrap">
             <Link href={buildFilterUrl({ orgId, due })}>
               <Badge
                 variant="outline"
                 className={`text-xs cursor-pointer rounded-none ${
                   !repId
-                    ? "bg-[#0A0A0A] text-[#F9F7F4] border-[#0A0A0A]"
-                    : "border-[#E5E1DB] text-[#0A0A0A]/60 hover:border-[#0A0A0A]/40"
+                    ? "bg-ink text-cream border-ink"
+                    : "border-shell text-ink/60 hover:border-ink/40"
                 }`}
               >
                 All
@@ -129,8 +129,8 @@ export default async function TaskBoardPage({ searchParams }: PageProps) {
                   variant="outline"
                   className={`text-xs cursor-pointer rounded-none ${
                     repId === rep.id
-                      ? "bg-[#0A0A0A] text-[#F9F7F4] border-[#0A0A0A]"
-                      : "border-[#E5E1DB] text-[#0A0A0A]/60 hover:border-[#0A0A0A]/40"
+                      ? "bg-ink text-cream border-ink"
+                      : "border-shell text-ink/60 hover:border-ink/40"
                   }`}
                 >
                   {rep.name}
@@ -142,7 +142,7 @@ export default async function TaskBoardPage({ searchParams }: PageProps) {
 
         {/* By Due */}
         <div className="flex items-center gap-2 ml-auto">
-          <span className="text-xs text-[#0A0A0A]/50">Due:</span>
+          <span className="text-xs text-ink/50">Due:</span>
           {(
             [
               { value: undefined, label: "All" },
@@ -159,8 +159,8 @@ export default async function TaskBoardPage({ searchParams }: PageProps) {
                 variant="outline"
                 className={`text-xs cursor-pointer rounded-none ${
                   due === value
-                    ? "bg-[#0A0A0A] text-[#F9F7F4] border-[#0A0A0A]"
-                    : "border-[#E5E1DB] text-[#0A0A0A]/60 hover:border-[#0A0A0A]/40"
+                    ? "bg-ink text-cream border-ink"
+                    : "border-shell text-ink/60 hover:border-ink/40"
                 }`}
               >
                 {label}
@@ -191,8 +191,8 @@ export default async function TaskBoardPage({ searchParams }: PageProps) {
               {/* Task Cards */}
               <div className="flex flex-col gap-2">
                 {columnTasks.length === 0 ? (
-                  <div className="border border-dashed border-[#E5E1DB] p-4 text-center">
-                    <p className="text-xs text-[#0A0A0A]/30">No tasks</p>
+                  <div className="border border-dashed border-shell p-4 text-center">
+                    <p className="text-xs text-ink/30">No tasks</p>
                   </div>
                 ) : (
                   columnTasks.map((task) => {
@@ -203,17 +203,17 @@ export default async function TaskBoardPage({ searchParams }: PageProps) {
                     return (
                       <Card
                         key={task.id}
-                        className={`border ${config.borderClass} bg-[#F9F7F4] rounded-none shadow-none`}
+                        className={`border ${config.borderClass} bg-cream rounded-none shadow-none`}
                       >
                         <CardHeader className="p-3 pb-1">
-                          <CardTitle className="text-sm font-medium text-[#0A0A0A] leading-snug">
+                          <CardTitle className="text-sm font-medium text-ink leading-snug">
                             {task.title}
                           </CardTitle>
                         </CardHeader>
                         <CardContent className="p-3 pt-1 space-y-2">
                           {/* Description preview */}
                           {task.description && (
-                            <p className="text-xs text-[#0A0A0A]/50 line-clamp-2">
+                            <p className="text-xs text-ink/50 line-clamp-2">
                               {task.description}
                             </p>
                           )}
@@ -221,21 +221,21 @@ export default async function TaskBoardPage({ searchParams }: PageProps) {
                           {/* Meta row */}
                           <div className="flex flex-col gap-1">
                             {/* Assignee */}
-                            <div className="flex items-center gap-1 text-xs text-[#0A0A0A]/60">
+                            <div className="flex items-center gap-1 text-xs text-ink/60">
                               <span className="font-medium">{task.rep.name}</span>
                             </div>
 
                             {/* Org link */}
                             {task.organization && (
                               <div className="flex items-center gap-1">
-                                <Building2 className="h-3 w-3 text-[#C8C0B4] shrink-0" />
+                                <Building2 className="h-3 w-3 text-sand shrink-0" />
                                 <Link
                                   href={`/admin/clients/${task.organization.id}`}
-                                  className="text-xs text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:underline truncate"
+                                  className="text-xs text-ink/60 hover:text-ink hover:underline truncate"
                                 >
                                   {task.organization.name}
                                 </Link>
-                                <ExternalLink className="h-2.5 w-2.5 text-[#C8C0B4] shrink-0" />
+                                <ExternalLink className="h-2.5 w-2.5 text-sand shrink-0" />
                               </div>
                             )}
 
@@ -247,7 +247,7 @@ export default async function TaskBoardPage({ searchParams }: PageProps) {
                                     ? "text-red-600 font-medium"
                                     : isDueToday
                                     ? "text-orange-600 font-medium"
-                                    : "text-[#0A0A0A]/50"
+                                    : "text-ink/50"
                                 }`}
                               >
                                 {isOverdue && (
@@ -265,10 +265,10 @@ export default async function TaskBoardPage({ searchParams }: PageProps) {
                           </div>
 
                           {/* Actions */}
-                          <div className="flex items-center justify-between pt-1 border-t border-[#E5E1DB]">
+                          <div className="flex items-center justify-between pt-1 border-t border-shell">
                             <Link
                               href={`/admin/reps/${task.rep.id}`}
-                              className="text-xs text-[#0A0A0A]/40 hover:text-[#0A0A0A] hover:underline"
+                              className="text-xs text-ink/40 hover:text-ink hover:underline"
                             >
                               View Rep
                             </Link>

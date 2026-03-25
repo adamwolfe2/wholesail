@@ -40,7 +40,7 @@ const STATUS_STEPS = ["PENDING", "CONFIRMED", "PACKED", "SHIPPED", "DELIVERED"] 
 function OrderStatusTimeline({ status }: { status: string }) {
   if (status === "CANCELLED") {
     return (
-      <div className="border border-[#E5E1DB] bg-white p-4 mb-6 flex items-center gap-3">
+      <div className="border border-shell bg-white p-4 mb-6 flex items-center gap-3">
         <XCircle className="h-5 w-5 text-red-500 shrink-0" />
         <span className="text-sm font-semibold uppercase tracking-wider text-red-600">Order Cancelled</span>
       </div>
@@ -50,7 +50,7 @@ function OrderStatusTimeline({ status }: { status: string }) {
   const currentIndex = STATUS_STEPS.indexOf(status as typeof STATUS_STEPS[number]);
 
   return (
-    <div className="border border-[#E5E1DB] bg-white p-4 mb-6">
+    <div className="border border-shell bg-white p-4 mb-6">
       <div className="flex items-center">
         {STATUS_STEPS.map((step, index) => {
           const isCompleted = index <= currentIndex;
@@ -63,24 +63,24 @@ function OrderStatusTimeline({ status }: { status: string }) {
                 <div
                   className={`w-3 h-3 rounded-full border-2 flex-shrink-0 ${
                     isCompleted
-                      ? "bg-[#0A0A0A] border-[#0A0A0A]"
-                      : "bg-white border-[#E5E1DB]"
+                      ? "bg-ink border-ink"
+                      : "bg-white border-shell"
                   }`}
                 />
                 <span
                   className={`mt-1.5 text-[10px] uppercase tracking-wider whitespace-nowrap ${
                     isCurrent
-                      ? "font-semibold text-[#0A0A0A]"
+                      ? "font-semibold text-ink"
                       : isCompleted
-                      ? "font-medium text-[#0A0A0A]/30"
-                      : "text-[#0A0A0A]/20"
+                      ? "font-medium text-ink/30"
+                      : "text-ink/20"
                   }`}
                 >
                   {step}
                 </span>
               </div>
               {!isLast && (
-                <div className="flex-1 border-t border-[#E5E1DB] mx-2 mb-5" />
+                <div className="flex-1 border-t border-shell mx-2 mb-5" />
               )}
             </div>
           );

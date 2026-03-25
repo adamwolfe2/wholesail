@@ -128,27 +128,27 @@ function OrderCard({
   secondaryAction?: React.ReactNode
 }) {
   return (
-    <div className="border border-[#E5E1DB] bg-white p-4 space-y-3">
+    <div className="border border-shell bg-white p-4 space-y-3">
       {/* Header row */}
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <Link
             href={`/admin/orders/${id}`}
-            className="font-mono font-semibold text-sm text-[#0A0A0A] hover:underline"
+            className="font-mono font-semibold text-sm text-ink hover:underline"
           >
             {orderNumber}
           </Link>
-          <p className="text-xs text-[#0A0A0A]/60 mt-0.5 truncate">{organizationName}</p>
+          <p className="text-xs text-ink/60 mt-0.5 truncate">{organizationName}</p>
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">
           {isSmsOrder && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-medium bg-[#0A0A0A] text-[#F9F7F4] px-1.5 py-0.5">
+            <span className="inline-flex items-center gap-1 text-[10px] font-medium bg-ink text-cream px-1.5 py-0.5">
               <Zap className="h-2.5 w-2.5" />
               SMS Order
             </span>
           )}
           {hasMarketRate && (
-            <span className="inline-flex items-center gap-1 text-[10px] font-medium border border-[#C8C0B4] text-[#0A0A0A]/70 px-1.5 py-0.5">
+            <span className="inline-flex items-center gap-1 text-[10px] font-medium border border-sand text-ink/70 px-1.5 py-0.5">
               <AlertTriangle className="h-2.5 w-2.5" />
               Market Rate
             </span>
@@ -157,7 +157,7 @@ function OrderCard({
       </div>
 
       {/* Meta */}
-      <div className="flex items-center justify-between text-xs text-[#0A0A0A]/50">
+      <div className="flex items-center justify-between text-xs text-ink/50">
         <span>{itemCount} item{itemCount !== 1 ? 's' : ''}{total !== undefined ? ` · ${formatCurrency(total)}` : ''}</span>
         <span>{timeLabel}</span>
       </div>
@@ -169,7 +169,7 @@ function OrderCard({
           size="sm"
           disabled={updating === id}
           onClick={() => onAction(id)}
-          className="flex-1 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 text-xs h-9"
+          className="flex-1 bg-ink text-cream hover:bg-ink/80 text-xs h-9"
         >
           {updating === id ? (
             <Loader2 className="h-3 w-3 animate-spin mr-1" />
@@ -196,12 +196,12 @@ function ColumnHeader({
   accent?: string
 }) {
   return (
-    <div className={`flex items-center justify-between px-4 py-3 border-b border-[#E5E1DB] ${accent ?? 'bg-[#F9F7F4]'}`}>
+    <div className={`flex items-center justify-between px-4 py-3 border-b border-shell ${accent ?? 'bg-cream'}`}>
       <div className="flex items-center gap-2">
-        <Icon className="h-4 w-4 text-[#C8C0B4]" />
-        <span className="text-xs font-semibold uppercase tracking-wider text-[#0A0A0A]">{label}</span>
+        <Icon className="h-4 w-4 text-sand" />
+        <span className="text-xs font-semibold uppercase tracking-wider text-ink">{label}</span>
       </div>
-      <span className="text-xs font-bold bg-[#0A0A0A] text-[#F9F7F4] px-2 py-0.5 min-w-[22px] text-center">
+      <span className="text-xs font-bold bg-ink text-cream px-2 py-0.5 min-w-[22px] text-center">
         {count}
       </span>
     </div>
@@ -315,26 +315,26 @@ export function FulfillmentBoard({
   return (
     <div className="space-y-4">
       {totalActive === 0 && (
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-12 text-center">
-          <CheckCircle className="h-10 w-10 text-[#C8C0B4] mx-auto mb-3" />
-          <p className="font-serif text-lg font-semibold text-[#0A0A0A]">All caught up</p>
-          <p className="text-sm text-[#0A0A0A]/40 mt-1">No active orders in the pipeline.</p>
+        <div className="border border-shell bg-cream p-12 text-center">
+          <CheckCircle className="h-10 w-10 text-sand mx-auto mb-3" />
+          <p className="font-serif text-lg font-semibold text-ink">All caught up</p>
+          <p className="text-sm text-ink/40 mt-1">No active orders in the pipeline.</p>
         </div>
       )}
 
       {/* Kanban grid: 4 active stages side-by-side on large screens */}
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
         {/* ── Stage 1: PENDING ── */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] flex flex-col">
+        <div className="border border-shell bg-cream flex flex-col">
           <ColumnHeader
             icon={AlertTriangle}
             label="Pending"
             count={initialPending.length}
-            accent="bg-[#FFF8EC]"
+            accent="bg-gold-wash"
           />
           <div className="flex-1 p-3 space-y-3">
             {initialPending.length === 0 ? (
-              <p className="text-xs text-[#0A0A0A]/30 py-6 text-center">No pending orders</p>
+              <p className="text-xs text-ink/30 py-6 text-center">No pending orders</p>
             ) : (
               initialPending.map((order) => (
                 <OrderCard
@@ -357,7 +357,7 @@ export function FulfillmentBoard({
         </div>
 
         {/* ── Stage 2: CONFIRMED ── */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] flex flex-col">
+        <div className="border border-shell bg-cream flex flex-col">
           <ColumnHeader
             icon={ClipboardList}
             label="Confirmed"
@@ -365,7 +365,7 @@ export function FulfillmentBoard({
           />
           <div className="flex-1 p-3 space-y-3">
             {initialConfirmed.length === 0 ? (
-              <p className="text-xs text-[#0A0A0A]/30 py-6 text-center">No orders to pack</p>
+              <p className="text-xs text-ink/30 py-6 text-center">No orders to pack</p>
             ) : (
               initialConfirmed.map((order) => (
                 <OrderCard
@@ -385,7 +385,7 @@ export function FulfillmentBoard({
                     <Button
                       variant="outline"
                       size="sm"
-                      className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#E5E1DB]/50 text-xs h-9 px-2"
+                      className="border-shell text-ink hover:bg-shell/50 text-xs h-9 px-2"
                       asChild
                     >
                       <Link href={`/admin/fulfillment/${order.id}/pick-list`}>
@@ -401,7 +401,7 @@ export function FulfillmentBoard({
         </div>
 
         {/* ── Stage 3: PACKED ── */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] flex flex-col">
+        <div className="border border-shell bg-cream flex flex-col">
           <ColumnHeader
             icon={Package}
             label="Packed"
@@ -409,7 +409,7 @@ export function FulfillmentBoard({
           />
           <div className="flex-1 p-3 space-y-3">
             {initialPacked.length === 0 ? (
-              <p className="text-xs text-[#0A0A0A]/30 py-6 text-center">No orders packed</p>
+              <p className="text-xs text-ink/30 py-6 text-center">No orders packed</p>
             ) : (
               initialPacked.map((order) => (
                 <OrderCard
@@ -431,13 +431,13 @@ export function FulfillmentBoard({
                         variant="outline"
                         size="sm"
                         onClick={() => openShipmentModal(order.id, order.orderNumber)}
-                        className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#E5E1DB]/50 text-xs h-9 px-2"
+                        className="border-shell text-ink hover:bg-shell/50 text-xs h-9 px-2"
                       >
                         <Truck className="h-3 w-3 mr-1" />
                         Dispatch
                       </Button>
                     ) : (
-                      <span className="text-[10px] text-[#0A0A0A]/40 border border-[#E5E1DB] px-2 py-1">
+                      <span className="text-[10px] text-ink/40 border border-shell px-2 py-1">
                         Shipment ready
                       </span>
                     )
@@ -449,7 +449,7 @@ export function FulfillmentBoard({
         </div>
 
         {/* ── Stage 4: SHIPPED ── */}
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] flex flex-col">
+        <div className="border border-shell bg-cream flex flex-col">
           <ColumnHeader
             icon={Truck}
             label="In Transit"
@@ -457,25 +457,25 @@ export function FulfillmentBoard({
           />
           <div className="flex-1 p-3 space-y-3">
             {initialShipped.length === 0 ? (
-              <p className="text-xs text-[#0A0A0A]/30 py-6 text-center">No orders in transit</p>
+              <p className="text-xs text-ink/30 py-6 text-center">No orders in transit</p>
             ) : (
               initialShipped.map((order) => (
-                <div key={order.id} className="border border-[#E5E1DB] bg-white p-4 space-y-3">
+                <div key={order.id} className="border border-shell bg-white p-4 space-y-3">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       <Link
                         href={`/admin/orders/${order.id}`}
-                        className="font-mono font-semibold text-sm text-[#0A0A0A] hover:underline"
+                        className="font-mono font-semibold text-sm text-ink hover:underline"
                       >
                         {order.orderNumber}
                       </Link>
-                      <p className="text-xs text-[#0A0A0A]/60 mt-0.5 truncate">{order.organizationName}</p>
+                      <p className="text-xs text-ink/60 mt-0.5 truncate">{order.organizationName}</p>
                     </div>
-                    <Badge variant="outline" className="text-[10px] border-[#E5E1DB] text-[#0A0A0A]/50 shrink-0">
+                    <Badge variant="outline" className="text-[10px] border-shell text-ink/50 shrink-0">
                       {order.itemCount} items
                     </Badge>
                   </div>
-                  <div className="flex items-center justify-between text-xs text-[#0A0A0A]/50">
+                  <div className="flex items-center justify-between text-xs text-ink/50">
                     <span>Driver: {order.driverName ?? '—'}</span>
                     <span>{order.shippedAt ? format(new Date(order.shippedAt), 'h:mm a') : '—'}</span>
                   </div>
@@ -484,7 +484,7 @@ export function FulfillmentBoard({
                       size="sm"
                       disabled={updating === order.id}
                       onClick={() => handleStatusChange(order.id, 'DELIVERED')}
-                      className="flex-1 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 text-xs h-9"
+                      className="flex-1 bg-ink text-cream hover:bg-ink/80 text-xs h-9"
                     >
                       {updating === order.id ? (
                         <Loader2 className="h-3 w-3 animate-spin mr-1" />
@@ -496,7 +496,7 @@ export function FulfillmentBoard({
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-8 px-2 text-[#0A0A0A]/40 hover:text-[#0A0A0A]"
+                      className="h-8 px-2 text-ink/40 hover:text-ink"
                       asChild
                     >
                       <Link href={`/admin/orders/${order.id}`}>
@@ -513,13 +513,13 @@ export function FulfillmentBoard({
 
       {/* Delivered today — compact row */}
       {initialDelivered.length > 0 && (
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4]">
-          <div className="flex items-center justify-between px-4 py-3 border-b border-[#E5E1DB]">
+        <div className="border border-shell bg-cream">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-shell">
             <div className="flex items-center gap-2">
-              <CheckCircle className="h-4 w-4 text-[#C8C0B4]" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-[#0A0A0A]">Delivered Today</span>
+              <CheckCircle className="h-4 w-4 text-sand" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-ink">Delivered Today</span>
             </div>
-            <span className="text-xs font-bold bg-[#0A0A0A] text-[#F9F7F4] px-2 py-0.5 min-w-[22px] text-center">
+            <span className="text-xs font-bold bg-ink text-cream px-2 py-0.5 min-w-[22px] text-center">
               {initialDelivered.length}
             </span>
           </div>
@@ -528,11 +528,11 @@ export function FulfillmentBoard({
               <Link
                 key={order.id}
                 href={`/admin/orders/${order.id}`}
-                className="inline-flex items-center gap-1.5 border border-[#E5E1DB] bg-white px-3 py-1.5 text-xs font-mono font-medium text-[#0A0A0A] hover:bg-[#E5E1DB]/30 transition-colors"
+                className="inline-flex items-center gap-1.5 border border-shell bg-white px-3 py-1.5 text-xs font-mono font-medium text-ink hover:bg-shell/30 transition-colors"
               >
-                <CheckCircle className="h-3 w-3 text-[#C8C0B4]" />
+                <CheckCircle className="h-3 w-3 text-sand" />
                 {order.orderNumber}
-                <span className="text-[#0A0A0A]/40">· {order.organizationName}</span>
+                <span className="text-ink/40">· {order.organizationName}</span>
               </Link>
             ))}
           </div>
@@ -546,23 +546,23 @@ export function FulfillmentBoard({
           if (!open) setShipmentModal(null)
         }}
       >
-        <DialogContent className="bg-[#F9F7F4] border-[#E5E1DB] sm:max-w-lg">
+        <DialogContent className="bg-cream border-shell sm:max-w-lg">
           <DialogHeader>
-            <DialogTitle className="font-serif text-lg text-[#0A0A0A]">
+            <DialogTitle className="font-serif text-lg text-ink">
               Dispatch Order — {shipmentModal?.orderNumber}
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleCreateShipment} className="space-y-4 mt-2">
             {/* Carrier */}
             <div className="space-y-1.5">
-              <Label htmlFor="modal-carrier" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+              <Label htmlFor="modal-carrier" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
                 Carrier
               </Label>
               <select
                 id="modal-carrier"
                 value={carrier}
                 onChange={(e) => setCarrier(e.target.value)}
-                className="w-full border border-[#E5E1DB] bg-[#F9F7F4] text-[#0A0A0A] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#0A0A0A]"
+                className="w-full border border-shell bg-cream text-ink px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ink"
               >
                 {CARRIERS.map((c) => (
                   <option key={c} value={c}>{c}</option>
@@ -573,7 +573,7 @@ export function FulfillmentBoard({
             {/* Driver Name + Phone */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="modal-driver" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+                <Label htmlFor="modal-driver" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
                   Driver Name
                 </Label>
                 <Input
@@ -581,11 +581,11 @@ export function FulfillmentBoard({
                   value={driverName}
                   onChange={(e) => setDriverName(e.target.value)}
                   placeholder="e.g. John Doe"
-                  className="border-[#E5E1DB] bg-[#F9F7F4]"
+                  className="border-shell bg-cream"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="modal-phone" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+                <Label htmlFor="modal-phone" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
                   Driver Phone
                 </Label>
                 <Input
@@ -594,7 +594,7 @@ export function FulfillmentBoard({
                   onChange={(e) => setDriverPhone(e.target.value)}
                   placeholder="(555) 000-0000"
                   type="tel"
-                  className="border-[#E5E1DB] bg-[#F9F7F4]"
+                  className="border-shell bg-cream"
                 />
               </div>
             </div>
@@ -602,7 +602,7 @@ export function FulfillmentBoard({
             {/* ETA Window */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1.5">
-                <Label htmlFor="modal-eta-start" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+                <Label htmlFor="modal-eta-start" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
                   ETA From
                 </Label>
                 <Input
@@ -610,41 +610,41 @@ export function FulfillmentBoard({
                   value={etaStart}
                   onChange={(e) => setEtaStart(e.target.value)}
                   type="datetime-local"
-                  className="border-[#E5E1DB] bg-[#F9F7F4] text-sm"
+                  className="border-shell bg-cream text-sm"
                 />
               </div>
               <div className="space-y-1.5">
-                <Label htmlFor="modal-eta-end" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
-                  ETA Until <span className="normal-case text-[#0A0A0A]/40">(opt)</span>
+                <Label htmlFor="modal-eta-end" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
+                  ETA Until <span className="normal-case text-ink/40">(opt)</span>
                 </Label>
                 <Input
                   id="modal-eta-end"
                   value={etaEnd}
                   onChange={(e) => setEtaEnd(e.target.value)}
                   type="datetime-local"
-                  className="border-[#E5E1DB] bg-[#F9F7F4] text-sm"
+                  className="border-shell bg-cream text-sm"
                 />
               </div>
             </div>
 
             {/* Tracking Number */}
             <div className="space-y-1.5">
-              <Label htmlFor="modal-tracking" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
-                Tracking # <span className="normal-case text-[#0A0A0A]/40">(optional — not required for {BRAND_FLEET})</span>
+              <Label htmlFor="modal-tracking" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
+                Tracking # <span className="normal-case text-ink/40">(optional — not required for {BRAND_FLEET})</span>
               </Label>
               <Input
                 id="modal-tracking"
                 value={trackingNumber}
                 onChange={(e) => setTrackingNumber(e.target.value)}
                 placeholder="e.g. 1Z999AA..."
-                className="border-[#E5E1DB] bg-[#F9F7F4] font-mono"
+                className="border-shell bg-cream font-mono"
               />
             </div>
 
             {/* Driver Notes */}
             <div className="space-y-1.5">
-              <Label htmlFor="modal-notes" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
-                Driver Notes <span className="normal-case text-[#0A0A0A]/40">(internal)</span>
+              <Label htmlFor="modal-notes" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
+                Driver Notes <span className="normal-case text-ink/40">(internal)</span>
               </Label>
               <textarea
                 id="modal-notes"
@@ -652,7 +652,7 @@ export function FulfillmentBoard({
                 onChange={(e) => setDriverNotes(e.target.value)}
                 placeholder="e.g. Call client on arrival. Use loading dock entrance."
                 rows={2}
-                className="w-full border border-[#E5E1DB] bg-[#F9F7F4] text-[#0A0A0A] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#0A0A0A] resize-none"
+                className="w-full border border-shell bg-cream text-ink px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-ink resize-none"
               />
             </div>
 
@@ -660,7 +660,7 @@ export function FulfillmentBoard({
               <Button
                 type="submit"
                 disabled={creatingShipment}
-                className="flex-1 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80"
+                className="flex-1 bg-ink text-cream hover:bg-ink/80"
               >
                 {creatingShipment && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
                 <Truck className="h-4 w-4 mr-2" />
@@ -670,7 +670,7 @@ export function FulfillmentBoard({
                 type="button"
                 variant="outline"
                 onClick={() => setShipmentModal(null)}
-                className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#E5E1DB]/50"
+                className="border-shell text-ink hover:bg-shell/50"
               >
                 Cancel
               </Button>

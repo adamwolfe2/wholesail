@@ -155,36 +155,36 @@ export function AdminNotifications() {
         onClick={() => {
           setOpen((prev) => !prev);
         }}
-        className="relative p-2 text-[#0A0A0A] hover:bg-[#E5E1DB] rounded-none transition-colors"
+        className="relative p-2 text-ink hover:bg-shell rounded-none transition-colors"
         aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ""}`}
       >
         <Bell className="h-5 w-5" />
         {unreadCount > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-[#0A0A0A] px-1 text-[10px] font-bold text-[#F9F7F4]">
+          <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-ink px-1 text-[10px] font-bold text-cream">
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
         )}
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 z-50 w-80 sm:w-96 border border-[#E5E1DB] bg-[#F9F7F4] shadow-lg rounded-none">
+        <div className="absolute right-0 top-full mt-2 z-50 w-80 sm:w-96 border border-shell bg-cream shadow-lg rounded-none">
           {/* Header */}
-          <div className="flex items-center justify-between border-b border-[#E5E1DB] px-4 py-3">
-            <h3 className="font-serif font-bold text-sm text-[#0A0A0A]">
+          <div className="flex items-center justify-between border-b border-shell px-4 py-3">
+            <h3 className="font-serif font-bold text-sm text-ink">
               Notifications
             </h3>
             <div className="flex items-center gap-2">
               {unreadCount > 0 && (
                 <button
                   onClick={markAllRead}
-                  className="text-xs text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors"
+                  className="text-xs text-sand hover:text-ink transition-colors"
                 >
                   Mark all read
                 </button>
               )}
               <button
                 onClick={() => setOpen(false)}
-                className="p-1 text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors"
+                className="p-1 text-sand hover:text-ink transition-colors"
                 aria-label="Close notifications"
               >
                 <X className="h-4 w-4" />
@@ -195,7 +195,7 @@ export function AdminNotifications() {
           {/* Notification list */}
           <div className="max-h-96 overflow-y-auto">
             {notifications.length === 0 ? (
-              <div className="px-4 py-8 text-center text-sm text-[#C8C0B4]">
+              <div className="px-4 py-8 text-center text-sm text-sand">
                 No notifications yet
               </div>
             ) : (
@@ -209,15 +209,15 @@ export function AdminNotifications() {
                     key={n.id}
                     href={n.link}
                     onClick={() => setOpen(false)}
-                    className={`flex items-start gap-3 px-4 py-3 border-b border-[#E5E1DB] last:border-b-0 hover:bg-[#F0EDE7] transition-colors ${
-                      isUnread ? "bg-[#F0EDE7]/50" : ""
+                    className={`flex items-start gap-3 px-4 py-3 border-b border-shell last:border-b-0 hover:bg-cream-hover transition-colors ${
+                      isUnread ? "bg-cream-hover/50" : ""
                     }`}
                   >
                     <div
                       className={`mt-0.5 flex-shrink-0 p-1.5 rounded-none ${
                         isUnread
-                          ? "bg-[#0A0A0A] text-[#F9F7F4]"
-                          : "bg-[#E5E1DB] text-[#C8C0B4]"
+                          ? "bg-ink text-cream"
+                          : "bg-shell text-sand"
                       }`}
                     >
                       <Icon className="h-3.5 w-3.5" />
@@ -226,18 +226,18 @@ export function AdminNotifications() {
                       <p
                         className={`text-sm truncate ${
                           isUnread
-                            ? "font-semibold text-[#0A0A0A]"
-                            : "text-[#0A0A0A]/70"
+                            ? "font-semibold text-ink"
+                            : "text-ink/70"
                         }`}
                       >
                         {n.title}
                       </p>
-                      <p className="text-xs text-[#C8C0B4] mt-0.5">
+                      <p className="text-xs text-sand mt-0.5">
                         {timeAgo(n.timestamp)}
                       </p>
                     </div>
                     {isUnread && (
-                      <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-[#0A0A0A]" />
+                      <span className="mt-2 h-2 w-2 flex-shrink-0 rounded-full bg-ink" />
                     )}
                   </Link>
                 );

@@ -9,12 +9,12 @@ export const metadata: Metadata = {
 
 export default function SignInPage() {
   return (
-    <div className="min-h-screen bg-[#F9F7F4] flex flex-col">
+    <div className="min-h-screen bg-cream flex flex-col">
       {/* Header */}
-      <header className="border-b border-[#E5E1DB] px-6 py-4">
+      <header className="border-b border-shell px-6 py-4">
         <Link
           href="/"
-          className="font-serif font-bold text-xl text-[#0A0A0A] tracking-tight hover:opacity-70 transition-opacity"
+          className="font-serif font-bold text-xl text-ink tracking-tight hover:opacity-70 transition-opacity"
         >
           Wholesail
         </Link>
@@ -25,10 +25,10 @@ export default function SignInPage() {
         <div className="w-full max-w-md">
           {/* Heading */}
           <div className="mb-8 text-center">
-            <h1 className="font-serif text-3xl font-normal text-[#0A0A0A] mb-2">
+            <h1 className="font-serif text-3xl font-normal text-ink mb-2">
               Sign in
             </h1>
-            <p className="text-sm text-[#0A0A0A]/50">
+            <p className="text-sm text-ink/50">
               Welcome back. You&apos;ll be routed to your portal automatically.
             </p>
           </div>
@@ -43,21 +43,21 @@ export default function SignInPage() {
               },
               elements: {
                 rootBox: "w-full",
-                card: "w-full shadow-none border border-[#E5E1DB] bg-white rounded-none p-6",
+                card: "w-full shadow-none border border-shell bg-white rounded-none p-6",
                 headerTitle: "hidden",
                 headerSubtitle: "hidden",
                 socialButtonsBlockButton:
-                  "border border-[#E5E1DB] bg-white hover:bg-[#F9F7F4] text-[#0A0A0A] text-sm font-normal rounded-none h-10 transition-colors",
-                dividerLine: "bg-[#E5E1DB]",
-                dividerText: "text-[#0A0A0A]/40 text-xs",
-                formFieldLabel: "text-xs font-medium text-[#0A0A0A]/70 mb-1",
+                  "border border-shell bg-white hover:bg-cream text-ink text-sm font-normal rounded-none h-10 transition-colors",
+                dividerLine: "bg-shell",
+                dividerText: "text-ink/40 text-xs",
+                formFieldLabel: "text-xs font-medium text-ink/70 mb-1",
                 formFieldInput:
-                  "border border-[#E5E1DB] bg-white focus:border-[#0A0A0A] focus:ring-0 rounded-none h-10 text-sm text-[#0A0A0A] placeholder:text-[#0A0A0A]/30",
+                  "border border-shell bg-white focus:border-ink focus:ring-0 rounded-none h-10 text-sm text-ink placeholder:text-ink/30",
                 formButtonPrimary:
-                  "bg-[#0A0A0A] hover:bg-[#0A0A0A]/80 text-[#F9F7F4] rounded-none h-10 text-sm font-medium transition-colors",
-                footerActionLink: "text-[#0A0A0A] underline underline-offset-2 hover:opacity-70",
-                identityPreviewEditButton: "text-[#0A0A0A] underline underline-offset-2",
-                otpCodeFieldInput: "border border-[#E5E1DB] rounded-none text-[#0A0A0A]",
+                  "bg-ink hover:bg-ink/80 text-cream rounded-none h-10 text-sm font-medium transition-colors",
+                footerActionLink: "text-ink underline underline-offset-2 hover:opacity-70",
+                identityPreviewEditButton: "text-ink underline underline-offset-2",
+                otpCodeFieldInput: "border border-shell rounded-none text-ink",
                 alertText: "text-sm",
                 formFieldErrorText: "text-xs text-red-600",
               },
@@ -65,9 +65,9 @@ export default function SignInPage() {
           />
 
           {/* Footer */}
-          <p className="mt-6 text-center text-xs text-[#0A0A0A]/40">
+          <p className="mt-6 text-center text-xs text-ink/40">
             Not a partner yet?{" "}
-            <Link href="/partner" className="text-[#0A0A0A] underline underline-offset-2 hover:opacity-70">
+            <Link href="/partner" className="text-ink underline underline-offset-2 hover:opacity-70">
               Apply for wholesale access
             </Link>
           </p>
@@ -75,8 +75,8 @@ export default function SignInPage() {
       </div>
 
       {/* Bottom strip */}
-      <footer className="border-t border-[#E5E1DB] px-6 py-3">
-        <p className="text-[11px] text-[#0A0A0A]/30 text-center">
+      <footer className="border-t border-shell px-6 py-3">
+        <p className="text-[11px] text-ink/30 text-center">
           Wholesail &mdash; Wholesale Portal
         </p>
       </footer>

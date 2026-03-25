@@ -85,7 +85,7 @@ export function NotificationBell() {
         <Button
           variant="ghost"
           size="sm"
-          className="relative min-h-[44px] min-w-[44px] text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.08]"
+          className="relative min-h-[44px] min-w-[44px] text-ink/60 hover:text-ink hover:bg-ink/[0.08]"
         >
           <Bell className="h-4 w-4" />
           {unreadCount > 0 && (
@@ -97,12 +97,12 @@ export function NotificationBell() {
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-80 p-0">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-[#E5E1DB]">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-shell">
           <span className="text-sm font-semibold">Notifications</span>
           {unreadCount > 0 && (
             <button
               onClick={markAllRead}
-              className="text-xs text-[#0A0A0A]/50 hover:text-[#0A0A0A] transition-colors"
+              className="text-xs text-ink/50 hover:text-ink transition-colors"
             >
               Mark all read
             </button>
@@ -123,22 +123,22 @@ export function NotificationBell() {
                 key={n.id}
                 href={n.link || "#"}
                 className={cn(
-                  "block px-4 py-3 border-b border-[#E5E1DB] last:border-0 transition-colors hover:bg-[#F9F7F4]",
-                  !n.read && "bg-[#F9F7F4]/50",
+                  "block px-4 py-3 border-b border-shell last:border-0 transition-colors hover:bg-cream",
+                  !n.read && "bg-cream/50",
                 )}
               >
                 <div className="flex items-start gap-2">
                   {!n.read && (
-                    <span className="mt-1.5 h-2 w-2 rounded-full bg-[#0A0A0A] shrink-0" />
+                    <span className="mt-1.5 h-2 w-2 rounded-full bg-ink shrink-0" />
                   )}
                   <div className={cn("flex-1 min-w-0", n.read && "ml-4")}>
-                    <p className="text-sm font-medium text-[#0A0A0A] truncate">
+                    <p className="text-sm font-medium text-ink truncate">
                       {n.title}
                     </p>
-                    <p className="text-xs text-[#0A0A0A]/60 line-clamp-2 mt-0.5">
+                    <p className="text-xs text-ink/60 line-clamp-2 mt-0.5">
                       {n.message}
                     </p>
-                    <p className="text-[10px] text-[#C8C0B4] mt-1">
+                    <p className="text-[10px] text-sand mt-1">
                       {formatDistanceToNow(new Date(n.createdAt), {
                         addSuffix: true,
                       })}

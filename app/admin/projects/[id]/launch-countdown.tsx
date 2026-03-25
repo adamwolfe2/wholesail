@@ -67,7 +67,7 @@ export function LaunchCountdown({ projectId, targetLaunchDate, goLiveTimeline }:
       {goLiveTimeline && (
         <Badge
           variant="outline"
-          className="text-[10px] font-mono px-2 py-0.5 bg-[#F9F7F4] text-[#0A0A0A]/60 border-[#E5E1DB]"
+          className="text-[10px] font-mono px-2 py-0.5 bg-cream text-ink/60 border-shell"
         >
           <Clock className="h-2.5 w-2.5 mr-1 inline" />
           {goLiveTimeline}
@@ -92,21 +92,21 @@ export function LaunchCountdown({ projectId, targetLaunchDate, goLiveTimeline }:
             type="date"
             value={dateValue}
             onChange={(e) => setDateValue(e.target.value)}
-            className="border border-[#E5E1DB] px-2 py-1 text-[10px] font-mono bg-white focus:outline-none"
+            className="border border-shell px-2 py-1 text-[10px] font-mono bg-white focus:outline-none"
             aria-label="Launch date"
           />
           <button
             type="button"
             onClick={handleSave}
             disabled={saving || !dateValue}
-            className="text-[9px] font-mono font-semibold bg-[#0A0A0A] text-white px-2 py-1 hover:bg-[#0A0A0A]/80 disabled:opacity-40"
+            className="text-[9px] font-mono font-semibold bg-ink text-white px-2 py-1 hover:bg-ink/80 disabled:opacity-40"
           >
             {saving ? <Loader2 className="h-2.5 w-2.5 animate-spin" /> : "Set"}
           </button>
           <button
             type="button"
             onClick={() => setEditing(false)}
-            className="text-[9px] font-mono text-[#0A0A0A]/50 hover:text-[#0A0A0A] px-1"
+            className="text-[9px] font-mono text-ink/50 hover:text-ink px-1"
           >
             Cancel
           </button>
@@ -115,7 +115,7 @@ export function LaunchCountdown({ projectId, targetLaunchDate, goLiveTimeline }:
         <button
           type="button"
           onClick={() => setEditing(true)}
-          className="text-[10px] font-mono text-[#0A0A0A]/40 hover:text-[#0A0A0A] flex items-center gap-0.5"
+          className="text-[10px] font-mono text-ink/40 hover:text-ink flex items-center gap-0.5"
           title={currentDate ? "Edit launch date" : "Set launch date"}
         >
           <Pencil className="h-2.5 w-2.5" />

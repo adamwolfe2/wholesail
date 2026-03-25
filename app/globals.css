@@ -30,7 +30,28 @@ body {
   --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, "SF Mono",
     Menlo, Consolas, monospace;
+
+  /* ── Core palette (4 colors = 95% of all usage) ──────────────────────── */
+  --color-ink: #0A0A0A;
   --color-cream: #F9F7F4;
+  --color-sand: #C8C0B4;
+  --color-shell: #E5E1DB;
+
+  /* ── Variants ─────────────────────────────────────────────────────── */
+  --color-ink-dark: #1A1614;
+  --color-cream-hover: #F0EDE8;
+  --color-gold-light: #FEF3C7;
+  --color-gold-wash: #FFFBEB;
+  --color-sky: #4A90D9;
+
+  /* ── Brand / accent ──────────────────────────────────────────────────── */
+  --color-brand: #2A52BE;
+  --color-gold: #B8860B;
+
+  /* ── State colors ────────────────────────────────────────────────────── */
+  --color-error: #dc2626;
+  --color-success: #059669;
+  --color-success-light: #16a34a;
 }
 
 :root {

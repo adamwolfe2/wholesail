@@ -119,19 +119,19 @@ export function AIOrderParser({ open, onOpenChange }: AIOrderParserProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-xl max-h-[90svh] flex flex-col bg-[#F9F7F4] border-[#E5E1DB] rounded-none p-0 gap-0">
+      <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-xl max-h-[90svh] flex flex-col bg-cream border-shell rounded-none p-0 gap-0">
 
         {/* Header */}
-        <DialogHeader className="px-4 sm:px-6 pt-5 pb-4 border-b border-[#E5E1DB] shrink-0">
+        <DialogHeader className="px-4 sm:px-6 pt-5 pb-4 border-b border-shell shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-[#0A0A0A] flex items-center justify-center">
-              <Wand2 className="h-4 w-4 text-[#F9F7F4]" />
+            <div className="w-8 h-8 bg-ink flex items-center justify-center">
+              <Wand2 className="h-4 w-4 text-cream" />
             </div>
             <div>
-              <DialogTitle className="font-serif text-lg font-bold text-[#0A0A0A]">
+              <DialogTitle className="font-serif text-lg font-bold text-ink">
                 AI Order Parser
               </DialogTitle>
-              <DialogDescription className="text-xs text-[#C8C0B4] mt-0.5">
+              <DialogDescription className="text-xs text-sand mt-0.5">
                 Paste any order text — we&apos;ll match it to your catalog.
               </DialogDescription>
             </div>
@@ -148,16 +148,16 @@ export function AIOrderParser({ open, onOpenChange }: AIOrderParserProps) {
                   value={text}
                   onChange={e => setText(e.target.value)}
                   placeholder={'5 oz white truffle, 3 tins Beluga 1oz, 2 lbs A5 wagyu, 4 bottles black truffle oil...'}
-                  className="w-full h-32 bg-white border border-[#E5E1DB] text-sm text-[#0A0A0A] placeholder:text-[#C8C0B4] p-4 resize-none focus:outline-none focus:border-[#0A0A0A] transition-colors font-mono"
+                  className="w-full h-32 bg-white border border-shell text-sm text-ink placeholder:text-sand p-4 resize-none focus:outline-none focus:border-ink transition-colors font-mono"
                   autoFocus
                 />
-                <p className="text-[10px] text-[#C8C0B4] mt-2 tracking-wide uppercase">
+                <p className="text-[10px] text-sand mt-2 tracking-wide uppercase">
                   Tip — paste from email, SMS, or type naturally
                 </p>
               </div>
 
               {error && (
-                <div className="flex items-center gap-2 text-sm text-[#0A0A0A]/60 border border-[#E5E1DB] p-3">
+                <div className="flex items-center gap-2 text-sm text-ink/60 border border-shell p-3">
                   <AlertCircle className="h-4 w-4 flex-shrink-0" />
                   {error}
                 </div>
@@ -166,7 +166,7 @@ export function AIOrderParser({ open, onOpenChange }: AIOrderParserProps) {
               <button
                 onClick={handleParse}
                 disabled={loading || !text.trim()}
-                className="w-full h-11 bg-[#0A0A0A] text-[#F9F7F4] text-sm font-medium flex items-center justify-center gap-2 hover:bg-[#0A0A0A]/80 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                className="w-full h-11 bg-ink text-cream text-sm font-medium flex items-center justify-center gap-2 hover:bg-ink/80 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <>
@@ -187,26 +187,26 @@ export function AIOrderParser({ open, onOpenChange }: AIOrderParserProps) {
           {result && (
             <>
               {result.items.length === 0 && result.unmatched.length === 0 && (
-                <div className="text-center py-8 text-[#0A0A0A]/40 text-sm">
+                <div className="text-center py-8 text-ink/40 text-sm">
                   No products found. Try being more specific.
                 </div>
               )}
 
               {result.items.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4]">
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-sand">
                     Matched — {result.items.length} item{result.items.length !== 1 ? 's' : ''}
                   </p>
-                  <div className="divide-y divide-[#E5E1DB] border border-[#E5E1DB]">
+                  <div className="divide-y divide-shell border border-shell">
                     {result.items.map(item => {
                       const qty = quantities[item.product.id] ?? item.quantity
                       return (
                         <div key={item.product.id} className="flex items-center gap-2 sm:gap-4 p-3 bg-white">
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-[#0A0A0A] truncate">
+                            <p className="text-sm font-medium text-ink truncate">
                               {item.product.name}
                             </p>
-                            <p className="text-[11px] text-[#C8C0B4] mt-0.5">
+                            <p className="text-[11px] text-sand mt-0.5">
                               {item.product.marketRate
                                 ? 'Market rate'
                                 : `${formatCurrency(item.product.price)} ${item.product.unit}`}
@@ -216,16 +216,16 @@ export function AIOrderParser({ open, onOpenChange }: AIOrderParserProps) {
                           <div className="flex items-center gap-1 flex-shrink-0">
                             <button
                               onClick={() => adjustQty(item.product.id, -1)}
-                              className="w-6 h-6 border border-[#E5E1DB] flex items-center justify-center hover:border-[#0A0A0A] transition-colors"
+                              className="w-6 h-6 border border-shell flex items-center justify-center hover:border-ink transition-colors"
                             >
                               <Minus className="h-3 w-3" />
                             </button>
-                            <span className="w-8 text-center text-sm font-medium text-[#0A0A0A]">
+                            <span className="w-8 text-center text-sm font-medium text-ink">
                               {qty}
                             </span>
                             <button
                               onClick={() => adjustQty(item.product.id, 1)}
-                              className="w-6 h-6 border border-[#E5E1DB] flex items-center justify-center hover:border-[#0A0A0A] transition-colors"
+                              className="w-6 h-6 border border-shell flex items-center justify-center hover:border-ink transition-colors"
                             >
                               <Plus className="h-3 w-3" />
                             </button>
@@ -233,9 +233,9 @@ export function AIOrderParser({ open, onOpenChange }: AIOrderParserProps) {
                           {/* Line total */}
                           <div className="w-16 text-right flex-shrink-0">
                             {item.product.marketRate ? (
-                              <span className="text-[11px] text-[#C8C0B4]">MR</span>
+                              <span className="text-[11px] text-sand">MR</span>
                             ) : (
-                              <span className="text-sm font-medium text-[#0A0A0A]">
+                              <span className="text-sm font-medium text-ink">
                                 {formatCurrency(item.product.price * qty)}
                               </span>
                             )}
@@ -249,14 +249,14 @@ export function AIOrderParser({ open, onOpenChange }: AIOrderParserProps) {
 
               {result.unmatched.length > 0 && (
                 <div className="space-y-2">
-                  <p className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4]">
+                  <p className="text-[10px] tracking-[0.2em] uppercase text-sand">
                     Not matched — {result.unmatched.length} item{result.unmatched.length !== 1 ? 's' : ''}
                   </p>
-                  <div className="border border-[#E5E1DB] divide-y divide-[#E5E1DB]">
+                  <div className="border border-shell divide-y divide-shell">
                     {result.unmatched.map((u, i) => (
                       <div key={i} className="flex items-start gap-2 p-3 bg-white">
-                        <AlertCircle className="h-3.5 w-3.5 text-[#C8C0B4] flex-shrink-0 mt-0.5" />
-                        <p className="text-xs text-[#0A0A0A]/60">{u}</p>
+                        <AlertCircle className="h-3.5 w-3.5 text-sand flex-shrink-0 mt-0.5" />
+                        <p className="text-xs text-ink/60">{u}</p>
                       </div>
                     ))}
                   </div>
@@ -265,25 +265,25 @@ export function AIOrderParser({ open, onOpenChange }: AIOrderParserProps) {
 
               {/* Summary + actions */}
               {result.items.length > 0 && (
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2 border-t border-[#E5E1DB]">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2 border-t border-shell">
                   <div>
-                    <p className="text-sm font-medium text-[#0A0A0A]">
+                    <p className="text-sm font-medium text-ink">
                       {totalItems} item{totalItems !== 1 ? 's' : ''}
                       {totalPrice > 0 && ` · ${formatCurrency(totalPrice)}`}
                     </p>
-                    <p className="text-[11px] text-[#C8C0B4]">Market-rate items excluded from total</p>
+                    <p className="text-[11px] text-sand">Market-rate items excluded from total</p>
                   </div>
                   <div className="flex gap-2 shrink-0">
                     <button
                       onClick={() => { setResult(null); setAdded(false) }}
-                      className="flex-1 sm:flex-none h-10 px-4 text-sm border border-[#E5E1DB] text-[#0A0A0A]/60 hover:border-[#0A0A0A] hover:text-[#0A0A0A] transition-colors"
+                      className="flex-1 sm:flex-none h-10 px-4 text-sm border border-shell text-ink/60 hover:border-ink hover:text-ink transition-colors"
                     >
                       Re-parse
                     </button>
                     <button
                       onClick={handleAddToCart}
                       disabled={added || totalItems === 0}
-                      className="flex-1 sm:flex-none h-10 px-5 text-sm font-medium bg-[#0A0A0A] text-[#F9F7F4] flex items-center justify-center gap-2 hover:bg-[#0A0A0A]/80 transition-colors disabled:opacity-40"
+                      className="flex-1 sm:flex-none h-10 px-5 text-sm font-medium bg-ink text-cream flex items-center justify-center gap-2 hover:bg-ink/80 transition-colors disabled:opacity-40"
                     >
                       {added ? (
                         <><Check className="h-3.5 w-3.5" /> Added!</>
@@ -298,7 +298,7 @@ export function AIOrderParser({ open, onOpenChange }: AIOrderParserProps) {
               {result.items.length === 0 && (
                 <button
                   onClick={() => { setResult(null) }}
-                  className="w-full h-10 border border-[#E5E1DB] text-sm text-[#0A0A0A]/60 hover:border-[#0A0A0A] hover:text-[#0A0A0A] transition-colors"
+                  className="w-full h-10 border border-shell text-sm text-ink/60 hover:border-ink hover:text-ink transition-colors"
                 >
                   Try again
                 </button>

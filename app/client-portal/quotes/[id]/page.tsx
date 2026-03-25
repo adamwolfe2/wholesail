@@ -76,7 +76,7 @@ function ExpiryBadge({ expiresAt }: { expiresAt: string }) {
     );
   }
   return (
-    <span className="text-xs text-[#0A0A0A]/50">
+    <span className="text-xs text-ink/50">
       Expires {format(expiry, "MMM d, yyyy")}
     </span>
   );
@@ -225,7 +225,7 @@ export default function ClientQuoteDetailPage() {
               variant="ghost"
               size="sm"
               asChild
-              className="text-[#0A0A0A]/50 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] -ml-2"
+              className="text-ink/50 hover:text-ink hover:bg-ink/[0.04] -ml-2"
             >
               <Link href="/client-portal/quotes">
                 <ArrowLeft className="h-4 w-4 mr-1" />
@@ -237,11 +237,11 @@ export default function ClientQuoteDetailPage() {
 
         {loading ? (
           <div className="flex items-center justify-center py-24">
-            <Loader2 className="h-8 w-8 animate-spin text-[#C8C0B4]" />
+            <Loader2 className="h-8 w-8 animate-spin text-sand" />
           </div>
         ) : !quote ? (
           <div className="text-center py-24">
-            <p className="text-sm text-[#0A0A0A]/50">Quote not found.</p>
+            <p className="text-sm text-ink/50">Quote not found.</p>
           </div>
         ) : (
           <div className="space-y-6">
@@ -269,7 +269,7 @@ export default function ClientQuoteDetailPage() {
             <div className="flex items-start justify-between">
               <div>
                 <div className="flex items-center gap-3 flex-wrap">
-                  <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+                  <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
                     {quote.quoteNumber}
                   </h1>
                   <Badge
@@ -279,7 +279,7 @@ export default function ClientQuoteDetailPage() {
                     {quote.status}
                   </Badge>
                 </div>
-                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1 text-sm text-[#0A0A0A]/50">
+                <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1 text-sm text-ink/50">
                   <span>{format(new Date(quote.createdAt), "MMMM d, yyyy")}</span>
                   {quote.rep && (
                     <>
@@ -300,15 +300,15 @@ export default function ClientQuoteDetailPage() {
             <div className="grid gap-6 lg:grid-cols-3">
               <div className="lg:col-span-2 space-y-6">
                 {/* Line Items */}
-                <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+                <Card className="border-sand bg-cream">
                   <CardHeader>
-                    <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+                    <CardTitle className="font-serif text-lg text-ink">
                       Items
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-0">
-                      <div className="grid grid-cols-12 gap-2 text-xs text-[#0A0A0A]/50 uppercase tracking-wider pb-2 border-b border-[#C8C0B4]/50">
+                      <div className="grid grid-cols-12 gap-2 text-xs text-ink/50 uppercase tracking-wider pb-2 border-b border-sand/50">
                         <div className="col-span-6">Product</div>
                         <div className="col-span-2 text-center">Qty</div>
                         <div className="col-span-2 text-right">Unit Price</div>
@@ -317,21 +317,21 @@ export default function ClientQuoteDetailPage() {
                       {quote.items.map((item) => (
                         <div
                           key={item.id}
-                          className="grid grid-cols-12 gap-2 py-3 border-b border-[#C8C0B4]/30 last:border-0"
+                          className="grid grid-cols-12 gap-2 py-3 border-b border-sand/30 last:border-0"
                         >
-                          <div className="col-span-6 text-sm font-medium text-[#0A0A0A]">
+                          <div className="col-span-6 text-sm font-medium text-ink">
                             {item.name}
-                            <span className="text-xs text-[#0A0A0A]/40 ml-1">
+                            <span className="text-xs text-ink/40 ml-1">
                               / {item.product.unit}
                             </span>
                           </div>
-                          <div className="col-span-2 text-center text-sm text-[#0A0A0A]/70">
+                          <div className="col-span-2 text-center text-sm text-ink/70">
                             {item.quantity}
                           </div>
-                          <div className="col-span-2 text-right text-sm text-[#0A0A0A]/70">
+                          <div className="col-span-2 text-right text-sm text-ink/70">
                             {formatCurrency(item.unitPrice)}
                           </div>
-                          <div className="col-span-2 text-right text-sm font-semibold text-[#0A0A0A]">
+                          <div className="col-span-2 text-right text-sm font-semibold text-ink">
                             {formatCurrency(item.total)}
                           </div>
                         </div>
@@ -339,22 +339,22 @@ export default function ClientQuoteDetailPage() {
                     </div>
 
                     {/* Totals */}
-                    <div className="space-y-2 pt-4 border-t border-[#C8C0B4]/50 mt-2">
+                    <div className="space-y-2 pt-4 border-t border-sand/50 mt-2">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="text-[#0A0A0A]/60">Subtotal</span>
+                        <span className="text-ink/60">Subtotal</span>
                         <span>{formatCurrency(quote.subtotal)}</span>
                       </div>
                       {Number(quote.discount) > 0 && (
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-[#0A0A0A]/60">Discount</span>
-                          <span className="text-[#0A0A0A]">
+                          <span className="text-ink/60">Discount</span>
+                          <span className="text-ink">
                             -{formatCurrency(quote.discount)}
                           </span>
                         </div>
                       )}
-                      <div className="flex items-center justify-between font-semibold border-t border-[#C8C0B4]/50 pt-2">
-                        <span className="text-[#0A0A0A]">Total</span>
-                        <span className="font-serif text-xl text-[#0A0A0A]">
+                      <div className="flex items-center justify-between font-semibold border-t border-sand/50 pt-2">
+                        <span className="text-ink">Total</span>
+                        <span className="font-serif text-xl text-ink">
                           {formatCurrency(quote.total)}
                         </span>
                       </div>
@@ -364,14 +364,14 @@ export default function ClientQuoteDetailPage() {
 
                 {/* Notes */}
                 {quote.notes && (
-                  <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+                  <Card className="border-sand bg-cream">
                     <CardHeader>
-                      <CardTitle className="font-serif text-base text-[#0A0A0A]">
+                      <CardTitle className="font-serif text-base text-ink">
                         Notes from Your Rep
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-[#0A0A0A]/70 whitespace-pre-line">
+                      <p className="text-sm text-ink/70 whitespace-pre-line">
                         {quote.notes}
                       </p>
                     </CardContent>
@@ -389,7 +389,7 @@ export default function ClientQuoteDetailPage() {
 
                     {showDeclineInput && (
                       <div className="space-y-2">
-                        <label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+                        <label className="text-xs font-medium text-ink/60 uppercase tracking-wider">
                           Reason for declining (optional)
                         </label>
                         <textarea
@@ -397,7 +397,7 @@ export default function ClientQuoteDetailPage() {
                           onChange={(e) => setDeclineReason(e.target.value)}
                           placeholder="Let your rep know why you're declining..."
                           rows={2}
-                          className="w-full border border-[#C8C0B4] bg-white text-sm text-[#0A0A0A] px-3 py-2 focus:outline-none focus:ring-1 focus:ring-[#0A0A0A] resize-none"
+                          className="w-full border border-sand bg-white text-sm text-ink px-3 py-2 focus:outline-none focus:ring-1 focus:ring-ink resize-none"
                         />
                       </div>
                     )}
@@ -406,7 +406,7 @@ export default function ClientQuoteDetailPage() {
                       <Button
                         onClick={handleAccept}
                         disabled={!!actionLoading}
-                        className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none flex-1 sm:flex-none min-h-[44px]"
+                        className="bg-ink text-cream hover:bg-ink/80 rounded-none flex-1 sm:flex-none min-h-[44px]"
                       >
                         {actionLoading === "accept" ? (
                           <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -419,7 +419,7 @@ export default function ClientQuoteDetailPage() {
                         onClick={handleDecline}
                         disabled={!!actionLoading}
                         variant="outline"
-                        className="border-[#C8C0B4] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none flex-1 sm:flex-none min-h-[44px]"
+                        className="border-sand text-ink hover:bg-ink/[0.04] rounded-none flex-1 sm:flex-none min-h-[44px]"
                       >
                         {actionLoading === "decline" ? (
                           <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -433,7 +433,7 @@ export default function ClientQuoteDetailPage() {
                           onClick={() => { setShowDeclineInput(false); setDeclineReason(""); }}
                           disabled={!!actionLoading}
                           variant="ghost"
-                          className="text-[#0A0A0A]/40 hover:text-[#0A0A0A] rounded-none min-h-[44px]"
+                          className="text-ink/40 hover:text-ink rounded-none min-h-[44px]"
                         >
                           Cancel
                         </Button>
@@ -445,21 +445,21 @@ export default function ClientQuoteDetailPage() {
                 {/* Accepted + Order Created */}
                 {quote.status === "ACCEPTED" && !isPaid && (
                   <div className="space-y-3">
-                    <div className="flex items-start gap-2 px-4 py-3 border border-[#C8C0B4] bg-[#C8C0B4]/10">
-                      <CheckCircle className="h-4 w-4 text-[#0A0A0A] shrink-0 mt-0.5" />
+                    <div className="flex items-start gap-2 px-4 py-3 border border-sand bg-sand/10">
+                      <CheckCircle className="h-4 w-4 text-ink shrink-0 mt-0.5" />
                       <div>
-                        <p className="text-sm text-[#0A0A0A] font-medium">
+                        <p className="text-sm text-ink font-medium">
                           Quote accepted
                           {quote.acceptedAt && (
                             <> on {format(new Date(quote.acceptedAt), "MMM d, yyyy")}</>
                           )}
                         </p>
                         {quote.convertedOrderId && (
-                          <p className="text-xs text-[#0A0A0A]/60 mt-0.5">
+                          <p className="text-xs text-ink/60 mt-0.5">
                             Order created.{" "}
                             <Link
                               href={`/client-portal/orders/${quote.convertedOrderId}`}
-                              className="underline hover:text-[#0A0A0A]"
+                              className="underline hover:text-ink"
                             >
                               View your order
                             </Link>
@@ -478,7 +478,7 @@ export default function ClientQuoteDetailPage() {
                         <Button
                           onClick={handlePay}
                           disabled={payLoading}
-                          className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none w-full sm:w-auto min-h-[44px]"
+                          className="bg-ink text-cream hover:bg-ink/80 rounded-none w-full sm:w-auto min-h-[44px]"
                         >
                           {payLoading ? (
                             <>
@@ -502,9 +502,9 @@ export default function ClientQuoteDetailPage() {
                 )}
 
                 {quote.status === "ACCEPTED" && isPaid && (
-                  <div className="flex items-center gap-2 px-4 py-3 border border-[#C8C0B4] bg-[#C8C0B4]/10">
-                    <CheckCircle className="h-4 w-4 text-[#0A0A0A]" />
-                    <p className="text-sm text-[#0A0A0A]">
+                  <div className="flex items-center gap-2 px-4 py-3 border border-sand bg-sand/10">
+                    <CheckCircle className="h-4 w-4 text-ink" />
+                    <p className="text-sm text-ink">
                       Quote accepted
                       {quote.acceptedAt && (
                         <> on {format(new Date(quote.acceptedAt), "MMM d, yyyy")}</>
@@ -515,9 +515,9 @@ export default function ClientQuoteDetailPage() {
                 )}
 
                 {quote.status === "DECLINED" && (
-                  <div className="flex items-center gap-2 px-4 py-3 border border-[#E5E1DB]">
-                    <XCircle className="h-4 w-4 text-[#0A0A0A]/40" />
-                    <p className="text-sm text-[#0A0A0A]/60">
+                  <div className="flex items-center gap-2 px-4 py-3 border border-shell">
+                    <XCircle className="h-4 w-4 text-ink/40" />
+                    <p className="text-sm text-ink/60">
                       You declined this quote. Contact your rep if you&apos;d like a new one.
                     </p>
                   </div>
@@ -535,15 +535,15 @@ export default function ClientQuoteDetailPage() {
 
               {/* Right column: Summary */}
               <div>
-                <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+                <Card className="border-sand bg-cream">
                   <CardHeader>
-                    <CardTitle className="font-serif text-base text-[#0A0A0A]">
+                    <CardTitle className="font-serif text-base text-ink">
                       Summary
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-3 text-sm">
                     <div>
-                      <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                      <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                         Status
                       </p>
                       <Badge
@@ -554,32 +554,32 @@ export default function ClientQuoteDetailPage() {
                       </Badge>
                     </div>
                     <div>
-                      <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                      <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                         Items
                       </p>
-                      <p className="text-[#0A0A0A]">{quote.items.length} products</p>
+                      <p className="text-ink">{quote.items.length} products</p>
                     </div>
                     {Number(quote.discount) > 0 && (
                       <div>
-                        <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                        <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                           Discount
                         </p>
-                        <p className="text-[#0A0A0A]">
+                        <p className="text-ink">
                           -{formatCurrency(quote.discount)}
                         </p>
                       </div>
                     )}
                     <div>
-                      <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                      <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                         Total
                       </p>
-                      <p className="font-serif text-xl font-bold text-[#0A0A0A]">
+                      <p className="font-serif text-xl font-bold text-ink">
                         {formatCurrency(quote.total)}
                       </p>
                     </div>
                     {quote.expiresAt && (
                       <div>
-                        <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                        <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                           Expiry
                         </p>
                         <ExpiryBadge expiresAt={quote.expiresAt} />
@@ -587,20 +587,20 @@ export default function ClientQuoteDetailPage() {
                     )}
                     {quote.rep && (
                       <div>
-                        <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                        <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                           Your Rep
                         </p>
-                        <p className="text-[#0A0A0A]">{quote.rep.name}</p>
+                        <p className="text-ink">{quote.rep.name}</p>
                       </div>
                     )}
                     {quote.convertedOrderId && (
                       <div>
-                        <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider mb-0.5">
+                        <p className="text-xs text-ink/50 uppercase tracking-wider mb-0.5">
                           Order
                         </p>
                         <Link
                           href={`/client-portal/orders/${quote.convertedOrderId}`}
-                          className="text-[#0A0A0A] underline hover:text-[#0A0A0A]/70 text-sm"
+                          className="text-ink underline hover:text-ink/70 text-sm"
                         >
                           View Order
                         </Link>

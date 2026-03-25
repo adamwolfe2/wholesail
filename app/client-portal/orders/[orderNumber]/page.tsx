@@ -89,19 +89,19 @@ function getStatusColor(status: string) {
   switch (status.toUpperCase()) {
     case 'DELIVERED':
     case 'PAID':
-      return 'bg-[#0A0A0A] text-[#F9F7F4] border-[#0A0A0A]'
+      return 'bg-ink text-cream border-ink'
     case 'PENDING':
-      return 'bg-transparent text-[#0A0A0A]/60 border-[#C8C0B4]'
+      return 'bg-transparent text-ink/60 border-sand'
     case 'CONFIRMED':
     case 'PROCESSING':
-      return 'bg-[#C8C0B4]/30 text-[#0A0A0A] border-[#C8C0B4]'
+      return 'bg-sand/30 text-ink border-sand'
     case 'SHIPPED':
     case 'PACKED':
-      return 'bg-[#0A0A0A]/80 text-[#F9F7F4] border-[#0A0A0A]/70'
+      return 'bg-ink/80 text-cream border-ink/70'
     case 'CANCELLED':
-      return 'bg-transparent text-[#0A0A0A]/40 border-[#C8C0B4]/50'
+      return 'bg-transparent text-ink/40 border-sand/50'
     default:
-      return 'bg-transparent text-[#0A0A0A]/60 border-[#C8C0B4]'
+      return 'bg-transparent text-ink/60 border-sand'
   }
 }
 
@@ -130,16 +130,16 @@ function OrderProgressTracker({ currentStatus }: { currentStatus: string }) {
               <div
                 className={`w-8 h-8 flex items-center justify-center text-xs font-bold border-2 transition-colors ${
                   isComplete
-                    ? 'bg-[#0A0A0A] text-[#F9F7F4] border-[#0A0A0A]'
+                    ? 'bg-ink text-cream border-ink'
                     : isCurrent
-                      ? 'bg-[#F9F7F4] text-[#0A0A0A] border-[#0A0A0A]'
-                      : 'bg-[#C8C0B4]/10 text-[#0A0A0A]/30 border-[#C8C0B4]'
+                      ? 'bg-cream text-ink border-ink'
+                      : 'bg-sand/10 text-ink/30 border-sand'
                 }`}
               >
                 {isComplete ? <Check className="h-4 w-4" /> : index + 1}
               </div>
               <span className={`text-[9px] sm:text-[10px] mt-1.5 font-medium uppercase tracking-wider ${
-                isComplete || isCurrent ? 'text-[#0A0A0A]' : 'text-[#0A0A0A]/30'
+                isComplete || isCurrent ? 'text-ink' : 'text-ink/30'
               }`}>
                 {step}
               </span>
@@ -147,7 +147,7 @@ function OrderProgressTracker({ currentStatus }: { currentStatus: string }) {
             {index < ORDER_STEPS.length - 1 && (
               <div
                 className={`flex-1 h-0.5 mx-1 sm:mx-2 ${
-                  index < currentIndex ? 'bg-[#0A0A0A]' : 'bg-[#C8C0B4]'
+                  index < currentIndex ? 'bg-ink' : 'bg-sand'
                 }`}
               />
             )}
@@ -159,12 +159,12 @@ function OrderProgressTracker({ currentStatus }: { currentStatus: string }) {
 }
 
 const shipmentStatusColors: Record<string, string> = {
-  PREPARING: 'bg-[#C8C0B4]/30 text-[#0A0A0A] border-[#C8C0B4]',
-  PICKED_UP: 'bg-[#0A0A0A]/20 text-[#0A0A0A] border-[#C8C0B4]',
-  IN_TRANSIT: 'bg-[#0A0A0A]/60 text-[#F9F7F4] border-[#0A0A0A]/50',
-  OUT_FOR_DELIVERY: 'bg-[#0A0A0A]/80 text-[#F9F7F4] border-[#0A0A0A]/70',
-  DELIVERED: 'bg-[#0A0A0A] text-[#F9F7F4] border-[#0A0A0A]',
-  EXCEPTION: 'bg-transparent text-[#0A0A0A]/60 border-[#C8C0B4]',
+  PREPARING: 'bg-sand/30 text-ink border-sand',
+  PICKED_UP: 'bg-ink/20 text-ink border-sand',
+  IN_TRANSIT: 'bg-ink/60 text-cream border-ink/50',
+  OUT_FOR_DELIVERY: 'bg-ink/80 text-cream border-ink/70',
+  DELIVERED: 'bg-ink text-cream border-ink',
+  EXCEPTION: 'bg-transparent text-ink/60 border-sand',
 }
 
 export default function ClientOrderDetailPage() {
@@ -232,7 +232,7 @@ export default function ClientOrderDetailPage() {
     return (
       <PortalLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <Loader2 className="h-8 w-8 animate-spin text-[#C8C0B4]" />
+          <Loader2 className="h-8 w-8 animate-spin text-sand" />
         </div>
       </PortalLayout>
     )
@@ -242,14 +242,14 @@ export default function ClientOrderDetailPage() {
     return (
       <PortalLayout>
         <div className="text-center py-16">
-          <Package className="h-12 w-12 text-[#C8C0B4] mx-auto mb-4" />
-          <h2 className="font-serif text-xl font-bold mb-2 text-[#0A0A0A]">Order not found</h2>
-          <p className="text-[#0A0A0A]/50 mb-6">
+          <Package className="h-12 w-12 text-sand mx-auto mb-4" />
+          <h2 className="font-serif text-xl font-bold mb-2 text-ink">Order not found</h2>
+          <p className="text-ink/50 mb-6">
             We couldn&apos;t find order {orderNumber}.
           </p>
           <Button
             asChild
-            className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 min-h-[44px]"
+            className="bg-ink text-cream hover:bg-ink/80 min-h-[44px]"
           >
             <Link href="/client-portal/orders">Back to Orders</Link>
           </Button>
@@ -266,7 +266,7 @@ export default function ClientOrderDetailPage() {
           <Button
             variant="ghost"
             size="sm"
-            className="text-[#0A0A0A]/60 hover:text-[#0A0A0A] shrink-0 mt-1"
+            className="text-ink/60 hover:text-ink shrink-0 mt-1"
             asChild
           >
             <Link href="/client-portal/orders">
@@ -275,8 +275,8 @@ export default function ClientOrderDetailPage() {
             </Link>
           </Button>
           <div className="flex-1 min-w-0">
-            <h1 className="font-serif text-xl sm:text-2xl font-bold text-[#0A0A0A] font-mono">{order.orderNumber}</h1>
-            <p className="text-sm text-[#0A0A0A]/50 mt-0.5">
+            <h1 className="font-serif text-xl sm:text-2xl font-bold text-ink font-mono">{order.orderNumber}</h1>
+            <p className="text-sm text-ink/50 mt-0.5">
               Placed {new Date(order.createdAt).toLocaleDateString('en-US', {
                 month: 'long',
                 day: 'numeric',
@@ -290,10 +290,10 @@ export default function ClientOrderDetailPage() {
         </div>
 
         {/* Status Progress */}
-        <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
-          <CardHeader className="pb-3 border-b border-[#C8C0B4]/50">
+        <Card className="border-sand bg-cream">
+          <CardHeader className="pb-3 border-b border-sand/50">
             <div className="flex items-center justify-between gap-4">
-              <CardTitle className="font-serif text-lg text-[#0A0A0A]">Order Status</CardTitle>
+              <CardTitle className="font-serif text-lg text-ink">Order Status</CardTitle>
               <Badge
                 variant="outline"
                 className={`text-xs px-3 py-1 shrink-0 ${getStatusColor(order.status)}`}
@@ -301,13 +301,13 @@ export default function ClientOrderDetailPage() {
                 {order.status}
               </Badge>
             </div>
-            <p className="text-sm text-[#0A0A0A]/50">
+            <p className="text-sm text-ink/50">
               {statusDescriptions[order.status] || ''}
             </p>
           </CardHeader>
           <CardContent className="pt-5">
             {order.status === 'CANCELLED' ? (
-              <p className="text-sm text-[#0A0A0A]/50 font-medium">This order has been cancelled.</p>
+              <p className="text-sm text-ink/50 font-medium">This order has been cancelled.</p>
             ) : (
               <OrderProgressTracker currentStatus={order.status} />
             )}
@@ -316,10 +316,10 @@ export default function ClientOrderDetailPage() {
 
         {/* Delivery Confirmation Checklist */}
         {(order.adminConfirmedAt || order.distributorConfirmedAt || order.clientConfirmedAt || order.status !== 'CANCELLED') && (
-          <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
-            <CardHeader className="pb-3 border-b border-[#C8C0B4]/50">
-              <CardTitle className="font-serif text-lg text-[#0A0A0A]">Delivery Confirmation</CardTitle>
-              <p className="text-sm text-[#0A0A0A]/50">
+          <Card className="border-sand bg-cream">
+            <CardHeader className="pb-3 border-b border-sand/50">
+              <CardTitle className="font-serif text-lg text-ink">Delivery Confirmation</CardTitle>
+              <p className="text-sm text-ink/50">
                 Track your order through our 3-step fulfillment process.
               </p>
             </CardHeader>
@@ -340,11 +340,11 @@ export default function ClientOrderDetailPage() {
 
         {/* Track Shipment */}
         {shipment && (
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
-            <CardHeader className="border-b border-[#E5E1DB]">
+          <Card className="border-shell bg-cream">
+            <CardHeader className="border-b border-shell">
               <div className="flex items-center justify-between gap-4">
-                <CardTitle className="font-serif text-lg text-[#0A0A0A] flex items-center gap-2">
-                  <Truck className="h-5 w-5 text-[#C8C0B4]" />
+                <CardTitle className="font-serif text-lg text-ink flex items-center gap-2">
+                  <Truck className="h-5 w-5 text-sand" />
                   Track Shipment
                 </CardTitle>
                 <div className="flex items-center gap-2 shrink-0">
@@ -358,7 +358,7 @@ export default function ClientOrderDetailPage() {
                     asChild
                     size="sm"
                     variant="outline"
-                    className="border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] text-xs h-8"
+                    className="border-ink text-ink hover:bg-ink hover:text-cream text-xs h-8"
                   >
                     <Link href={`/client-portal/orders/${order.orderNumber}/tracking`}>
                       Track →
@@ -371,17 +371,17 @@ export default function ClientOrderDetailPage() {
               {/* Driver + ETA row */}
               <div className="flex flex-wrap gap-4 text-sm">
                 {shipment.driverName && (
-                  <div className="flex items-center gap-2 text-[#0A0A0A]/70">
-                    <User className="h-4 w-4 text-[#C8C0B4]" />
-                    <span className="font-medium text-[#0A0A0A]">{shipment.driverName}</span>
+                  <div className="flex items-center gap-2 text-ink/70">
+                    <User className="h-4 w-4 text-sand" />
+                    <span className="font-medium text-ink">{shipment.driverName}</span>
                   </div>
                 )}
                 {shipment.estimatedEta && (
-                  <div className="flex items-center gap-2 text-[#0A0A0A]/70">
-                    <Clock className="h-4 w-4 text-[#C8C0B4]" />
+                  <div className="flex items-center gap-2 text-ink/70">
+                    <Clock className="h-4 w-4 text-sand" />
                     <span>
                       ETA:{' '}
-                      <span className="font-medium text-[#0A0A0A]">
+                      <span className="font-medium text-ink">
                         {new Date(shipment.estimatedEta).toLocaleDateString('en-US', {
                           month: 'short',
                           day: 'numeric',
@@ -393,28 +393,28 @@ export default function ClientOrderDetailPage() {
                   </div>
                 )}
                 {shipment.carrier && (
-                  <div className="text-[#0A0A0A]/60">
-                    Carrier: <span className="font-medium text-[#0A0A0A]">{shipment.carrier}</span>
+                  <div className="text-ink/60">
+                    Carrier: <span className="font-medium text-ink">{shipment.carrier}</span>
                   </div>
                 )}
                 {shipment.trackingNumber && (
-                  <div className="text-[#0A0A0A]/60">
-                    Tracking #: <span className="font-mono font-medium text-[#0A0A0A]">{shipment.trackingNumber}</span>
+                  <div className="text-ink/60">
+                    Tracking #: <span className="font-mono font-medium text-ink">{shipment.trackingNumber}</span>
                   </div>
                 )}
               </div>
 
               {/* Live GPS card */}
               {(shipment.currentLat !== null && shipment.currentLng !== null) && (
-                <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
+                <div className="border border-shell bg-cream p-4">
                   <div className="flex items-start gap-3">
-                    <MapPin className="h-5 w-5 text-[#C8C0B4] shrink-0 mt-0.5" />
+                    <MapPin className="h-5 w-5 text-sand shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-sm font-medium text-[#0A0A0A]">Live GPS Tracking</p>
-                      <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+                      <p className="text-sm font-medium text-ink">Live GPS Tracking</p>
+                      <p className="text-xs text-ink/50 mt-0.5">
                         Lat: {shipment.currentLat.toFixed(6)}, Lng: {shipment.currentLng.toFixed(6)}
                       </p>
-                      <p className="text-xs text-[#C8C0B4] mt-1">
+                      <p className="text-xs text-sand mt-1">
                         Live location updating every 30 seconds
                       </p>
                     </div>
@@ -425,22 +425,22 @@ export default function ClientOrderDetailPage() {
               {/* Event timeline */}
               {shipment.events.length > 0 && (
                 <div>
-                  <p className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider mb-3">Shipment History</p>
-                  <div className="space-y-0 border-l-2 border-[#E5E1DB] ml-2">
+                  <p className="text-xs font-medium text-ink/50 uppercase tracking-wider mb-3">Shipment History</p>
+                  <div className="space-y-0 border-l-2 border-shell ml-2">
                     {shipment.events.map((event) => (
                       <div key={event.id} className="relative pl-4 pb-4 last:pb-0">
-                        <div className="absolute -left-[5px] top-1.5 w-2 h-2 bg-[#C8C0B4] border border-[#F9F7F4]" />
+                        <div className="absolute -left-[5px] top-1.5 w-2 h-2 bg-sand border border-cream" />
                         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-1">
                           <div>
-                            <p className="text-sm font-medium text-[#0A0A0A]">{event.description}</p>
+                            <p className="text-sm font-medium text-ink">{event.description}</p>
                             <Badge
                               variant="outline"
-                              className={`text-[10px] mt-1 ${shipmentStatusColors[event.status] ?? 'border-[#C8C0B4] text-[#0A0A0A]/60'}`}
+                              className={`text-[10px] mt-1 ${shipmentStatusColors[event.status] ?? 'border-sand text-ink/60'}`}
                             >
                               {event.status.replace(/_/g, ' ')}
                             </Badge>
                           </div>
-                          <p className="text-xs text-[#0A0A0A]/40 shrink-0">
+                          <p className="text-xs text-ink/40 shrink-0">
                             {new Date(event.timestamp).toLocaleString('en-US', {
                               month: 'short',
                               day: 'numeric',
@@ -459,37 +459,37 @@ export default function ClientOrderDetailPage() {
         )}
 
         {/* Items */}
-        <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
-          <CardHeader className="border-b border-[#C8C0B4]/50">
-            <CardTitle className="font-serif text-lg text-[#0A0A0A]">Order Items</CardTitle>
+        <Card className="border-sand bg-cream">
+          <CardHeader className="border-b border-sand/50">
+            <CardTitle className="font-serif text-lg text-ink">Order Items</CardTitle>
           </CardHeader>
           <CardContent className="pt-4">
             <div className="overflow-x-auto">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-[#C8C0B4]/50">
-                    <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Product</TableHead>
-                    <TableHead className="text-right text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Qty</TableHead>
-                    <TableHead className="text-right text-[#0A0A0A]/50 uppercase tracking-wider text-xs hidden sm:table-cell">Price</TableHead>
-                    <TableHead className="text-right text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Total</TableHead>
+                  <TableRow className="border-sand/50">
+                    <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Product</TableHead>
+                    <TableHead className="text-right text-ink/50 uppercase tracking-wider text-xs">Qty</TableHead>
+                    <TableHead className="text-right text-ink/50 uppercase tracking-wider text-xs hidden sm:table-cell">Price</TableHead>
+                    <TableHead className="text-right text-ink/50 uppercase tracking-wider text-xs">Total</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {order.items.map((item) => (
-                    <TableRow key={item.id} className="border-[#C8C0B4]/30">
+                    <TableRow key={item.id} className="border-sand/30">
                       <TableCell>
                         <div>
-                          <p className="font-medium text-[#0A0A0A]">{item.name}</p>
+                          <p className="font-medium text-ink">{item.name}</p>
                           {item.product?.unit && (
-                            <p className="text-xs text-[#0A0A0A]/40">{item.product.unit}</p>
+                            <p className="text-xs text-ink/40">{item.product.unit}</p>
                           )}
                         </div>
                       </TableCell>
-                      <TableCell className="text-right text-[#0A0A0A]/60">{item.quantity}</TableCell>
-                      <TableCell className="text-right text-[#0A0A0A]/60 hidden sm:table-cell">
+                      <TableCell className="text-right text-ink/60">{item.quantity}</TableCell>
+                      <TableCell className="text-right text-ink/60 hidden sm:table-cell">
                         {formatCurrency(item.unitPrice)}
                       </TableCell>
-                      <TableCell className="text-right font-semibold text-[#0A0A0A]">
+                      <TableCell className="text-right font-semibold text-ink">
                         {formatCurrency(item.total)}
                       </TableCell>
                     </TableRow>
@@ -498,27 +498,27 @@ export default function ClientOrderDetailPage() {
               </Table>
             </div>
 
-            <Separator className="my-4 bg-[#C8C0B4]/50" />
+            <Separator className="my-4 bg-sand/50" />
 
             <div className="flex flex-col items-end gap-2 text-sm">
               <div className="flex justify-between w-full max-w-[200px]">
-                <span className="text-[#0A0A0A]/50">Subtotal</span>
-                <span className="text-[#0A0A0A]">{formatCurrency(order.subtotal)}</span>
+                <span className="text-ink/50">Subtotal</span>
+                <span className="text-ink">{formatCurrency(order.subtotal)}</span>
               </div>
               {Number(order.tax) > 0 && (
                 <div className="flex justify-between w-full max-w-[200px]">
-                  <span className="text-[#0A0A0A]/50">Tax</span>
-                  <span className="text-[#0A0A0A]">{formatCurrency(order.tax)}</span>
+                  <span className="text-ink/50">Tax</span>
+                  <span className="text-ink">{formatCurrency(order.tax)}</span>
                 </div>
               )}
               {Number(order.deliveryFee) > 0 && (
                 <div className="flex justify-between w-full max-w-[200px]">
-                  <span className="text-[#0A0A0A]/50">Delivery</span>
-                  <span className="text-[#0A0A0A]">{formatCurrency(order.deliveryFee)}</span>
+                  <span className="text-ink/50">Delivery</span>
+                  <span className="text-ink">{formatCurrency(order.deliveryFee)}</span>
                 </div>
               )}
-              <Separator className="w-full max-w-[200px] bg-[#C8C0B4]/50" />
-              <div className="flex justify-between w-full max-w-[200px] text-base font-bold text-[#0A0A0A]">
+              <Separator className="w-full max-w-[200px] bg-sand/50" />
+              <div className="flex justify-between w-full max-w-[200px] text-base font-bold text-ink">
                 <span>Total</span>
                 <span>{formatCurrency(order.total)}</span>
               </div>
@@ -528,53 +528,53 @@ export default function ClientOrderDetailPage() {
 
         {/* Notes */}
         {order.notes != null && order.notes !== '' && (
-          <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
-            <CardHeader className="border-b border-[#C8C0B4]/50">
-              <CardTitle className="font-serif text-lg text-[#0A0A0A]">Order Notes</CardTitle>
+          <Card className="border-sand bg-cream">
+            <CardHeader className="border-b border-sand/50">
+              <CardTitle className="font-serif text-lg text-ink">Order Notes</CardTitle>
             </CardHeader>
             <CardContent className="pt-4">
-              <p className="text-sm whitespace-pre-line text-[#0A0A0A]/70">{order.notes}</p>
+              <p className="text-sm whitespace-pre-line text-ink/70">{order.notes}</p>
             </CardContent>
           </Card>
         )}
 
         {/* Payments */}
         {order.payments && order.payments.length > 0 && (
-          <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
-            <CardHeader className="border-b border-[#C8C0B4]/50">
-              <CardTitle className="font-serif text-lg text-[#0A0A0A]">Payments</CardTitle>
+          <Card className="border-sand bg-cream">
+            <CardHeader className="border-b border-sand/50">
+              <CardTitle className="font-serif text-lg text-ink">Payments</CardTitle>
             </CardHeader>
             <CardContent className="pt-4">
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-[#C8C0B4]/50">
-                      <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Date</TableHead>
-                      <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs hidden sm:table-cell">Method</TableHead>
-                      <TableHead className="text-right text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Amount</TableHead>
-                      <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Status</TableHead>
+                    <TableRow className="border-sand/50">
+                      <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Date</TableHead>
+                      <TableHead className="text-ink/50 uppercase tracking-wider text-xs hidden sm:table-cell">Method</TableHead>
+                      <TableHead className="text-right text-ink/50 uppercase tracking-wider text-xs">Amount</TableHead>
+                      <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Status</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {order.payments.map((payment) => (
-                      <TableRow key={payment.id} className="border-[#C8C0B4]/30">
-                        <TableCell className="text-[#0A0A0A]/70">
+                      <TableRow key={payment.id} className="border-sand/30">
+                        <TableCell className="text-ink/70">
                           {new Date(payment.createdAt).toLocaleDateString('en-US', {
                             month: 'short',
                             day: 'numeric',
                             year: 'numeric',
                           })}
                         </TableCell>
-                        <TableCell className="capitalize text-[#0A0A0A]/70 hidden sm:table-cell">
+                        <TableCell className="capitalize text-ink/70 hidden sm:table-cell">
                           {payment.method.toLowerCase()}
                         </TableCell>
-                        <TableCell className="text-right font-semibold text-[#0A0A0A]">
+                        <TableCell className="text-right font-semibold text-ink">
                           {formatCurrency(payment.amount)}
                         </TableCell>
                         <TableCell>
                           <Badge
                             variant="outline"
-                            className="capitalize text-xs border-[#C8C0B4] text-[#0A0A0A]/60"
+                            className="capitalize text-xs border-sand text-ink/60"
                           >
                             {payment.status.toLowerCase()}
                           </Badge>

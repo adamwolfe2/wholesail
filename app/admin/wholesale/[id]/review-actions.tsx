@@ -54,8 +54,8 @@ export function WholesaleReviewActions({
   return (
     <div className="space-y-4">
       <div className="space-y-1.5">
-        <Label htmlFor="reviewNotes" className="text-sm font-medium text-[#0A0A0A]">
-          Review Notes <span className="text-[#0A0A0A]/40 font-normal">(optional)</span>
+        <Label htmlFor="reviewNotes" className="text-sm font-medium text-ink">
+          Review Notes <span className="text-ink/40 font-normal">(optional)</span>
         </Label>
         <Textarea
           id="reviewNotes"

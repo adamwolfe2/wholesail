@@ -203,10 +203,10 @@ export default async function AdminPipelinePage() {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="font-serif text-3xl font-normal flex items-center gap-3">
-            <Kanban className="h-7 w-7 text-[#C8C0B4]" />
+            <Kanban className="h-7 w-7 text-sand" />
             Build Pipeline
           </h2>
-          <p className="text-sm text-[#0A0A0A]/50 mt-1 font-mono">
+          <p className="text-sm text-ink/50 mt-1 font-mono">
             {totalActive} active build{totalActive !== 1 ? "s" : ""} &middot;{" "}
             {newItems.length} new intake{newItems.length !== 1 ? "s" : ""}
           </p>

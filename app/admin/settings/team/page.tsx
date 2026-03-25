@@ -15,11 +15,11 @@ const ROLE_LABELS: Record<string, string> = {
 };
 
 const ROLE_COLORS: Record<string, string> = {
-  ADMIN: "bg-[#0A0A0A] text-[#F9F7F4] border-[#0A0A0A]",
-  SALES_REP: "bg-[#4A90D9]/10 text-[#4A90D9] border-[#4A90D9]/30",
+  ADMIN: "bg-ink text-cream border-ink",
+  SALES_REP: "bg-sky/10 text-sky border-sky/30",
   OPS: "bg-amber-50 text-amber-700 border-amber-200",
   SUPPLIER: "bg-purple-50 text-purple-700 border-purple-200",
-  CLIENT: "bg-transparent text-[#0A0A0A]/60 border-[#C8C0B4]",
+  CLIENT: "bg-transparent text-ink/60 border-sand",
 };
 
 export default async function TeamPage() {
@@ -46,42 +46,42 @@ export default async function TeamPage() {
 
       {/* Role Summary Cards */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">Admins</CardTitle>
-            <Shield className="h-4 w-4 text-[#C8C0B4]" />
+            <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">Admins</CardTitle>
+            <Shield className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[#0A0A0A]">{admins.length}</div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">Full access</p>
+            <div className="text-2xl font-bold text-ink">{admins.length}</div>
+            <p className="text-xs text-ink/40 mt-1">Full access</p>
           </CardContent>
         </Card>
 
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">Sales Reps</CardTitle>
-            <UserCircle className="h-4 w-4 text-[#C8C0B4]" />
+            <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">Sales Reps</CardTitle>
+            <UserCircle className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[#0A0A0A]">{reps.length}</div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">Orders + clients</p>
+            <div className="text-2xl font-bold text-ink">{reps.length}</div>
+            <p className="text-xs text-ink/40 mt-1">Orders + clients</p>
           </CardContent>
         </Card>
 
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">Ops</CardTitle>
-            <Users className="h-4 w-4 text-[#C8C0B4]" />
+            <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">Ops</CardTitle>
+            <Users className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-[#0A0A0A]">{ops.length}</div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">Fulfillment + inventory</p>
+            <div className="text-2xl font-bold text-ink">{ops.length}</div>
+            <p className="text-xs text-ink/40 mt-1">Fulfillment + inventory</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Team Members Table */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader>
           <CardTitle className="font-serif text-lg">Team Members</CardTitle>
           <CardDescription>
@@ -91,9 +91,9 @@ export default async function TeamPage() {
         <CardContent>
           {adminUsers.length === 0 ? (
             <div className="text-center py-12">
-              <Users className="h-12 w-12 text-[#C8C0B4] mx-auto mb-4" />
-              <h3 className="font-serif text-lg font-medium mb-2 text-[#0A0A0A]">No team members</h3>
-              <p className="text-[#0A0A0A]/50 text-sm">
+              <Users className="h-12 w-12 text-sand mx-auto mb-4" />
+              <h3 className="font-serif text-lg font-medium mb-2 text-ink">No team members</h3>
+              <p className="text-ink/50 text-sm">
                 Admin users are created when users sign up and are assigned admin roles.
               </p>
             </div>

@@ -50,10 +50,10 @@ interface BulkResult {
 
 /* ─── Status / Source helpers ────────────────────────────── */
 const STATUS_COLORS: Record<LeadStatus, string> = {
-  NEW: 'bg-[#C8C0B4]/20 text-[#0A0A0A]/60',
+  NEW: 'bg-sand/20 text-ink/60',
   CONTACTED: 'bg-blue-50 text-blue-700',
   QUALIFIED: 'bg-amber-50 text-amber-700',
-  CONVERTED: 'bg-[#0A0A0A] text-[#F9F7F4]',
+  CONVERTED: 'bg-ink text-cream',
   LOST: 'bg-gray-100 text-gray-500',
 }
 const ALL_STATUSES: LeadStatus[] = ['NEW', 'CONTACTED', 'QUALIFIED', 'CONVERTED', 'LOST']
@@ -194,20 +194,20 @@ function AddLeadTab({ onLeadAdded }: { onLeadAdded: (lead: Lead) => void }) {
           <CheckCircle2 className="h-6 w-6 text-emerald-600" />
         </div>
         <div className="text-center">
-          <p className="font-serif text-lg font-bold text-[#0A0A0A]">Lead Added</p>
+          <p className="font-serif text-lg font-bold text-ink">Lead Added</p>
           {submitResult.configured && submitResult.emailBisonId ? (
-            <p className="text-sm text-[#0A0A0A]/50 mt-1">
+            <p className="text-sm text-ink/50 mt-1">
               Pushed to EmailBison campaign · ID: <code className="font-mono text-xs">{submitResult.emailBisonId}</code>
             </p>
           ) : submitResult.configured ? (
             <p className="text-sm text-amber-600 mt-1">Saved to pipeline — EmailBison push failed (check logs)</p>
           ) : (
-            <p className="text-sm text-[#0A0A0A]/40 mt-1">Saved to pipeline · EmailBison not yet configured</p>
+            <p className="text-sm text-ink/40 mt-1">Saved to pipeline · EmailBison not yet configured</p>
           )}
         </div>
         <Button
           variant="outline"
-          className="border-[#E5E1DB] mt-2"
+          className="border-shell mt-2"
           onClick={() => setSubmitResult(null)}
         >
           Add Another Lead
@@ -221,22 +221,22 @@ function AddLeadTab({ onLeadAdded }: { onLeadAdded: (lead: Lead) => void }) {
       {/* Name row */}
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
-          <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">First Name *</Label>
+          <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">First Name *</Label>
           <Input
             required
             value={form.firstName}
             onChange={set('firstName')}
             placeholder="Alex"
-            className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]"
+            className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink"
           />
         </div>
         <div className="space-y-1.5">
-          <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">Last Name</Label>
+          <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">Last Name</Label>
           <Input
             value={form.lastName}
             onChange={set('lastName')}
             placeholder="Chen"
-            className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]"
+            className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink"
           />
         </div>
       </div>
@@ -244,43 +244,43 @@ function AddLeadTab({ onLeadAdded }: { onLeadAdded: (lead: Lead) => void }) {
       {/* Email + Company */}
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
-          <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">Email *</Label>
+          <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">Email *</Label>
           <Input
             required
             type="email"
             value={form.email}
             onChange={set('email')}
             placeholder="chef@restaurant.com"
-            className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]"
+            className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink"
           />
         </div>
         <div className="space-y-1.5">
-          <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">Company / Restaurant</Label>
+          <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">Company / Restaurant</Label>
           <Input
             value={form.company}
             onChange={set('company')}
             placeholder="The Capital Grille"
-            className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]"
+            className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink"
           />
         </div>
       </div>
 
       {/* Website + Enrich */}
       <div className="space-y-1.5">
-        <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">
-          Website <span className="text-[#C8C0B4] normal-case font-normal">(optional — used to enrich the lead)</span>
+        <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">
+          Website <span className="text-sand normal-case font-normal">(optional — used to enrich the lead)</span>
         </Label>
         <div className="flex gap-2">
           <Input
             value={form.website}
             onChange={set('website')}
             placeholder="https://restaurant.com"
-            className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A] flex-1"
+            className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink flex-1"
           />
           <Button
             type="button"
             variant="outline"
-            className="border-[#E5E1DB] shrink-0 gap-1.5"
+            className="border-shell shrink-0 gap-1.5"
             disabled={!form.website || enriching}
             onClick={handleEnrich}
           >
@@ -303,33 +303,33 @@ function AddLeadTab({ onLeadAdded }: { onLeadAdded: (lead: Lead) => void }) {
           </p>
           {enrichResult.companyName && (
             <div className="flex items-center gap-2 text-sm">
-              <Building2 className="h-3.5 w-3.5 text-[#0A0A0A]/40 shrink-0" />
+              <Building2 className="h-3.5 w-3.5 text-ink/40 shrink-0" />
               <span className="font-medium">{enrichResult.companyName}</span>
             </div>
           )}
           {enrichResult.city && (
-            <div className="flex items-center gap-2 text-sm text-[#0A0A0A]/60">
-              <Globe className="h-3.5 w-3.5 text-[#0A0A0A]/40 shrink-0" />
+            <div className="flex items-center gap-2 text-sm text-ink/60">
+              <Globe className="h-3.5 w-3.5 text-ink/40 shrink-0" />
               {enrichResult.city}
             </div>
           )}
           {enrichResult.description && (
-            <p className="text-xs text-[#0A0A0A]/60 leading-relaxed">{enrichResult.description}</p>
+            <p className="text-xs text-ink/60 leading-relaxed">{enrichResult.description}</p>
           )}
           {enrichResult.phone && (
-            <p className="text-xs text-[#0A0A0A]/50 font-mono">{enrichResult.phone}</p>
+            <p className="text-xs text-ink/50 font-mono">{enrichResult.phone}</p>
           )}
         </div>
       )}
 
       {/* Phone */}
       <div className="space-y-1.5">
-        <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">Phone</Label>
+        <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">Phone</Label>
         <Input
           value={form.phone}
           onChange={set('phone')}
           placeholder="+1 (310) 555-0100"
-          className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]"
+          className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink"
         />
       </div>
 
@@ -342,7 +342,7 @@ function AddLeadTab({ onLeadAdded }: { onLeadAdded: (lead: Lead) => void }) {
       <Button
         type="submit"
         disabled={submitting}
-        className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 w-full sm:w-auto px-8 gap-2"
+        className="bg-ink text-cream hover:bg-ink/80 w-full sm:w-auto px-8 gap-2"
       >
         {submitting ? (
           <><Loader2 className="h-4 w-4 animate-spin" /> Adding to Campaign...</>
@@ -416,16 +416,16 @@ function BulkImportTab({ onImportComplete }: { onImportComplete: () => void }) {
   if (result) {
     return (
       <div className="space-y-4 max-w-lg">
-        <div className="border border-[#E5E1DB] p-6 space-y-4">
-          <p className="font-serif text-xl font-bold text-[#0A0A0A]">Import Complete</p>
+        <div className="border border-shell p-6 space-y-4">
+          <p className="font-serif text-xl font-bold text-ink">Import Complete</p>
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-3 bg-emerald-50">
               <p className="text-2xl font-bold font-serif text-emerald-700">{result.imported}</p>
               <p className="text-[10px] uppercase tracking-wider text-emerald-600 mt-1">Imported</p>
             </div>
-            <div className="text-center p-3 bg-[#F9F7F4]">
-              <p className="text-2xl font-bold font-serif text-[#0A0A0A]/40">{result.skipped}</p>
-              <p className="text-[10px] uppercase tracking-wider text-[#0A0A0A]/40 mt-1">Skipped</p>
+            <div className="text-center p-3 bg-cream">
+              <p className="text-2xl font-bold font-serif text-ink/40">{result.skipped}</p>
+              <p className="text-[10px] uppercase tracking-wider text-ink/40 mt-1">Skipped</p>
             </div>
             <div className="text-center p-3 bg-red-50">
               <p className="text-2xl font-bold font-serif text-red-600">{result.failed}</p>
@@ -434,7 +434,7 @@ function BulkImportTab({ onImportComplete }: { onImportComplete: () => void }) {
           </div>
           {result.errors.length > 0 && (
             <details className="text-xs">
-              <summary className="cursor-pointer text-[#0A0A0A]/50 flex items-center gap-1">
+              <summary className="cursor-pointer text-ink/50 flex items-center gap-1">
                 <ChevronDown className="h-3 w-3" /> {result.errors.length} error{result.errors.length !== 1 ? 's' : ''}
               </summary>
               <ul className="mt-2 space-y-1 text-red-600">
@@ -443,7 +443,7 @@ function BulkImportTab({ onImportComplete }: { onImportComplete: () => void }) {
             </details>
           )}
         </div>
-        <Button variant="outline" className="border-[#E5E1DB]" onClick={() => setResult(null)}>
+        <Button variant="outline" className="border-shell" onClick={() => setResult(null)}>
           Import Another File
         </Button>
       </div>
@@ -453,12 +453,12 @@ function BulkImportTab({ onImportComplete }: { onImportComplete: () => void }) {
   return (
     <div className="space-y-5 max-w-2xl">
       {/* Format hint */}
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-4">
-        <p className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide mb-2">Expected CSV columns</p>
-        <code className="text-xs text-[#0A0A0A]/70 font-mono">
+      <div className="border border-shell bg-cream p-4">
+        <p className="text-xs font-medium text-ink/60 uppercase tracking-wide mb-2">Expected CSV columns</p>
+        <code className="text-xs text-ink/70 font-mono">
           first_name, email, company, website
         </code>
-        <p className="text-[11px] text-[#0A0A0A]/40 mt-2">
+        <p className="text-[11px] text-ink/40 mt-2">
           Header names are flexible — "First Name", "Company Name", "Website URL" etc. all work.
           Only <strong>first_name</strong> and <strong>email</strong> are required.
         </p>
@@ -469,15 +469,15 @@ function BulkImportTab({ onImportComplete }: { onImportComplete: () => void }) {
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
         onClick={() => fileRef.current?.click()}
-        className="border-2 border-dashed border-[#E5E1DB] p-10 text-center cursor-pointer hover:border-[#0A0A0A]/30 transition-colors"
+        className="border-2 border-dashed border-shell p-10 text-center cursor-pointer hover:border-ink/30 transition-colors"
       >
-        <Upload className="h-8 w-8 text-[#C8C0B4] mx-auto mb-3" />
+        <Upload className="h-8 w-8 text-sand mx-auto mb-3" />
         {fileName ? (
-          <p className="text-sm font-medium text-[#0A0A0A]">{fileName}</p>
+          <p className="text-sm font-medium text-ink">{fileName}</p>
         ) : (
           <>
-            <p className="text-sm text-[#0A0A0A]/60">Drop your CSV here, or click to browse</p>
-            <p className="text-xs text-[#0A0A0A]/30 mt-1">Up to 500 rows per import</p>
+            <p className="text-sm text-ink/60">Drop your CSV here, or click to browse</p>
+            <p className="text-xs text-ink/30 mt-1">Up to 500 rows per import</p>
           </>
         )}
         <input
@@ -498,26 +498,26 @@ function BulkImportTab({ onImportComplete }: { onImportComplete: () => void }) {
       {/* Preview table */}
       {rows.length > 0 && (
         <div className="space-y-3">
-          <p className="text-sm text-[#0A0A0A]/60">
-            <strong className="text-[#0A0A0A]">{rows.length} leads</strong> parsed — preview:
+          <p className="text-sm text-ink/60">
+            <strong className="text-ink">{rows.length} leads</strong> parsed — preview:
           </p>
-          <div className="border border-[#E5E1DB] overflow-x-auto">
+          <div className="border border-shell overflow-x-auto">
             <table className="w-full text-xs">
-              <thead className="border-b border-[#E5E1DB] bg-[#F9F7F4]">
+              <thead className="border-b border-shell bg-cream">
                 <tr>
                   {headers.slice(0, 5).map((h) => (
-                    <th key={h} className="text-left px-3 py-2 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                    <th key={h} className="text-left px-3 py-2 text-[10px] font-medium text-ink/50 uppercase tracking-wider">
                       {h}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E5E1DB]">
+              <tbody className="divide-y divide-shell">
                 {rows.slice(0, 5).map((row, i) => (
                   <tr key={i}>
                     {headers.slice(0, 5).map((h) => (
-                      <td key={h} className="px-3 py-2 text-[#0A0A0A]/70 truncate max-w-[160px]">
-                        {row[h] || <span className="text-[#0A0A0A]/25">—</span>}
+                      <td key={h} className="px-3 py-2 text-ink/70 truncate max-w-[160px]">
+                        {row[h] || <span className="text-ink/25">—</span>}
                       </td>
                     ))}
                   </tr>
@@ -525,7 +525,7 @@ function BulkImportTab({ onImportComplete }: { onImportComplete: () => void }) {
               </tbody>
             </table>
             {rows.length > 5 && (
-              <p className="px-3 py-2 text-[11px] text-[#0A0A0A]/40 border-t border-[#E5E1DB]">
+              <p className="px-3 py-2 text-[11px] text-ink/40 border-t border-shell">
                 + {rows.length - 5} more rows
               </p>
             )}
@@ -534,7 +534,7 @@ function BulkImportTab({ onImportComplete }: { onImportComplete: () => void }) {
           <Button
             onClick={handleImport}
             disabled={importing}
-            className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 gap-2"
+            className="bg-ink text-cream hover:bg-ink/80 gap-2"
           >
             {importing ? (
               <><Loader2 className="h-4 w-4 animate-spin" /> Importing...</>
@@ -607,8 +607,8 @@ function PipelineTab({
               onClick={() => setFilterStatus(s)}
               className={`px-3 py-1.5 text-[11px] font-medium tracking-wide uppercase border transition-colors ${
                 filterStatus === s
-                  ? 'bg-[#0A0A0A] text-[#F9F7F4] border-[#0A0A0A]'
-                  : 'border-[#E5E1DB] text-[#0A0A0A]/60 hover:border-[#0A0A0A]/40'
+                  ? 'bg-ink text-cream border-ink'
+                  : 'border-shell text-ink/60 hover:border-ink/40'
               }`}
             >
               {s === 'ALL' ? `All (${leads.length})` : s}
@@ -618,39 +618,39 @@ function PipelineTab({
 
         <Dialog open={addOpen} onOpenChange={setAddOpen}>
           <DialogTrigger asChild>
-            <Button size="sm" className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 shrink-0 gap-1.5">
+            <Button size="sm" className="bg-ink text-cream hover:bg-ink/80 shrink-0 gap-1.5">
               <Plus className="h-3.5 w-3.5" /> Add Manually
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-[#F9F7F4] border-[#E5E1DB] max-w-md">
+          <DialogContent className="bg-cream border-shell max-w-md">
             <DialogHeader>
-              <DialogTitle className="font-serif text-xl text-[#0A0A0A]">Add to Pipeline</DialogTitle>
+              <DialogTitle className="font-serif text-xl text-ink">Add to Pipeline</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleAddLead} className="space-y-4 mt-2">
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">Name *</Label>
-                  <Input required value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} placeholder="Full name" className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]" />
+                  <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">Name *</Label>
+                  <Input required value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} placeholder="Full name" className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink" />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">Email *</Label>
-                  <Input required type="email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} placeholder="email@example.com" className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]" />
+                  <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">Email *</Label>
+                  <Input required type="email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} placeholder="email@example.com" className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">Phone</Label>
-                  <Input value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} placeholder="+1 (310) 555-0100" className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]" />
+                  <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">Phone</Label>
+                  <Input value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} placeholder="+1 (310) 555-0100" className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink" />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">Company</Label>
-                  <Input value={form.company} onChange={(e) => setForm((f) => ({ ...f, company: e.target.value }))} placeholder="Company name" className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]" />
+                  <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">Company</Label>
+                  <Input value={form.company} onChange={(e) => setForm((f) => ({ ...f, company: e.target.value }))} placeholder="Company name" className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink" />
                 </div>
               </div>
               {formError && <p className="text-red-600 text-xs">{formError}</p>}
               <div className="flex gap-3 pt-1">
-                <Button type="button" variant="outline" className="flex-1 border-[#E5E1DB]" onClick={() => setAddOpen(false)}>Cancel</Button>
-                <Button type="submit" disabled={formLoading} className="flex-1 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80">
+                <Button type="button" variant="outline" className="flex-1 border-shell" onClick={() => setAddOpen(false)}>Cancel</Button>
+                <Button type="submit" disabled={formLoading} className="flex-1 bg-ink text-cream hover:bg-ink/80">
                   {formLoading ? 'Adding...' : 'Add'}
                 </Button>
               </div>
@@ -659,35 +659,35 @@ function PipelineTab({
         </Dialog>
       </div>
 
-      <div className="border border-[#E5E1DB] overflow-hidden">
+      <div className="border border-shell overflow-hidden">
         {filtered.length === 0 ? (
-          <div className="py-16 text-center text-[#0A0A0A]/40 text-sm">
+          <div className="py-16 text-center text-ink/40 text-sm">
             {filterStatus === 'ALL' ? 'No leads yet.' : `No leads with status "${filterStatus}".`}
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="border-b border-[#E5E1DB] bg-[#F9F7F4]">
+              <thead className="border-b border-shell bg-cream">
                 <tr>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Name</th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden sm:table-cell">Email</th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden lg:table-cell">Company</th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden lg:table-cell">Website</th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Campaign</th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Status</th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden sm:table-cell">Added</th>
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider">Name</th>
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">Email</th>
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider hidden lg:table-cell">Company</th>
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider hidden lg:table-cell">Website</th>
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider">Campaign</th>
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider">Status</th>
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">Added</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E5E1DB]">
+              <tbody className="divide-y divide-shell">
                 {filtered.map((lead) => (
-                  <tr key={lead.id} className="hover:bg-[#0A0A0A]/[0.02] transition-colors">
+                  <tr key={lead.id} className="hover:bg-ink/[0.02] transition-colors">
                     <td className="px-4 py-3">
-                      <span className="font-medium text-[#0A0A0A]">{lead.name}</span>
-                      {lead.phone && <p className="text-[11px] text-[#0A0A0A]/40 mt-0.5">{lead.phone}</p>}
+                      <span className="font-medium text-ink">{lead.name}</span>
+                      {lead.phone && <p className="text-[11px] text-ink/40 mt-0.5">{lead.phone}</p>}
                     </td>
-                    <td className="px-4 py-3 text-[#0A0A0A]/70 font-mono text-xs hidden sm:table-cell">{lead.email}</td>
-                    <td className="px-4 py-3 text-[#0A0A0A]/60 hidden lg:table-cell">
-                      {lead.company || <span className="text-[#0A0A0A]/25">—</span>}
+                    <td className="px-4 py-3 text-ink/70 font-mono text-xs hidden sm:table-cell">{lead.email}</td>
+                    <td className="px-4 py-3 text-ink/60 hidden lg:table-cell">
+                      {lead.company || <span className="text-ink/25">—</span>}
                     </td>
                     <td className="px-4 py-3 hidden lg:table-cell">
                       {lead.website ? (
@@ -695,14 +695,14 @@ function PipelineTab({
                           href={lead.website}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-xs text-[#0A0A0A]/50 hover:text-[#0A0A0A] transition-colors"
+                          className="inline-flex items-center gap-1 text-xs text-ink/50 hover:text-ink transition-colors"
                         >
                           <Globe className="h-3 w-3" />
                           {new URL(lead.website).hostname.replace('www.', '')}
                           <ExternalLink className="h-2.5 w-2.5" />
                         </a>
                       ) : (
-                        <span className="text-[#0A0A0A]/25">—</span>
+                        <span className="text-ink/25">—</span>
                       )}
                     </td>
                     <td className="px-4 py-3">
@@ -717,14 +717,14 @@ function PipelineTab({
                         <SelectTrigger className="border-0 p-0 h-auto bg-transparent focus:ring-0 w-auto gap-1.5 [&>span]:flex [&>span]:items-center">
                           <SelectValue><StatusBadge status={lead.status} /></SelectValue>
                         </SelectTrigger>
-                        <SelectContent className="bg-[#F9F7F4] border-[#E5E1DB]">
+                        <SelectContent className="bg-cream border-shell">
                           {ALL_STATUSES.map((s) => (
                             <SelectItem key={s} value={s}><StatusBadge status={s} /></SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
                     </td>
-                    <td className="px-4 py-3 text-[11px] text-[#0A0A0A]/40 hidden sm:table-cell whitespace-nowrap">
+                    <td className="px-4 py-3 text-[11px] text-ink/40 hidden sm:table-cell whitespace-nowrap">
                       {format(new Date(lead.createdAt), 'MMM d, yyyy')}
                     </td>
                   </tr>
@@ -752,22 +752,22 @@ export function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) {
 
   return (
     <Tabs defaultValue="add" className="space-y-6">
-      <TabsList className="border border-[#E5E1DB] bg-[#F9F7F4] h-auto p-0 gap-0">
+      <TabsList className="border border-shell bg-cream h-auto p-0 gap-0">
         <TabsTrigger
           value="add"
-          className="px-5 py-2.5 text-xs font-medium uppercase tracking-wide rounded-none data-[state=active]:bg-[#0A0A0A] data-[state=active]:text-[#F9F7F4] data-[state=inactive]:text-[#0A0A0A]/50 transition-colors gap-1.5"
+          className="px-5 py-2.5 text-xs font-medium uppercase tracking-wide rounded-none data-[state=active]:bg-ink data-[state=active]:text-cream data-[state=inactive]:text-ink/50 transition-colors gap-1.5"
         >
           <Zap className="h-3.5 w-3.5" /> Add to Campaign
         </TabsTrigger>
         <TabsTrigger
           value="bulk"
-          className="px-5 py-2.5 text-xs font-medium uppercase tracking-wide rounded-none data-[state=active]:bg-[#0A0A0A] data-[state=active]:text-[#F9F7F4] data-[state=inactive]:text-[#0A0A0A]/50 transition-colors gap-1.5"
+          className="px-5 py-2.5 text-xs font-medium uppercase tracking-wide rounded-none data-[state=active]:bg-ink data-[state=active]:text-cream data-[state=inactive]:text-ink/50 transition-colors gap-1.5"
         >
           <Upload className="h-3.5 w-3.5" /> Bulk Import
         </TabsTrigger>
         <TabsTrigger
           value="pipeline"
-          className="px-5 py-2.5 text-xs font-medium uppercase tracking-wide rounded-none data-[state=active]:bg-[#0A0A0A] data-[state=active]:text-[#F9F7F4] data-[state=inactive]:text-[#0A0A0A]/50 transition-colors gap-1.5"
+          className="px-5 py-2.5 text-xs font-medium uppercase tracking-wide rounded-none data-[state=active]:bg-ink data-[state=active]:text-cream data-[state=inactive]:text-ink/50 transition-colors gap-1.5"
         >
           Pipeline ({leads.length})
         </TabsTrigger>
@@ -775,8 +775,8 @@ export function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) {
 
       <TabsContent value="add" className="mt-0">
         <div className="space-y-2 mb-6">
-          <h3 className="font-serif text-xl font-bold text-[#0A0A0A]">Add Lead to Campaign</h3>
-          <p className="text-sm text-[#0A0A0A]/50">
+          <h3 className="font-serif text-xl font-bold text-ink">Add Lead to Campaign</h3>
+          <p className="text-sm text-ink/50">
             Enter contact details, optionally enrich from their website, then push directly to the EmailBison campaign.
           </p>
         </div>
@@ -785,8 +785,8 @@ export function LeadsClient({ initialLeads }: { initialLeads: Lead[] }) {
 
       <TabsContent value="bulk" className="mt-0">
         <div className="space-y-2 mb-6">
-          <h3 className="font-serif text-xl font-bold text-[#0A0A0A]">Bulk Import</h3>
-          <p className="text-sm text-[#0A0A0A]/50">
+          <h3 className="font-serif text-xl font-bold text-ink">Bulk Import</h3>
+          <p className="text-sm text-ink/50">
             Upload a CSV of leads and push them all to the campaign at once. Up to 500 per batch.
           </p>
         </div>

@@ -98,7 +98,7 @@ export function EmailSubscribeForm({
         )}
 
         {status === "error" && (
-          <p className="font-mono text-xs mt-2" style={{ color: "#dc2626" }}>
+          <p className="font-mono text-xs mt-2" style={{ color: 'var(--color-error)' }}>
             Something went wrong. Try again?
           </p>
         )}

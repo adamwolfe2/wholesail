@@ -161,7 +161,7 @@ export default async function AdminProjectDetailPage({
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-2">
           <h2 className="font-serif text-2xl sm:text-3xl font-normal">{project.company}</h2>
-          <p className="text-sm text-[#0A0A0A]/50 mt-1 font-mono">
+          <p className="text-sm text-ink/50 mt-1 font-mono">
             {project.shortName} &middot; {project.industry}
           </p>
           <div className="flex items-center gap-3 flex-wrap">
@@ -212,29 +212,29 @@ export default async function AdminProjectDetailPage({
           <Card>
             <CardHeader>
               <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
-                <Building2 className="h-4 w-4 text-[#C8C0B4]" />
+                <Building2 className="h-4 w-4 text-sand" />
                 Company &amp; Contact
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm">
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Company</p>
+                  <p className="text-ink/50 text-xs mb-0.5">Company</p>
                   <p className="font-medium">{project.company}</p>
                 </div>
                 <div>
-                  <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Short Name</p>
+                  <p className="text-ink/50 text-xs mb-0.5">Short Name</p>
                   <p className="font-mono font-medium">{project.shortName}</p>
                 </div>
                 <div>
-                  <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Industry</p>
+                  <p className="text-ink/50 text-xs mb-0.5">Industry</p>
                   <Badge variant="outline" className="text-xs">
                     {project.industry}
                   </Badge>
                 </div>
                 {project.website && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                       <Globe className="h-3 w-3" /> Website
                     </p>
                     <a
@@ -245,7 +245,7 @@ export default async function AdminProjectDetailPage({
                       }
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:underline text-[#0A0A0A] text-xs"
+                      className="hover:underline text-ink text-xs"
                     >
                       {project.website}
                     </a>
@@ -253,7 +253,7 @@ export default async function AdminProjectDetailPage({
                 )}
                 {project.intake?.targetDomain && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5">Target Domain</p>
+                    <p className="text-ink/50 text-xs mb-0.5">Target Domain</p>
                     <p className="font-mono text-xs">{project.intake.targetDomain}</p>
                   </div>
                 )}
@@ -261,16 +261,16 @@ export default async function AdminProjectDetailPage({
               <Separator />
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                  <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                     <User className="h-3 w-3" /> Contact
                   </p>
                   <p className="font-medium text-sm">{project.contactName}</p>
                   {project.contactRole && (
-                    <p className="text-xs text-[#0A0A0A]/50">{project.contactRole}</p>
+                    <p className="text-xs text-ink/50">{project.contactRole}</p>
                   )}
                 </div>
                 <div>
-                  <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                  <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                     <Mail className="h-3 w-3" /> Email
                   </p>
                   <a href={`mailto:${project.contactEmail}`} className="hover:underline text-xs">
@@ -279,7 +279,7 @@ export default async function AdminProjectDetailPage({
                 </div>
                 {project.contactPhone && (
                   <div>
-                    <p className="text-[#0A0A0A]/50 text-xs mb-0.5 flex items-center gap-1">
+                    <p className="text-ink/50 text-xs mb-0.5 flex items-center gap-1">
                       <Phone className="h-3 w-3" /> Phone
                     </p>
                     <a href={`tel:${project.contactPhone}`} className="hover:underline text-xs">
@@ -295,21 +295,21 @@ export default async function AdminProjectDetailPage({
           <Card>
             <CardHeader>
               <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
-                <GitBranch className="h-4 w-4 text-[#C8C0B4]" />
+                <GitBranch className="h-4 w-4 text-sand" />
                 Build Progress
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4 text-sm">
               <div className="flex items-center gap-3">
-                <div className="flex-1 h-2 bg-[#E5E1DB]">
+                <div className="flex-1 h-2 bg-shell">
                   <div
-                    className="h-full bg-[#0A0A0A] transition-all"
+                    className="h-full bg-ink transition-all"
                     style={{
                       width: `${Math.round((project.currentPhase / 15) * 100)}%`,
                     }}
                   />
                 </div>
-                <span className="font-mono text-xs text-[#0A0A0A]/60 shrink-0">
+                <span className="font-mono text-xs text-ink/60 shrink-0">
                   Phase {project.currentPhase} / 15
                 </span>
               </div>
@@ -320,7 +320,7 @@ export default async function AdminProjectDetailPage({
                     href={`https://github.com/${project.githubRepo}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-xs font-mono text-[#0A0A0A]/70 hover:text-[#0A0A0A] border border-[#E5E1DB] px-3 py-2"
+                    className="flex items-center gap-2 text-xs font-mono text-ink/70 hover:text-ink border border-shell px-3 py-2"
                   >
                     <GitBranch className="h-3.5 w-3.5" />
                     {project.githubRepo}
@@ -331,7 +331,7 @@ export default async function AdminProjectDetailPage({
                     href={project.vercelUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-xs font-mono text-[#0A0A0A]/70 hover:text-[#0A0A0A] border border-[#E5E1DB] px-3 py-2"
+                    className="flex items-center gap-2 text-xs font-mono text-ink/70 hover:text-ink border border-shell px-3 py-2"
                   >
                     <Globe className="h-3.5 w-3.5" />
                     Staging URL
@@ -341,7 +341,7 @@ export default async function AdminProjectDetailPage({
 
               {project.enabledFeatures.length > 0 && (
                 <div>
-                  <p className="text-[#0A0A0A]/50 text-xs mb-2">
+                  <p className="text-ink/50 text-xs mb-2">
                     Enabled features ({project.enabledFeatures.length})
                   </p>
                   <div className="flex flex-wrap gap-1">
@@ -374,20 +374,20 @@ export default async function AdminProjectDetailPage({
                   return (
                     <div
                       key={envVar.key}
-                      className="flex items-center justify-between py-1.5 border-b border-[#E5E1DB] last:border-0"
+                      className="flex items-center justify-between py-1.5 border-b border-shell last:border-0"
                     >
                       <div className="min-w-0 flex-1 mr-3">
-                        <p className="font-mono text-[10px] text-[#0A0A0A]">
+                        <p className="font-mono text-[10px] text-ink">
                           {envVar.key}
                         </p>
-                        <p className="text-[9px] text-[#0A0A0A]/40">{envVar.label}</p>
+                        <p className="text-[9px] text-ink/40">{envVar.label}</p>
                       </div>
                       <EnvVarStatusBadge status={status} />
                     </div>
                   );
                 })}
               </div>
-              <p className="text-[9px] font-mono text-[#0A0A0A]/40 mt-3">
+              <p className="text-[9px] font-mono text-ink/40 mt-3">
                 Click env var rows in the actions panel to update status
               </p>
             </CardContent>
@@ -402,7 +402,7 @@ export default async function AdminProjectDetailPage({
               <CardContent>
                 <div className="max-h-48 overflow-y-auto space-y-1">
                   {buildLog.map((entry, i) => (
-                    <p key={i} className="font-mono text-[10px] text-[#0A0A0A]/70">
+                    <p key={i} className="font-mono text-[10px] text-ink/70">
                       {entry}
                     </p>
                   ))}
@@ -415,49 +415,49 @@ export default async function AdminProjectDetailPage({
           <Card>
             <CardHeader>
               <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
-                <DollarSign className="h-4 w-4 text-[#C8C0B4]" />
+                <DollarSign className="h-4 w-4 text-sand" />
                 Costs
               </CardTitle>
             </CardHeader>
             <CardContent>
               {costs.length === 0 ? (
-                <p className="text-sm text-[#0A0A0A]/40 font-mono">No costs logged yet.</p>
+                <p className="text-sm text-ink/40 font-mono">No costs logged yet.</p>
               ) : (
                 <div className="space-y-1">
                   {costs.map((cost) => (
                     <div
                       key={cost.id}
-                      className="flex items-center justify-between py-1.5 border-b border-[#E5E1DB] last:border-0"
+                      className="flex items-center justify-between py-1.5 border-b border-shell last:border-0"
                     >
                       <div className="min-w-0 flex-1">
-                        <p className="font-mono text-xs text-[#0A0A0A]">
+                        <p className="font-mono text-xs text-ink">
                           {cost.description}
                         </p>
-                        <p className="font-mono text-[9px] text-[#0A0A0A]/40">
+                        <p className="font-mono text-[9px] text-ink/40">
                           {cost.service}
                           {cost.tokens ? ` · ${cost.tokens.toLocaleString()} tokens` : ""}
                           {" · "}{format(new Date(cost.date), 'MMM d, yyyy')}
                         </p>
                       </div>
-                      <p className="font-mono text-xs text-[#0A0A0A] shrink-0">
+                      <p className="font-mono text-xs text-ink shrink-0">
                         {formatCurrency(Number(cost.amountCents) / 100)}
                       </p>
                     </div>
                   ))}
                   <div className="pt-3 space-y-1">
                     <div className="flex justify-between font-mono text-xs">
-                      <span className="text-[#0A0A0A]/60">Total to date</span>
+                      <span className="text-ink/60">Total to date</span>
                       <span className="font-bold">{totalCostDollars}</span>
                     </div>
                     {project.contractValue > 0 && (
                       <>
                         <div className="flex justify-between font-mono text-xs">
-                          <span className="text-[#0A0A0A]/60">Contract Value</span>
+                          <span className="text-ink/60">Contract Value</span>
                           <span>${project.contractValue.toLocaleString()}</span>
                         </div>
                         {marginPct !== null && (
                           <div className="flex justify-between font-mono text-xs">
-                            <span className="text-[#0A0A0A]/60">Est. Margin</span>
+                            <span className="text-ink/60">Est. Margin</span>
                             <span className={marginPct >= 90 ? "text-green-700" : "text-yellow-700"}>
                               {marginPct}%
                             </span>
@@ -486,11 +486,11 @@ export default async function AdminProjectDetailPage({
                       ) : note.type === "UPDATE" ? (
                         <Circle className="h-4 w-4 text-blue-600 mt-0.5 shrink-0" />
                       ) : (
-                        <Circle className="h-4 w-4 text-[#0A0A0A]/20 mt-0.5 shrink-0" />
+                        <Circle className="h-4 w-4 text-ink/20 mt-0.5 shrink-0" />
                       )}
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm text-[#0A0A0A]">{note.text}</p>
-                        <p className="text-[10px] font-mono text-[#0A0A0A]/40 mt-0.5">
+                        <p className="text-sm text-ink">{note.text}</p>
+                        <p className="text-[10px] font-mono text-ink/40 mt-0.5">
                           {format(new Date(note.createdAt), "MMM d, yyyy")}
                         </p>
                       </div>
@@ -517,11 +517,11 @@ export default async function AdminProjectDetailPage({
           {(project.status === "REVIEW" || project.status === "BUILDING") && qaTasks.length > 0 && (
             <Card>
               <CardContent className="pt-4">
-                <p className="font-mono text-[9px] uppercase tracking-widest text-[#0A0A0A]/40 mb-2">
+                <p className="font-mono text-[9px] uppercase tracking-widest text-ink/40 mb-2">
                   QA Progress
                 </p>
                 <div className="flex items-center gap-3">
-                  <div className="flex-1 h-2 bg-[#E5E1DB]">
+                  <div className="flex-1 h-2 bg-shell">
                     <div
                       className="h-full transition-all"
                       style={{
@@ -530,11 +530,11 @@ export default async function AdminProjectDetailPage({
                       }}
                     />
                   </div>
-                  <span className="font-mono text-xs text-[#0A0A0A]/60 shrink-0">
+                  <span className="font-mono text-xs text-ink/60 shrink-0">
                     {qaCompleted}/{qaTasks.length}
                   </span>
                 </div>
-                <p className="text-[10px] text-[#0A0A0A]/40 mt-1.5 font-mono">
+                <p className="text-[10px] text-ink/40 mt-1.5 font-mono">
                   {qaCompleted === qaTasks.length
                     ? "All QA checks passed"
                     : `${qaTasks.length - qaCompleted} QA check${qaTasks.length - qaCompleted !== 1 ? "s" : ""} remaining`}

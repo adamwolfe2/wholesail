@@ -34,7 +34,7 @@ export function ProjectAssignee({ projectId, initialAssignedTo }: Props) {
   if (editing) {
     return (
       <div className="flex items-center gap-1">
-        <UserCircle className="h-3.5 w-3.5 text-[#C8C0B4] shrink-0" />
+        <UserCircle className="h-3.5 w-3.5 text-sand shrink-0" />
         <input
           type="text"
           value={inputValue}
@@ -49,13 +49,13 @@ export function ProjectAssignee({ projectId, initialAssignedTo }: Props) {
           }}
           placeholder="Assign to..."
           autoFocus
-          className="border border-[#E5E1DB] px-2 py-0.5 text-[10px] font-mono bg-white focus:outline-none w-28"
+          className="border border-shell px-2 py-0.5 text-[10px] font-mono bg-white focus:outline-none w-28"
         />
         <button
           type="button"
           onClick={handleSave}
           disabled={saving}
-          className="text-[#0A0A0A]/60 hover:text-[#0A0A0A]"
+          className="text-ink/60 hover:text-ink"
         >
           {saving ? (
             <Loader2 className="h-3 w-3 animate-spin" />
@@ -74,16 +74,16 @@ export function ProjectAssignee({ projectId, initialAssignedTo }: Props) {
         setInputValue(assignedTo);
         setEditing(true);
       }}
-      className="flex items-center gap-1 text-[10px] font-mono text-[#0A0A0A]/50 hover:text-[#0A0A0A] transition-colors"
+      className="flex items-center gap-1 text-[10px] font-mono text-ink/50 hover:text-ink transition-colors"
       title="Edit assignee"
     >
-      <UserCircle className="h-3.5 w-3.5 text-[#C8C0B4]" />
+      <UserCircle className="h-3.5 w-3.5 text-sand" />
       {assignedTo ? (
         <span>{assignedTo}</span>
       ) : (
-        <span className="text-[#0A0A0A]/30">Unassigned</span>
+        <span className="text-ink/30">Unassigned</span>
       )}
-      <Pencil className="h-2.5 w-2.5 text-[#0A0A0A]/20" />
+      <Pencil className="h-2.5 w-2.5 text-ink/20" />
     </button>
   );
 }

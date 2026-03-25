@@ -73,7 +73,7 @@ export default function GuidePage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F7F4]">
+    <div className="min-h-screen bg-cream">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
@@ -82,13 +82,13 @@ export default function GuidePage() {
       <MarketingHeader />
 
       {/* HERO */}
-      <div className="pt-24 pb-12 sm:pb-16 border-b border-[#E5E1DB]">
+      <div className="pt-24 pb-12 sm:pb-16 border-b border-shell">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          <p className="text-xs tracking-[0.25em] uppercase text-[#C8C0B4] mb-4">Wholesail</p>
-          <h1 className="font-serif text-5xl sm:text-6xl font-normal text-[#0A0A0A] leading-tight mb-6">
+          <p className="text-xs tracking-[0.25em] uppercase text-sand mb-4">Wholesail</p>
+          <h1 className="font-serif text-5xl sm:text-6xl font-normal text-ink leading-tight mb-6">
             How to Order
           </h1>
-          <p className="text-lg text-[#0A0A0A]/60 leading-relaxed max-w-2xl">
+          <p className="text-lg text-ink/60 leading-relaxed max-w-2xl">
             We built this ordering system specifically for professional kitchens. Here&apos;s everything
             you need to know to get up and running — and keep running.
           </p>
@@ -102,21 +102,21 @@ export default function GuidePage() {
           {/* Section 1: Getting Started */}
           <section id="getting-started">
             <div className="flex items-start gap-5 mb-8">
-              <span className="font-serif text-5xl font-normal text-[#E5E1DB] leading-none select-none shrink-0">
+              <span className="font-serif text-5xl font-normal text-shell leading-none select-none shrink-0">
                 01
               </span>
               <div>
-                <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-2">Step One</p>
-                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#0A0A0A]">Getting Started</h2>
+                <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-2">Step One</p>
+                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-ink">Getting Started</h2>
               </div>
             </div>
             <div className="pl-0 sm:pl-20 space-y-5">
-              <p className="text-[#0A0A0A]/70 text-base leading-relaxed">
+              <p className="text-ink/70 text-base leading-relaxed">
                 Wholesail is a wholesale-only operation. We work with Michelin-starred restaurants, four- and
                 five-star hotels, private chefs, and qualified catering operations. We are not a consumer
                 retailer.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#E5E1DB]">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-shell">
                 {[
                   {
                     step: '1',
@@ -134,17 +134,17 @@ export default function GuidePage() {
                     body: 'Log in to your client portal or text us on iMessage. Your account, pricing, and order history are all in one place.',
                   },
                 ].map((item) => (
-                  <div key={item.step} className="bg-[#F9F7F4] p-6 sm:p-8">
-                    <p className="font-serif text-3xl font-bold text-[#E5E1DB] mb-3 leading-none">{item.step}</p>
-                    <h3 className="font-serif text-lg font-bold text-[#0A0A0A] mb-2">{item.title}</h3>
-                    <p className="text-sm text-[#0A0A0A]/55 leading-relaxed">{item.body}</p>
+                  <div key={item.step} className="bg-cream p-6 sm:p-8">
+                    <p className="font-serif text-3xl font-bold text-shell mb-3 leading-none">{item.step}</p>
+                    <h3 className="font-serif text-lg font-bold text-ink mb-2">{item.title}</h3>
+                    <p className="text-sm text-ink/55 leading-relaxed">{item.body}</p>
                   </div>
                 ))}
               </div>
               <div className="mt-4">
                 <Link
                   href="/partner"
-                  className="inline-flex items-center gap-2 bg-[#0A0A0A] text-[#F9F7F4] px-6 py-3 text-sm tracking-wide hover:opacity-90 transition-opacity"
+                  className="inline-flex items-center gap-2 bg-ink text-cream px-6 py-3 text-sm tracking-wide hover:opacity-90 transition-opacity"
                 >
                   Apply for Wholesale Access
                 </Link>
@@ -152,21 +152,21 @@ export default function GuidePage() {
             </div>
           </section>
 
-          <div className="border-t border-[#E5E1DB]" />
+          <div className="border-t border-shell" />
 
           {/* Section 2: Browsing & Ordering */}
           <section id="browsing-ordering">
             <div className="flex items-start gap-5 mb-8">
-              <span className="font-serif text-5xl font-normal text-[#E5E1DB] leading-none select-none shrink-0">
+              <span className="font-serif text-5xl font-normal text-shell leading-none select-none shrink-0">
                 02
               </span>
               <div>
-                <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-2">Step Two</p>
-                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#0A0A0A]">Browsing & Ordering</h2>
+                <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-2">Step Two</p>
+                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-ink">Browsing & Ordering</h2>
               </div>
             </div>
             <div className="pl-0 sm:pl-20 space-y-5">
-              <p className="text-[#0A0A0A]/70 text-base leading-relaxed">
+              <p className="text-ink/70 text-base leading-relaxed">
                 Once you have portal access, your client dashboard shows your pricing tier, order history,
                 available items, and any active promotions. The catalog is organized by category —
                 review your catalog categories with your account manager after onboarding.
@@ -181,7 +181,7 @@ export default function GuidePage() {
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <svg
-                      className="w-4 h-4 text-[#0A0A0A]/40 shrink-0 mt-0.5"
+                      className="w-4 h-4 text-ink/40 shrink-0 mt-0.5"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -189,28 +189,28 @@ export default function GuidePage() {
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-sm text-[#0A0A0A]/70 leading-relaxed">{item}</span>
+                    <span className="text-sm text-ink/70 leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </section>
 
-          <div className="border-t border-[#E5E1DB]" />
+          <div className="border-t border-shell" />
 
           {/* Section 3: Payment */}
           <section id="payment">
             <div className="flex items-start gap-5 mb-8">
-              <span className="font-serif text-5xl font-normal text-[#E5E1DB] leading-none select-none shrink-0">
+              <span className="font-serif text-5xl font-normal text-shell leading-none select-none shrink-0">
                 03
               </span>
               <div>
-                <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-2">Step Three</p>
-                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#0A0A0A]">Payment & Terms</h2>
+                <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-2">Step Three</p>
+                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-ink">Payment & Terms</h2>
               </div>
             </div>
             <div className="pl-0 sm:pl-20 space-y-5">
-              <p className="text-[#0A0A0A]/70 text-base leading-relaxed">
+              <p className="text-ink/70 text-base leading-relaxed">
                 We keep payment simple. No hidden fees, no surcharges, no confusion.
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -232,35 +232,35 @@ export default function GuidePage() {
                     body: 'Available to qualified clients with 6+ months of order history. Apply through your account dashboard or contact us.',
                   },
                 ].map((item) => (
-                  <div key={item.title} className="border border-[#E5E1DB] bg-white p-5">
-                    <h3 className="font-serif text-base font-bold text-[#0A0A0A] mb-2">{item.title}</h3>
-                    <p className="text-sm text-[#0A0A0A]/55 leading-relaxed">{item.body}</p>
+                  <div key={item.title} className="border border-shell bg-white p-5">
+                    <h3 className="font-serif text-base font-bold text-ink mb-2">{item.title}</h3>
+                    <p className="text-sm text-ink/55 leading-relaxed">{item.body}</p>
                   </div>
                 ))}
               </div>
             </div>
           </section>
 
-          <div className="border-t border-[#E5E1DB]" />
+          <div className="border-t border-shell" />
 
           {/* Section 4: Delivery */}
           <section id="delivery">
             <div className="flex items-start gap-5 mb-8">
-              <span className="font-serif text-5xl font-normal text-[#E5E1DB] leading-none select-none shrink-0">
+              <span className="font-serif text-5xl font-normal text-shell leading-none select-none shrink-0">
                 04
               </span>
               <div>
-                <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-2">Step Four</p>
-                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#0A0A0A]">Delivery</h2>
+                <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-2">Step Four</p>
+                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-ink">Delivery</h2>
               </div>
             </div>
             <div className="pl-0 sm:pl-20 space-y-5">
-              <p className="text-[#0A0A0A]/70 text-base leading-relaxed">
+              <p className="text-ink/70 text-base leading-relaxed">
                 Every perishable item ships in insulated, temperature-controlled packaging designed to
                 maintain the cold chain from our warehouse to your kitchen. We never cut corners on
                 packaging — the cost of spoilage is far higher than the cost of doing it right.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-[#E5E1DB]">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-shell">
                 {[
                   {
                     zone: 'SoCal',
@@ -278,37 +278,37 @@ export default function GuidePage() {
                     body: 'Continental US and Hawaii. FedEx overnight or 2-day depending on destination. Dry ice for caviar and proteins.',
                   },
                 ].map((item) => (
-                  <div key={item.zone} className="bg-[#F9F7F4] p-6 sm:p-8">
-                    <p className="text-[10px] tracking-[0.2em] uppercase text-[#C8C0B4] mb-1">{item.zone}</p>
-                    <p className="font-serif text-xl font-bold text-[#0A0A0A] mb-3">{item.speed}</p>
-                    <p className="text-sm text-[#0A0A0A]/55 leading-relaxed">{item.body}</p>
+                  <div key={item.zone} className="bg-cream p-6 sm:p-8">
+                    <p className="text-[10px] tracking-[0.2em] uppercase text-sand mb-1">{item.zone}</p>
+                    <p className="font-serif text-xl font-bold text-ink mb-3">{item.speed}</p>
+                    <p className="text-sm text-ink/55 leading-relaxed">{item.body}</p>
                   </div>
                 ))}
               </div>
             </div>
           </section>
 
-          <div className="border-t border-[#E5E1DB]" />
+          <div className="border-t border-shell" />
 
           {/* Section 5: iMessage Ordering */}
           <section id="imessage">
             <div className="flex items-start gap-5 mb-8">
-              <span className="font-serif text-5xl font-normal text-[#E5E1DB] leading-none select-none shrink-0">
+              <span className="font-serif text-5xl font-normal text-shell leading-none select-none shrink-0">
                 05
               </span>
               <div>
-                <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-2">Step Five</p>
-                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#0A0A0A]">iMessage Ordering</h2>
+                <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-2">Step Five</p>
+                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-ink">iMessage Ordering</h2>
               </div>
             </div>
             <div className="pl-0 sm:pl-20 space-y-5">
-              <p className="text-[#0A0A0A]/70 text-base leading-relaxed">
+              <p className="text-ink/70 text-base leading-relaxed">
                 We built an AI ordering system that understands how buyers actually communicate. Text us
                 naturally — &ldquo;12 cases product A, 5 lbs product B&rdquo; — and our system
                 interprets your order, matches it to the catalog, and routes it to a human for
                 confirmation before anything ships.
               </p>
-              <div className="bg-[#0A0A0A] p-6 sm:p-8 font-mono text-sm">
+              <div className="bg-ink p-6 sm:p-8 font-mono text-sm">
                 <div className="space-y-4">
                   <div className="flex justify-end">
                     <div className="bg-[#1C6CF7] text-white rounded-2xl rounded-tr-sm px-4 py-2.5 max-w-xs text-right">
@@ -333,28 +333,28 @@ export default function GuidePage() {
                   </div>
                 </div>
               </div>
-              <p className="text-sm text-[#0A0A0A]/50">
+              <p className="text-sm text-ink/50">
                 iMessage ordering is available to all active wholesale clients. The number is in your
                 welcome email. A human reviews every AI-interpreted order before it ships.
               </p>
             </div>
           </section>
 
-          <div className="border-t border-[#E5E1DB]" />
+          <div className="border-t border-shell" />
 
           {/* Section 6: Standing Orders */}
           <section id="standing-orders">
             <div className="flex items-start gap-5 mb-8">
-              <span className="font-serif text-5xl font-normal text-[#E5E1DB] leading-none select-none shrink-0">
+              <span className="font-serif text-5xl font-normal text-shell leading-none select-none shrink-0">
                 06
               </span>
               <div>
-                <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-2">Step Six</p>
-                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#0A0A0A]">Standing Orders</h2>
+                <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-2">Step Six</p>
+                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-ink">Standing Orders</h2>
               </div>
             </div>
             <div className="pl-0 sm:pl-20 space-y-5">
-              <p className="text-[#0A0A0A]/70 text-base leading-relaxed">
+              <p className="text-ink/70 text-base leading-relaxed">
                 If your program runs on consistent volume, standing orders eliminate the overhead of
                 placing the same order every week. Set it once — we handle the rest.
               </p>
@@ -368,7 +368,7 @@ export default function GuidePage() {
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <svg
-                      className="w-4 h-4 text-[#0A0A0A]/40 shrink-0 mt-0.5"
+                      className="w-4 h-4 text-ink/40 shrink-0 mt-0.5"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -376,37 +376,37 @@ export default function GuidePage() {
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-sm text-[#0A0A0A]/70 leading-relaxed">{item}</span>
+                    <span className="text-sm text-ink/70 leading-relaxed">{item}</span>
                   </li>
                 ))}
               </ul>
-              <p className="text-sm text-[#0A0A0A]/50">
+              <p className="text-sm text-ink/50">
                 Contact your account manager or text us to set up a standing order after your first
                 purchase.
               </p>
             </div>
           </section>
 
-          <div className="border-t border-[#E5E1DB]" />
+          <div className="border-t border-shell" />
 
           {/* Section 7: FAQ */}
           <section id="faq">
             <div className="flex items-start gap-5 mb-8">
-              <span className="font-serif text-5xl font-normal text-[#E5E1DB] leading-none select-none shrink-0">
+              <span className="font-serif text-5xl font-normal text-shell leading-none select-none shrink-0">
                 07
               </span>
               <div>
-                <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-2">FAQ</p>
-                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-[#0A0A0A]">Common Questions</h2>
+                <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-2">FAQ</p>
+                <h2 className="font-serif text-3xl sm:text-4xl font-normal text-ink">Common Questions</h2>
               </div>
             </div>
-            <div className="pl-0 sm:pl-20 space-y-0 divide-y divide-[#E5E1DB] border-t border-[#E5E1DB]">
+            <div className="pl-0 sm:pl-20 space-y-0 divide-y divide-shell border-t border-shell">
               {faqItems.map((item) => (
                 <div key={item.question} className="py-6">
-                  <h3 className="font-serif text-lg font-bold text-[#0A0A0A] mb-3">
+                  <h3 className="font-serif text-lg font-bold text-ink mb-3">
                     {item.question}
                   </h3>
-                  <p className="text-sm text-[#0A0A0A]/65 leading-relaxed">{item.answer}</p>
+                  <p className="text-sm text-ink/65 leading-relaxed">{item.answer}</p>
                 </div>
               ))}
             </div>
@@ -416,7 +416,7 @@ export default function GuidePage() {
       </div>
 
       {/* BOTTOM CTA */}
-      <div className="border-t border-[#E5E1DB] bg-[#0A0A0A] py-14">
+      <div className="border-t border-shell bg-ink py-14">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center">
           <p className="font-serif text-3xl sm:text-4xl font-normal text-white mb-4">
             Ready to get started?
@@ -427,7 +427,7 @@ export default function GuidePage() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               href="/partner"
-              className="inline-flex items-center gap-2 bg-white text-[#0A0A0A] px-8 py-4 text-sm font-medium tracking-wide hover:bg-white/90 transition-colors"
+              className="inline-flex items-center gap-2 bg-white text-ink px-8 py-4 text-sm font-medium tracking-wide hover:bg-white/90 transition-colors"
             >
               Apply for Wholesale Access
             </Link>
@@ -442,19 +442,19 @@ export default function GuidePage() {
       </div>
 
       {/* FOOTER */}
-      <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
+      <footer className="border-t border-shell bg-ink-dark text-cream py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
-          <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
-            <Link href="/catalog" className="hover:text-[#F9F7F4] transition-colors">Catalog</Link>
-            <Link href="/guide" className="hover:text-[#F9F7F4] transition-colors">How to Order</Link>
-            <Link href="/about" className="hover:text-[#F9F7F4] transition-colors">About</Link>
-            <Link href="/partner" className="hover:text-[#F9F7F4] transition-colors">Wholesale</Link>
+          <div className="flex items-center gap-6 text-sm text-cream/40">
+            <Link href="/catalog" className="hover:text-cream transition-colors">Catalog</Link>
+            <Link href="/guide" className="hover:text-cream transition-colors">How to Order</Link>
+            <Link href="/about" className="hover:text-cream transition-colors">About</Link>
+            <Link href="/partner" className="hover:text-cream transition-colors">Wholesale</Link>
             <a
               href="https://www.instagram.com/wholesailhub/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-[#F9F7F4] transition-colors flex items-center gap-1.5"
+              className="hover:text-cream transition-colors flex items-center gap-1.5"
             >
               <Instagram className="h-3.5 w-3.5" />
               @wholesailhub

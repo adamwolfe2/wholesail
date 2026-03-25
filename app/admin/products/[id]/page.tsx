@@ -96,7 +96,7 @@ export default async function ProductDetailPage({
               variant="ghost"
               size="sm"
               asChild
-              className="text-[#0A0A0A]/50 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none -ml-2"
+              className="text-ink/50 hover:text-ink hover:bg-ink/[0.04] rounded-none -ml-2"
             >
               <Link href="/admin/products">
                 <ArrowLeft className="h-4 w-4 mr-1" />
@@ -104,13 +104,13 @@ export default async function ProductDetailPage({
               </Link>
             </Button>
           </div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
             {product.name}
           </h2>
           <div className="flex items-center gap-2 mt-1">
             <Badge
               variant="outline"
-              className="text-xs border-[#E5E1DB] text-[#0A0A0A]/60"
+              className="text-xs border-shell text-ink/60"
             >
               {product.category}
             </Badge>
@@ -128,7 +128,7 @@ export default async function ProductDetailPage({
         </div>
         <Button
           asChild
-          className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none shrink-0"
+          className="bg-ink text-cream hover:bg-ink/80 rounded-none shrink-0"
         >
           <Link href="/admin/products">Edit in Catalog</Link>
         </Button>
@@ -136,78 +136,78 @@ export default async function ProductDetailPage({
 
       {/* KPI Row */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               Current Price
             </CardTitle>
-            <DollarSign className="h-4 w-4 text-[#C8C0B4]" />
+            <DollarSign className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold font-serif text-[#0A0A0A]">
+            <div className="text-3xl font-bold font-serif text-ink">
               {formatCurrency(currentPrice)}
             </div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">{product.unit}</p>
+            <p className="text-xs text-ink/40 mt-1">{product.unit}</p>
           </CardContent>
         </Card>
 
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               Category
             </CardTitle>
-            <Tag className="h-4 w-4 text-[#C8C0B4]" />
+            <Tag className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-lg font-semibold font-serif text-[#0A0A0A]">
+            <div className="text-lg font-semibold font-serif text-ink">
               {product.category}
             </div>
             {product.minimumOrder && (
-              <p className="text-xs text-[#0A0A0A]/40 mt-1">
+              <p className="text-xs text-ink/40 mt-1">
                 Min order: {product.minimumOrder}
               </p>
             )}
           </CardContent>
         </Card>
 
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               Availability
             </CardTitle>
             {product.available ? (
               <ToggleRight className="h-4 w-4 text-green-500" />
             ) : (
-              <ToggleLeft className="h-4 w-4 text-[#C8C0B4]" />
+              <ToggleLeft className="h-4 w-4 text-sand" />
             )}
           </CardHeader>
           <CardContent>
             <div
               className={`text-lg font-semibold font-serif ${
-                product.available ? "text-green-700" : "text-[#0A0A0A]/40"
+                product.available ? "text-green-700" : "text-ink/40"
               }`}
             >
               {product.available ? "Available" : "Unavailable"}
             </div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">
+            <p className="text-xs text-ink/40 mt-1">
               Updated {format(product.updatedAt, "MMM d, yyyy")}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               Flags
             </CardTitle>
-            <Package className="h-4 w-4 text-[#C8C0B4]" />
+            <Package className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-1 mt-1">
               {product.marketRate && (
                 <Badge
                   variant="outline"
-                  className="text-xs border-[#E5E1DB] text-[#0A0A0A]/60"
+                  className="text-xs border-shell text-ink/60"
                 >
                   Market Rate
                 </Badge>
@@ -231,7 +231,7 @@ export default async function ProductDetailPage({
               {!product.marketRate &&
                 !product.prepayRequired &&
                 !product.coldChainRequired && (
-                  <span className="text-xs text-[#0A0A0A]/30">None</span>
+                  <span className="text-xs text-ink/30">None</span>
                 )}
             </div>
           </CardContent>
@@ -240,14 +240,14 @@ export default async function ProductDetailPage({
 
       {/* Description */}
       {product.description && (
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader>
-            <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+            <CardTitle className="font-serif text-lg text-ink">
               Description
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-[#0A0A0A]/70 whitespace-pre-wrap">
+            <p className="text-sm text-ink/70 whitespace-pre-wrap">
               {product.description}
             </p>
           </CardContent>
@@ -263,13 +263,13 @@ export default async function ProductDetailPage({
       />
 
       {/* Price History */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader>
-          <CardTitle className="font-serif text-lg text-[#0A0A0A] flex items-center gap-2">
-            <TrendingUp className="h-4 w-4 text-[#C8C0B4]" />
+          <CardTitle className="font-serif text-lg text-ink flex items-center gap-2">
+            <TrendingUp className="h-4 w-4 text-sand" />
             Price History
           </CardTitle>
-          <CardDescription className="text-[#0A0A0A]/50">
+          <CardDescription className="text-ink/50">
             Tracked price changes over time. Price edits made from the product
             catalog are recorded automatically.
           </CardDescription>

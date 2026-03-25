@@ -72,21 +72,21 @@ export default async function AdminWholesalePage({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-serif text-3xl font-normal text-[#0A0A0A]">Wholesale Applications</h2>
-          <p className="text-sm text-[#0A0A0A]/50 mt-1">Review and manage partner applications</p>
+          <h2 className="font-serif text-3xl font-normal text-ink">Wholesale Applications</h2>
+          <p className="text-sm text-ink/50 mt-1">Review and manage partner applications</p>
         </div>
-        <span className="text-sm text-[#0A0A0A]/50">{count} {activeSource === 'applications' ? 'applications' : 'sign-ups'}</span>
+        <span className="text-sm text-ink/50">{count} {activeSource === 'applications' ? 'applications' : 'sign-ups'}</span>
       </div>
 
       {/* Source tabs */}
       <div className="overflow-x-auto">
-      <div className="flex gap-1 border-b border-[#E5E1DB] min-w-max">
+      <div className="flex gap-1 border-b border-shell min-w-max">
         <Link
           href="/admin/wholesale"
           className={`px-4 py-2.5 text-sm font-medium transition-colors whitespace-nowrap -mb-px border-b-2 ${
             activeSource === 'applications'
-              ? 'border-[#0A0A0A] text-[#0A0A0A]'
-              : 'border-transparent text-[#0A0A0A]/50 hover:text-[#0A0A0A]'
+              ? 'border-ink text-ink'
+              : 'border-transparent text-ink/50 hover:text-ink'
           }`}
         >
           Wholesale Applications
@@ -95,8 +95,8 @@ export default async function AdminWholesalePage({
           href="/admin/wholesale?source=partners"
           className={`px-4 py-2.5 text-sm font-medium transition-colors whitespace-nowrap -mb-px border-b-2 ${
             activeSource === 'partners'
-              ? 'border-[#0A0A0A] text-[#0A0A0A]'
-              : 'border-transparent text-[#0A0A0A]/50 hover:text-[#0A0A0A]'
+              ? 'border-ink text-ink'
+              : 'border-transparent text-ink/50 hover:text-ink'
           }`}
         >
           Partner Sign-ups
@@ -108,15 +108,15 @@ export default async function AdminWholesalePage({
         <>
           {/* Status sub-tabs */}
           <div className="overflow-x-auto">
-          <div className="flex gap-1 border-b border-[#E5E1DB] min-w-max">
+          <div className="flex gap-1 border-b border-shell min-w-max">
             {STATUS_TABS.map(tab => (
               <Link
                 key={tab.value}
                 href={tab.value === 'ALL' ? '/admin/wholesale' : `/admin/wholesale?status=${tab.value}`}
                 className={`px-4 py-2.5 text-sm font-medium transition-colors whitespace-nowrap -mb-px border-b-2 ${
                   activeFilter === tab.value
-                    ? 'border-[#0A0A0A] text-[#0A0A0A]'
-                    : 'border-transparent text-[#0A0A0A]/50 hover:text-[#0A0A0A]'
+                    ? 'border-ink text-ink'
+                    : 'border-transparent text-ink/50 hover:text-ink'
                 }`}
               >
                 {tab.label}
@@ -132,39 +132,39 @@ export default async function AdminWholesalePage({
               description="Applications submitted via the partner form will appear here once reviewed."
             />
           ) : (
-            <div className="border border-[#E5E1DB] overflow-hidden">
+            <div className="border border-shell overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-[#E5E1DB] bg-[#F9F7F4]">
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60">Business</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden sm:table-cell">Contact</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden md:table-cell">Email</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden md:table-cell">Phone</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden sm:table-cell">Type</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden md:table-cell">Volume</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden sm:table-cell">Date</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60">Status</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60"></th>
+                    <tr className="border-b border-shell bg-cream">
+                      <th className="px-4 py-3 text-left font-medium text-ink/60">Business</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden sm:table-cell">Contact</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden md:table-cell">Email</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden md:table-cell">Phone</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden sm:table-cell">Type</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden md:table-cell">Volume</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden sm:table-cell">Date</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60">Status</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60"></th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E5E1DB]">
+                  <tbody className="divide-y divide-shell">
                     {applications.map(app => (
-                      <tr key={app.id} className="bg-white hover:bg-[#F9F7F4] transition-colors">
-                        <td className="px-4 py-3 font-medium text-[#0A0A0A]">{app.businessName}</td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/70 hidden sm:table-cell">{app.contactName}</td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/70 hidden md:table-cell">{app.email}</td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/70 hidden md:table-cell">{app.phone}</td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/70 hidden sm:table-cell">{formatBusinessType(app.businessType)}</td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/70 hidden md:table-cell">{app.monthlyVolume ?? '—'}</td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/60 whitespace-nowrap hidden sm:table-cell">
+                      <tr key={app.id} className="bg-white hover:bg-cream transition-colors">
+                        <td className="px-4 py-3 font-medium text-ink">{app.businessName}</td>
+                        <td className="px-4 py-3 text-ink/70 hidden sm:table-cell">{app.contactName}</td>
+                        <td className="px-4 py-3 text-ink/70 hidden md:table-cell">{app.email}</td>
+                        <td className="px-4 py-3 text-ink/70 hidden md:table-cell">{app.phone}</td>
+                        <td className="px-4 py-3 text-ink/70 hidden sm:table-cell">{formatBusinessType(app.businessType)}</td>
+                        <td className="px-4 py-3 text-ink/70 hidden md:table-cell">{app.monthlyVolume ?? '—'}</td>
+                        <td className="px-4 py-3 text-ink/60 whitespace-nowrap hidden sm:table-cell">
                           {app.createdAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </td>
                         <td className="px-4 py-3">{statusBadge(app.status)}</td>
                         <td className="px-4 py-3">
                           <Link
                             href={`/admin/wholesale/${app.id}`}
-                            className="text-[#0A0A0A] underline underline-offset-4 text-sm hover:opacity-70 transition-opacity whitespace-nowrap"
+                            className="text-ink underline underline-offset-4 text-sm hover:opacity-70 transition-opacity whitespace-nowrap"
                           >
                             Review
                           </Link>
@@ -179,7 +179,7 @@ export default async function AdminWholesalePage({
         </>
       ) : (
         <>
-          <p className="text-xs text-[#0A0A0A]/50">
+          <p className="text-xs text-ink/50">
             These are businesses that submitted the partner sign-up form. They are stored as Organizations (tier: NEW) and have not yet been assigned an account manager.
           </p>
           {partnerOrgs.length === 0 ? (
@@ -190,51 +190,51 @@ export default async function AdminWholesalePage({
               action={{ label: 'View Partner Form', href: '/partner' }}
             />
           ) : (
-            <div className="border border-[#E5E1DB] overflow-hidden">
+            <div className="border border-shell overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-[#E5E1DB] bg-[#F9F7F4]">
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60">Business</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden sm:table-cell">Contact</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden md:table-cell">Email</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden md:table-cell">Phone</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden lg:table-cell">Website</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden sm:table-cell">Business Type</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden md:table-cell">Est. Volume</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60 hidden sm:table-cell">Signed Up</th>
-                      <th className="px-4 py-3 text-left font-medium text-[#0A0A0A]/60"></th>
+                    <tr className="border-b border-shell bg-cream">
+                      <th className="px-4 py-3 text-left font-medium text-ink/60">Business</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden sm:table-cell">Contact</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden md:table-cell">Email</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden md:table-cell">Phone</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden lg:table-cell">Website</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden sm:table-cell">Business Type</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden md:table-cell">Est. Volume</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60 hidden sm:table-cell">Signed Up</th>
+                      <th className="px-4 py-3 text-left font-medium text-ink/60"></th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#E5E1DB]">
+                  <tbody className="divide-y divide-shell">
                     {partnerOrgs.map(org => (
-                      <tr key={org.id} className="bg-white hover:bg-[#F9F7F4] transition-colors">
-                        <td className="px-4 py-3 font-medium text-[#0A0A0A]">{org.name}</td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/70 hidden sm:table-cell">{org.contactPerson}</td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/70 hidden md:table-cell">{org.email}</td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/70 hidden md:table-cell">{org.phone}</td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/70 hidden lg:table-cell">
+                      <tr key={org.id} className="bg-white hover:bg-cream transition-colors">
+                        <td className="px-4 py-3 font-medium text-ink">{org.name}</td>
+                        <td className="px-4 py-3 text-ink/70 hidden sm:table-cell">{org.contactPerson}</td>
+                        <td className="px-4 py-3 text-ink/70 hidden md:table-cell">{org.email}</td>
+                        <td className="px-4 py-3 text-ink/70 hidden md:table-cell">{org.phone}</td>
+                        <td className="px-4 py-3 text-ink/70 hidden lg:table-cell">
                           {org.website ? (
                             <a href={org.website} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:opacity-70">
                               {org.website.replace(/^https?:\/\//, '')}
                             </a>
                           ) : '—'}
                         </td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/70 hidden sm:table-cell">
+                        <td className="px-4 py-3 text-ink/70 hidden sm:table-cell">
                           {org.partnerMeta?.businessType
                             ? formatBusinessType(org.partnerMeta.businessType)
                             : '—'}
                         </td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/70 hidden md:table-cell">
+                        <td className="px-4 py-3 text-ink/70 hidden md:table-cell">
                           {org.partnerMeta?.estimatedVolume ?? '—'}
                         </td>
-                        <td className="px-4 py-3 text-[#0A0A0A]/60 whitespace-nowrap hidden sm:table-cell">
+                        <td className="px-4 py-3 text-ink/60 whitespace-nowrap hidden sm:table-cell">
                           {org.createdAt.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                         </td>
                         <td className="px-4 py-3">
                           <Link
                             href={`/admin/clients/${org.id}`}
-                            className="text-[#0A0A0A] underline underline-offset-4 text-sm hover:opacity-70 transition-opacity whitespace-nowrap"
+                            className="text-ink underline underline-offset-4 text-sm hover:opacity-70 transition-opacity whitespace-nowrap"
                           >
                             View
                           </Link>

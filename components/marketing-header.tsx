@@ -35,7 +35,7 @@ export function MarketingHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-50 bg-[#F9F7F4]/95 backdrop-blur-md border-b border-[#E5E1DB]">
+    <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur-md border-b border-shell">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center h-16 gap-4">
 
         {/* Logo */}
@@ -52,14 +52,14 @@ export function MarketingHeader() {
         </div>
 
         {/* Center nav — hidden on mobile */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium text-[#0A0A0A]/60 shrink-0">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium text-ink/60 shrink-0">
           {NAV_LINKS.map(({ label, href }) => (
             <Link
               key={href}
               href={href}
               className={cn(
-                'hover:text-[#0A0A0A] transition-colors whitespace-nowrap',
-                isActive(href) && 'text-[#0A0A0A] font-semibold'
+                'hover:text-ink transition-colors whitespace-nowrap',
+                isActive(href) && 'text-ink font-semibold'
               )}
             >
               {label}
@@ -75,7 +75,7 @@ export function MarketingHeader() {
           <Button
             size="sm"
             asChild
-            className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 text-sm font-medium"
+            className="bg-ink text-cream hover:bg-ink/80 text-sm font-medium"
           >
             <Link href="/partner">Order Now</Link>
           </Button>
@@ -84,7 +84,7 @@ export function MarketingHeader() {
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
             <SheetTrigger asChild>
               <button
-                className="md:hidden flex items-center justify-center w-9 h-9 text-[#0A0A0A]"
+                className="md:hidden flex items-center justify-center w-9 h-9 text-ink"
                 aria-label="Open navigation menu"
                 style={{ background: 'none', border: 'none', cursor: 'pointer' }}
               >
@@ -92,10 +92,10 @@ export function MarketingHeader() {
               </button>
             </SheetTrigger>
 
-            <SheetContent side="right" className="w-72 p-0 bg-[#F9F7F4]">
+            <SheetContent side="right" className="w-72 p-0 bg-cream">
               {/* Sheet header */}
-              <div className="flex items-center h-16 px-5 border-b border-[#E5E1DB]">
-                <span className="text-xs-sm font-semibold text-[#0A0A0A]">Menu</span>
+              <div className="flex items-center h-16 px-5 border-b border-shell">
+                <span className="text-xs-sm font-semibold text-ink">Menu</span>
               </div>
 
               {/* Mobile nav links */}
@@ -106,10 +106,10 @@ export function MarketingHeader() {
                     href={href}
                     onClick={() => setMobileOpen(false)}
                     className={cn(
-                      'flex items-center min-h-[48px] px-3 text-sm font-medium border-b border-[#E5E1DB] transition-colors',
+                      'flex items-center min-h-[48px] px-3 text-sm font-medium border-b border-shell transition-colors',
                       isActive(href)
-                        ? 'text-[#0A0A0A] font-semibold'
-                        : 'text-[#0A0A0A]/60 hover:text-[#0A0A0A]'
+                        ? 'text-ink font-semibold'
+                        : 'text-ink/60 hover:text-ink'
                     )}
                   >
                     {label}
@@ -118,18 +118,18 @@ export function MarketingHeader() {
               </nav>
 
               {/* Sheet CTAs */}
-              <div className="px-5 py-4 flex flex-col gap-2 border-t border-[#E5E1DB]">
+              <div className="px-5 py-4 flex flex-col gap-2 border-t border-shell">
                 <Link
                   href="/sign-in"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center min-h-[48px] text-sm font-medium text-[#0A0A0A]/70 border border-[#E5E1DB] hover:text-[#0A0A0A] hover:border-[#0A0A0A] transition-colors"
+                  className="flex items-center justify-center min-h-[48px] text-sm font-medium text-ink/70 border border-shell hover:text-ink hover:border-ink transition-colors"
                 >
                   Sign In
                 </Link>
                 <Link
                   href="/partner"
                   onClick={() => setMobileOpen(false)}
-                  className="flex items-center justify-center min-h-[48px] text-sm font-medium bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 transition-colors"
+                  className="flex items-center justify-center min-h-[48px] text-sm font-medium bg-ink text-cream hover:bg-ink/80 transition-colors"
                 >
                   Order Now
                 </Link>

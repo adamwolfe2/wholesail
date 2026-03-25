@@ -185,22 +185,22 @@ export default function BuildCartPage() {
   if (result) {
     return (
       <div className="space-y-6 max-w-lg">
-        <div className="flex items-center gap-3 p-6 border border-[#E5E1DB] bg-[#F9F7F4]">
-          <div className="flex items-center justify-center w-10 h-10 bg-[#0A0A0A] rounded-none shrink-0">
-            <Check className="h-5 w-5 text-[#F9F7F4]" />
+        <div className="flex items-center gap-3 p-6 border border-shell bg-cream">
+          <div className="flex items-center justify-center w-10 h-10 bg-ink rounded-none shrink-0">
+            <Check className="h-5 w-5 text-cream" />
           </div>
           <div>
-            <h2 className="font-serif text-xl font-bold text-[#0A0A0A]">
+            <h2 className="font-serif text-xl font-bold text-ink">
               Order Placed
             </h2>
-            <p className="text-sm text-[#0A0A0A]/60 mt-0.5">
+            <p className="text-sm text-ink/60 mt-0.5">
               {result.orderNumber} has been created on behalf of{" "}
               {selectedOrg?.name}
             </p>
           </div>
         </div>
         <div className="flex gap-3">
-          <Button asChild className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none">
+          <Button asChild className="bg-ink text-cream hover:bg-ink/80 rounded-none">
             <Link href={`/admin/orders/${result.orderId}`}>View Order</Link>
           </Button>
           <Button
@@ -213,7 +213,7 @@ export default function BuildCartPage() {
               setRepNote("");
               setStep(1);
             }}
-            className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none"
+            className="border-shell text-ink hover:bg-ink/[0.04] rounded-none"
           >
             Build Another
           </Button>
@@ -231,7 +231,7 @@ export default function BuildCartPage() {
             variant="ghost"
             size="sm"
             asChild
-            className="text-[#0A0A0A]/50 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none -ml-2"
+            className="text-ink/50 hover:text-ink hover:bg-ink/[0.04] rounded-none -ml-2"
           >
             <Link href="/admin/reps">
               <ArrowLeft className="h-4 w-4 mr-1" />
@@ -239,10 +239,10 @@ export default function BuildCartPage() {
             </Link>
           </Button>
         </div>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
           Build Order for Client
         </h2>
-        <p className="text-sm text-[#0A0A0A]/50 mt-0.5">
+        <p className="text-sm text-ink/50 mt-0.5">
           Place an order on behalf of a client organization
         </p>
       </div>
@@ -254,10 +254,10 @@ export default function BuildCartPage() {
             <div
               className={`flex items-center justify-center w-6 h-6 text-xs font-bold ${
                 step > parseInt(s)
-                  ? "bg-[#0A0A0A] text-[#F9F7F4]"
+                  ? "bg-ink text-cream"
                   : step === parseInt(s)
-                  ? "bg-[#0A0A0A] text-[#F9F7F4]"
-                  : "border border-[#E5E1DB] text-[#0A0A0A]/40"
+                  ? "bg-ink text-cream"
+                  : "border border-shell text-ink/40"
               }`}
             >
               {step > parseInt(s) ? (
@@ -269,40 +269,40 @@ export default function BuildCartPage() {
             <span
               className={`hidden sm:block ${
                 step === parseInt(s)
-                  ? "text-[#0A0A0A] font-medium"
-                  : "text-[#0A0A0A]/40"
+                  ? "text-ink font-medium"
+                  : "text-ink/40"
               }`}
             >
               {s === "1" ? "Select Client" : s === "2" ? "Add Products" : "Review & Place"}
             </span>
-            {i < 2 && <div className="w-6 h-px bg-[#E5E1DB] hidden sm:block" />}
+            {i < 2 && <div className="w-6 h-px bg-shell hidden sm:block" />}
           </div>
         ))}
       </div>
 
       {/* Step 1: Select client org */}
       {step === 1 && (
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4] max-w-lg">
+        <Card className="border-shell bg-cream max-w-lg">
           <CardHeader>
-            <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+            <CardTitle className="font-serif text-lg text-ink">
               Select Client Organization
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider">
+              <Label className="text-xs text-ink/60 uppercase tracking-wider">
                 Search
               </Label>
               <Input
                 value={orgSearch}
                 onChange={(e) => setOrgSearch(e.target.value)}
                 placeholder="Search organizations..."
-                className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A]"
+                className="border-shell bg-cream rounded-none focus:border-ink"
               />
             </div>
             <div className="space-y-1 max-h-64 overflow-y-auto">
               {filteredOrgs.length === 0 ? (
-                <p className="text-sm text-[#0A0A0A]/50 py-2">No organizations found.</p>
+                <p className="text-sm text-ink/50 py-2">No organizations found.</p>
               ) : (
                 filteredOrgs.map((org) => (
                   <button
@@ -311,8 +311,8 @@ export default function BuildCartPage() {
                     onClick={() => setSelectedOrgId(org.id)}
                     className={`w-full text-left px-3 py-2.5 text-sm flex items-center justify-between transition-colors ${
                       selectedOrgId === org.id
-                        ? "bg-[#0A0A0A] text-[#F9F7F4]"
-                        : "hover:bg-[#0A0A0A]/[0.04] text-[#0A0A0A]"
+                        ? "bg-ink text-cream"
+                        : "hover:bg-ink/[0.04] text-ink"
                     }`}
                   >
                     <span className="font-medium">{org.name}</span>
@@ -320,8 +320,8 @@ export default function BuildCartPage() {
                       variant="outline"
                       className={`text-xs ${
                         selectedOrgId === org.id
-                          ? "border-[#F9F7F4]/40 text-[#F9F7F4]"
-                          : "border-[#E5E1DB] text-[#0A0A0A]/60"
+                          ? "border-cream/40 text-cream"
+                          : "border-shell text-ink/60"
                       }`}
                     >
                       {org.tier}
@@ -333,7 +333,7 @@ export default function BuildCartPage() {
             <Button
               onClick={goToStep2}
               disabled={!selectedOrgId || loading}
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none w-full"
+              className="bg-ink text-cream hover:bg-ink/80 rounded-none w-full"
             >
               {loading ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -350,20 +350,20 @@ export default function BuildCartPage() {
       {step === 2 && (
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-[#0A0A0A]/60">
+            <p className="text-sm text-ink/60">
               Building for:{" "}
-              <span className="font-medium text-[#0A0A0A]">
+              <span className="font-medium text-ink">
                 {selectedOrg?.name}
               </span>
             </p>
             <div className="flex items-center gap-3">
-              <span className="text-sm text-[#0A0A0A]/50">
+              <span className="text-sm text-ink/50">
                 {cart.reduce((a, c) => a + c.quantity, 0)} items in cart
               </span>
               <Button
                 onClick={() => setStep(3)}
                 disabled={cart.length === 0}
-                className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+                className="bg-ink text-cream hover:bg-ink/80 rounded-none"
               >
                 Review Order
                 <ArrowRight className="h-4 w-4 ml-2" />
@@ -375,7 +375,7 @@ export default function BuildCartPage() {
             value={productSearch}
             onChange={(e) => setProductSearch(e.target.value)}
             placeholder="Search products..."
-            className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A] max-w-sm"
+            className="border-shell bg-cream rounded-none focus:border-ink max-w-sm"
           />
 
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -384,25 +384,25 @@ export default function BuildCartPage() {
               return (
                 <Card
                   key={product.id}
-                  className={`border-[#E5E1DB] bg-[#F9F7F4] ${
-                    qty > 0 ? "border-[#0A0A0A]" : ""
+                  className={`border-shell bg-cream ${
+                    qty > 0 ? "border-ink" : ""
                   }`}
                 >
                   <CardContent className="pt-4">
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <p className="text-sm font-medium text-[#0A0A0A]">
+                        <p className="text-sm font-medium text-ink">
                           {product.name}
                         </p>
-                        <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+                        <p className="text-xs text-ink/50 mt-0.5">
                           {product.category}
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="text-sm font-semibold text-[#0A0A0A]">
+                        <p className="text-sm font-semibold text-ink">
                           {formatCurrency(product.price)}
                         </p>
-                        <p className="text-xs text-[#0A0A0A]/40">
+                        <p className="text-xs text-ink/40">
                           {product.unit}
                         </p>
                       </div>
@@ -413,23 +413,23 @@ export default function BuildCartPage() {
                         variant="outline"
                         onClick={() => adjustQty(product.id, -1)}
                         disabled={qty === 0}
-                        className="h-8 w-8 p-0 border-[#E5E1DB] rounded-none"
+                        className="h-8 w-8 p-0 border-shell rounded-none"
                       >
                         <Minus className="h-3 w-3" />
                       </Button>
-                      <span className="text-sm font-mono w-8 text-center text-[#0A0A0A]">
+                      <span className="text-sm font-mono w-8 text-center text-ink">
                         {qty}
                       </span>
                       <Button
                         size="sm"
                         variant="outline"
                         onClick={() => adjustQty(product.id, 1)}
-                        className="h-8 w-8 p-0 border-[#E5E1DB] rounded-none"
+                        className="h-8 w-8 p-0 border-shell rounded-none"
                       >
                         <Plus className="h-3 w-3" />
                       </Button>
                       {qty > 0 && (
-                        <span className="text-xs text-[#0A0A0A]/50 ml-1">
+                        <span className="text-xs text-ink/50 ml-1">
                           = {formatCurrency(parseFloat(product.price) * qty)}
                         </span>
                       )}
@@ -444,7 +444,7 @@ export default function BuildCartPage() {
             <Button
               variant="outline"
               onClick={() => setStep(1)}
-              className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none"
+              className="border-shell text-ink hover:bg-ink/[0.04] rounded-none"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
@@ -452,7 +452,7 @@ export default function BuildCartPage() {
             <Button
               onClick={() => setStep(3)}
               disabled={cart.length === 0}
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+              className="bg-ink text-cream hover:bg-ink/80 rounded-none"
             >
               Review Order
               <ArrowRight className="h-4 w-4 ml-2" />
@@ -464,16 +464,16 @@ export default function BuildCartPage() {
       {/* Step 3: Review & Notes */}
       {step === 3 && (
         <div className="space-y-6 max-w-2xl">
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card className="border-shell bg-cream">
             <CardHeader>
-              <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+              <CardTitle className="font-serif text-lg text-ink">
                 Order Review
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="text-sm text-[#0A0A0A]/60">
+              <div className="text-sm text-ink/60">
                 Client:{" "}
-                <span className="font-medium text-[#0A0A0A]">
+                <span className="font-medium text-ink">
                   {selectedOrg?.name}
                 </span>
               </div>
@@ -482,27 +482,27 @@ export default function BuildCartPage() {
                 {cart.map((ci) => (
                   <div
                     key={ci.product.id}
-                    className="flex items-center justify-between py-2 border-b border-[#E5E1DB] last:border-0"
+                    className="flex items-center justify-between py-2 border-b border-shell last:border-0"
                   >
                     <div>
-                      <p className="text-sm font-medium text-[#0A0A0A]">
+                      <p className="text-sm font-medium text-ink">
                         {ci.product.name}
                       </p>
-                      <p className="text-xs text-[#0A0A0A]/50">
+                      <p className="text-xs text-ink/50">
                         {ci.quantity} × {formatCurrency(ci.product.price)}{" "}
                         {ci.product.unit}
                       </p>
                     </div>
-                    <p className="text-sm font-semibold text-[#0A0A0A]">
+                    <p className="text-sm font-semibold text-ink">
                       {formatCurrency(parseFloat(ci.product.price) * ci.quantity)}
                     </p>
                   </div>
                 ))}
               </div>
 
-              <div className="flex items-center justify-between pt-2 border-t border-[#E5E1DB]">
-                <span className="text-sm font-medium text-[#0A0A0A]">Subtotal</span>
-                <span className="font-serif font-bold text-lg text-[#0A0A0A]">
+              <div className="flex items-center justify-between pt-2 border-t border-shell">
+                <span className="text-sm font-medium text-ink">Subtotal</span>
+                <span className="font-serif font-bold text-lg text-ink">
                   {formatCurrency(subtotal)}
                 </span>
               </div>
@@ -510,7 +510,7 @@ export default function BuildCartPage() {
               <div className="space-y-2">
                 <Label
                   htmlFor="order-notes"
-                  className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider"
+                  className="text-xs text-ink/60 uppercase tracking-wider"
                 >
                   Order Notes (visible to client)
                 </Label>
@@ -520,14 +520,14 @@ export default function BuildCartPage() {
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Any special instructions..."
                   rows={2}
-                  className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A] resize-none"
+                  className="border-shell bg-cream rounded-none focus:border-ink resize-none"
                 />
               </div>
 
               <div className="space-y-2">
                 <Label
                   htmlFor="rep-note"
-                  className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider"
+                  className="text-xs text-ink/60 uppercase tracking-wider"
                 >
                   Rep Note (internal only)
                 </Label>
@@ -537,7 +537,7 @@ export default function BuildCartPage() {
                   onChange={(e) => setRepNote(e.target.value)}
                   placeholder="Internal notes for the team..."
                   rows={2}
-                  className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A] resize-none"
+                  className="border-shell bg-cream rounded-none focus:border-ink resize-none"
                 />
               </div>
 
@@ -553,7 +553,7 @@ export default function BuildCartPage() {
             <Button
               variant="outline"
               onClick={() => setStep(2)}
-              className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none"
+              className="border-shell text-ink hover:bg-ink/[0.04] rounded-none"
             >
               <ArrowLeft className="h-4 w-4 mr-2" />
               Edit Cart
@@ -561,7 +561,7 @@ export default function BuildCartPage() {
             <Button
               onClick={handlePlaceOrder}
               disabled={submitting || cart.length === 0}
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+              className="bg-ink text-cream hover:bg-ink/80 rounded-none"
             >
               {submitting ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />

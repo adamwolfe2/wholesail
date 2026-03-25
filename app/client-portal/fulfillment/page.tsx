@@ -112,7 +112,7 @@ export default function DistributorFulfillmentPage() {
     return (
       <PortalLayout>
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-6 w-6 animate-spin text-[#0A0A0A]/40" />
+          <Loader2 className="h-6 w-6 animate-spin text-ink/40" />
         </div>
       </PortalLayout>
     )
@@ -129,8 +129,8 @@ export default function DistributorFulfillmentPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-normal text-[#0A0A0A]">Fulfillment Queue</h2>
-          <p className="text-sm text-[#0A0A0A]/50 mt-1">
+          <h2 className="font-serif text-2xl sm:text-3xl font-normal text-ink">Fulfillment Queue</h2>
+          <p className="text-sm text-ink/50 mt-1">
             {pending.length} item{pending.length !== 1 ? 's' : ''} pending · {done.length} fulfilled
           </p>
         </div>
@@ -138,7 +138,7 @@ export default function DistributorFulfillmentPage() {
           variant="ghost"
           size="sm"
           onClick={() => setShowSettings(!showSettings)}
-          className="text-[#0A0A0A]/50 hover:text-[#0A0A0A] gap-1.5"
+          className="text-ink/50 hover:text-ink gap-1.5"
         >
           <Settings className="h-4 w-4" />
           Notification settings
@@ -147,13 +147,13 @@ export default function DistributorFulfillmentPage() {
 
       {/* CC Email Settings */}
       {showSettings && (
-        <div className="border border-[#E5E1DB] bg-white p-5 space-y-3">
+        <div className="border border-shell bg-white p-5 space-y-3">
           <div>
-            <p className="text-sm font-medium text-[#0A0A0A] mb-1">CC email for order notifications</p>
-            <p className="text-xs text-[#0A0A0A]/50 mb-3">
+            <p className="text-sm font-medium text-ink mb-1">CC email for order notifications</p>
+            <p className="text-xs text-ink/50 mb-3">
               When your products are ordered, a notification goes to your account email.
               Add a second address to CC — e.g. your ops team or coordinator.
-              {ccEmail && <span className="block mt-1 text-[#0A0A0A]/70">Currently CC&apos;ing: <strong>{ccEmail}</strong></span>}
+              {ccEmail && <span className="block mt-1 text-ink/70">Currently CC&apos;ing: <strong>{ccEmail}</strong></span>}
             </p>
             <div className="flex gap-2">
               <input
@@ -161,12 +161,12 @@ export default function DistributorFulfillmentPage() {
                 value={ccEmailInput}
                 onChange={(e) => setCcEmailInput(e.target.value)}
                 placeholder="ops@yourcompany.com"
-                className="flex-1 border border-[#E5E1DB] px-3 py-2 text-sm focus:outline-none focus:border-[#0A0A0A] text-[#0A0A0A] placeholder:text-[#0A0A0A]/30"
+                className="flex-1 border border-shell px-3 py-2 text-sm focus:outline-none focus:border-ink text-ink placeholder:text-ink/30"
               />
               <Button
                 onClick={saveCcEmail}
                 disabled={savingCc || ccEmailInput === ccEmail}
-                className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+                className="bg-ink text-cream hover:bg-ink/80 rounded-none"
               >
                 {savingCc ? <Loader2 className="h-4 w-4 animate-spin" /> : ccSaved ? 'Saved ✓' : 'Save'}
               </Button>
@@ -176,17 +176,17 @@ export default function DistributorFulfillmentPage() {
       )}
 
       {items.length === 0 ? (
-        <div className="border border-[#E5E1DB] bg-white py-16 text-center">
-          <Package className="h-8 w-8 text-[#0A0A0A]/20 mx-auto mb-3" />
-          <p className="text-sm text-[#0A0A0A]/50">No items to fulfill yet.</p>
-          <p className="text-xs text-[#0A0A0A]/30 mt-1">Orders containing your products will appear here automatically.</p>
+        <div className="border border-shell bg-white py-16 text-center">
+          <Package className="h-8 w-8 text-ink/20 mx-auto mb-3" />
+          <p className="text-sm text-ink/50">No items to fulfill yet.</p>
+          <p className="text-xs text-ink/30 mt-1">Orders containing your products will appear here automatically.</p>
         </div>
       ) : (
         <div className="space-y-8">
           {/* Pending items */}
           {pending.length > 0 && (
             <div className="space-y-3">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#0A0A0A]/50">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-ink/50">
                 Needs Fulfillment ({pending.length})
               </h3>
               <div className="space-y-2">
@@ -205,7 +205,7 @@ export default function DistributorFulfillmentPage() {
           {/* Fulfilled items */}
           {done.length > 0 && (
             <div className="space-y-3">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#0A0A0A]/30">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-ink/30">
                 Fulfilled ({done.length})
               </h3>
               <div className="space-y-2 opacity-60">
@@ -240,13 +240,13 @@ function FulfillmentItemCard({
   const addr = item.order.shippingAddress
 
   return (
-    <div className={`border bg-white transition-colors ${fulfilled ? 'border-[#E5E1DB]' : 'border-[#0A0A0A]/20'}`}>
+    <div className={`border bg-white transition-colors ${fulfilled ? 'border-shell' : 'border-ink/20'}`}>
       <div className="flex items-start gap-4 p-4">
         {/* Checkbox */}
         <button
           onClick={onToggle}
           disabled={isToggling}
-          className="mt-0.5 shrink-0 text-[#0A0A0A] hover:opacity-70 transition-opacity disabled:opacity-40"
+          className="mt-0.5 shrink-0 text-ink hover:opacity-70 transition-opacity disabled:opacity-40"
           aria-label={fulfilled ? 'Mark as not fulfilled' : 'Mark as fulfilled'}
         >
           {isToggling ? (
@@ -262,23 +262,23 @@ function FulfillmentItemCard({
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <p className={`font-medium text-sm ${fulfilled ? 'line-through text-[#0A0A0A]/40' : 'text-[#0A0A0A]'}`}>
+              <p className={`font-medium text-sm ${fulfilled ? 'line-through text-ink/40' : 'text-ink'}`}>
                 {item.name}
               </p>
-              <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+              <p className="text-xs text-ink/50 mt-0.5">
                 Qty: <strong>{item.quantity}</strong> · {formatCurrency(item.total)}
               </p>
             </div>
             <div className="text-right shrink-0">
-              <p className="text-xs font-medium text-[#0A0A0A]">{item.order.orderNumber}</p>
-              <p className="text-[10px] text-[#0A0A0A]/40 mt-0.5">
+              <p className="text-xs font-medium text-ink">{item.order.orderNumber}</p>
+              <p className="text-[10px] text-ink/40 mt-0.5">
                 {format(new Date(item.order.createdAt), 'MMM d, yyyy')}
               </p>
             </div>
           </div>
 
           {/* Client + Delivery info */}
-          <div className="mt-2 pt-2 border-t border-[#E5E1DB] grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-[#0A0A0A]/50">
+          <div className="mt-2 pt-2 border-t border-shell grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs text-ink/50">
             <div className="flex items-center gap-1.5">
               <Package className="h-3 w-3 shrink-0" />
               <span>{item.order.organization.name} — {item.order.organization.contactPerson}</span>
@@ -304,7 +304,7 @@ function FulfillmentItemCard({
           </div>
 
           {fulfilled && (
-            <p className="text-[10px] text-[#0A0A0A]/30 mt-1.5">
+            <p className="text-[10px] text-ink/30 mt-1.5">
               Fulfilled {format(new Date(item.distributorFulfilledAt!), 'MMM d, yyyy h:mm a')}
             </p>
           )}

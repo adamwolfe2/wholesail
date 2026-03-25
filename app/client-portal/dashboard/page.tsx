@@ -63,11 +63,11 @@ function QuickReorderCard({ product }: { product: TopProduct }) {
   const slug = slugify(product.name)
 
   return (
-    <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-4 flex flex-col gap-3 min-w-[180px]">
+    <div className="border border-shell bg-cream p-4 flex flex-col gap-3 min-w-[180px]">
       <div>
-        <p className="font-medium text-sm text-[#0A0A0A] leading-snug">{product.name}</p>
+        <p className="font-medium text-sm text-ink leading-snug">{product.name}</p>
         {product.daysSinceLastOrder !== undefined && (
-          <p className="text-xs text-[#0A0A0A]/40 mt-0.5">
+          <p className="text-xs text-ink/40 mt-0.5">
             Last ordered {product.daysSinceLastOrder === 0
               ? 'today'
               : `${product.daysSinceLastOrder}d ago`}
@@ -79,16 +79,16 @@ function QuickReorderCard({ product }: { product: TopProduct }) {
         <button
           type="button"
           onClick={() => setQty((q) => Math.max(1, q - 1))}
-          className="h-7 w-7 border border-[#C8C0B4] text-[#0A0A0A] text-sm flex items-center justify-center hover:bg-[#C8C0B4]/20 transition-colors"
+          className="h-7 w-7 border border-sand text-ink text-sm flex items-center justify-center hover:bg-sand/20 transition-colors"
           aria-label="Decrease quantity"
         >
           &minus;
         </button>
-        <span className="text-sm font-semibold text-[#0A0A0A] w-6 text-center tabular-nums">{qty}</span>
+        <span className="text-sm font-semibold text-ink w-6 text-center tabular-nums">{qty}</span>
         <button
           type="button"
           onClick={() => setQty((q) => q + 1)}
-          className="h-7 w-7 border border-[#C8C0B4] text-[#0A0A0A] text-sm flex items-center justify-center hover:bg-[#C8C0B4]/20 transition-colors"
+          className="h-7 w-7 border border-sand text-ink text-sm flex items-center justify-center hover:bg-sand/20 transition-colors"
           aria-label="Increase quantity"
         >
           +
@@ -98,7 +98,7 @@ function QuickReorderCard({ product }: { product: TopProduct }) {
       <Button
         asChild
         size="sm"
-        className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none text-xs min-h-[36px]"
+        className="bg-ink text-cream hover:bg-ink/80 rounded-none text-xs min-h-[36px]"
       >
         <Link href={`/catalog?product=${slug}&qty=${qty}`}>
           Add to Order
@@ -195,8 +195,8 @@ export default function ClientDashboard() {
       <PortalLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
           <div className="text-center">
-            <Loader2 className="h-8 w-8 animate-spin text-[#C8C0B4] mx-auto mb-4" />
-            <p className="text-[#0A0A0A]/50">Loading dashboard...</p>
+            <Loader2 className="h-8 w-8 animate-spin text-sand mx-auto mb-4" />
+            <p className="text-ink/50">Loading dashboard...</p>
           </div>
         </div>
       </PortalLayout>
@@ -216,18 +216,18 @@ export default function ClientDashboard() {
     switch (status.toUpperCase()) {
       case 'DELIVERED':
       case 'PAID':
-        return 'bg-[#0A0A0A] text-[#F9F7F4] border-[#0A0A0A]'
+        return 'bg-ink text-cream border-ink'
       case 'PENDING':
-        return 'bg-transparent text-[#0A0A0A]/60 border-[#C8C0B4]'
+        return 'bg-transparent text-ink/60 border-sand'
       case 'CONFIRMED':
       case 'PROCESSING':
-        return 'bg-[#C8C0B4]/30 text-[#0A0A0A] border-[#C8C0B4]'
+        return 'bg-sand/30 text-ink border-sand'
       case 'SHIPPED':
-        return 'bg-[#0A0A0A]/80 text-[#F9F7F4] border-[#0A0A0A]/70'
+        return 'bg-ink/80 text-cream border-ink/70'
       case 'CANCELLED':
-        return 'bg-transparent text-[#0A0A0A]/40 border-[#C8C0B4]/50'
+        return 'bg-transparent text-ink/40 border-sand/50'
       default:
-        return 'bg-transparent text-[#0A0A0A]/60 border-[#C8C0B4]'
+        return 'bg-transparent text-ink/60 border-sand'
     }
   }
 
@@ -242,10 +242,10 @@ export default function ClientDashboard() {
         {/* Welcome Section */}
         <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A] mb-1">
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink mb-1">
               Welcome back, {displayName}
             </h1>
-            <p className="text-sm text-[#0A0A0A]/50">
+            <p className="text-sm text-ink/50">
               Here&apos;s an overview of your account and recent activity
             </p>
           </div>
@@ -253,14 +253,14 @@ export default function ClientDashboard() {
             <Button
               variant="outline"
               onClick={() => setAiParserOpen(true)}
-              className="flex-1 sm:flex-none border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] min-h-[44px]"
+              className="flex-1 sm:flex-none border-ink text-ink hover:bg-ink hover:text-cream min-h-[44px]"
             >
               <Wand2 className="h-4 w-4 mr-2" />
               AI Order
             </Button>
             <Button
               asChild
-              className="flex-1 sm:flex-none bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 min-h-[44px]"
+              className="flex-1 sm:flex-none bg-ink text-cream hover:bg-ink/80 min-h-[44px]"
             >
               <Link href="/catalog">
                 <ShoppingBag className="h-4 w-4 mr-2" />
@@ -272,11 +272,11 @@ export default function ClientDashboard() {
 
         {!hasOrders ? (
           /* Onboarding empty state */
-          <div className="border border-[#E5E1DB] bg-white p-8 text-center">
-            <Package className="h-8 w-8 text-[#C8C0B4] mx-auto mb-3" />
-            <p className="font-serif text-lg text-[#0A0A0A] mb-1">No orders yet</p>
-            <p className="text-sm text-[#0A0A0A]/50 mb-4">Browse our catalog and place your first order.</p>
-            <Button asChild className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none">
+          <div className="border border-shell bg-white p-8 text-center">
+            <Package className="h-8 w-8 text-sand mx-auto mb-3" />
+            <p className="font-serif text-lg text-ink mb-1">No orders yet</p>
+            <p className="text-sm text-ink/50 mb-4">Browse our catalog and place your first order.</p>
+            <Button asChild className="bg-ink text-cream hover:bg-ink/80 rounded-none">
               <Link href="/catalog">Browse Products</Link>
             </Button>
           </div>
@@ -286,8 +286,8 @@ export default function ClientDashboard() {
             {quickReorderProducts.length > 0 && (
               <div className="mb-6 sm:mb-8">
                 <div className="flex items-center gap-2 mb-3">
-                  <RefreshCw className="h-4 w-4 text-[#C8C0B4]" />
-                  <h2 className="font-serif text-lg font-bold text-[#0A0A0A]">Quick Reorder</h2>
+                  <RefreshCw className="h-4 w-4 text-sand" />
+                  <h2 className="font-serif text-lg font-bold text-ink">Quick Reorder</h2>
                 </div>
                 <div className="flex gap-3 overflow-x-auto pb-1">
                   {quickReorderProducts.map((product) => (
@@ -299,38 +299,38 @@ export default function ClientDashboard() {
 
             {/* Stats Overview */}
             <div className={`grid gap-4 grid-cols-1 sm:grid-cols-2 ${creditStatus || loyaltyStatus ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} mb-6 sm:mb-8`}>
-              <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+              <Card className="border-sand bg-cream">
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                  <CardTitle className="text-xs sm:text-sm font-medium text-[#0A0A0A]/60 uppercase tracking-wider">Total Spend</CardTitle>
-                  <DollarSign className="h-4 w-4 text-[#C8C0B4]" />
+                  <CardTitle className="text-xs sm:text-sm font-medium text-ink/60 uppercase tracking-wider">Total Spend</CardTitle>
+                  <DollarSign className="h-4 w-4 text-sand" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-xl sm:text-2xl font-bold text-[#0A0A0A]">${stats.totalSpent.toLocaleString()}</div>
-                  <p className="text-xs text-[#0A0A0A]/40 mt-1">All time</p>
+                  <div className="text-xl sm:text-2xl font-bold text-ink">${stats.totalSpent.toLocaleString()}</div>
+                  <p className="text-xs text-ink/40 mt-1">All time</p>
                 </CardContent>
               </Card>
 
-              <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+              <Card className="border-sand bg-cream">
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                  <CardTitle className="text-xs sm:text-sm font-medium text-[#0A0A0A]/60 uppercase tracking-wider">Total Orders</CardTitle>
-                  <Package className="h-4 w-4 text-[#C8C0B4]" />
+                  <CardTitle className="text-xs sm:text-sm font-medium text-ink/60 uppercase tracking-wider">Total Orders</CardTitle>
+                  <Package className="h-4 w-4 text-sand" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-xl sm:text-2xl font-bold text-[#0A0A0A]">{stats.orderCount}</div>
-                  <p className="text-xs text-[#0A0A0A]/40 mt-1">Lifetime orders</p>
+                  <div className="text-xl sm:text-2xl font-bold text-ink">{stats.orderCount}</div>
+                  <p className="text-xs text-ink/40 mt-1">Lifetime orders</p>
                 </CardContent>
               </Card>
 
-              <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+              <Card className="border-sand bg-cream">
                 <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                  <CardTitle className="text-xs sm:text-sm font-medium text-[#0A0A0A]/60 uppercase tracking-wider">Avg Order Value</CardTitle>
-                  <TrendingUp className="h-4 w-4 text-[#C8C0B4]" />
+                  <CardTitle className="text-xs sm:text-sm font-medium text-ink/60 uppercase tracking-wider">Avg Order Value</CardTitle>
+                  <TrendingUp className="h-4 w-4 text-sand" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-xl sm:text-2xl font-bold text-[#0A0A0A]">
+                  <div className="text-xl sm:text-2xl font-bold text-ink">
                     ${Math.round(stats.totalSpent / stats.orderCount).toLocaleString()}
                   </div>
-                  <p className="text-xs text-[#0A0A0A]/40 mt-1">Per order</p>
+                  <p className="text-xs text-ink/40 mt-1">Per order</p>
                 </CardContent>
               </Card>
 
@@ -358,18 +358,18 @@ export default function ClientDashboard() {
                   : 1
 
                 return (
-                  <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+                  <Card className="border-sand bg-cream">
                     <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                      <CardTitle className="text-xs sm:text-sm font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+                      <CardTitle className="text-xs sm:text-sm font-medium text-ink/60 uppercase tracking-wider">
                         Loyalty Points
                       </CardTitle>
-                      <Star className="h-4 w-4 text-[#C8C0B4]" />
+                      <Star className="h-4 w-4 text-sand" />
                     </CardHeader>
                     <CardContent>
-                      <div className="text-xl sm:text-2xl font-bold text-[#0A0A0A]">
+                      <div className="text-xl sm:text-2xl font-bold text-ink">
                         {loyaltyStatus.currentPoints.toLocaleString()}
                       </div>
-                      <p className="text-[10px] text-[#0A0A0A]/40 mt-0.5">
+                      <p className="text-[10px] text-ink/40 mt-0.5">
                         {formatCurrency(loyaltyStatus.currentPoints / 100)} value
                       </p>
                       <div className="flex items-center gap-2 mt-1.5">
@@ -381,7 +381,7 @@ export default function ClientDashboard() {
                         </Badge>
                       </div>
                       <div className="mt-2">
-                        <div className="flex justify-between text-[10px] text-[#0A0A0A]/40 mb-1">
+                        <div className="flex justify-between text-[10px] text-ink/40 mb-1">
                           <span>{loyaltyStatus.tier}</span>
                           <span>
                             {nextTier
@@ -389,9 +389,9 @@ export default function ClientDashboard() {
                               : 'Top tier'}
                           </span>
                         </div>
-                        <div className="h-1.5 bg-[#E5E1DB] w-full">
+                        <div className="h-1.5 bg-shell w-full">
                           <div
-                            className="h-1.5 bg-[#0A0A0A] transition-all"
+                            className="h-1.5 bg-ink transition-all"
                             style={{ width: `${Math.min(progress * 100, 100)}%` }}
                           />
                         </div>
@@ -403,12 +403,12 @@ export default function ClientDashboard() {
 
               {/* Credit Status Card — shown only when credit limit is set or there is outstanding balance */}
               {creditStatus && (
-                <Card className={`border bg-[#F9F7F4] ${
+                <Card className={`border bg-cream ${
                   creditStatus.isAtLimit
                     ? 'border-red-400'
                     : creditStatus.isNearLimit
                     ? 'border-amber-400'
-                    : 'border-[#C8C0B4]'
+                    : 'border-sand'
                 }`}>
                   <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
                     <CardTitle className={`text-xs sm:text-sm font-medium uppercase tracking-wider ${
@@ -416,7 +416,7 @@ export default function ClientDashboard() {
                         ? 'text-red-600'
                         : creditStatus.isNearLimit
                         ? 'text-amber-600'
-                        : 'text-[#0A0A0A]/60'
+                        : 'text-ink/60'
                     }`}>
                       Credit Available
                     </CardTitle>
@@ -425,7 +425,7 @@ export default function ClientDashboard() {
                         ? 'text-red-400'
                         : creditStatus.isNearLimit
                         ? 'text-amber-400'
-                        : 'text-[#C8C0B4]'
+                        : 'text-sand'
                     }`} />
                   </CardHeader>
                   <CardContent>
@@ -434,7 +434,7 @@ export default function ClientDashboard() {
                         ? 'text-red-600'
                         : creditStatus.isNearLimit
                         ? 'text-amber-600'
-                        : 'text-[#0A0A0A]'
+                        : 'text-ink'
                     }`}>
                       {creditStatus.limit === null
                         ? 'Unlimited'
@@ -444,14 +444,14 @@ export default function ClientDashboard() {
 
                     {/* Progress bar */}
                     {creditStatus.limit !== null && creditStatus.utilizationPct !== null && (
-                      <div className="mt-2 mb-1 h-1.5 bg-[#E5E1DB] overflow-hidden">
+                      <div className="mt-2 mb-1 h-1.5 bg-shell overflow-hidden">
                         <div
                           className={`h-full transition-all ${
                             creditStatus.isAtLimit
                               ? 'bg-red-500'
                               : creditStatus.isNearLimit
                               ? 'bg-amber-400'
-                              : 'bg-[#0A0A0A]'
+                              : 'bg-ink'
                           }`}
                           style={{ width: `${Math.min(creditStatus.utilizationPct, 100)}%` }}
                         />
@@ -464,12 +464,12 @@ export default function ClientDashboard() {
                           Contact your rep to increase your limit
                         </p>
                       ) : (
-                        <p className="text-xs text-[#0A0A0A]/40 mt-1">
+                        <p className="text-xs text-ink/40 mt-1">
                           ${creditStatus.used.toLocaleString()} of ${creditStatus.limit.toLocaleString()} used
                         </p>
                       )
                     ) : (
-                      <p className="text-xs text-[#0A0A0A]/40 mt-1">No limit set</p>
+                      <p className="text-xs text-ink/40 mt-1">No limit set</p>
                     )}
                   </CardContent>
                 </Card>
@@ -480,10 +480,10 @@ export default function ClientDashboard() {
             <div className="space-y-6">
               <div className="grid gap-6 lg:grid-cols-2">
                 {/* Recent Orders */}
-                <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
-                  <CardHeader className="border-b border-[#C8C0B4]/50">
-                    <CardTitle className="font-serif text-lg text-[#0A0A0A]">Recent Orders</CardTitle>
-                    <CardDescription className="text-[#0A0A0A]/50">Your latest transactions</CardDescription>
+                <Card className="border-sand bg-cream">
+                  <CardHeader className="border-b border-sand/50">
+                    <CardTitle className="font-serif text-lg text-ink">Recent Orders</CardTitle>
+                    <CardDescription className="text-ink/50">Your latest transactions</CardDescription>
                   </CardHeader>
                   <CardContent className="pt-4">
                     {orders.length > 0 ? (
@@ -491,13 +491,13 @@ export default function ClientDashboard() {
                         {orders.slice(0, 5).map((order) => (
                           <div key={order.id} className="flex items-center justify-between py-1">
                             <div className="space-y-0.5 min-w-0 mr-3">
-                              <p className="text-sm font-medium font-mono text-[#0A0A0A] truncate">{order.id}</p>
-                              <p className="text-xs text-[#0A0A0A]/50">
+                              <p className="text-sm font-medium font-mono text-ink truncate">{order.id}</p>
+                              <p className="text-xs text-ink/50">
                                 {new Date(order.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })} &bull; {order.items} items
                               </p>
                             </div>
                             <div className="text-right shrink-0">
-                              <p className="text-sm font-semibold text-[#0A0A0A]">${order.total.toLocaleString()}</p>
+                              <p className="text-sm font-semibold text-ink">${order.total.toLocaleString()}</p>
                               <Badge variant="outline" className={`text-[10px] mt-0.5 ${getStatusColor(order.status)}`}>
                                 {order.status}
                               </Badge>
@@ -506,11 +506,11 @@ export default function ClientDashboard() {
                         ))}
                       </div>
                     ) : (
-                      <p className="text-sm text-[#0A0A0A]/50 py-4">No recent orders.</p>
+                      <p className="text-sm text-ink/50 py-4">No recent orders.</p>
                     )}
                     <Button
                       variant="outline"
-                      className="w-full mt-4 border-[#C8C0B4] text-[#0A0A0A] hover:bg-[#C8C0B4]/20 min-h-[44px]"
+                      className="w-full mt-4 border-sand text-ink hover:bg-sand/20 min-h-[44px]"
                       asChild
                     >
                       <Link href="/client-portal/orders">View All Orders</Link>
@@ -520,23 +520,23 @@ export default function ClientDashboard() {
 
                 {/* Monthly Spending */}
                 {monthlyRevenue.length > 0 && (
-                  <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
-                    <CardHeader className="border-b border-[#C8C0B4]/50">
-                      <CardTitle className="font-serif text-lg text-[#0A0A0A]">Monthly Spending</CardTitle>
-                      <CardDescription className="text-[#0A0A0A]/50">Your spending over the last 7 months</CardDescription>
+                  <Card className="border-sand bg-cream">
+                    <CardHeader className="border-b border-sand/50">
+                      <CardTitle className="font-serif text-lg text-ink">Monthly Spending</CardTitle>
+                      <CardDescription className="text-ink/50">Your spending over the last 7 months</CardDescription>
                     </CardHeader>
                     <CardContent className="pt-4">
                       <div className="space-y-2">
                         {monthlyRevenue.map((month) => (
                           <div key={month.month} className="flex items-center gap-3">
-                            <div className="w-10 text-xs font-medium text-[#0A0A0A]/50">{month.month}</div>
-                            <div className="flex-1 h-7 bg-[#C8C0B4]/20 overflow-hidden">
+                            <div className="w-10 text-xs font-medium text-ink/50">{month.month}</div>
+                            <div className="flex-1 h-7 bg-sand/20 overflow-hidden">
                               <div
-                                className="h-full bg-[#0A0A0A] transition-all"
+                                className="h-full bg-ink transition-all"
                                 style={{ width: `${(month.revenue / maxRevenue) * 100}%` }}
                               />
                             </div>
-                            <div className="w-16 text-xs font-semibold text-right text-[#0A0A0A]">
+                            <div className="w-16 text-xs font-semibold text-right text-ink">
                               {month.revenue > 0 ? `$${(month.revenue / 1000).toFixed(1)}k` : '$0'}
                             </div>
                           </div>
@@ -549,27 +549,27 @@ export default function ClientDashboard() {
 
               {/* Top Products */}
               {topProducts.length > 0 && (
-                <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
-                  <CardHeader className="border-b border-[#C8C0B4]/50">
-                    <CardTitle className="font-serif text-lg text-[#0A0A0A]">Top Products</CardTitle>
-                    <CardDescription className="text-[#0A0A0A]/50">Your most ordered items</CardDescription>
+                <Card className="border-sand bg-cream">
+                  <CardHeader className="border-b border-sand/50">
+                    <CardTitle className="font-serif text-lg text-ink">Top Products</CardTitle>
+                    <CardDescription className="text-ink/50">Your most ordered items</CardDescription>
                   </CardHeader>
                   <CardContent className="pt-4">
                     <div className="overflow-x-auto">
                       <Table>
                         <TableHeader>
-                          <TableRow className="border-[#C8C0B4]/50">
-                            <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Product</TableHead>
-                            <TableHead className="text-right text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Orders</TableHead>
-                            <TableHead className="text-right text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Revenue</TableHead>
+                          <TableRow className="border-sand/50">
+                            <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Product</TableHead>
+                            <TableHead className="text-right text-ink/50 uppercase tracking-wider text-xs">Orders</TableHead>
+                            <TableHead className="text-right text-ink/50 uppercase tracking-wider text-xs">Revenue</TableHead>
                           </TableRow>
                         </TableHeader>
                         <TableBody>
                           {topProducts.map((product) => (
-                            <TableRow key={product.name} className="border-[#C8C0B4]/30">
-                              <TableCell className="font-medium text-[#0A0A0A]">{product.name}</TableCell>
-                              <TableCell className="text-right text-[#0A0A0A]/60">{product.orders}</TableCell>
-                              <TableCell className="text-right font-semibold text-[#0A0A0A]">
+                            <TableRow key={product.name} className="border-sand/30">
+                              <TableCell className="font-medium text-ink">{product.name}</TableCell>
+                              <TableCell className="text-right text-ink/60">{product.orders}</TableCell>
+                              <TableCell className="text-right font-semibold text-ink">
                                 ${product.revenue.toLocaleString()}
                               </TableCell>
                             </TableRow>

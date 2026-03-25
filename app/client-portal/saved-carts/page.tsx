@@ -176,15 +176,15 @@ export default function SavedCartsPage() {
         )}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Saved Carts</h1>
-            <p className="text-sm text-[#0A0A0A]/50 mt-1">
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Saved Carts</h1>
+            <p className="text-sm text-ink/50 mt-1">
               Save and reload your frequently ordered combinations
             </p>
           </div>
           {cartItems.length > 0 && (
             <Button
               onClick={() => setSaveDialogOpen(true)}
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 min-h-[44px] w-full sm:w-auto rounded-none"
+              className="bg-ink text-cream hover:bg-ink/80 min-h-[44px] w-full sm:w-auto rounded-none"
             >
               <Save className="h-4 w-4 mr-2" />
               Save Current Cart ({cartItems.length} items)
@@ -192,28 +192,28 @@ export default function SavedCartsPage() {
           )}
         </div>
 
-        <Card className="border-[#C8C0B4] bg-[#F9F7F4] rounded-none">
-          <CardHeader className="border-b border-[#C8C0B4]/50">
-            <CardTitle className="font-serif text-lg text-[#0A0A0A]">Your Saved Carts</CardTitle>
-            <CardDescription className="text-[#0A0A0A]/50">
+        <Card className="border-sand bg-cream rounded-none">
+          <CardHeader className="border-b border-sand/50">
+            <CardTitle className="font-serif text-lg text-ink">Your Saved Carts</CardTitle>
+            <CardDescription className="text-ink/50">
               Load a cart to add its items to your current order
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-4">
             {loading ? (
               <div className="flex justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-[#C8C0B4]" />
+                <Loader2 className="h-6 w-6 animate-spin text-sand" />
               </div>
             ) : !isSignedIn ? (
               <div className="text-center py-12">
-                <Bookmark className="h-12 w-12 text-[#C8C0B4] mx-auto mb-4" />
-                <p className="text-[#0A0A0A]/50 text-sm">Sign in to view your saved carts.</p>
+                <Bookmark className="h-12 w-12 text-sand mx-auto mb-4" />
+                <p className="text-ink/50 text-sm">Sign in to view your saved carts.</p>
               </div>
             ) : carts.length === 0 ? (
               <div className="text-center py-12">
-                <Bookmark className="h-12 w-12 text-[#C8C0B4] mx-auto mb-4" />
-                <h3 className="font-serif text-lg font-medium mb-2 text-[#0A0A0A]">No saved carts</h3>
-                <p className="text-[#0A0A0A]/50 text-sm">
+                <Bookmark className="h-12 w-12 text-sand mx-auto mb-4" />
+                <h3 className="font-serif text-lg font-medium mb-2 text-ink">No saved carts</h3>
+                <p className="text-ink/50 text-sm">
                   Build a cart in the marketplace and save it for quick reordering.
                 </p>
               </div>
@@ -227,23 +227,23 @@ export default function SavedCartsPage() {
                   return (
                     <div
                       key={cart.id}
-                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border border-[#C8C0B4]/50 hover:border-[#C8C0B4] transition-colors"
+                      className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 border border-sand/50 hover:border-sand transition-colors"
                     >
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-[#0A0A0A]">
+                        <p className="font-medium text-ink">
                           {cart.name || 'Untitled Cart'}
                         </p>
-                        <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+                        <p className="text-xs text-ink/50 mt-0.5">
                           {cart.items.length} item{cart.items.length !== 1 ? 's' : ''} &bull; {formatCurrency(totalValue)} estimated &bull; Updated {new Date(cart.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                         </p>
-                        <p className="text-xs text-[#0A0A0A]/40 mt-1 truncate">
+                        <p className="text-xs text-ink/40 mt-1 truncate">
                           {cart.items.map((i) => i.name).join(', ')}
                         </p>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
                         <Button
                           size="sm"
-                          className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none min-h-[36px]"
+                          className="bg-ink text-cream hover:bg-ink/80 rounded-none min-h-[36px]"
                           onClick={() => handleLoadToCart(cart)}
                           disabled={loadingId === cart.id}
                         >
@@ -257,7 +257,7 @@ export default function SavedCartsPage() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="border-[#C8C0B4] text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#C8C0B4]/20 rounded-none min-h-[36px] px-2"
+                          className="border-sand text-ink/60 hover:text-ink hover:bg-sand/20 rounded-none min-h-[36px] px-2"
                           onClick={() => { setRenameTarget(cart); setRenameName(cart.name || '') }}
                         >
                           <Pencil className="h-4 w-4" />
@@ -266,7 +266,7 @@ export default function SavedCartsPage() {
                         <Button
                           size="sm"
                           variant="outline"
-                          className="border-[#C8C0B4] text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#C8C0B4]/20 rounded-none min-h-[36px] px-2"
+                          className="border-sand text-ink/60 hover:text-ink hover:bg-sand/20 rounded-none min-h-[36px] px-2"
                           onClick={() => handleDelete(cart.id)}
                           disabled={deletingId === cart.id}
                         >
@@ -289,23 +289,23 @@ export default function SavedCartsPage() {
 
       {/* Rename Cart Dialog */}
       <Dialog open={!!renameTarget} onOpenChange={(open) => { if (!open) { setRenameTarget(null); setRenameName('') } }}>
-        <DialogContent className="rounded-none border-[#C8C0B4] bg-[#F9F7F4]">
+        <DialogContent className="rounded-none border-sand bg-cream">
           <DialogHeader>
-            <DialogTitle className="font-serif text-[#0A0A0A]">Rename Cart</DialogTitle>
-            <DialogDescription className="text-[#0A0A0A]/50">
+            <DialogTitle className="font-serif text-ink">Rename Cart</DialogTitle>
+            <DialogDescription className="text-ink/50">
               Enter a new name for this saved cart.
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 py-2">
             <div className="space-y-1.5">
-              <Label htmlFor="renameName" className="text-[#0A0A0A] text-sm">Cart Name</Label>
+              <Label htmlFor="renameName" className="text-ink text-sm">Cart Name</Label>
               <Input
                 id="renameName"
                 placeholder="e.g. Weekly Restock Order"
                 value={renameName}
                 onChange={(e) => setRenameName(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleRename() }}
-                className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none"
+                className="border-sand bg-cream focus-visible:ring-ink rounded-none"
               />
             </div>
           </div>
@@ -313,14 +313,14 @@ export default function SavedCartsPage() {
             <Button
               variant="outline"
               onClick={() => { setRenameTarget(null); setRenameName('') }}
-              className="border-[#C8C0B4] text-[#0A0A0A] hover:bg-[#C8C0B4]/20 rounded-none"
+              className="border-sand text-ink hover:bg-sand/20 rounded-none"
             >
               Cancel
             </Button>
             <Button
               onClick={handleRename}
               disabled={renaming || !renameName.trim()}
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+              className="bg-ink text-cream hover:bg-ink/80 rounded-none"
             >
               {renaming ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
               Rename
@@ -331,22 +331,22 @@ export default function SavedCartsPage() {
 
       {/* Save Cart Dialog */}
       <Dialog open={saveDialogOpen} onOpenChange={setSaveDialogOpen}>
-        <DialogContent className="rounded-none border-[#C8C0B4] bg-[#F9F7F4]">
+        <DialogContent className="rounded-none border-sand bg-cream">
           <DialogHeader>
-            <DialogTitle className="font-serif text-[#0A0A0A]">Save Current Cart</DialogTitle>
-            <DialogDescription className="text-[#0A0A0A]/50">
+            <DialogTitle className="font-serif text-ink">Save Current Cart</DialogTitle>
+            <DialogDescription className="text-ink/50">
               Give your cart a name to find it easily later. ({cartItems.length} items)
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-3 py-2">
             <div className="space-y-1.5">
-              <Label htmlFor="cartName" className="text-[#0A0A0A] text-sm">Cart Name (optional)</Label>
+              <Label htmlFor="cartName" className="text-ink text-sm">Cart Name (optional)</Label>
               <Input
                 id="cartName"
                 placeholder="e.g. Weekly Restock Order"
                 value={saveName}
                 onChange={(e) => setSaveName(e.target.value)}
-                className="border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none"
+                className="border-sand bg-cream focus-visible:ring-ink rounded-none"
               />
             </div>
           </div>
@@ -354,14 +354,14 @@ export default function SavedCartsPage() {
             <Button
               variant="outline"
               onClick={() => setSaveDialogOpen(false)}
-              className="border-[#C8C0B4] text-[#0A0A0A] hover:bg-[#C8C0B4]/20 rounded-none"
+              className="border-sand text-ink hover:bg-sand/20 rounded-none"
             >
               Cancel
             </Button>
             <Button
               onClick={handleSaveCurrentCart}
               disabled={saving}
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+              className="bg-ink text-cream hover:bg-ink/80 rounded-none"
             >
               {saving ? <Loader2 className="h-4 w-4 animate-spin mr-1" /> : null}
               Save Cart

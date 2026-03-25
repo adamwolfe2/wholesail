@@ -27,7 +27,7 @@ function StaticGrid() {
             href={INSTAGRAM_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative aspect-square overflow-hidden bg-[#F5F3F0] group"
+            className="relative aspect-square overflow-hidden bg-cream-hover group"
           >
             <Image
               src={img.src}
@@ -43,7 +43,7 @@ function StaticGrid() {
         href="https://www.instagram.com/wholesailhub/"
         target="_blank"
         rel="noopener noreferrer"
-        className="flex items-center justify-center gap-2.5 w-full border border-[#0A0A0A] text-[#0A0A0A] py-3.5 text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors"
+        className="flex items-center justify-center gap-2.5 w-full border border-ink text-ink py-3.5 text-sm font-medium hover:bg-ink hover:text-cream transition-colors"
       >
         <Instagram className="h-4 w-4" />
         Follow {INSTAGRAM_HANDLE} on Instagram
@@ -106,7 +106,7 @@ export function InstagramFeed() {
               href={INSTAGRAM_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className={`relative aspect-square overflow-hidden bg-[#F5F3F0]${i === 0 ? ' col-span-2' : ''}`}
+              className={`relative aspect-square overflow-hidden bg-cream-hover${i === 0 ? ' col-span-2' : ''}`}
             >
               <Image
                 src={img.src}
@@ -122,7 +122,7 @@ export function InstagramFeed() {
           href="https://www.instagram.com/wholesailhub/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2.5 w-full border border-[#0A0A0A] text-[#0A0A0A] py-3.5 text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors"
+          className="flex items-center justify-center gap-2.5 w-full border border-ink text-ink py-3.5 text-sm font-medium hover:bg-ink hover:text-cream transition-colors"
         >
           <Instagram className="h-4 w-4" />
           Follow {INSTAGRAM_HANDLE} on Instagram

@@ -199,20 +199,20 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
       <div className="flex justify-end">
         <Dialog open={newDropOpen} onOpenChange={setNewDropOpen}>
           <DialogTrigger asChild>
-            <Button size="sm" className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80">
+            <Button size="sm" className="bg-ink text-cream hover:bg-ink/80">
               <Plus className="h-3.5 w-3.5 mr-1.5" />
               New Drop
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-[#F9F7F4] border-[#E5E1DB] max-w-md">
+          <DialogContent className="bg-cream border-shell max-w-md">
             <DialogHeader>
-              <DialogTitle className="font-serif text-xl text-[#0A0A0A]">
+              <DialogTitle className="font-serif text-xl text-ink">
                 New Product Drop
               </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleCreate} className="space-y-4 mt-2">
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">
+                <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">
                   Title *
                 </Label>
                 <Input
@@ -220,24 +220,24 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
                   value={form.title}
                   onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
                   placeholder="White Truffle Season Opener"
-                  className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]"
+                  className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">
+                  <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">
                     Category
                   </Label>
                   <Input
                     value={form.category}
                     onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
                     placeholder="TRUFFLES"
-                    className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]"
+                    className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">
+                  <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">
                     Drop Date *
                   </Label>
                   <Input
@@ -245,25 +245,25 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
                     type="date"
                     value={form.dropDate}
                     onChange={(e) => setForm((f) => ({ ...f, dropDate: e.target.value }))}
-                    className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]"
+                    className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink"
                   />
                 </div>
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">
+                <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">
                   Price Note
                 </Label>
                 <Input
                   value={form.priceNote}
                   onChange={(e) => setForm((f) => ({ ...f, priceNote: e.target.value }))}
                   placeholder="Starting at $40/oz or Market rate — contact for pricing"
-                  className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]"
+                  className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">
+                <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">
                   Quantity (leave blank for unlimited)
                 </Label>
                 <Input
@@ -272,12 +272,12 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
                   value={form.quantityTotal}
                   onChange={(e) => setForm((f) => ({ ...f, quantityTotal: e.target.value }))}
                   placeholder="e.g. 50"
-                  className="border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A]"
+                  className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink"
                 />
               </div>
 
               <div className="space-y-1.5">
-                <Label className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wide">
+                <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">
                   Description
                 </Label>
                 <textarea
@@ -285,7 +285,7 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
                   onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
                   placeholder="Brief description of this drop..."
                   rows={3}
-                  className="w-full px-3 py-2 text-sm border border-[#E5E1DB] bg-white text-[#0A0A0A] placeholder:text-[#C8C0B4] focus:outline-none focus:border-[#0A0A0A] transition-colors resize-none"
+                  className="w-full px-3 py-2 text-sm border border-shell bg-white text-ink placeholder:text-sand focus:outline-none focus:border-ink transition-colors resize-none"
                 />
               </div>
 
@@ -295,18 +295,18 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
                     type="checkbox"
                     checked={form.isPublic}
                     onChange={(e) => setForm((f) => ({ ...f, isPublic: e.target.checked }))}
-                    className="h-4 w-4 border-[#E5E1DB]"
+                    className="h-4 w-4 border-shell"
                   />
-                  <span className="text-sm text-[#0A0A0A]/70">Show on public page</span>
+                  <span className="text-sm text-ink/70">Show on public page</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={form.featured}
                     onChange={(e) => setForm((f) => ({ ...f, featured: e.target.checked }))}
-                    className="h-4 w-4 border-[#E5E1DB]"
+                    className="h-4 w-4 border-shell"
                   />
-                  <span className="text-sm text-[#0A0A0A]/70">Featured</span>
+                  <span className="text-sm text-ink/70">Featured</span>
                 </label>
               </div>
 
@@ -315,7 +315,7 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
                 <Button
                   type="button"
                   variant="outline"
-                  className="flex-1 border-[#E5E1DB]"
+                  className="flex-1 border-shell"
                   onClick={() => setNewDropOpen(false)}
                 >
                   Cancel
@@ -323,7 +323,7 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
                 <Button
                   type="submit"
                   disabled={formLoading}
-                  className="flex-1 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80"
+                  className="flex-1 bg-ink text-cream hover:bg-ink/80"
                 >
                   {formLoading ? 'Creating...' : 'Create Drop'}
                 </Button>
@@ -333,92 +333,92 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
         </Dialog>
       </div>
 
-      <div className="border border-[#E5E1DB] overflow-hidden">
+      <div className="border border-shell overflow-hidden">
         {drops.length === 0 ? (
-          <div className="py-16 text-center text-[#0A0A0A]/40 text-sm">
+          <div className="py-16 text-center text-ink/40 text-sm">
             No drops yet. Create the first one.
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead className="border-b border-[#E5E1DB] bg-[#F9F7F4]">
+              <thead className="border-b border-shell bg-cream">
                 <tr>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider">
                     Title
                   </th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden lg:table-cell">
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider hidden lg:table-cell">
                     Product
                   </th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden md:table-cell">
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider hidden md:table-cell">
                     Category
                   </th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider">
                     Drop Date
                   </th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden lg:table-cell">
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider hidden lg:table-cell">
                     Qty
                   </th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider">
                     Visibility
                   </th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden sm:table-cell">
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">
                     <span className="flex items-center gap-1">
                       <Users className="h-3 w-3" />
                       Signups
                     </span>
                   </th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden xl:table-cell">
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider hidden xl:table-cell">
                     Blasted
                   </th>
-                  <th className="text-left px-4 py-3 text-[10px] font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                  <th className="text-left px-4 py-3 text-[10px] font-medium text-ink/50 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#E5E1DB]">
+              <tbody className="divide-y divide-shell">
                 {drops.map((drop) => (
-                  <tr key={drop.id} className="hover:bg-[#0A0A0A]/[0.02] transition-colors">
+                  <tr key={drop.id} className="hover:bg-ink/[0.02] transition-colors">
                     <td className="px-4 py-3">
-                      <p className="font-medium text-[#0A0A0A]">{drop.title}</p>
+                      <p className="font-medium text-ink">{drop.title}</p>
                       {drop.priceNote && (
-                        <p className="text-[11px] text-[#0A0A0A]/40 mt-0.5 italic">
+                        <p className="text-[11px] text-ink/40 mt-0.5 italic">
                           {drop.priceNote}
                         </p>
                       )}
                       {drop.description && (
-                        <p className="text-[11px] text-[#0A0A0A]/30 mt-0.5 max-w-xs truncate">
+                        <p className="text-[11px] text-ink/30 mt-0.5 max-w-xs truncate">
                           {drop.description}
                         </p>
                       )}
                     </td>
                     <td className="px-4 py-3 hidden lg:table-cell">
                       {drop.productName ? (
-                        <span className="text-[11px] text-[#0A0A0A]/60">{drop.productName}</span>
+                        <span className="text-[11px] text-ink/60">{drop.productName}</span>
                       ) : (
-                        <span className="text-[#0A0A0A]/25">—</span>
+                        <span className="text-ink/25">—</span>
                       )}
                     </td>
                     <td className="px-4 py-3 hidden md:table-cell">
                       {drop.category ? (
-                        <span className="text-[10px] tracking-wider uppercase text-[#0A0A0A]/60 bg-[#E5E1DB] px-2 py-0.5">
+                        <span className="text-[10px] tracking-wider uppercase text-ink/60 bg-shell px-2 py-0.5">
                           {drop.category}
                         </span>
                       ) : (
-                        <span className="text-[#0A0A0A]/25">—</span>
+                        <span className="text-ink/25">—</span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-sm text-[#0A0A0A]/70 whitespace-nowrap">
+                    <td className="px-4 py-3 text-sm text-ink/70 whitespace-nowrap">
                       {format(new Date(drop.dropDate), 'MMM d, yyyy')}
                     </td>
                     <td className="px-4 py-3 hidden lg:table-cell">
                       {drop.quantityTotal !== null ? (
                         <div className="space-y-1 min-w-[80px]">
-                          <p className="font-mono text-xs text-[#0A0A0A]">
+                          <p className="font-mono text-xs text-ink">
                             {drop.quantitySold}/{drop.quantityTotal}
                           </p>
-                          <div className="h-1 w-16 bg-[#E5E1DB] overflow-hidden">
+                          <div className="h-1 w-16 bg-shell overflow-hidden">
                             <div
-                              className="h-full bg-[#0A0A0A]"
+                              className="h-full bg-ink"
                               style={{
                                 width: `${Math.min(100, Math.round((drop.quantitySold / drop.quantityTotal) * 100))}%`,
                               }}
@@ -426,13 +426,13 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
                           </div>
                         </div>
                       ) : (
-                        <span className="text-[11px] text-[#0A0A0A]/30">Unlimited</span>
+                        <span className="text-[11px] text-ink/30">Unlimited</span>
                       )}
                     </td>
                     <td className="px-4 py-3">
                       <button
                         onClick={() => handleTogglePublic(drop)}
-                        className="flex items-center gap-1.5 text-[11px] text-[#0A0A0A]/60 hover:text-[#0A0A0A] transition-colors"
+                        className="flex items-center gap-1.5 text-[11px] text-ink/60 hover:text-ink transition-colors"
                         title={drop.isPublic ? 'Click to make private' : 'Click to make public'}
                       >
                         {drop.isPublic ? (
@@ -449,17 +449,17 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
                       </button>
                     </td>
                     <td className="px-4 py-3 hidden sm:table-cell">
-                      <span className="font-mono text-sm font-medium text-[#0A0A0A]">
+                      <span className="font-mono text-sm font-medium text-ink">
                         {drop.alertCount}
                       </span>
                     </td>
                     <td className="px-4 py-3 hidden xl:table-cell">
                       {drop.notifiedAt ? (
-                        <span className="text-[11px] text-[#0A0A0A]/50">
+                        <span className="text-[11px] text-ink/50">
                           {format(new Date(drop.notifiedAt), 'MMM d, HH:mm')}
                         </span>
                       ) : (
-                        <span className="text-[#0A0A0A]/25 text-[11px]">—</span>
+                        <span className="text-ink/25 text-[11px]">—</span>
                       )}
                     </td>
                     <td className="px-4 py-3">
@@ -468,7 +468,7 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
                         <button
                           onClick={() => handleNotify(drop)}
                           disabled={notifyingId === drop.id || drop.alertCount === 0}
-                          className="p-1.5 text-[#0A0A0A]/30 hover:text-[#0A0A0A] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                          className="p-1.5 text-ink/30 hover:text-ink transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                           title={
                             drop.alertCount > 0
                               ? `Notify ${drop.alertCount} subscribers`
@@ -486,7 +486,7 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
                         <button
                           onClick={() => handleBlast(drop)}
                           disabled={blastingId === drop.id}
-                          className="p-1.5 text-[#0A0A0A]/30 hover:text-blue-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                          className="p-1.5 text-ink/30 hover:text-blue-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
                           title="Send wholesale blast (email + SMS to all approved partners)"
                         >
                           {blastingId === drop.id ? (
@@ -499,7 +499,7 @@ export function DropsAdminClient({ initialDrops }: { initialDrops: Drop[] }) {
                         {/* Delete */}
                         <button
                           onClick={() => handleDelete(drop.id)}
-                          className="p-1.5 text-[#0A0A0A]/30 hover:text-red-600 transition-colors"
+                          className="p-1.5 text-ink/30 hover:text-red-600 transition-colors"
                           title="Delete drop"
                         >
                           <Trash2 className="h-3.5 w-3.5" />

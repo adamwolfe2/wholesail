@@ -102,16 +102,16 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
   }
 
   return (
-    <div className="border border-[#E5E1DB] bg-white p-3 space-y-2.5 hover:border-[#0A0A0A]/20 transition-colors">
+    <div className="border border-shell bg-white p-3 space-y-2.5 hover:border-ink/20 transition-colors">
       {/* Header row */}
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
-          <p className="font-serif font-bold text-sm text-[#0A0A0A] truncate leading-tight">
+          <p className="font-serif font-bold text-sm text-ink truncate leading-tight">
             {item.company}
           </p>
           <Badge
             variant="outline"
-            className="text-[9px] px-1.5 py-0 mt-0.5 border-[#E5E1DB] text-[#0A0A0A]/50 font-mono"
+            className="text-[9px] px-1.5 py-0 mt-0.5 border-shell text-ink/50 font-mono"
           >
             {item.industry}
           </Badge>
@@ -124,7 +124,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
             </span>
           )}
           {featureCount > 0 && (
-            <span className="text-[9px] font-mono bg-[#F9F7F4] text-[#0A0A0A]/50 border border-[#E5E1DB] px-1.5 py-0.5 flex items-center gap-0.5">
+            <span className="text-[9px] font-mono bg-cream text-ink/50 border border-shell px-1.5 py-0.5 flex items-center gap-0.5">
               <Layers className="h-2.5 w-2.5" />
               {featureCount}
             </span>
@@ -134,18 +134,18 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
 
       {/* Meta row */}
       <div className="flex items-center justify-between">
-        <span className="text-[9px] font-mono text-[#0A0A0A]/40">
+        <span className="text-[9px] font-mono text-ink/40">
           {days === 0 ? "today" : `${days}d ago`}
         </span>
         {item.currentPhase !== undefined && item.currentPhase > 0 && (
           <div className="flex items-center gap-1.5">
-            <div className="h-1 w-16 bg-[#E5E1DB]">
+            <div className="h-1 w-16 bg-shell">
               <div
-                className="h-full bg-[#0A0A0A]"
+                className="h-full bg-ink"
                 style={{ width: `${Math.round((item.currentPhase / 15) * 100)}%` }}
               />
             </div>
-            <span className="text-[9px] font-mono text-[#0A0A0A]/40">
+            <span className="text-[9px] font-mono text-ink/40">
               {item.currentPhase} · {getPhaseName(item.currentPhase)}
             </span>
           </div>
@@ -156,7 +156,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
       {(item.assignedTo || item.targetLaunchDate) && (
         <div className="flex items-center gap-1.5 flex-wrap">
           {item.assignedTo && (
-            <span className="text-[8px] font-mono bg-[#F9F7F4] text-[#0A0A0A]/50 border border-[#E5E1DB] px-1 py-0.5 flex items-center gap-0.5">
+            <span className="text-[8px] font-mono bg-cream text-ink/50 border border-shell px-1 py-0.5 flex items-center gap-0.5">
               <UserCircle className="h-2.5 w-2.5" />
               {item.assignedTo}
             </span>
@@ -190,7 +190,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
         if (budgetPct === 0) return null;
         return (
           <div>
-            <div className="h-[3px] w-full bg-[#E5E1DB]">
+            <div className="h-[3px] w-full bg-shell">
               <div className="h-full transition-all" style={{ width: `${Math.min(budgetPct, 100)}%`, backgroundColor: barColor }} />
             </div>
             {budgetPct > 60 && (
@@ -210,7 +210,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
               href={`https://github.com/${item.githubRepo}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[9px] font-mono flex items-center gap-0.5 text-[#0A0A0A]/50 hover:text-[#0A0A0A]"
+              className="text-[9px] font-mono flex items-center gap-0.5 text-ink/50 hover:text-ink"
             >
               <GitBranch className="h-2.5 w-2.5" />
               repo
@@ -221,7 +221,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
               href={item.vercelUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-[9px] font-mono flex items-center gap-0.5 text-[#0A0A0A]/50 hover:text-[#0A0A0A]"
+              className="text-[9px] font-mono flex items-center gap-0.5 text-ink/50 hover:text-ink"
             >
               <Globe className="h-2.5 w-2.5" />
               staging
@@ -240,7 +240,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
         {item.column === "new" && item.intakeId && (
           <Link
             href={`/admin/intakes/${item.intakeId}`}
-            className="text-[10px] font-mono font-semibold text-[#0A0A0A] hover:underline flex items-center gap-1"
+            className="text-[10px] font-mono font-semibold text-ink hover:underline flex items-center gap-1"
           >
             Review <ExternalLink className="h-2.5 w-2.5" />
           </Link>
@@ -251,7 +251,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
             type="button"
             onClick={handleStartBuild}
             disabled={loading}
-            className="w-full text-[10px] font-mono font-semibold bg-[#0A0A0A] text-white px-2 py-1.5 hover:bg-[#0A0A0A]/80 disabled:opacity-50 flex items-center justify-center gap-1 transition-colors"
+            className="w-full text-[10px] font-mono font-semibold bg-ink text-white px-2 py-1.5 hover:bg-ink/80 disabled:opacity-50 flex items-center justify-center gap-1 transition-colors"
           >
             {loading ? (
               <>
@@ -267,7 +267,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
         {item.column === "building" && item.projectId && (
           <Link
             href={`/admin/projects/${item.projectId}`}
-            className="text-[10px] font-mono font-semibold text-[#0A0A0A] hover:underline flex items-center gap-1"
+            className="text-[10px] font-mono font-semibold text-ink hover:underline flex items-center gap-1"
           >
             View Project <ExternalLink className="h-2.5 w-2.5" />
           </Link>
@@ -276,7 +276,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
         {item.column === "review" && item.projectId && (
           <Link
             href={`/admin/projects/${item.projectId}`}
-            className="text-[10px] font-mono font-semibold text-[#0A0A0A] hover:underline flex items-center gap-1"
+            className="text-[10px] font-mono font-semibold text-ink hover:underline flex items-center gap-1"
           >
             View Project <ExternalLink className="h-2.5 w-2.5" />
           </Link>
@@ -289,7 +289,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
                 href={item.vercelUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[10px] font-mono font-semibold text-[#0A0A0A] hover:underline flex items-center gap-1"
+                className="text-[10px] font-mono font-semibold text-ink hover:underline flex items-center gap-1"
               >
                 Open Staging <ExternalLink className="h-2.5 w-2.5" />
               </a>
@@ -299,7 +299,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
                 type="button"
                 onClick={handleMarkLive}
                 disabled={loading}
-                className="text-[10px] font-mono font-semibold bg-[#0A0A0A] text-white px-2 py-1 hover:bg-[#0A0A0A]/80 disabled:opacity-50 transition-colors"
+                className="text-[10px] font-mono font-semibold bg-ink text-white px-2 py-1 hover:bg-ink/80 disabled:opacity-50 transition-colors"
               >
                 {loading ? "..." : "Mark Live"}
               </button>
@@ -312,7 +312,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
             href={item.customDomain ? `https://${item.customDomain}` : (item.vercelUrl ?? "#")}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[10px] font-mono font-semibold text-[#0A0A0A] hover:underline flex items-center gap-1"
+            className="text-[10px] font-mono font-semibold text-ink hover:underline flex items-center gap-1"
           >
             Open Portal <ExternalLink className="h-2.5 w-2.5" />
           </a>
@@ -322,7 +322,7 @@ export function PipelineCard({ item }: { item: PipelineItem }) {
       {/* Next action badge */}
       {item.nextAction && (
         <div className="pt-1">
-          <span className="text-[9px] font-mono bg-[#F9F7F4] text-[#0A0A0A]/50 border border-[#E5E1DB] px-1.5 py-0.5">
+          <span className="text-[9px] font-mono bg-cream text-ink/50 border border-shell px-1.5 py-0.5">
             {item.nextAction}
           </span>
         </div>

@@ -62,7 +62,7 @@ export const dynamic = 'force-dynamic'
 const priorityColors: Record<string, string> = {
   URGENT: 'bg-red-100 text-red-700 border-red-200',
   HIGH: 'bg-orange-100 text-orange-700 border-orange-200',
-  NORMAL: 'bg-[#C8C0B4]/30 text-[#0A0A0A] border-[#C8C0B4]',
+  NORMAL: 'bg-sand/30 text-ink border-sand',
   LOW: 'bg-gray-100 text-gray-500 border-gray-200',
 }
 
@@ -676,14 +676,14 @@ export default async function AdminClientDetailPage({
       )}
 
       {/* Rep Tasks */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle className="font-serif text-lg text-[#0A0A0A] flex items-center gap-2">
-            <CheckSquare className="h-4 w-4 text-[#C8C0B4]" />
+          <CardTitle className="font-serif text-lg text-ink flex items-center gap-2">
+            <CheckSquare className="h-4 w-4 text-sand" />
             Rep Tasks
           </CardTitle>
           <div className="flex items-center gap-3">
-            <span className="text-sm text-[#0A0A0A]/50">
+            <span className="text-sm text-ink/50">
               {client.repTasks.length} open
             </span>
             <NewTaskDialog
@@ -696,7 +696,7 @@ export default async function AdminClientDetailPage({
         </CardHeader>
         <CardContent>
           {client.repTasks.length === 0 ? (
-            <p className="text-sm text-[#0A0A0A]/50">
+            <p className="text-sm text-ink/50">
               No open tasks linked to this client.
             </p>
           ) : (
@@ -709,12 +709,12 @@ export default async function AdminClientDetailPage({
                 return (
                   <div
                     key={task.id}
-                    className="flex items-start justify-between py-3 border-b border-[#E5E1DB] last:border-0"
+                    className="flex items-start justify-between py-3 border-b border-shell last:border-0"
                   >
                     <div className="flex-1 min-w-0 pr-3">
-                      <p className="text-sm font-medium text-[#0A0A0A]">{task.title}</p>
+                      <p className="text-sm font-medium text-ink">{task.title}</p>
                       <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 mt-1">
-                        <span className="text-xs text-[#0A0A0A]/50">
+                        <span className="text-xs text-ink/50">
                           {task.rep.name}
                         </span>
                         {task.dueDate && (
@@ -724,7 +724,7 @@ export default async function AdminClientDetailPage({
                                 ? 'text-red-600 font-medium'
                                 : isDueToday
                                 ? 'text-orange-600 font-medium'
-                                : 'text-[#0A0A0A]/50'
+                                : 'text-ink/50'
                             }`}
                           >
                             {isOverdue && (
@@ -737,7 +737,7 @@ export default async function AdminClientDetailPage({
                         )}
                       </div>
                       {task.description && (
-                        <p className="text-xs text-[#0A0A0A]/40 mt-1 line-clamp-1">
+                        <p className="text-xs text-ink/40 mt-1 line-clamp-1">
                           {task.description}
                         </p>
                       )}

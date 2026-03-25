@@ -60,23 +60,23 @@ export default async function AdminShipmentsPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
           Active Shipments
         </h2>
       </div>
 
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
-        <CardHeader className="border-b border-[#E5E1DB] pb-3">
-          <CardTitle className="font-serif text-lg text-[#0A0A0A] flex items-center gap-2">
-            <Truck className="h-5 w-5 text-[#C8C0B4]" />
+      <Card className="border-shell bg-cream">
+        <CardHeader className="border-b border-shell pb-3">
+          <CardTitle className="font-serif text-lg text-ink flex items-center gap-2">
+            <Truck className="h-5 w-5 text-sand" />
             In-Transit Orders
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-4">
           {shipments.length === 0 ? (
             <div className="text-center py-12">
-              <Truck className="h-12 w-12 text-[#C8C0B4] mx-auto mb-4" />
-              <p className="text-[#0A0A0A]/50 text-sm">
+              <Truck className="h-12 w-12 text-sand mx-auto mb-4" />
+              <p className="text-ink/50 text-sm">
                 No active shipments at this time.
               </p>
             </div>
@@ -86,39 +86,39 @@ export default async function AdminShipmentsPage() {
               <div className="hidden md:block overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow className="border-[#E5E1DB]">
-                      <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Order</TableHead>
-                      <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Client</TableHead>
-                      <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Driver</TableHead>
-                      <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Carrier</TableHead>
-                      <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Status</TableHead>
-                      <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">ETA</TableHead>
-                      <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Last Update</TableHead>
+                    <TableRow className="border-shell">
+                      <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Order</TableHead>
+                      <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Client</TableHead>
+                      <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Driver</TableHead>
+                      <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Carrier</TableHead>
+                      <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Status</TableHead>
+                      <TableHead className="text-ink/50 uppercase tracking-wider text-xs">ETA</TableHead>
+                      <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Last Update</TableHead>
                       <TableHead></TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {shipments.map((shipment) => (
-                      <TableRow key={shipment.id} className="border-[#E5E1DB]">
-                        <TableCell className="font-mono font-medium text-[#0A0A0A]">
+                      <TableRow key={shipment.id} className="border-shell">
+                        <TableCell className="font-mono font-medium text-ink">
                           {shipment.order.orderNumber}
                         </TableCell>
-                        <TableCell className="text-[#0A0A0A]/70">
+                        <TableCell className="text-ink/70">
                           {shipment.order.organization.name}
                         </TableCell>
                         <TableCell>
                           {shipment.driverName ? (
                             <div>
-                              <p className="text-sm font-medium text-[#0A0A0A]">{shipment.driverName}</p>
+                              <p className="text-sm font-medium text-ink">{shipment.driverName}</p>
                               {shipment.driverPhone && (
-                                <p className="text-xs text-[#0A0A0A]/40">{shipment.driverPhone}</p>
+                                <p className="text-xs text-ink/40">{shipment.driverPhone}</p>
                               )}
                             </div>
                           ) : (
-                            <span className="text-[#0A0A0A]/30">—</span>
+                            <span className="text-ink/30">—</span>
                           )}
                         </TableCell>
-                        <TableCell className="text-[#0A0A0A]/70">
+                        <TableCell className="text-ink/70">
                           {shipment.carrier ?? "—"}
                         </TableCell>
                         <TableCell>
@@ -129,15 +129,15 @@ export default async function AdminShipmentsPage() {
                             {shipment.status.replace(/_/g, " ")}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-[#0A0A0A]/70 text-sm">
+                        <TableCell className="text-ink/70 text-sm">
                           {shipment.estimatedEta
                             ? format(shipment.estimatedEta, "MMM d, h:mm a")
                             : "—"}
                         </TableCell>
-                        <TableCell className="text-xs text-[#0A0A0A]/40">
+                        <TableCell className="text-xs text-ink/40">
                           <div className="flex items-center gap-1">
                             {shipment.currentLat !== null && (
-                              <MapPin className="h-3 w-3 text-[#C8C0B4]" />
+                              <MapPin className="h-3 w-3 text-sand" />
                             )}
                             {shipment.events[0]
                               ? format(shipment.events[0].timestamp, "MMM d, h:mm a")
@@ -148,7 +148,7 @@ export default async function AdminShipmentsPage() {
                           <Button
                             variant="ghost"
                             size="sm"
-                            className="text-[#0A0A0A]/60 hover:text-[#0A0A0A]"
+                            className="text-ink/60 hover:text-ink"
                             asChild
                           >
                             <Link href={`/admin/orders/${shipment.order.id}`}>
@@ -167,14 +167,14 @@ export default async function AdminShipmentsPage() {
                 {shipments.map((shipment) => (
                   <div
                     key={shipment.id}
-                    className="border border-[#E5E1DB] p-4"
+                    className="border border-shell p-4"
                   >
                     <div className="flex items-start justify-between gap-2 mb-2">
                       <div>
-                        <p className="font-mono font-semibold text-sm text-[#0A0A0A]">
+                        <p className="font-mono font-semibold text-sm text-ink">
                           {shipment.order.orderNumber}
                         </p>
-                        <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+                        <p className="text-xs text-ink/50 mt-0.5">
                           {shipment.order.organization.name}
                         </p>
                       </div>
@@ -185,7 +185,7 @@ export default async function AdminShipmentsPage() {
                         {shipment.status.replace(/_/g, " ")}
                       </Badge>
                     </div>
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-[#0A0A0A]/60 mb-3">
+                    <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-ink/60 mb-3">
                       {shipment.driverName && <span>Driver: {shipment.driverName}</span>}
                       {shipment.carrier && <span>Carrier: {shipment.carrier}</span>}
                       {shipment.estimatedEta && (
@@ -195,7 +195,7 @@ export default async function AdminShipmentsPage() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="w-full border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#E5E1DB]/50 text-xs"
+                      className="w-full border-shell text-ink hover:bg-shell/50 text-xs"
                       asChild
                     >
                       <Link href={`/admin/orders/${shipment.order.id}`}>

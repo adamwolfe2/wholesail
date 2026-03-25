@@ -35,65 +35,65 @@ export default async function LeadsPipelinePage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
           Leads Pipeline
         </h2>
-        <p className="text-sm text-[#0A0A0A]/50 mt-1">
+        <p className="text-sm text-ink/50 mt-1">
           Giveaway signups, inbound inquiries, and partner prospects.
         </p>
       </div>
 
       {/* KPI Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="card-hover border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="card-hover border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               Total Leads
             </CardTitle>
-            <Users className="h-4 w-4 text-[#C8C0B4]" />
+            <Users className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold font-serif text-[#0A0A0A]">{stats.total}</div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">All time</p>
+            <div className="text-3xl font-bold font-serif text-ink">{stats.total}</div>
+            <p className="text-xs text-ink/40 mt-1">All time</p>
           </CardContent>
         </Card>
 
-        <Card className="card-hover border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="card-hover border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               New
             </CardTitle>
-            <UserPlus className="h-4 w-4 text-[#C8C0B4]" />
+            <UserPlus className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold font-serif text-[#0A0A0A]">{stats.newCount}</div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">Awaiting contact</p>
+            <div className="text-3xl font-bold font-serif text-ink">{stats.newCount}</div>
+            <p className="text-xs text-ink/40 mt-1">Awaiting contact</p>
           </CardContent>
         </Card>
 
-        <Card className="card-hover border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="card-hover border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               Qualified
             </CardTitle>
-            <Star className="h-4 w-4 text-[#C8C0B4]" />
+            <Star className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold font-serif text-[#0A0A0A]">{stats.qualified}</div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">Ready to close</p>
+            <div className="text-3xl font-bold font-serif text-ink">{stats.qualified}</div>
+            <p className="text-xs text-ink/40 mt-1">Ready to close</p>
           </CardContent>
         </Card>
 
-        <Card className="card-hover border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="card-hover border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               Converted
             </CardTitle>
-            <CheckCircle className="h-4 w-4 text-[#C8C0B4]" />
+            <CheckCircle className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold font-serif text-[#0A0A0A]">{stats.converted}</div>
-            <p className="text-xs text-[#0A0A0A]/40 mt-1">Became partners</p>
+            <div className="text-3xl font-bold font-serif text-ink">{stats.converted}</div>
+            <p className="text-xs text-ink/40 mt-1">Became partners</p>
           </CardContent>
         </Card>
       </div>

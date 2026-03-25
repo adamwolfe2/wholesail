@@ -32,15 +32,15 @@ type PricingRule = {
 };
 
 const tierColors: Record<OrgTier, string> = {
-  NEW: "bg-[#E5E1DB] text-[#0A0A0A]",
-  REPEAT: "bg-[#4A90D9] text-white",
-  VIP: "bg-[#B8860B] text-white",
+  NEW: "bg-shell text-ink",
+  REPEAT: "bg-sky text-white",
+  VIP: "bg-gold text-white",
 };
 
 const tierHeaderColors: Record<OrgTier, string> = {
-  NEW: "bg-[#E5E1DB] text-[#0A0A0A]",
-  REPEAT: "bg-[#DBEAFE] text-[#1E40AF]",
-  VIP: "bg-[#FEF3C7] text-[#92400E]",
+  NEW: "bg-shell text-ink",
+  REPEAT: "bg-sky/20 text-brand",
+  VIP: "bg-gold-light text-gold",
 };
 
 const tierDescriptions: Record<OrgTier, string> = {
@@ -169,7 +169,7 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
           return (
             <Card
               key={tier}
-              className={`border-[#E5E1DB] ${tier === "VIP" ? "bg-[#FFFBEB] border-[#B8860B]/30" : "bg-[#F9F7F4]"}`}
+              className={`border-shell ${tier === "VIP" ? "bg-gold-wash border-gold/30" : "bg-cream"}`}
             >
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between">
@@ -177,20 +177,20 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
                     {tier}
                   </Badge>
                   {tier === "VIP" && (
-                    <span className="text-xs text-[#B8860B] font-medium">★ Premium</span>
+                    <span className="text-xs text-gold font-medium">★ Premium</span>
                   )}
                 </div>
-                <p className="text-xs text-[#0A0A0A]/50 mt-1">{tierDescriptions[tier]}</p>
+                <p className="text-xs text-ink/50 mt-1">{tierDescriptions[tier]}</p>
               </CardHeader>
               <CardContent>
-                <p className="text-2xl font-serif font-bold text-[#0A0A0A]">
+                <p className="text-2xl font-serif font-bold text-ink">
                   {tierRules.length}
-                  <span className="text-sm font-sans font-normal text-[#0A0A0A]/50 ml-1">
+                  <span className="text-sm font-sans font-normal text-ink/50 ml-1">
                     active rule{tierRules.length !== 1 ? "s" : ""}
                   </span>
                 </p>
                 {tierRules.length > 0 && (
-                  <p className="text-xs text-[#0A0A0A]/40 mt-1">
+                  <p className="text-xs text-ink/40 mt-1">
                     Up to{" "}
                     {Math.max(...tierRules.map((r) => Number(r.discountPct))).toFixed(0)}% discount
                   </p>
@@ -202,12 +202,12 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
       </div>
 
       {/* ── Visual Matrix ───────────────────────────────────────────────── */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader className="pb-3">
-          <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+          <CardTitle className="font-serif text-lg text-ink">
             Discount Matrix
           </CardTitle>
-          <p className="text-xs text-[#0A0A0A]/50">
+          <p className="text-xs text-ink/50">
             All tier × category combinations. Click + to add a missing rule.
           </p>
         </CardHeader>
@@ -216,13 +216,13 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
             <table className="w-full text-sm border-collapse">
               <thead>
                 <tr>
-                  <th className="text-left py-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider border-b border-[#E5E1DB]">
+                  <th className="text-left py-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider border-b border-shell">
                     Category
                   </th>
                   {TIERS.map((tier) => (
                     <th
                       key={tier}
-                      className="text-center py-2 px-3 text-xs font-medium uppercase tracking-wider border-b border-[#E5E1DB]"
+                      className="text-center py-2 px-3 text-xs font-medium uppercase tracking-wider border-b border-shell"
                     >
                       <span className={`inline-block px-2 py-0.5 text-xs font-semibold ${tierHeaderColors[tier]}`}>
                         {tier}
@@ -236,11 +236,11 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
                 {CATEGORIES.map((category) => (
                   <tr
                     key={category}
-                    className="border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02] transition-colors"
+                    className="border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors"
                   >
-                    <td className="py-3 pr-4 text-sm font-medium text-[#0A0A0A]">
+                    <td className="py-3 pr-4 text-sm font-medium text-ink">
                       {category === "All Categories" ? (
-                        <span className="italic text-[#0A0A0A]/60">All Categories</span>
+                        <span className="italic text-ink/60">All Categories</span>
                       ) : (
                         category
                       )}
@@ -252,10 +252,10 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
                           <td key={tier} className="text-center py-3 px-3">
                             <button
                               onClick={() => handleQuickAdd(tier, category)}
-                              className="text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors flex items-center justify-center gap-0.5 mx-auto text-xs"
+                              className="text-sand hover:text-ink transition-colors flex items-center justify-center gap-0.5 mx-auto text-xs"
                               title={`Add ${tier} rule for ${category}`}
                             >
-                              <span className="text-[#E5E1DB]">—</span>
+                              <span className="text-shell">—</span>
                               <Plus className="h-3 w-3 ml-1 opacity-0 group-hover:opacity-100" />
                             </button>
                           </td>
@@ -268,9 +268,9 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
                               className={`font-mono font-bold text-sm ${
                                 rule.isActive
                                   ? tier === "VIP"
-                                    ? "text-[#B8860B]"
-                                    : "text-[#0A0A0A]"
-                                  : "text-[#C8C0B4] line-through"
+                                    ? "text-gold"
+                                    : "text-ink"
+                                  : "text-sand line-through"
                               }`}
                             >
                               {Number(rule.discountPct).toFixed(1)}%
@@ -278,7 +278,7 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
                             <button
                               onClick={() => handleDelete(rule.id)}
                               disabled={deletingId === rule.id}
-                              className="text-[#E5E1DB] hover:text-red-400 transition-colors"
+                              className="text-shell hover:text-red-400 transition-colors"
                               aria-label="Delete rule"
                             >
                               {deletingId === rule.id ? (
@@ -289,7 +289,7 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
                             </button>
                           </div>
                           {!rule.isActive && (
-                            <p className="text-[10px] text-[#C8C0B4]">inactive</p>
+                            <p className="text-[10px] text-sand">inactive</p>
                           )}
                         </td>
                       );
@@ -310,11 +310,11 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
           return (
             <Card
               key={tier}
-              className={`border-[#E5E1DB] ${tier === "VIP" ? "bg-[#FFFBEB] border-[#B8860B]/30" : "bg-[#F9F7F4]"}`}
+              className={`border-shell ${tier === "VIP" ? "bg-gold-wash border-gold/30" : "bg-cream"}`}
             >
               <CardHeader className="pb-3">
                 <div className="flex items-center gap-2">
-                  <CardTitle className="font-serif text-base text-[#0A0A0A]">
+                  <CardTitle className="font-serif text-base text-ink">
                     {tier} Tier Rules
                   </CardTitle>
                   <Badge className={`text-xs font-medium border-0 ${tierColors[tier]}`}>
@@ -327,17 +327,17 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b border-[#E5E1DB]">
-                        <th className="text-left py-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                      <tr className="border-b border-shell">
+                        <th className="text-left py-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider">
                           Category
                         </th>
-                        <th className="text-right py-2 px-3 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                        <th className="text-right py-2 px-3 text-xs font-medium text-ink/50 uppercase tracking-wider">
                           Discount
                         </th>
-                        <th className="text-center py-2 px-3 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                        <th className="text-center py-2 px-3 text-xs font-medium text-ink/50 uppercase tracking-wider">
                           Active
                         </th>
-                        <th className="text-right py-2 pl-3 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                        <th className="text-right py-2 pl-3 text-xs font-medium text-ink/50 uppercase tracking-wider">
                           Actions
                         </th>
                       </tr>
@@ -346,16 +346,16 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
                       {tierRules.map((rule) => (
                         <tr
                           key={rule.id}
-                          className="border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02] transition-colors"
+                          className="border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors"
                         >
-                          <td className="py-3 pr-4 text-[#0A0A0A]">
+                          <td className="py-3 pr-4 text-ink">
                             {rule.category ?? (
-                              <span className="text-[#C8C0B4] italic">All Categories</span>
+                              <span className="text-sand italic">All Categories</span>
                             )}
                           </td>
-                          <td className="text-right py-3 px-3 font-mono font-bold text-[#0A0A0A]">
+                          <td className="text-right py-3 px-3 font-mono font-bold text-ink">
                             {tier === "VIP" ? (
-                              <span className="text-[#B8860B]">
+                              <span className="text-gold">
                                 {Number(rule.discountPct).toFixed(1)}%
                               </span>
                             ) : (
@@ -366,23 +366,23 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
                             <button
                               onClick={() => handleToggle(rule.id, rule.isActive)}
                               disabled={togglingId === rule.id}
-                              className={`relative inline-flex h-5 w-9 items-center border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0A0A0A] ${
+                              className={`relative inline-flex h-5 w-9 items-center border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ink ${
                                 rule.isActive
                                   ? tier === "VIP"
-                                    ? "bg-[#B8860B] border-[#B8860B]"
-                                    : "bg-[#0A0A0A] border-[#0A0A0A]"
-                                  : "bg-[#E5E1DB] border-[#C8C0B4]"
+                                    ? "bg-gold border-gold"
+                                    : "bg-ink border-ink"
+                                  : "bg-shell border-sand"
                               }`}
                               aria-label={rule.isActive ? "Deactivate rule" : "Activate rule"}
                             >
                               {togglingId === rule.id ? (
-                                <Loader2 className="h-3 w-3 animate-spin mx-auto text-[#F9F7F4]" />
+                                <Loader2 className="h-3 w-3 animate-spin mx-auto text-cream" />
                               ) : (
                                 <span
                                   className={`inline-block h-3 w-3 transform transition-transform ${
                                     rule.isActive
-                                      ? "translate-x-5 bg-[#F9F7F4]"
-                                      : "translate-x-1 bg-[#C8C0B4]"
+                                      ? "translate-x-5 bg-cream"
+                                      : "translate-x-1 bg-sand"
                                   }`}
                                 />
                               )}
@@ -392,7 +392,7 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
                             <button
                               onClick={() => handleDelete(rule.id)}
                               disabled={deletingId === rule.id}
-                              className="text-[#C8C0B4] hover:text-[#0A0A0A] transition-colors"
+                              className="text-sand hover:text-ink transition-colors"
                               aria-label="Delete rule"
                             >
                               {deletingId === rule.id ? (
@@ -414,10 +414,10 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
       </div>
 
       {/* ── Add Rule Form ────────────────────────────────────────────────── */}
-      <Card id="add-rule-form" className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card id="add-rule-form" className="border-shell bg-cream">
         <CardHeader className="pb-3">
-          <CardTitle className="font-serif text-lg text-[#0A0A0A] flex items-center gap-2">
-            <Plus className="h-4 w-4 text-[#C8C0B4]" />
+          <CardTitle className="font-serif text-lg text-ink flex items-center gap-2">
+            <Plus className="h-4 w-4 text-sand" />
             Add Pricing Rule
           </CardTitle>
         </CardHeader>
@@ -425,13 +425,13 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
           <form onSubmit={handleAddRule} className="grid gap-4 sm:grid-cols-4 sm:items-end">
             {/* Tier */}
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-[#0A0A0A]/70 uppercase tracking-wider">
+              <Label className="text-xs font-medium text-ink/70 uppercase tracking-wider">
                 Tier
               </Label>
               <select
                 value={formTier}
                 onChange={(e) => setFormTier(e.target.value as OrgTier)}
-                className="w-full h-9 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] px-3 focus:outline-none focus:ring-1 focus:ring-[#0A0A0A] focus:border-[#0A0A0A]"
+                className="w-full h-9 border border-shell bg-white text-sm text-ink px-3 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink"
               >
                 {TIERS.map((t) => (
                   <option key={t} value={t}>
@@ -443,13 +443,13 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
 
             {/* Category */}
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-[#0A0A0A]/70 uppercase tracking-wider">
+              <Label className="text-xs font-medium text-ink/70 uppercase tracking-wider">
                 Category
               </Label>
               <select
                 value={formCategory}
                 onChange={(e) => setFormCategory(e.target.value)}
-                className="w-full h-9 border border-[#E5E1DB] bg-white text-sm text-[#0A0A0A] px-3 focus:outline-none focus:ring-1 focus:ring-[#0A0A0A] focus:border-[#0A0A0A]"
+                className="w-full h-9 border border-shell bg-white text-sm text-ink px-3 focus:outline-none focus:ring-1 focus:ring-ink focus:border-ink"
               >
                 {CATEGORIES.map((c) => (
                   <option key={c} value={c}>
@@ -461,7 +461,7 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
 
             {/* Discount % */}
             <div className="space-y-1.5">
-              <Label className="text-xs font-medium text-[#0A0A0A]/70 uppercase tracking-wider">
+              <Label className="text-xs font-medium text-ink/70 uppercase tracking-wider">
                 Discount %
               </Label>
               <div className="relative">
@@ -473,10 +473,10 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
                   value={formDiscount}
                   onChange={(e) => setFormDiscount(e.target.value)}
                   placeholder="e.g. 10"
-                  className="border-[#E5E1DB] bg-white pr-7 focus:ring-1 focus:ring-[#0A0A0A] focus:border-[#0A0A0A]"
+                  className="border-shell bg-white pr-7 focus:ring-1 focus:ring-ink focus:border-ink"
                   required
                 />
-                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#C8C0B4] text-sm pointer-events-none">
+                <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-sand text-sm pointer-events-none">
                   %
                 </span>
               </div>
@@ -487,7 +487,7 @@ export function PricingClient({ rules: initialRules }: { rules: PricingRule[] })
               <Button
                 type="submit"
                 disabled={saving}
-                className="w-full bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 h-9 text-sm"
+                className="w-full bg-ink text-cream hover:bg-ink/80 h-9 text-sm"
               >
                 {saving ? (
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />

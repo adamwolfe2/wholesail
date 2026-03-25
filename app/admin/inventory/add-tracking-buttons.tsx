@@ -44,11 +44,11 @@ export function AddTrackingButtons({ products }: { products: Product[] }) {
       {products.map((product) => (
         <div
           key={product.id}
-          className="flex items-center justify-between py-2 border-b border-[#E5E1DB] last:border-0"
+          className="flex items-center justify-between py-2 border-b border-shell last:border-0"
         >
           <div className="flex items-center gap-3 min-w-0">
-            <span className="text-sm font-medium text-[#0A0A0A] truncate">{product.name}</span>
-            <Badge variant="outline" className="text-xs border-[#E5E1DB] text-[#0A0A0A]/50 shrink-0">
+            <span className="text-sm font-medium text-ink truncate">{product.name}</span>
+            <Badge variant="outline" className="text-xs border-shell text-ink/50 shrink-0">
               {product.category}
             </Badge>
           </div>
@@ -57,7 +57,7 @@ export function AddTrackingButtons({ products }: { products: Product[] }) {
             variant="outline"
             disabled={adding === product.id}
             onClick={() => handleAddTracking(product.id, product.name)}
-            className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#E5E1DB]/50 text-xs shrink-0 ml-3"
+            className="border-shell text-ink hover:bg-shell/50 text-xs shrink-0 ml-3"
           >
             {adding === product.id ? (
               <Loader2 className="h-3 w-3 animate-spin mr-1" />

@@ -24,14 +24,14 @@ export default async function AdminQuotesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
             Quotes
           </h2>
-          <p className="text-sm text-[#0A0A0A]/50 mt-0.5">
+          <p className="text-sm text-ink/50 mt-0.5">
             Manage client proposals and pricing
           </p>
         </div>
-        <Button asChild className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none">
+        <Button asChild className="bg-ink text-cream hover:bg-ink/80 rounded-none">
           <Link href="/admin/quotes/new">
             <Plus className="h-4 w-4 mr-2" />
             New Quote
@@ -39,17 +39,17 @@ export default async function AdminQuotesPage() {
         </Button>
       </div>
 
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader>
-          <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+          <CardTitle className="font-serif text-lg text-ink">
             All Quotes
           </CardTitle>
         </CardHeader>
         <CardContent>
           {quotes.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-sm text-[#0A0A0A]/50">No quotes yet.</p>
-              <Button asChild className="mt-4 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none">
+              <p className="text-sm text-ink/50">No quotes yet.</p>
+              <Button asChild className="mt-4 bg-ink text-cream hover:bg-ink/80 rounded-none">
                 <Link href="/admin/quotes/new">Create your first quote</Link>
               </Button>
             </div>
@@ -57,26 +57,26 @@ export default async function AdminQuotesPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#E5E1DB]">
-                    <th className="text-left py-3 px-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                  <tr className="border-b border-shell">
+                    <th className="text-left py-3 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider">
                       Quote #
                     </th>
-                    <th className="text-left py-3 px-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                    <th className="text-left py-3 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider">
                       Client
                     </th>
-                    <th className="text-left py-3 px-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden md:table-cell">
+                    <th className="text-left py-3 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden md:table-cell">
                       Rep
                     </th>
-                    <th className="text-left py-3 px-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                    <th className="text-left py-3 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider">
                       Status
                     </th>
-                    <th className="text-right py-3 px-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                    <th className="text-right py-3 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider">
                       Total
                     </th>
-                    <th className="text-left py-3 px-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden lg:table-cell">
+                    <th className="text-left py-3 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden lg:table-cell">
                       Created
                     </th>
-                    <th className="text-left py-3 px-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden lg:table-cell">
+                    <th className="text-left py-3 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden lg:table-cell">
                       Expires
                     </th>
                     <th className="py-3 px-2" />
@@ -86,15 +86,15 @@ export default async function AdminQuotesPage() {
                   {quotes.map((quote) => (
                     <tr
                       key={quote.id}
-                      className="border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02]"
+                      className="border-b border-shell last:border-0 hover:bg-ink/[0.02]"
                     >
-                      <td className="py-3 px-2 font-mono text-xs font-medium text-[#0A0A0A]">
+                      <td className="py-3 px-2 font-mono text-xs font-medium text-ink">
                         {quote.quoteNumber}
                       </td>
-                      <td className="py-3 px-2 text-[#0A0A0A] font-medium">
+                      <td className="py-3 px-2 text-ink font-medium">
                         {quote.organization.name}
                       </td>
-                      <td className="py-3 px-2 text-[#0A0A0A]/60 hidden md:table-cell">
+                      <td className="py-3 px-2 text-ink/60 hidden md:table-cell">
                         {quote.rep?.name ?? "—"}
                       </td>
                       <td className="py-3 px-2">
@@ -107,13 +107,13 @@ export default async function AdminQuotesPage() {
                           {quote.status}
                         </Badge>
                       </td>
-                      <td className="py-3 px-2 text-right font-semibold text-[#0A0A0A]">
+                      <td className="py-3 px-2 text-right font-semibold text-ink">
                         {formatCurrency(quote.total)}
                       </td>
-                      <td className="py-3 px-2 text-[#0A0A0A]/50 hidden lg:table-cell">
+                      <td className="py-3 px-2 text-ink/50 hidden lg:table-cell">
                         {format(quote.createdAt, "MMM d, yyyy")}
                       </td>
-                      <td className="py-3 px-2 text-[#0A0A0A]/50 hidden lg:table-cell">
+                      <td className="py-3 px-2 text-ink/50 hidden lg:table-cell">
                         {quote.expiresAt
                           ? format(quote.expiresAt, "MMM d, yyyy")
                           : "—"}
@@ -123,7 +123,7 @@ export default async function AdminQuotesPage() {
                           variant="ghost"
                           size="sm"
                           asChild
-                          className="text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.06]"
+                          className="text-ink/60 hover:text-ink hover:bg-ink/[0.06]"
                         >
                           <Link href={`/admin/quotes/${quote.id}`}>
                             <ArrowRight className="h-4 w-4" />

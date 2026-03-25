@@ -240,15 +240,15 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
 
   if (items.length === 0) {
     return (
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
-        <CardHeader className="border-b border-[#E5E1DB] pb-3">
-          <CardTitle className="font-serif text-lg text-[#0A0A0A] flex items-center gap-2">
-            <Package className="h-5 w-5 text-[#C8C0B4]" />
+      <Card className="border-shell bg-cream">
+        <CardHeader className="border-b border-shell pb-3">
+          <CardTitle className="font-serif text-lg text-ink flex items-center gap-2">
+            <Package className="h-5 w-5 text-sand" />
             Inventory
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-4">
-          <p className="text-sm text-[#0A0A0A]/40 py-4 text-center">
+          <p className="text-sm text-ink/40 py-4 text-center">
             No inventory levels set up yet. Add tracking below.
           </p>
         </CardContent>
@@ -258,11 +258,11 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
 
   return (
     <>
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
-        <CardHeader className="border-b border-[#E5E1DB] pb-3">
+      <Card className="border-shell bg-cream">
+        <CardHeader className="border-b border-shell pb-3">
           <div className="flex items-center justify-between gap-3 flex-wrap">
-            <CardTitle className="font-serif text-lg text-[#0A0A0A] flex items-center gap-2">
-              <Package className="h-5 w-5 text-[#C8C0B4]" />
+            <CardTitle className="font-serif text-lg text-ink flex items-center gap-2">
+              <Package className="h-5 w-5 text-sand" />
               Inventory Levels
             </CardTitle>
             <div className="flex items-center gap-2">
@@ -271,7 +271,7 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                   size="sm"
                   disabled={savingBulk}
                   onClick={handleSaveAllCounts}
-                  className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 h-8 text-xs gap-1"
+                  className="bg-ink text-cream hover:bg-ink/80 h-8 text-xs gap-1"
                 >
                   {savingBulk ? (
                     <Loader2 className="h-3 w-3 animate-spin" />
@@ -290,8 +290,8 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                 }}
                 className={`h-8 text-xs gap-1 ${
                   stockCountMode
-                    ? 'bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80'
-                    : 'border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#E5E1DB]/50'
+                    ? 'bg-ink text-cream hover:bg-ink/80'
+                    : 'border-shell text-ink hover:bg-shell/50'
                 }`}
               >
                 <ClipboardList className="h-3 w-3" />
@@ -300,7 +300,7 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
             </div>
           </div>
           {stockCountMode && (
-            <p className="text-xs text-[#0A0A0A]/50 mt-2">
+            <p className="text-xs text-ink/50 mt-2">
               Enter actual on-hand counts for each product, then click &quot;Save All Counts&quot;.
             </p>
           )}
@@ -309,16 +309,16 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#E5E1DB]">
-                  <th className="text-left pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Product</th>
-                  <th className="text-left pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden md:table-cell">Category</th>
-                  <th className="text-right pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">On Hand</th>
-                  <th className="text-right pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden sm:table-cell">Reserved</th>
-                  <th className="text-right pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden sm:table-cell">Available</th>
-                  <th className="text-right pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden lg:table-cell">Threshold</th>
-                  <th className="text-left pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">Status</th>
-                  <th className="text-right pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden xl:table-cell">Days Left</th>
-                  <th className="text-center pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden sm:table-cell">In Catalog</th>
+                <tr className="border-b border-shell">
+                  <th className="text-left pb-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider">Product</th>
+                  <th className="text-left pb-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider hidden md:table-cell">Category</th>
+                  <th className="text-right pb-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider">On Hand</th>
+                  <th className="text-right pb-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">Reserved</th>
+                  <th className="text-right pb-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">Available</th>
+                  <th className="text-right pb-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider hidden lg:table-cell">Threshold</th>
+                  <th className="text-left pb-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider">Status</th>
+                  <th className="text-right pb-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider hidden xl:table-cell">Days Left</th>
+                  <th className="text-center pb-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">In Catalog</th>
                   <th className="pb-2"></th>
                 </tr>
               </thead>
@@ -328,12 +328,12 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                   const available = item.quantityOnHand - item.quantityReserved
 
                   return (
-                    <tr key={item.productId} className="border-b border-[#E5E1DB] last:border-0">
-                      <td className="py-3 pr-4 font-medium text-[#0A0A0A]">
+                    <tr key={item.productId} className="border-b border-shell last:border-0">
+                      <td className="py-3 pr-4 font-medium text-ink">
                         {item.productName}
                       </td>
                       <td className="py-3 pr-4 hidden md:table-cell">
-                        <Badge variant="outline" className="text-xs border-[#E5E1DB] text-[#0A0A0A]/60">
+                        <Badge variant="outline" className="text-xs border-shell text-ink/60">
                           {item.category}
                         </Badge>
                       </td>
@@ -349,28 +349,28 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                               }))
                             }
                             placeholder={String(item.quantityOnHand)}
-                            className="w-20 text-right border-[#E5E1DB] bg-[#F9F7F4] h-7 text-sm ml-auto"
+                            className="w-20 text-right border-shell bg-cream h-7 text-sm ml-auto"
                             min={0}
                           />
                         ) : (
                           <span className={`font-bold ${
-                            status === 'OUT' ? 'text-[#0A0A0A]' :
-                            status === 'LOW' ? 'text-[#0A0A0A]/70' :
-                            'text-[#0A0A0A]'
+                            status === 'OUT' ? 'text-ink' :
+                            status === 'LOW' ? 'text-ink/70' :
+                            'text-ink'
                           }`}>
                             {item.quantityOnHand}
                           </span>
                         )}
                       </td>
-                      <td className="py-3 pr-4 text-right text-[#0A0A0A]/50 hidden sm:table-cell">
+                      <td className="py-3 pr-4 text-right text-ink/50 hidden sm:table-cell">
                         {item.quantityReserved}
                       </td>
                       <td className="py-3 pr-4 text-right hidden sm:table-cell">
-                        <span className={available < 0 ? 'text-[#0A0A0A]/40' : 'text-[#0A0A0A]/70'}>
+                        <span className={available < 0 ? 'text-ink/40' : 'text-ink/70'}>
                           {Math.max(0, available)}
                         </span>
                       </td>
-                      <td className="py-3 pr-4 text-right text-[#0A0A0A]/50 hidden lg:table-cell">
+                      <td className="py-3 pr-4 text-right text-ink/50 hidden lg:table-cell">
                         {item.lowStockThreshold}
                       </td>
                       <td className="py-3 pr-4">
@@ -383,14 +383,14 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                       </td>
                       <td className="py-3 pr-4 text-right hidden xl:table-cell">
                         {item.daysUntilStockout === null ? (
-                          <span className="text-xs text-[#0A0A0A]/30">—</span>
+                          <span className="text-xs text-ink/30">—</span>
                         ) : item.daysUntilStockout <= 0 ? (
-                          <span className="text-xs font-semibold text-[#0A0A0A]">0d</span>
+                          <span className="text-xs font-semibold text-ink">0d</span>
                         ) : (
                           <span className={`text-xs font-medium ${
                             item.daysUntilStockout <= 7 ? 'text-red-600' :
                             item.daysUntilStockout <= 21 ? 'text-amber-600' :
-                            'text-[#0A0A0A]/60'
+                            'text-ink/60'
                           }`}>
                             {item.daysUntilStockout}d
                           </span>
@@ -401,7 +401,7 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                           checked={item.available}
                           disabled={togglingId === item.productId}
                           onCheckedChange={() => handleToggleAvailable(item.productId, item.available)}
-                          className="data-[state=checked]:bg-[#0A0A0A] data-[state=unchecked]:bg-[#E5E1DB]"
+                          className="data-[state=checked]:bg-ink data-[state=unchecked]:bg-shell"
                           aria-label={item.available ? 'Hide from catalog' : 'Show in catalog'}
                         />
                       </td>
@@ -411,7 +411,7 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-9 px-2 text-xs text-[#0A0A0A]/60 hover:text-[#0A0A0A] border border-[#E5E1DB] hover:bg-[#E5E1DB]/50"
+                              className="h-9 px-2 text-xs text-ink/60 hover:text-ink border border-shell hover:bg-shell/50"
                               title="Quick adjust"
                               onClick={() => openAdjustDrawer(item)}
                             >
@@ -421,7 +421,7 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-9 w-9 p-0 text-[#0A0A0A]/40 hover:text-[#0A0A0A]"
+                              className="h-9 w-9 p-0 text-ink/40 hover:text-ink"
                               title="Add restock order"
                               onClick={() =>
                                 setRestockModal({
@@ -452,15 +452,15 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
           if (!open) setAdjustDrawer(null)
         }}
       >
-        <DialogContent className="bg-[#F9F7F4] border-[#E5E1DB] sm:max-w-sm">
+        <DialogContent className="bg-cream border-shell sm:max-w-sm">
           <DialogHeader>
-            <DialogTitle className="font-serif text-lg text-[#0A0A0A]">
+            <DialogTitle className="font-serif text-lg text-ink">
               Adjust Inventory — {adjustDrawer?.productName}
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleQuickAdjust} className="space-y-4 mt-2">
             <div className="space-y-1.5">
-              <Label htmlFor="adj-delta" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+              <Label htmlFor="adj-delta" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
                 Change Amount
               </Label>
               <Input
@@ -471,21 +471,21 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                 placeholder="e.g. +5, -3, or 10"
                 required
                 autoFocus
-                className="border-[#E5E1DB] bg-[#F9F7F4]"
+                className="border-shell bg-cream"
               />
               {adjustDrawer && adjustDelta !== '' && !isNaN(parseInt(adjustDelta, 10)) && (
-                <p className="text-xs text-[#0A0A0A]/50">
+                <p className="text-xs text-ink/50">
                   {adjustDrawer.currentQty} → {Math.max(0, adjustDrawer.currentQty + parseInt(adjustDelta, 10))}
                 </p>
               )}
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="adj-reason" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+              <Label htmlFor="adj-reason" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
                 Reason
               </Label>
               <Select value={adjustReason} onValueChange={setAdjustReason}>
-                <SelectTrigger id="adj-reason" className="border-[#E5E1DB] bg-[#F9F7F4]">
+                <SelectTrigger id="adj-reason" className="border-shell bg-cream">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -502,7 +502,7 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
               <Button
                 type="submit"
                 disabled={savingAdjust}
-                className="flex-1 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80"
+                className="flex-1 bg-ink text-cream hover:bg-ink/80"
               >
                 {savingAdjust && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
                 Save Adjustment
@@ -511,7 +511,7 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                 type="button"
                 variant="outline"
                 onClick={() => setAdjustDrawer(null)}
-                className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#E5E1DB]/50"
+                className="border-shell text-ink hover:bg-shell/50"
               >
                 Cancel
               </Button>
@@ -527,15 +527,15 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
           if (!open) setRestockModal(null)
         }}
       >
-        <DialogContent className="bg-[#F9F7F4] border-[#E5E1DB] sm:max-w-md">
+        <DialogContent className="bg-cream border-shell sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="font-serif text-lg text-[#0A0A0A]">
+            <DialogTitle className="font-serif text-lg text-ink">
               Add Restock — {restockModal?.productName}
             </DialogTitle>
           </DialogHeader>
           <form onSubmit={handleCreateRestock} className="space-y-4 mt-2">
             <div className="space-y-1.5">
-              <Label htmlFor="restock-qty" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+              <Label htmlFor="restock-qty" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
                 Quantity
               </Label>
               <Input
@@ -546,12 +546,12 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                 placeholder="e.g. 100"
                 min={1}
                 required
-                className="border-[#E5E1DB] bg-[#F9F7F4]"
+                className="border-shell bg-cream"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="restock-date" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
+              <Label htmlFor="restock-date" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
                 Expected Arrival Date
               </Label>
               <Input
@@ -560,20 +560,20 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                 value={restockDate}
                 onChange={(e) => setRestockDate(e.target.value)}
                 required
-                className="border-[#E5E1DB] bg-[#F9F7F4]"
+                className="border-shell bg-cream"
               />
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="restock-notes" className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">
-                Notes <span className="normal-case text-[#0A0A0A]/40">(optional)</span>
+              <Label htmlFor="restock-notes" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
+                Notes <span className="normal-case text-ink/40">(optional)</span>
               </Label>
               <Input
                 id="restock-notes"
                 value={restockNotes}
                 onChange={(e) => setRestockNotes(e.target.value)}
                 placeholder="e.g. From supplier XYZ"
-                className="border-[#E5E1DB] bg-[#F9F7F4]"
+                className="border-shell bg-cream"
               />
             </div>
 
@@ -581,7 +581,7 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
               <Button
                 type="submit"
                 disabled={creatingRestock}
-                className="flex-1 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80"
+                className="flex-1 bg-ink text-cream hover:bg-ink/80"
               >
                 {creatingRestock && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
                 Add Restock
@@ -590,7 +590,7 @@ export function InventoryTable({ items }: { items: InventoryItem[] }) {
                 type="button"
                 variant="outline"
                 onClick={() => setRestockModal(null)}
-                className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#E5E1DB]/50"
+                className="border-shell text-ink hover:bg-shell/50"
               >
                 Cancel
               </Button>

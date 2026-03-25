@@ -51,15 +51,15 @@ interface DbInvoice {
 function getInvoiceStatusColor(status: string) {
   switch (status.toUpperCase()) {
     case 'PAID':
-      return 'bg-[#0A0A0A] text-[#F9F7F4] border-[#0A0A0A]'
+      return 'bg-ink text-cream border-ink'
     case 'PENDING':
-      return 'bg-transparent text-[#0A0A0A] border-[#0A0A0A]'
+      return 'bg-transparent text-ink border-ink'
     case 'OVERDUE':
       return 'bg-red-50 text-red-700 border-red-200'
     case 'DRAFT':
-      return 'bg-transparent text-[#0A0A0A]/40 border-[#C8C0B4]'
+      return 'bg-transparent text-ink/40 border-sand'
     default:
-      return 'bg-transparent text-[#0A0A0A]/60 border-[#C8C0B4]'
+      return 'bg-transparent text-ink/60 border-sand'
   }
 }
 
@@ -67,77 +67,77 @@ function InvoiceDetailModal({ invoice }: { invoice: DbInvoice }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="sm" className="text-[#0A0A0A]/60 hover:text-[#0A0A0A] min-h-[44px]">
+        <Button variant="ghost" size="sm" className="text-ink/60 hover:text-ink min-h-[44px]">
           <Eye className="h-4 w-4 mr-1" />
           <span className="hidden sm:inline">View</span>
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[calc(100vw-2rem)] sm:w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-[#F9F7F4] border-[#C8C0B4]">
+      <DialogContent className="w-[calc(100vw-2rem)] sm:w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-cream border-sand">
         <DialogHeader>
-          <DialogTitle className="font-serif text-lg sm:text-xl text-[#0A0A0A]">Invoice {invoice.invoiceNumber}</DialogTitle>
-          <DialogDescription className="text-xs sm:text-sm text-[#0A0A0A]/50">
+          <DialogTitle className="font-serif text-lg sm:text-xl text-ink">Invoice {invoice.invoiceNumber}</DialogTitle>
+          <DialogDescription className="text-xs sm:text-sm text-ink/50">
             Issued: {new Date(invoice.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-6 pt-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 text-sm">
-            <div className="border border-[#C8C0B4] p-2 sm:p-3">
-              <p className="text-[10px] text-[#0A0A0A]/50 uppercase tracking-wider mb-1">Due Date</p>
-              <p className="font-semibold text-[#0A0A0A]">{new Date(invoice.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+            <div className="border border-sand p-2 sm:p-3">
+              <p className="text-[10px] text-ink/50 uppercase tracking-wider mb-1">Due Date</p>
+              <p className="font-semibold text-ink">{new Date(invoice.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
             </div>
-            <div className="border border-[#C8C0B4] p-2 sm:p-3">
-              <p className="text-[10px] text-[#0A0A0A]/50 uppercase tracking-wider mb-1">Status</p>
+            <div className="border border-sand p-2 sm:p-3">
+              <p className="text-[10px] text-ink/50 uppercase tracking-wider mb-1">Status</p>
               <Badge variant="outline" className={getInvoiceStatusColor(invoice.status)}>
                 {invoice.status}
               </Badge>
             </div>
-            <div className="border border-[#C8C0B4] p-2 sm:p-3">
-              <p className="text-[10px] text-[#0A0A0A]/50 uppercase tracking-wider mb-1">Total</p>
-              <p className="font-semibold text-[#0A0A0A]">${Number(invoice.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
+            <div className="border border-sand p-2 sm:p-3">
+              <p className="text-[10px] text-ink/50 uppercase tracking-wider mb-1">Total</p>
+              <p className="font-semibold text-ink">${Number(invoice.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}</p>
             </div>
           </div>
 
-          <Separator className="bg-[#C8C0B4]/50" />
+          <Separator className="bg-sand/50" />
 
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="border-[#C8C0B4]/50">
-                  <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Item</TableHead>
-                  <TableHead className="text-right text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Qty</TableHead>
-                  <TableHead className="text-right text-[#0A0A0A]/50 uppercase tracking-wider text-xs hidden sm:table-cell">Price</TableHead>
-                  <TableHead className="text-right text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Total</TableHead>
+                <TableRow className="border-sand/50">
+                  <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Item</TableHead>
+                  <TableHead className="text-right text-ink/50 uppercase tracking-wider text-xs">Qty</TableHead>
+                  <TableHead className="text-right text-ink/50 uppercase tracking-wider text-xs hidden sm:table-cell">Price</TableHead>
+                  <TableHead className="text-right text-ink/50 uppercase tracking-wider text-xs">Total</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {invoice.order?.items?.map((item) => (
-                  <TableRow key={item.id} className="border-[#C8C0B4]/30">
-                    <TableCell className="font-medium text-[#0A0A0A]">{item.name}</TableCell>
-                    <TableCell className="text-right text-[#0A0A0A]/60">{item.quantity}</TableCell>
-                    <TableCell className="text-right text-[#0A0A0A]/60 hidden sm:table-cell">${Number(item.unitPrice).toLocaleString('en-US', { minimumFractionDigits: 2 })}</TableCell>
-                    <TableCell className="text-right font-semibold text-[#0A0A0A]">${Number(item.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}</TableCell>
+                  <TableRow key={item.id} className="border-sand/30">
+                    <TableCell className="font-medium text-ink">{item.name}</TableCell>
+                    <TableCell className="text-right text-ink/60">{item.quantity}</TableCell>
+                    <TableCell className="text-right text-ink/60 hidden sm:table-cell">${Number(item.unitPrice).toLocaleString('en-US', { minimumFractionDigits: 2 })}</TableCell>
+                    <TableCell className="text-right font-semibold text-ink">${Number(item.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
           </div>
 
-          <Separator className="bg-[#C8C0B4]/50" />
+          <Separator className="bg-sand/50" />
 
           <div className="flex flex-col items-end gap-2 text-sm">
             <div className="flex justify-between w-full max-w-[200px]">
-              <span className="text-[#0A0A0A]/50">Subtotal</span>
-              <span className="font-medium text-[#0A0A0A]">${Number(invoice.subtotal).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+              <span className="text-ink/50">Subtotal</span>
+              <span className="font-medium text-ink">${Number(invoice.subtotal).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
             </div>
             <div className="flex justify-between w-full max-w-[200px]">
-              <span className="text-[#0A0A0A]/50">Tax</span>
-              <span className="font-medium text-[#0A0A0A]">${Number(invoice.tax).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+              <span className="text-ink/50">Tax</span>
+              <span className="font-medium text-ink">${Number(invoice.tax).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
             </div>
-            <Separator className="w-full max-w-[200px] bg-[#C8C0B4]/50" />
+            <Separator className="w-full max-w-[200px] bg-sand/50" />
             <div className="flex justify-between w-full max-w-[200px] text-base">
-              <span className="font-bold text-[#0A0A0A]">Total</span>
-              <span className="font-bold text-[#0A0A0A]">${Number(invoice.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+              <span className="font-bold text-ink">Total</span>
+              <span className="font-bold text-ink">${Number(invoice.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
             </div>
           </div>
 
@@ -146,7 +146,7 @@ function InvoiceDetailModal({ invoice }: { invoice: DbInvoice }) {
               href={`/api/invoices/${invoice.id}/pdf`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 inline-flex items-center justify-center gap-2 bg-[#0A0A0A] text-[#F9F7F4] px-4 py-2.5 text-sm font-medium hover:bg-[#0A0A0A]/80 transition-colors min-h-[44px]"
+              className="flex-1 inline-flex items-center justify-center gap-2 bg-ink text-cream px-4 py-2.5 text-sm font-medium hover:bg-ink/80 transition-colors min-h-[44px]"
             >
               <Download className="h-4 w-4" />
               Download PDF
@@ -212,7 +212,7 @@ export default function InvoicesPage() {
     return (
       <PortalLayout>
         <div className="flex items-center justify-center min-h-[60vh]">
-          <Loader2 className="h-8 w-8 animate-spin text-[#C8C0B4]" />
+          <Loader2 className="h-8 w-8 animate-spin text-sand" />
         </div>
       </PortalLayout>
     )
@@ -241,58 +241,58 @@ export default function InvoicesPage() {
         )}
 
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Invoices</h1>
-          <p className="text-sm text-[#0A0A0A]/50 mt-1">View and manage your invoices</p>
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Invoices</h1>
+          <p className="text-sm text-ink/50 mt-1">View and manage your invoices</p>
         </div>
 
         {/* Summary Cards */}
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
-          <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+          <Card className="border-sand bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">Paid</CardTitle>
-              <DollarSign className="h-4 w-4 text-[#C8C0B4]" />
+              <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">Paid</CardTitle>
+              <DollarSign className="h-4 w-4 text-sand" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#0A0A0A]">${paidTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
-              <p className="text-xs text-[#0A0A0A]/40 mt-1">{paidCount} invoices</p>
+              <div className="text-2xl font-bold text-ink">${paidTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+              <p className="text-xs text-ink/40 mt-1">{paidCount} invoices</p>
             </CardContent>
           </Card>
 
-          <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+          <Card className="border-sand bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">Pending</CardTitle>
-              <Clock className="h-4 w-4 text-[#C8C0B4]" />
+              <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">Pending</CardTitle>
+              <Clock className="h-4 w-4 text-sand" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-[#0A0A0A]">${pendingTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
-              <p className="text-xs text-[#0A0A0A]/40 mt-1">{pendingCount} invoices</p>
+              <div className="text-2xl font-bold text-ink">${pendingTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
+              <p className="text-xs text-ink/40 mt-1">{pendingCount} invoices</p>
             </CardContent>
           </Card>
 
-          <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+          <Card className="border-sand bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-xs font-medium text-[#0A0A0A]/60 uppercase tracking-wider">Overdue</CardTitle>
+              <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">Overdue</CardTitle>
               <AlertTriangle className="h-4 w-4 text-red-400" />
             </CardHeader>
             <CardContent>
-              <div className={`text-2xl font-bold ${overdueTotal > 0 ? 'text-red-600' : 'text-[#0A0A0A]'}`}>
+              <div className={`text-2xl font-bold ${overdueTotal > 0 ? 'text-red-600' : 'text-ink'}`}>
                 ${overdueTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
               </div>
-              <p className="text-xs text-[#0A0A0A]/40 mt-1">{overdueCount} invoices</p>
+              <p className="text-xs text-ink/40 mt-1">{overdueCount} invoices</p>
             </CardContent>
           </Card>
         </div>
 
         {/* All Invoices */}
-        <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
-          <CardHeader className="border-b border-[#C8C0B4]/50">
-            <CardTitle className="font-serif text-lg text-[#0A0A0A]">All Invoices</CardTitle>
-            <CardDescription className="text-[#0A0A0A]/50">Complete invoice history for your account</CardDescription>
+        <Card className="border-sand bg-cream">
+          <CardHeader className="border-b border-sand/50">
+            <CardTitle className="font-serif text-lg text-ink">All Invoices</CardTitle>
+            <CardDescription className="text-ink/50">Complete invoice history for your account</CardDescription>
           </CardHeader>
           <CardContent className="pt-4">
             {loading ? (
               <div className="flex justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-[#C8C0B4]" />
+                <Loader2 className="h-6 w-6 animate-spin text-sand" />
               </div>
             ) : dbInvoices.length > 0 ? (
               <>
@@ -300,28 +300,28 @@ export default function InvoicesPage() {
                 <div className="overflow-x-auto hidden sm:block">
                   <Table>
                     <TableHeader>
-                      <TableRow className="border-[#C8C0B4]/50">
-                        <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Invoice</TableHead>
-                        <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Date</TableHead>
-                        <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs hidden md:table-cell">Due Date</TableHead>
-                        <TableHead className="text-right text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Total</TableHead>
-                        <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Status</TableHead>
+                      <TableRow className="border-sand/50">
+                        <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Invoice</TableHead>
+                        <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Date</TableHead>
+                        <TableHead className="text-ink/50 uppercase tracking-wider text-xs hidden md:table-cell">Due Date</TableHead>
+                        <TableHead className="text-right text-ink/50 uppercase tracking-wider text-xs">Total</TableHead>
+                        <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Status</TableHead>
                         <TableHead className="text-right"></TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {dbInvoices.map((invoice) => (
-                        <TableRow key={invoice.id} className="border-[#C8C0B4]/30">
+                        <TableRow key={invoice.id} className="border-sand/30">
                           <TableCell>
-                            <p className="font-medium font-mono text-[#0A0A0A]">{invoice.invoiceNumber}</p>
+                            <p className="font-medium font-mono text-ink">{invoice.invoiceNumber}</p>
                           </TableCell>
-                          <TableCell className="text-[#0A0A0A]/60">
+                          <TableCell className="text-ink/60">
                             {new Date(invoice.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                           </TableCell>
-                          <TableCell className="text-[#0A0A0A]/60 hidden md:table-cell">
+                          <TableCell className="text-ink/60 hidden md:table-cell">
                             {new Date(invoice.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                           </TableCell>
-                          <TableCell className="text-right font-semibold text-[#0A0A0A]">
+                          <TableCell className="text-right font-semibold text-ink">
                             ${Number(invoice.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                           </TableCell>
                           <TableCell>
@@ -336,7 +336,7 @@ export default function InvoicesPage() {
                                   size="sm"
                                   onClick={() => handlePayNow(invoice.id)}
                                   disabled={payingId === invoice.id}
-                                  className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 min-h-[44px] text-xs"
+                                  className="bg-ink text-cream hover:bg-ink/80 min-h-[44px] text-xs"
                                 >
                                   {payingId === invoice.id ? (
                                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -365,16 +365,16 @@ export default function InvoicesPage() {
                 {/* Mobile card list */}
                 <div className="sm:hidden space-y-3">
                   {dbInvoices.map((invoice) => (
-                    <div key={invoice.id} className="border border-[#C8C0B4]/50 p-4">
+                    <div key={invoice.id} className="border border-sand/50 p-4">
                       <div className="flex items-start justify-between gap-3 mb-2">
                         <div>
-                          <p className="font-mono text-sm font-semibold text-[#0A0A0A]">{invoice.invoiceNumber}</p>
-                          <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+                          <p className="font-mono text-sm font-semibold text-ink">{invoice.invoiceNumber}</p>
+                          <p className="text-xs text-ink/50 mt-0.5">
                             {new Date(invoice.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                             &nbsp;&middot;&nbsp;Due {new Date(invoice.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                           </p>
                         </div>
-                        <p className="text-sm font-bold text-[#0A0A0A] shrink-0">
+                        <p className="text-sm font-bold text-ink shrink-0">
                           ${Number(invoice.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                         </p>
                       </div>
@@ -388,7 +388,7 @@ export default function InvoicesPage() {
                               size="sm"
                               onClick={() => handlePayNow(invoice.id)}
                               disabled={payingId === invoice.id}
-                              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 min-h-[44px] text-xs"
+                              className="bg-ink text-cream hover:bg-ink/80 min-h-[44px] text-xs"
                             >
                               {payingId === invoice.id ? (
                                 <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -414,9 +414,9 @@ export default function InvoicesPage() {
               </>
             ) : (
               <div className="text-center py-12">
-                <FileText className="h-12 w-12 text-[#C8C0B4] mx-auto mb-4" />
-                <h3 className="font-serif text-lg font-medium mb-2 text-[#0A0A0A]">No invoices yet</h3>
-                <p className="text-[#0A0A0A]/50 text-sm">
+                <FileText className="h-12 w-12 text-sand mx-auto mb-4" />
+                <h3 className="font-serif text-lg font-medium mb-2 text-ink">No invoices yet</h3>
+                <p className="text-ink/50 text-sm">
                   Invoices will appear here after your orders are processed.
                 </p>
               </div>

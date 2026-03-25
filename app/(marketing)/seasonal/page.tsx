@@ -166,10 +166,10 @@ function groupByCategory(products: SeasonalProduct[]) {
 
 function CalendarRow({ product }: { product: SeasonalProduct }) {
   return (
-    <tr className="border-b border-[#E5E1DB] last:border-0">
-      <td className="py-3 pr-4 text-sm font-medium text-[#0A0A0A] min-w-[160px] max-w-[220px]">
+    <tr className="border-b border-shell last:border-0">
+      <td className="py-3 pr-4 text-sm font-medium text-ink min-w-[160px] max-w-[220px]">
         {product.name}
-        <div className="text-[10px] text-[#0A0A0A]/40 mt-0.5 font-normal">{product.origin}</div>
+        <div className="text-[10px] text-ink/40 mt-0.5 font-normal">{product.origin}</div>
       </td>
       {MONTH_NUMS.map((m) => {
         const active = product.months.includes(m)
@@ -179,10 +179,10 @@ function CalendarRow({ product }: { product: SeasonalProduct }) {
             <div
               className={`mx-auto h-5 w-5 rounded-sm transition-colors ${
                 peak
-                  ? 'bg-[#0A0A0A]'
+                  ? 'bg-ink'
                   : active
-                  ? 'bg-[#0A0A0A]/40'
-                  : 'bg-[#E5E1DB]'
+                  ? 'bg-ink/40'
+                  : 'bg-shell'
               }`}
               title={
                 peak ? 'Peak season' : active ? 'In season' : 'Off season'
@@ -212,40 +212,40 @@ function ProductCard({ product }: { product: SeasonalProduct }) {
     : product.peak.map((m) => MONTHS[m - 1])
 
   return (
-    <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6 flex flex-col gap-3">
+    <div className="border border-shell bg-cream p-6 flex flex-col gap-3">
       <div className="flex items-start justify-between gap-2">
         <div>
-          <h3 className="font-serif text-lg font-medium text-[#0A0A0A]">{product.name}</h3>
-          <p className="text-xs text-[#0A0A0A]/50 mt-0.5">{product.origin}</p>
+          <h3 className="font-serif text-lg font-medium text-ink">{product.name}</h3>
+          <p className="text-xs text-ink/50 mt-0.5">{product.origin}</p>
         </div>
         {isPeak ? (
-          <span className="shrink-0 text-[10px] font-semibold uppercase tracking-widest bg-[#0A0A0A] text-[#F9F7F4] px-2 py-1">
+          <span className="shrink-0 text-[10px] font-semibold uppercase tracking-widest bg-ink text-cream px-2 py-1">
             Peak Now
           </span>
         ) : isInSeason ? (
-          <span className="shrink-0 text-[10px] font-semibold uppercase tracking-widest bg-[#0A0A0A]/20 text-[#0A0A0A] px-2 py-1">
+          <span className="shrink-0 text-[10px] font-semibold uppercase tracking-widest bg-ink/20 text-ink px-2 py-1">
             In Season
           </span>
         ) : (
-          <span className="shrink-0 text-[10px] font-medium uppercase tracking-widest text-[#0A0A0A]/30 border border-[#E5E1DB] px-2 py-1">
+          <span className="shrink-0 text-[10px] font-medium uppercase tracking-widest text-ink/30 border border-shell px-2 py-1">
             Off Season
           </span>
         )}
       </div>
 
-      <p className="text-sm text-[#0A0A0A]/70 leading-relaxed">{product.description}</p>
+      <p className="text-sm text-ink/70 leading-relaxed">{product.description}</p>
 
-      <div className="flex flex-col gap-1 text-xs text-[#0A0A0A]/50">
+      <div className="flex flex-col gap-1 text-xs text-ink/50">
         <span>
-          <strong className="text-[#0A0A0A]/70">Season:</strong>{' '}
+          <strong className="text-ink/70">Season:</strong>{' '}
           {product.months.length === 12 ? 'Year-round' : seasonMonthNames.join(', ')}
         </span>
         <span>
-          <strong className="text-[#0A0A0A]/70">Peak:</strong>{' '}
+          <strong className="text-ink/70">Peak:</strong>{' '}
           {peakMonthNames.join(', ')}
         </span>
         <span>
-          <strong className="text-[#0A0A0A]/70">Pricing:</strong> {product.priceNote}
+          <strong className="text-ink/70">Pricing:</strong> {product.priceNote}
         </span>
       </div>
     </div>
@@ -262,39 +262,39 @@ export default async function SeasonalPage() {
     <>
       <MarketingHeader />
 
-      <main className="min-h-screen bg-[#F9F7F4]">
+      <main className="min-h-screen bg-cream">
         {/* Hero */}
-        <section className="border-b border-[#E5E1DB]">
+        <section className="border-b border-shell">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 max-w-5xl">
-            <p className="text-xs tracking-[0.25em] uppercase text-[#C8C0B4] mb-4">
+            <p className="text-xs tracking-[0.25em] uppercase text-sand mb-4">
               Ingredient Calendar
             </p>
-            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-[#0A0A0A] leading-tight mb-4">
+            <h1 className="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-ink leading-tight mb-4">
               What&apos;s In Season
             </h1>
-            <p className="text-lg text-[#0A0A0A]/50 max-w-xl">
+            <p className="text-lg text-ink/50 max-w-xl">
               Truffles, caviar, and luxury ingredients — timed to your menu.
             </p>
           </div>
         </section>
 
         {/* Calendar Grid */}
-        <section className="border-b border-[#E5E1DB]">
+        <section className="border-b border-shell">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-5xl">
-            <h2 className="font-serif text-2xl text-[#0A0A0A] mb-1">Availability at a Glance</h2>
-            <p className="text-sm text-[#0A0A0A]/50 mb-8">
+            <h2 className="font-serif text-2xl text-ink mb-1">Availability at a Glance</h2>
+            <p className="text-sm text-ink/50 mb-8">
               <span className="inline-flex items-center gap-1.5">
-                <span className="inline-block h-3 w-3 rounded-sm bg-[#0A0A0A]" />
+                <span className="inline-block h-3 w-3 rounded-sm bg-ink" />
                 Peak season
               </span>
-              <span className="mx-3 text-[#E5E1DB]">|</span>
+              <span className="mx-3 text-shell">|</span>
               <span className="inline-flex items-center gap-1.5">
-                <span className="inline-block h-3 w-3 rounded-sm bg-[#0A0A0A]/40" />
+                <span className="inline-block h-3 w-3 rounded-sm bg-ink/40" />
                 In season
               </span>
-              <span className="mx-3 text-[#E5E1DB]">|</span>
+              <span className="mx-3 text-shell">|</span>
               <span className="inline-flex items-center gap-1.5">
-                <span className="inline-block h-3 w-3 rounded-sm bg-[#E5E1DB]" />
+                <span className="inline-block h-3 w-3 rounded-sm bg-shell" />
                 Off season
               </span>
             </p>
@@ -302,14 +302,14 @@ export default async function SeasonalPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm min-w-[700px]">
                 <thead>
-                  <tr className="border-b border-[#E5E1DB]">
-                    <th className="text-left pb-2 pr-4 text-xs font-medium text-[#0A0A0A]/40 uppercase tracking-wider min-w-[160px]">
+                  <tr className="border-b border-shell">
+                    <th className="text-left pb-2 pr-4 text-xs font-medium text-ink/40 uppercase tracking-wider min-w-[160px]">
                       Product
                     </th>
                     {MONTHS.map((m) => (
                       <th
                         key={m}
-                        className="pb-2 px-1 text-center text-xs font-medium text-[#0A0A0A]/40 uppercase tracking-wider"
+                        className="pb-2 px-1 text-center text-xs font-medium text-ink/40 uppercase tracking-wider"
                       >
                         {m}
                       </th>
@@ -325,7 +325,7 @@ export default async function SeasonalPage() {
                         <tr key={`cat-${cat}`}>
                           <td
                             colSpan={13}
-                            className="pt-6 pb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#C8C0B4]"
+                            className="pt-6 pb-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-sand"
                           >
                             {cat}
                           </td>
@@ -350,8 +350,8 @@ export default async function SeasonalPage() {
               if (!products || products.length === 0) return null
               return (
                 <div key={cat}>
-                  <h2 className="font-serif text-2xl text-[#0A0A0A] mb-1">{cat}</h2>
-                  <div className="h-px bg-[#E5E1DB] mb-6" />
+                  <h2 className="font-serif text-2xl text-ink mb-1">{cat}</h2>
+                  <div className="h-px bg-shell mb-6" />
                   <div className="grid gap-4 sm:grid-cols-2">
                     {products.map((product) => (
                       <ProductCard key={product.name} product={product} />
@@ -364,22 +364,22 @@ export default async function SeasonalPage() {
         </section>
 
         {/* CTA */}
-        <section className="border-t border-[#E5E1DB] bg-[#0A0A0A]">
+        <section className="border-t border-shell bg-ink">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 max-w-5xl text-center">
-            <p className="text-xs tracking-[0.25em] uppercase text-[#C8C0B4] mb-4">
+            <p className="text-xs tracking-[0.25em] uppercase text-sand mb-4">
               Ready to order?
             </p>
-            <h2 className="font-serif text-3xl sm:text-4xl text-[#F9F7F4] mb-4">
+            <h2 className="font-serif text-3xl sm:text-4xl text-cream mb-4">
               Source what&apos;s in season.
             </h2>
-            <p className="text-[#F9F7F4]/50 mb-8 max-w-lg mx-auto">
+            <p className="text-cream/50 mb-8 max-w-lg mx-auto">
               Same-day delivery across Southern California. Nationwide 24–48hr for most items.
             </p>
             {userId ? (
               <Button
                 asChild
                 size="lg"
-                className="bg-[#F9F7F4] text-[#0A0A0A] hover:bg-[#F9F7F4]/90 font-medium px-8"
+                className="bg-cream text-ink hover:bg-cream/90 font-medium px-8"
               >
                 <Link href="/catalog">Order Now</Link>
               </Button>
@@ -387,7 +387,7 @@ export default async function SeasonalPage() {
               <Button
                 asChild
                 size="lg"
-                className="bg-[#F9F7F4] text-[#0A0A0A] hover:bg-[#F9F7F4]/90 font-medium px-8"
+                className="bg-cream text-ink hover:bg-cream/90 font-medium px-8"
               >
                 <Link href="/partner">Apply for Wholesale Access</Link>
               </Button>

@@ -129,24 +129,24 @@ export function ImportClientsButton({ onSuccess }: { onSuccess?: () => void }) {
       <Button
         variant="outline"
         onClick={() => setOpen(true)}
-        className="gap-1.5 border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04]"
+        className="gap-1.5 border-shell text-ink hover:bg-ink/[0.04]"
       >
         <Upload className="h-4 w-4" />
         Import CSV
       </Button>
 
       <Dialog open={open} onOpenChange={(v) => { if (!v) handleClose() }}>
-        <DialogContent className="sm:max-w-lg bg-[#F9F7F4] border-[#E5E1DB]">
+        <DialogContent className="sm:max-w-lg bg-cream border-shell">
           <DialogHeader>
-            <DialogTitle className="font-serif text-xl text-[#0A0A0A]">Import Clients</DialogTitle>
-            <DialogDescription className="text-sm text-[#0A0A0A]/50">
-              Paste CSV with columns: <code className="text-xs bg-[#E5E1DB] px-1">name, phone, contactPerson, email</code>. First row can be a header.
+            <DialogTitle className="font-serif text-xl text-ink">Import Clients</DialogTitle>
+            <DialogDescription className="text-sm text-ink/50">
+              Paste CSV with columns: <code className="text-xs bg-shell px-1">name, phone, contactPerson, email</code>. First row can be a header.
             </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
             <div className="space-y-2">
-              <Label htmlFor="csv-input" className="text-sm font-medium text-[#0A0A0A]">
+              <Label htmlFor="csv-input" className="text-sm font-medium text-ink">
                 CSV Data
               </Label>
               <Textarea
@@ -155,14 +155,14 @@ export function ImportClientsButton({ onSuccess }: { onSuccess?: () => void }) {
                 value={csvText}
                 onChange={e => { setCsvText(e.target.value); setResult(null); setParseErrors([]) }}
                 rows={8}
-                className="border-[#C8C0B4] resize-none font-mono text-xs"
+                className="border-sand resize-none font-mono text-xs"
                 disabled={loading}
               />
             </div>
 
             {/* Preview count */}
             {csvText.trim() && !result && (
-              <div className={`text-sm flex items-center gap-2 ${hasErrors ? 'text-amber-700' : 'text-[#0A0A0A]/60'}`}>
+              <div className={`text-sm flex items-center gap-2 ${hasErrors ? 'text-amber-700' : 'text-ink/60'}`}>
                 {hasErrors
                   ? <AlertTriangle className="h-3.5 w-3.5 shrink-0 text-amber-600" />
                   : null
@@ -187,12 +187,12 @@ export function ImportClientsButton({ onSuccess }: { onSuccess?: () => void }) {
 
             {/* Import result */}
             {result && (
-              <div className="border border-[#E5E1DB] bg-white px-4 py-3 space-y-1">
-                <div className="flex items-center gap-2 text-sm font-medium text-[#0A0A0A]">
+              <div className="border border-shell bg-white px-4 py-3 space-y-1">
+                <div className="flex items-center gap-2 text-sm font-medium text-ink">
                   <CheckCircle2 className="h-4 w-4 text-green-600" />
                   Import complete
                 </div>
-                <p className="text-sm text-[#0A0A0A]/60">
+                <p className="text-sm text-ink/60">
                   {result.created} created, {result.updated} updated
                 </p>
                 {result.errors.length > 0 && (
@@ -212,7 +212,7 @@ export function ImportClientsButton({ onSuccess }: { onSuccess?: () => void }) {
               variant="outline"
               onClick={handleClose}
               disabled={loading}
-              className="border-[#E5E1DB]"
+              className="border-shell"
             >
               {result ? 'Close' : 'Cancel'}
             </Button>
@@ -220,7 +220,7 @@ export function ImportClientsButton({ onSuccess }: { onSuccess?: () => void }) {
               <Button
                 onClick={handleImport}
                 disabled={previewCount === 0 || loading || hasErrors}
-                className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80"
+                className="bg-ink text-cream hover:bg-ink/80"
               >
                 {loading ? (
                   <><Loader2 className="h-4 w-4 animate-spin mr-2" />Importing...</>

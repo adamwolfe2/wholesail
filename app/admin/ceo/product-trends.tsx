@@ -38,8 +38,8 @@ function ProductTrendTooltip({
 }) {
   if (active && payload && payload.length) {
     return (
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-3 text-xs font-mono shadow-sm min-w-[160px]">
-        <p className="text-[#0A0A0A]/60 mb-2 font-semibold">{label}</p>
+      <div className="border border-shell bg-cream p-3 text-xs font-mono shadow-sm min-w-[160px]">
+        <p className="text-ink/60 mb-2 font-semibold">{label}</p>
         {payload
           .slice()
           .sort((a, b) => b.value - a.value)
@@ -51,7 +51,7 @@ function ProductTrendTooltip({
               >
                 {entry.name}
               </span>
-              <span className="font-bold text-[#0A0A0A]">
+              <span className="font-bold text-ink">
                 $
                 {entry.value.toLocaleString("en-US", {
                   minimumFractionDigits: 0,
@@ -92,12 +92,12 @@ export function ProductTrends() {
     );
 
   return (
-    <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+    <Card className="border-shell bg-cream">
       <CardHeader className="pb-3">
-        <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+        <CardTitle className="font-serif text-lg text-ink">
           Product Revenue Momentum — Top 5
         </CardTitle>
-        <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+        <p className="text-xs text-ink/50 mt-0.5">
           Monthly revenue per product over last 6 months — reveals growth vs.
           decline
         </p>
@@ -105,19 +105,19 @@ export function ProductTrends() {
       <CardContent>
         {loading ? (
           <div className="h-[280px] flex items-center justify-center">
-            <p className="text-sm text-[#0A0A0A]/40">
+            <p className="text-sm text-ink/40">
               Loading product trends…
             </p>
           </div>
         ) : error ? (
           <div className="h-[280px] flex items-center justify-center">
-            <p className="text-sm text-[#0A0A0A]/40">
+            <p className="text-sm text-ink/40">
               Could not load product trend data.
             </p>
           </div>
         ) : !hasData ? (
           <div className="h-[280px] flex items-center justify-center">
-            <p className="text-sm text-[#0A0A0A]/40 text-center">
+            <p className="text-sm text-ink/40 text-center">
               No product trend data yet. Charts will populate once orders are
               placed.
             </p>

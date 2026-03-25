@@ -222,7 +222,7 @@ function ProjectStatus({ client }: { client: ClientProject }) {
                   {isComplete ? (
                     <CheckCircle2
                       className="w-4 h-4 flex-shrink-0"
-                      style={{ color: "#059669" }}
+                      style={{ color: 'var(--color-success)' }}
                     />
                   ) : isCurrent ? (
                     <Loader2
@@ -256,7 +256,7 @@ function ProjectStatus({ client }: { client: ClientProject }) {
                   {isComplete && (
                     <span
                       className="font-mono text-[9px] uppercase tracking-wide"
-                      style={{ color: "#059669" }}
+                      style={{ color: 'var(--color-success)' }}
                     >
                       Done
                     </span>

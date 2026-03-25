@@ -172,7 +172,7 @@ function ClientCard({
               {featureCount} features
             </span>
             {client.monthlyRevenue > 0 && (
-              <span className="font-mono text-[10px] font-semibold" style={{ color: "#059669" }}>
+              <span className="font-mono text-[10px] font-semibold" style={{ color: 'var(--color-success)' }}>
                 {formatCurrency(client.monthlyRevenue)}/mo
               </span>
             )}
@@ -383,7 +383,7 @@ function ClientDetail({
                 }}
               >
                 {isComplete ? (
-                  <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: "#059669" }} />
+                  <CheckCircle2 className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--color-success)' }} />
                 ) : isCurrent ? (
                   <Loader2 className="w-4 h-4 flex-shrink-0 animate-spin" style={{ color: "var(--blue)" }} />
                 ) : (

@@ -72,16 +72,16 @@ const SECTIONS = [
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-[#F9F7F4]">
+    <div className="min-h-screen bg-cream">
       <MarketingHeader />
 
-      <div className="pt-24 pb-12 sm:pb-16 border-b border-[#E5E1DB]">
+      <div className="pt-24 pb-12 sm:pb-16 border-b border-shell">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-          <p className="text-xs tracking-[0.25em] uppercase text-[#C8C0B4] mb-4">Legal</p>
-          <h1 className="font-serif text-5xl sm:text-6xl font-bold text-[#0A0A0A] leading-tight mb-4">
+          <p className="text-xs tracking-[0.25em] uppercase text-sand mb-4">Legal</p>
+          <h1 className="font-serif text-5xl sm:text-6xl font-bold text-ink leading-tight mb-4">
             Privacy Policy
           </h1>
-          <p className="text-sm text-[#0A0A0A]/40">Last Updated: March 2026</p>
+          <p className="text-sm text-ink/40">Last Updated: March 2026</p>
         </div>
       </div>
 
@@ -90,35 +90,35 @@ export default function PrivacyPage() {
           {SECTIONS.map((section, i) => (
             <section key={section.title}>
               <div className="flex items-start gap-5 mb-6">
-                <span className="font-serif text-3xl font-normal text-[#E5E1DB] leading-none select-none shrink-0 tabular-nums">
+                <span className="font-serif text-3xl font-normal text-shell leading-none select-none shrink-0 tabular-nums">
                   {String(i + 1).padStart(2, '0')}
                 </span>
-                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
                   {section.title}
                 </h2>
               </div>
               <div className="pl-0 sm:pl-14 space-y-3">
                 {section.body.map((paragraph, j) => (
-                  <p key={j} className="text-[#0A0A0A]/70 text-base leading-relaxed">
+                  <p key={j} className="text-ink/70 text-base leading-relaxed">
                     {paragraph}
                   </p>
                 ))}
               </div>
               {i < SECTIONS.length - 1 && (
-                <div className="border-t border-[#E5E1DB] mt-14" />
+                <div className="border-t border-shell mt-14" />
               )}
             </section>
           ))}
         </div>
       </div>
 
-      <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
+      <footer className="border-t border-shell bg-ink-dark text-cream py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
-          <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
-            <Link href="/privacy" className="hover:text-[#F9F7F4] transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-[#F9F7F4] transition-colors">Terms of Service</Link>
-            <Link href="/about" className="hover:text-[#F9F7F4] transition-colors">About</Link>
+          <div className="flex items-center gap-6 text-sm text-cream/40">
+            <Link href="/privacy" className="hover:text-cream transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-cream transition-colors">Terms of Service</Link>
+            <Link href="/about" className="hover:text-cream transition-colors">About</Link>
           </div>
         </div>
       </footer>

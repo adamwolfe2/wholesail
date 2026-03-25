@@ -128,7 +128,7 @@ export function ProjectActions({
         <CardContent className="space-y-5 text-sm">
           {CHECKLIST_SECTIONS.map((section) => (
             <div key={section.label}>
-              <p className="font-mono text-[9px] uppercase tracking-widest text-[#0A0A0A]/40 mb-2">
+              <p className="font-mono text-[9px] uppercase tracking-widest text-ink/40 mb-2">
                 {section.label}
               </p>
               <div className="space-y-1.5">
@@ -144,14 +144,14 @@ export function ProjectActions({
                       className="w-full flex items-center gap-2.5 text-left group disabled:cursor-default"
                     >
                       {isSaving ? (
-                        <Loader2 className="h-4 w-4 animate-spin text-[#0A0A0A]/30 shrink-0" />
+                        <Loader2 className="h-4 w-4 animate-spin text-ink/30 shrink-0" />
                       ) : checked ? (
                         <CheckCircle2 className="h-4 w-4 text-green-600 shrink-0" />
                       ) : (
-                        <Circle className="h-4 w-4 text-[#0A0A0A]/20 shrink-0 group-hover:text-[#0A0A0A]/40" />
+                        <Circle className="h-4 w-4 text-ink/20 shrink-0 group-hover:text-ink/40" />
                       )}
                       <span
-                        className={`text-xs font-mono ${checked ? "text-[#0A0A0A]/60 line-through" : "text-[#0A0A0A]"}`}
+                        className={`text-xs font-mono ${checked ? "text-ink/60 line-through" : "text-ink"}`}
                       >
                         {item.label}
                       </span>
@@ -173,7 +173,7 @@ export function ProjectActions({
                 href={`https://github.com/${githubRepo}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-xs font-mono text-[#0A0A0A]/70 hover:text-[#0A0A0A]"
+                className="flex items-center gap-2 text-xs font-mono text-ink/70 hover:text-ink"
               >
                 <GitBranch className="h-3.5 w-3.5" />
                 Open GitHub
@@ -185,7 +185,7 @@ export function ProjectActions({
                 href={vercelUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-xs font-mono text-[#0A0A0A]/70 hover:text-[#0A0A0A]"
+                className="flex items-center gap-2 text-xs font-mono text-ink/70 hover:text-ink"
               >
                 <Globe className="h-3.5 w-3.5" />
                 Open Staging
@@ -197,7 +197,7 @@ export function ProjectActions({
                 href={`https://${customDomain}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-xs font-mono text-[#0A0A0A]/70 hover:text-[#0A0A0A]"
+                className="flex items-center gap-2 text-xs font-mono text-ink/70 hover:text-ink"
               >
                 <Globe className="h-3.5 w-3.5" />
                 Open Portal
@@ -211,7 +211,7 @@ export function ProjectActions({
       {/* Status Mover */}
       <Card>
         <CardContent className="pt-4">
-          <p className="font-mono text-[9px] uppercase tracking-widest text-[#0A0A0A]/40 mb-2">
+          <p className="font-mono text-[9px] uppercase tracking-widest text-ink/40 mb-2">
             Project Status
           </p>
           <div className="flex items-center gap-2">
@@ -219,7 +219,7 @@ export function ProjectActions({
               value={status}
               onChange={(e) => handleStatusChange(e.target.value)}
               disabled={statusSaving}
-              className="flex-1 border border-[#E5E1DB] px-3 py-2 text-xs font-mono bg-white focus:outline-none"
+              className="flex-1 border border-shell px-3 py-2 text-xs font-mono bg-white focus:outline-none"
             >
               {["INQUIRY", "ONBOARDING", "BUILDING", "REVIEW", "LIVE", "CHURNED"].map(
                 (s) => (
@@ -229,7 +229,7 @@ export function ProjectActions({
                 )
               )}
             </select>
-            {statusSaving && <Loader2 className="h-3.5 w-3.5 animate-spin text-[#0A0A0A]/40" />}
+            {statusSaving && <Loader2 className="h-3.5 w-3.5 animate-spin text-ink/40" />}
           </div>
           <div className="mt-2">
             <Badge
@@ -253,14 +253,14 @@ export function ProjectActions({
             onChange={(e) => setNoteText(e.target.value)}
             placeholder="Add a note, update, or milestone..."
             rows={3}
-            className="w-full border border-[#E5E1DB] px-3 py-2 text-xs font-mono bg-white focus:outline-none resize-none"
+            className="w-full border border-shell px-3 py-2 text-xs font-mono bg-white focus:outline-none resize-none"
           />
           <Separator />
           <button
             type="button"
             onClick={handleAddNote}
             disabled={noteSaving || !noteText.trim()}
-            className="w-full text-xs font-mono font-semibold bg-[#0A0A0A] text-white px-3 py-2 hover:bg-[#0A0A0A]/80 disabled:opacity-40 flex items-center justify-center gap-1 transition-colors"
+            className="w-full text-xs font-mono font-semibold bg-ink text-white px-3 py-2 hover:bg-ink/80 disabled:opacity-40 flex items-center justify-center gap-1 transition-colors"
           >
             {noteSaving ? (
               <Loader2 className="h-3 w-3 animate-spin" />

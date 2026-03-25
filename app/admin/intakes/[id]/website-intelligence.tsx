@@ -65,7 +65,7 @@ export function WebsiteIntelligence({
 
   if (!intakeWebsite) {
     return (
-      <p className="text-sm text-[#0A0A0A]/40 font-mono">
+      <p className="text-sm text-ink/40 font-mono">
         No website URL on intake — cannot scrape.
       </p>
     );
@@ -74,7 +74,7 @@ export function WebsiteIntelligence({
   if (!scrapeData) {
     return (
       <div className="space-y-3">
-        <p className="text-sm text-[#0A0A0A]/50">
+        <p className="text-sm text-ink/50">
           Website not yet scanned. Click below to extract brand data.
         </p>
         {error && <p className="text-sm text-red-600 font-mono">{error}</p>}
@@ -82,7 +82,7 @@ export function WebsiteIntelligence({
           type="button"
           onClick={handleScan}
           disabled={scanning}
-          className="flex items-center gap-2 text-xs font-mono font-semibold bg-[#0A0A0A] text-white px-4 py-2 hover:bg-[#0A0A0A]/80 disabled:opacity-50 transition-colors"
+          className="flex items-center gap-2 text-xs font-mono font-semibold bg-ink text-white px-4 py-2 hover:bg-ink/80 disabled:opacity-50 transition-colors"
         >
           {scanning ? (
             <>
@@ -101,19 +101,19 @@ export function WebsiteIntelligence({
   return (
     <div className="space-y-4 text-sm">
       {scrapedAt && (
-        <p className="text-[10px] font-mono text-[#0A0A0A]/40">
+        <p className="text-[10px] font-mono text-ink/40">
           Scraped at: {new Date(scrapedAt).toLocaleString()}
         </p>
       )}
 
       {extract?.brandColors && extract.brandColors.length > 0 && (
         <div>
-          <p className="text-[#0A0A0A]/50 text-xs mb-2">Brand Colors</p>
+          <p className="text-ink/50 text-xs mb-2">Brand Colors</p>
           <div className="flex gap-2 flex-wrap">
             {extract.brandColors.map((color, i) => (
               <div key={i} className="flex items-center gap-2">
                 <div
-                  className="w-6 h-6 border border-[#E5E1DB] shrink-0"
+                  className="w-6 h-6 border border-shell shrink-0"
                   style={{ backgroundColor: color }}
                 />
                 <span className="font-mono text-xs">{color}</span>
@@ -125,8 +125,8 @@ export function WebsiteIntelligence({
 
       {extract?.companyDescription && (
         <div>
-          <p className="text-[#0A0A0A]/50 text-xs mb-1">Company Description</p>
-          <p className="text-[#0A0A0A]/80 text-xs leading-relaxed line-clamp-3">
+          <p className="text-ink/50 text-xs mb-1">Company Description</p>
+          <p className="text-ink/80 text-xs leading-relaxed line-clamp-3">
             {extract.companyDescription}
           </p>
         </div>
@@ -134,7 +134,7 @@ export function WebsiteIntelligence({
 
       {extract?.productTypes && extract.productTypes.length > 0 && (
         <div>
-          <p className="text-[#0A0A0A]/50 text-xs mb-1.5">Product Types</p>
+          <p className="text-ink/50 text-xs mb-1.5">Product Types</p>
           <div className="flex flex-wrap gap-1.5">
             {extract.productTypes.map((pt, i) => (
               <Badge key={i} variant="outline" className="text-[10px]">
@@ -149,16 +149,16 @@ export function WebsiteIntelligence({
         <>
           <Separator />
           <div>
-            <p className="text-[#0A0A0A]/50 text-xs mb-2">Inspiration Sites Scraped</p>
+            <p className="text-ink/50 text-xs mb-2">Inspiration Sites Scraped</p>
             <div className="space-y-1">
               {inspirations.map((insp, i) => (
                 <div key={i} className="flex items-center gap-2">
-                  <Globe className="h-3 w-3 text-[#0A0A0A]/40 shrink-0" />
+                  <Globe className="h-3 w-3 text-ink/40 shrink-0" />
                   <a
                     href={insp!.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs font-mono text-[#0A0A0A]/70 hover:text-[#0A0A0A] hover:underline truncate"
+                    className="text-xs font-mono text-ink/70 hover:text-ink hover:underline truncate"
                   >
                     {insp!.url}
                   </a>
@@ -175,12 +175,12 @@ export function WebsiteIntelligence({
         <button
           type="button"
           onClick={() => setShowRaw((v) => !v)}
-          className="text-[10px] font-mono text-[#0A0A0A]/40 hover:text-[#0A0A0A]"
+          className="text-[10px] font-mono text-ink/40 hover:text-ink"
         >
           {showRaw ? "Hide" : "Show"} raw JSON
         </button>
         {showRaw && (
-          <pre className="mt-2 p-3 bg-[#F9F7F4] border border-[#E5E1DB] text-[9px] font-mono overflow-auto max-h-48">
+          <pre className="mt-2 p-3 bg-cream border border-shell text-[9px] font-mono overflow-auto max-h-48">
             {JSON.stringify(scrapeData, null, 2)}
           </pre>
         )}
@@ -190,7 +190,7 @@ export function WebsiteIntelligence({
         type="button"
         onClick={handleScan}
         disabled={scanning}
-        className="text-[10px] font-mono text-[#0A0A0A]/40 hover:text-[#0A0A0A] flex items-center gap-1 disabled:opacity-50"
+        className="text-[10px] font-mono text-ink/40 hover:text-ink flex items-center gap-1 disabled:opacity-50"
       >
         {scanning ? (
           <Loader2 className="h-2.5 w-2.5 animate-spin" />

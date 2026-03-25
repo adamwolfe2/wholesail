@@ -39,47 +39,47 @@ export function BillingReminders({ overdueCount, dueSoonCount }: BillingReminder
   }
 
   return (
-    <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+    <Card className="border-shell bg-cream">
       <CardHeader>
-        <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+        <CardTitle className="font-serif text-lg text-ink">
           Billing Reminders
         </CardTitle>
-        <CardDescription className="text-[#0A0A0A]/50 text-sm">
+        <CardDescription className="text-ink/50 text-sm">
           Net-30 invoice payment reminders. Reminders re-send at most once every 7 days.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Stats */}
         <div className="grid gap-3 sm:grid-cols-2">
-          <div className="flex items-center gap-3 border border-[#E5E1DB] p-3 bg-white">
-            <AlertCircle className="h-5 w-5 text-[#C8C0B4] shrink-0" />
+          <div className="flex items-center gap-3 border border-shell p-3 bg-white">
+            <AlertCircle className="h-5 w-5 text-sand shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider font-medium">
+              <p className="text-xs text-ink/50 uppercase tracking-wider font-medium">
                 Overdue Invoices
               </p>
-              <p className="font-serif text-2xl font-bold text-[#0A0A0A] mt-0.5">
+              <p className="font-serif text-2xl font-bold text-ink mt-0.5">
                 {overdueCount}
               </p>
             </div>
             {overdueCount > 0 && (
-              <Badge className="bg-[#0A0A0A] text-[#F9F7F4] border-0 text-xs shrink-0">
+              <Badge className="bg-ink text-cream border-0 text-xs shrink-0">
                 Action needed
               </Badge>
             )}
           </div>
 
-          <div className="flex items-center gap-3 border border-[#E5E1DB] p-3 bg-white">
-            <Clock className="h-5 w-5 text-[#C8C0B4] shrink-0" />
+          <div className="flex items-center gap-3 border border-shell p-3 bg-white">
+            <Clock className="h-5 w-5 text-sand shrink-0" />
             <div className="flex-1 min-w-0">
-              <p className="text-xs text-[#0A0A0A]/50 uppercase tracking-wider font-medium">
+              <p className="text-xs text-ink/50 uppercase tracking-wider font-medium">
                 Due in Next 5 Days
               </p>
-              <p className="font-serif text-2xl font-bold text-[#0A0A0A] mt-0.5">
+              <p className="font-serif text-2xl font-bold text-ink mt-0.5">
                 {dueSoonCount}
               </p>
             </div>
             {dueSoonCount > 0 && (
-              <Badge className="bg-[#C8C0B4] text-[#0A0A0A] border-0 text-xs shrink-0">
+              <Badge className="bg-sand text-ink border-0 text-xs shrink-0">
                 Due soon
               </Badge>
             )}
@@ -88,8 +88,8 @@ export function BillingReminders({ overdueCount, dueSoonCount }: BillingReminder
 
         {/* Result / Error Feedback */}
         {result && (
-          <div className="flex items-center gap-2 border border-[#E5E1DB] bg-white px-3 py-2 text-sm text-[#0A0A0A]">
-            <CheckCircle2 className="h-4 w-4 text-[#0A0A0A] shrink-0" />
+          <div className="flex items-center gap-2 border border-shell bg-white px-3 py-2 text-sm text-ink">
+            <CheckCircle2 className="h-4 w-4 text-ink shrink-0" />
             <span>
               Sent <strong>{result.sent}</strong> reminder
               {result.sent !== 1 ? "s" : ""}
@@ -108,7 +108,7 @@ export function BillingReminders({ overdueCount, dueSoonCount }: BillingReminder
         <Button
           onClick={handleSendReminders}
           disabled={sending || (overdueCount === 0 && dueSoonCount === 0)}
-          className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 h-9"
+          className="bg-ink text-cream hover:bg-ink/80 h-9"
         >
           {sending ? (
             <>
@@ -124,7 +124,7 @@ export function BillingReminders({ overdueCount, dueSoonCount }: BillingReminder
         </Button>
 
         {overdueCount === 0 && dueSoonCount === 0 && (
-          <p className="text-xs text-[#0A0A0A]/40">
+          <p className="text-xs text-ink/40">
             No invoices require reminders at this time.
           </p>
         )}

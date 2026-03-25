@@ -50,21 +50,21 @@ export function PwaInstallPrompt() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between gap-3 bg-[#0A0A0A] text-[#F9F7F4] px-4 py-3">
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-between gap-3 bg-ink text-cream px-4 py-3">
       <p className="text-sm font-medium leading-snug">
         Install the app on your home screen for faster ordering &rarr;
       </p>
       <div className="flex items-center gap-2 shrink-0">
         <button
           onClick={handleInstall}
-          className="text-sm font-semibold underline underline-offset-2 hover:text-[#C8C0B4] transition-colors"
+          className="text-sm font-semibold underline underline-offset-2 hover:text-sand transition-colors"
         >
           Install
         </button>
         <button
           onClick={handleDismiss}
           aria-label="Dismiss install prompt"
-          className="text-[#F9F7F4]/60 hover:text-[#F9F7F4] transition-colors text-lg leading-none"
+          className="text-cream/60 hover:text-cream transition-colors text-lg leading-none"
         >
           &times;
         </button>

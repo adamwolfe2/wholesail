@@ -34,9 +34,9 @@ function useDebounce<T>(value: T, delay: number): T {
 // Shared header used by all states
 function PageHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-[#E5E1DB] bg-[#F9F7F4]/95 backdrop-blur supports-[backdrop-filter]:bg-[#F9F7F4]/60">
+    <header className="sticky top-0 z-50 border-b border-shell bg-cream/95 backdrop-blur supports-[backdrop-filter]:bg-cream/60">
       <div className="container mx-auto flex h-14 sm:h-16 items-center px-3 sm:px-6 lg:px-8">
-        <Link href="/" className="font-serif text-xl tracking-tight text-[#0A0A0A]">
+        <Link href="/" className="font-serif text-xl tracking-tight text-ink">
           Wholesail
         </Link>
       </div>
@@ -287,20 +287,20 @@ export default function ClaimPage() {
   // ---------------------------------------------------------------------------
   if (state === 'success') {
     return (
-      <div className="min-h-screen bg-[#F9F7F4]">
+      <div className="min-h-screen bg-cream">
         <PageHeader />
         <div className="container mx-auto px-3 py-20 sm:px-6 lg:px-8 max-w-2xl text-center">
-          <p className="text-xs tracking-widest uppercase text-[#0A0A0A]/50 mb-6">Invitation Sent</p>
-          <h1 className="font-serif text-4xl sm:text-5xl mb-6 leading-tight text-[#0A0A0A]">
+          <p className="text-xs tracking-widest uppercase text-ink/50 mb-6">Invitation Sent</p>
+          <h1 className="font-serif text-4xl sm:text-5xl mb-6 leading-tight text-ink">
             Check your email.
           </h1>
-          <p className="text-[#0A0A0A]/70 mb-3 leading-relaxed">
+          <p className="text-ink/70 mb-3 leading-relaxed">
             We&apos;ve sent an invitation link to <strong>{email}</strong>.
           </p>
-          <p className="text-[#0A0A0A]/70 mb-10 leading-relaxed">
+          <p className="text-ink/70 mb-10 leading-relaxed">
             Click the link in the email to set up your password and access your order history and invoices. The link expires in 24 hours.
           </p>
-          <p className="text-sm text-[#C8C0B4]">
+          <p className="text-sm text-sand">
             Didn&apos;t receive it? Check your spam folder, or email{' '}
             <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="underline underline-offset-2">
               {process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}
@@ -314,22 +314,22 @@ export default function ClaimPage() {
 
   if (state === 'already_exists') {
     return (
-      <div className="min-h-screen bg-[#F9F7F4]">
+      <div className="min-h-screen bg-cream">
         <PageHeader />
         <div className="container mx-auto px-3 py-20 sm:px-6 lg:px-8 max-w-2xl text-center">
-          <p className="text-xs tracking-widest uppercase text-[#0A0A0A]/50 mb-6">Already Active</p>
-          <h1 className="font-serif text-4xl sm:text-5xl mb-6 leading-tight text-[#0A0A0A]">
+          <p className="text-xs tracking-widest uppercase text-ink/50 mb-6">Already Active</p>
+          <h1 className="font-serif text-4xl sm:text-5xl mb-6 leading-tight text-ink">
             Account already exists.
           </h1>
-          <p className="text-[#0A0A0A]/70 mb-6 leading-relaxed">
+          <p className="text-ink/70 mb-6 leading-relaxed">
             An account for <strong>{email}</strong> is already set up. Try signing in — or check your email for a previous invitation.
           </p>
           <div className="flex justify-center gap-3">
-            <Button asChild size="lg" className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none">
+            <Button asChild size="lg" className="bg-ink text-cream hover:bg-ink/80 rounded-none">
               <Link href="/sign-in">Sign In</Link>
             </Button>
           </div>
-          <p className="mt-8 text-sm text-[#C8C0B4]">
+          <p className="mt-8 text-sm text-sand">
             Having trouble?{' '}
             <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="underline underline-offset-2">
               {process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}
@@ -342,19 +342,19 @@ export default function ClaimPage() {
 
   if (state === 'not_found') {
     return (
-      <div className="min-h-screen bg-[#F9F7F4]">
+      <div className="min-h-screen bg-cream">
         <PageHeader />
         <div className="container mx-auto px-3 py-20 sm:px-6 lg:px-8 max-w-2xl text-center">
-          <p className="text-xs tracking-widest uppercase text-[#0A0A0A]/50 mb-6">Not Found</p>
-          <h1 className="font-serif text-4xl sm:text-5xl mb-6 leading-tight text-[#0A0A0A]">
+          <p className="text-xs tracking-widest uppercase text-ink/50 mb-6">Not Found</p>
+          <h1 className="font-serif text-4xl sm:text-5xl mb-6 leading-tight text-ink">
             We couldn&apos;t find your account.
           </h1>
-          <p className="text-[#0A0A0A]/70 mb-3 leading-relaxed">
+          <p className="text-ink/70 mb-3 leading-relaxed">
             We couldn&apos;t find a wholesale account matching that information.
           </p>
-          <p className="text-[#0A0A0A]/70 mb-10 leading-relaxed">
+          <p className="text-ink/70 mb-10 leading-relaxed">
             Email us at{' '}
-            <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="underline underline-offset-2 text-[#0A0A0A]">
+            <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="underline underline-offset-2 text-ink">
               {process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}
             </a>{' '}
             and we&apos;ll help you get access.
@@ -363,12 +363,12 @@ export default function ClaimPage() {
             <Button
               variant="outline"
               size="lg"
-              className="border-[#E5E1DB] rounded-none"
+              className="border-shell rounded-none"
               onClick={() => { setState('idle'); setErrorMessage(null) }}
             >
               Try Again
             </Button>
-            <Button asChild size="lg" className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none">
+            <Button asChild size="lg" className="bg-ink text-cream hover:bg-ink/80 rounded-none">
               <Link href="/partner">Apply for Access</Link>
             </Button>
           </div>
@@ -382,35 +382,35 @@ export default function ClaimPage() {
   const isDisabled = isSearching || isSubmitting
 
   return (
-    <div className="min-h-screen bg-[#F9F7F4]">
+    <div className="min-h-screen bg-cream">
       <PageHeader />
 
       <div className="container mx-auto px-3 py-10 sm:px-6 sm:py-16 lg:px-8 max-w-2xl">
         <Link
           href="/"
-          className="inline-block text-xs tracking-widest uppercase text-[#0A0A0A]/50 hover:text-[#0A0A0A] transition-colors mb-10"
+          className="inline-block text-xs tracking-widest uppercase text-ink/50 hover:text-ink transition-colors mb-10"
         >
           Back to Marketplace
         </Link>
 
         {/* Hero */}
         <div className="mb-10">
-          <p className="text-xs tracking-widest uppercase text-[#0A0A0A]/50 mb-3">Wholesale Partners</p>
-          <h1 className="font-serif text-4xl sm:text-5xl tracking-tight mb-4 leading-tight text-[#0A0A0A]">
+          <p className="text-xs tracking-widest uppercase text-ink/50 mb-3">Wholesale Partners</p>
+          <h1 className="font-serif text-4xl sm:text-5xl tracking-tight mb-4 leading-tight text-ink">
             Access Your Account
           </h1>
-          <p className="text-base text-[#0A0A0A]/60 leading-relaxed">
+          <p className="text-base text-ink/60 leading-relaxed">
             Already a Wholesail wholesale partner? Claim your account to view your order history and invoices.
           </p>
         </div>
 
         {/* Form card */}
-        <Card className="border-[#E5E1DB] rounded-none shadow-none bg-white">
-          <CardHeader className="border-b border-[#E5E1DB] pb-5">
-            <CardTitle className="font-serif text-2xl font-normal text-[#0A0A0A]">
+        <Card className="border-shell rounded-none shadow-none bg-white">
+          <CardHeader className="border-b border-shell pb-5">
+            <CardTitle className="font-serif text-2xl font-normal text-ink">
               Claim Your Account
             </CardTitle>
-            <CardDescription className="text-sm text-[#0A0A0A]/50">
+            <CardDescription className="text-sm text-ink/50">
               Enter your business email and company name — we&apos;ll find your account and send you a login link.
             </CardDescription>
           </CardHeader>
@@ -419,8 +419,8 @@ export default function ClaimPage() {
 
               {/* Email */}
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-[#0A0A0A]">
-                  Email Address <span className="text-[#0A0A0A]/40">*</span>
+                <Label htmlFor="email" className="text-ink">
+                  Email Address <span className="text-ink/40">*</span>
                 </Label>
                 <Input
                   id="email"
@@ -430,15 +430,15 @@ export default function ClaimPage() {
                   onChange={e => setEmail(e.target.value)}
                   onBlur={handleEmailBlur}
                   placeholder="you@yourcompany.com"
-                  className="rounded-none border-[#E5E1DB] bg-[#F9F7F4] focus-visible:ring-0 focus-visible:border-[#0A0A0A]"
+                  className="rounded-none border-shell bg-cream focus-visible:ring-0 focus-visible:border-ink"
                   disabled={isDisabled}
                 />
               </div>
 
               {/* Company Name with autocomplete */}
               <div className="space-y-2">
-                <Label htmlFor="companyName" className="text-[#0A0A0A]">
-                  Company Name <span className="text-[#0A0A0A]/40">(recommended — helps us find your account)</span>
+                <Label htmlFor="companyName" className="text-ink">
+                  Company Name <span className="text-ink/40">(recommended — helps us find your account)</span>
                 </Label>
                 <div className="relative" ref={dropdownRef}>
                   <div className="relative">
@@ -451,30 +451,30 @@ export default function ClaimPage() {
                       onKeyDown={handleCompanyKeyDown}
                       onFocus={() => suggestions.length > 0 && setShowDropdown(true)}
                       placeholder="e.g., The Ritz-Carlton Los Angeles"
-                      className="rounded-none border-[#E5E1DB] bg-[#F9F7F4] focus-visible:ring-0 focus-visible:border-[#0A0A0A] pr-8"
+                      className="rounded-none border-shell bg-cream focus-visible:ring-0 focus-visible:border-ink pr-8"
                       disabled={isDisabled}
                       autoComplete="off"
                     />
                     {isLoadingSuggestions && (
-                      <Loader2 className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-[#0A0A0A]/30" />
+                      <Loader2 className="absolute right-2.5 top-1/2 -translate-y-1/2 h-4 w-4 animate-spin text-ink/30" />
                     )}
                   </div>
 
                   {/* Dropdown */}
                   {showDropdown && suggestions.length > 0 && (
-                    <div className="absolute z-50 w-full bg-white border border-[#E5E1DB] border-t-0 shadow-lg">
+                    <div className="absolute z-50 w-full bg-white border border-shell border-t-0 shadow-lg">
                       {suggestions.map((s, i) => (
                         <button
                           key={s.id}
                           type="button"
                           onMouseDown={e => { e.preventDefault(); selectOrg(s) }}
                           className={`w-full text-left px-4 py-3 text-sm flex items-center justify-between gap-3 transition-colors
-                            ${i === highlightedIndex ? 'bg-[#F9F7F4]' : 'hover:bg-[#F9F7F4]/60'}
-                            ${i < suggestions.length - 1 ? 'border-b border-[#E5E1DB]' : ''}
+                            ${i === highlightedIndex ? 'bg-cream' : 'hover:bg-cream/60'}
+                            ${i < suggestions.length - 1 ? 'border-b border-shell' : ''}
                           `}
                         >
-                          <span className="text-[#0A0A0A] font-medium truncate">{s.name}</span>
-                          <span className="text-[#0A0A0A]/30 text-xs shrink-0">
+                          <span className="text-ink font-medium truncate">{s.name}</span>
+                          <span className="text-ink/30 text-xs shrink-0">
                             {s.score >= 80 ? 'Strong match' : s.score >= 40 ? 'Possible match' : 'Partial match'}
                           </span>
                         </button>
@@ -486,8 +486,8 @@ export default function ClaimPage() {
 
               {/* Phone */}
               <div className="space-y-2">
-                <Label htmlFor="phone" className="text-[#0A0A0A]">
-                  Phone Number <span className="text-[#0A0A0A]/40">(optional — additional verification)</span>
+                <Label htmlFor="phone" className="text-ink">
+                  Phone Number <span className="text-ink/40">(optional — additional verification)</span>
                 </Label>
                 <Input
                   id="phone"
@@ -495,7 +495,7 @@ export default function ClaimPage() {
                   value={phone}
                   onChange={e => setPhone(e.target.value)}
                   placeholder="(555) 000-0000"
-                  className="rounded-none border-[#E5E1DB] bg-[#F9F7F4] focus-visible:ring-0 focus-visible:border-[#0A0A0A]"
+                  className="rounded-none border-shell bg-cream focus-visible:ring-0 focus-visible:border-ink"
                   disabled={isDisabled}
                 />
               </div>
@@ -526,7 +526,7 @@ export default function ClaimPage() {
                   <Button
                     type="button"
                     size="lg"
-                    className="w-full bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none h-12 font-medium tracking-wide"
+                    className="w-full bg-ink text-cream hover:bg-ink/80 rounded-none h-12 font-medium tracking-wide"
                     onClick={handleSearch}
                     disabled={isDisabled || !email.trim()}
                   >
@@ -595,9 +595,9 @@ export default function ClaimPage() {
                 </>
               )}
 
-              <p className="text-center text-xs text-[#C8C0B4] leading-relaxed">
+              <p className="text-center text-xs text-sand leading-relaxed">
                 New to Wholesail?{' '}
-                <Link href="/partner" className="underline underline-offset-2 hover:text-[#0A0A0A]/60 transition-colors">
+                <Link href="/partner" className="underline underline-offset-2 hover:text-ink/60 transition-colors">
                   Apply for wholesale access
                 </Link>
                 .
@@ -607,12 +607,12 @@ export default function ClaimPage() {
         </Card>
 
         {/* Help section */}
-        <div className="mt-10 pt-10 border-t border-[#E5E1DB]">
-          <p className="text-xs tracking-widest uppercase text-[#0A0A0A]/40 mb-4">Need help?</p>
-          <p className="text-sm text-[#0A0A0A]/60 leading-relaxed">
+        <div className="mt-10 pt-10 border-t border-shell">
+          <p className="text-xs tracking-widest uppercase text-ink/40 mb-4">Need help?</p>
+          <p className="text-sm text-ink/60 leading-relaxed">
             If you placed orders with us before our new portal launched, your account already exists — just enter the
             email we have on file. Can&apos;t remember which email? Reach us at{' '}
-            <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="text-[#0A0A0A] underline underline-offset-2">
+            <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="text-ink underline underline-offset-2">
               {process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}
             </a>{' '}
             and we&apos;ll sort it out.

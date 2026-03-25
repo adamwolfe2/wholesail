@@ -201,7 +201,7 @@ function PartnerOnboardingContent() {
             — it&apos;ll be ready to use as soon as we activate your wholesale access.
           </p>
           <div className="flex justify-center gap-3">
-            <Button asChild size="lg" className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#1A1614]">
+            <Button asChild size="lg" className="bg-ink text-cream hover:bg-ink-dark">
               <Link href="/catalog">Browse the Catalog</Link>
             </Button>
             <Button variant="outline" asChild size="lg" className="border-border">
@@ -538,7 +538,7 @@ function PartnerOnboardingContent() {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#1A1614] rounded-none h-12 font-medium tracking-wide"
+                className="w-full bg-ink text-cream hover:bg-ink-dark rounded-none h-12 font-medium tracking-wide"
                 disabled={submitting}
               >
                 {submitting ? (
@@ -550,14 +550,14 @@ function PartnerOnboardingContent() {
                   'Submit Application'
                 )}
               </Button>
-              <p className="text-center text-xs text-[#C8C0B4] leading-relaxed">
+              <p className="text-center text-xs text-sand leading-relaxed">
                 Applications are reviewed within 24 hours. You&apos;ll receive a confirmation email once your wholesale account is approved.
               </p>
-              <p className="text-center text-xs text-[#0A0A0A]/40 mt-1">
+              <p className="text-center text-xs text-ink/40 mt-1">
                 Already applied?{' '}
                 <Link
                   href="/apply/status"
-                  className="underline underline-offset-2 hover:text-[#0A0A0A]/70 transition-colors"
+                  className="underline underline-offset-2 hover:text-ink/70 transition-colors"
                 >
                   Check your application status
                 </Link>{' '}

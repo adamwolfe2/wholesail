@@ -37,15 +37,15 @@ function CohortTooltip({
     const retained30d =
       payload.find((p) => p.name === "retained30d")?.value ?? 0;
     return (
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-3 text-xs font-mono shadow-sm">
-        <p className="text-[#0A0A0A]/60 mb-2 font-semibold">{label}</p>
-        <p className="text-[#0A0A0A]">
+      <div className="border border-shell bg-cream p-3 text-xs font-mono shadow-sm">
+        <p className="text-ink/60 mb-2 font-semibold">{label}</p>
+        <p className="text-ink">
           {newClients} client{newClients !== 1 ? "s" : ""} joined
         </p>
-        <p className="text-[#0A0A0A]/70">
+        <p className="text-ink/70">
           {retained30d} still ordering at 30d
         </p>
-        <p className="font-bold text-[#0A0A0A] mt-1">
+        <p className="font-bold text-ink mt-1">
           {retentionPct}% retained
         </p>
       </div>
@@ -75,29 +75,29 @@ export function CohortChart() {
   const hasData = data.some((d) => d.newClients > 0);
 
   return (
-    <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+    <Card className="border-shell bg-cream">
       <CardHeader className="pb-3">
-        <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+        <CardTitle className="font-serif text-lg text-ink">
           New Client Cohort Retention
         </CardTitle>
-        <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+        <p className="text-xs text-ink/50 mt-0.5">
           Clients joined each month vs. still ordering 30 days later
         </p>
       </CardHeader>
       <CardContent>
         {loading ? (
           <div className="h-[260px] flex items-center justify-center">
-            <p className="text-sm text-[#0A0A0A]/40">Loading cohort data…</p>
+            <p className="text-sm text-ink/40">Loading cohort data…</p>
           </div>
         ) : error ? (
           <div className="h-[260px] flex items-center justify-center">
-            <p className="text-sm text-[#0A0A0A]/40">
+            <p className="text-sm text-ink/40">
               Could not load cohort data.
             </p>
           </div>
         ) : !hasData ? (
           <div className="h-[260px] flex items-center justify-center">
-            <p className="text-sm text-[#0A0A0A]/40 text-center">
+            <p className="text-sm text-ink/40 text-center">
               No client cohort data yet. Charts will populate once organizations
               are created.
             </p>

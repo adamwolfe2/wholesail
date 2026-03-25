@@ -161,55 +161,55 @@ export default function ReferralsPage() {
       )}
       {/* Page header */}
       <div>
-        <p className="text-xs tracking-widest uppercase text-[#C8C0B4] mb-1">Referral Program</p>
-        <h1 className="font-serif text-3xl text-[#0A0A0A]">Refer &amp; Earn</h1>
-        <p className="text-[#0A0A0A]/60 mt-1 text-sm">
+        <p className="text-xs tracking-widest uppercase text-sand mb-1">Referral Program</p>
+        <h1 className="font-serif text-3xl text-ink">Refer &amp; Earn</h1>
+        <p className="text-ink/60 mt-1 text-sm">
           Earn $50 credit for every business you refer that places their first order.
         </p>
       </div>
 
       {/* Stats */}
       <div className="grid gap-4 grid-cols-2 sm:grid-cols-4">
-        <Card className="border-[#E5E1DB]">
+        <Card className="border-shell">
           <CardContent className="pt-5 pb-4">
             <div className="flex items-center gap-2 mb-1">
-              <DollarSign className="h-4 w-4 text-[#C8C0B4]" />
-              <span className="text-xs text-[#0A0A0A]/50">Available Credits</span>
+              <DollarSign className="h-4 w-4 text-sand" />
+              <span className="text-xs text-ink/50">Available Credits</span>
             </div>
-            <p className="text-2xl font-bold text-[#0A0A0A]">
+            <p className="text-2xl font-bold text-ink">
               {loading ? '$—' : formatCurrency(data?.totalCredits ?? 0)}
             </p>
           </CardContent>
         </Card>
-        <Card className="border-[#E5E1DB]">
+        <Card className="border-shell">
           <CardContent className="pt-5 pb-4">
             <div className="flex items-center gap-2 mb-1">
-              <Gift className="h-4 w-4 text-[#C8C0B4]" />
-              <span className="text-xs text-[#0A0A0A]/50">Total Earned</span>
+              <Gift className="h-4 w-4 text-sand" />
+              <span className="text-xs text-ink/50">Total Earned</span>
             </div>
-            <p className="text-2xl font-bold text-[#0A0A0A]">
+            <p className="text-2xl font-bold text-ink">
               {loading ? '$—' : formatCurrency(totalEarned)}
             </p>
           </CardContent>
         </Card>
-        <Card className="border-[#E5E1DB]">
+        <Card className="border-shell">
           <CardContent className="pt-5 pb-4">
             <div className="flex items-center gap-2 mb-1">
-              <Users className="h-4 w-4 text-[#C8C0B4]" />
-              <span className="text-xs text-[#0A0A0A]/50">Total Referrals</span>
+              <Users className="h-4 w-4 text-sand" />
+              <span className="text-xs text-ink/50">Total Referrals</span>
             </div>
-            <p className="text-2xl font-bold text-[#0A0A0A]">
+            <p className="text-2xl font-bold text-ink">
               {loading ? '—' : (data?.referrals.length ?? 0)}
             </p>
           </CardContent>
         </Card>
-        <Card className="border-[#E5E1DB]">
+        <Card className="border-shell">
           <CardContent className="pt-5 pb-4">
             <div className="flex items-center gap-2 mb-1">
-              <Clock className="h-4 w-4 text-[#C8C0B4]" />
-              <span className="text-xs text-[#0A0A0A]/50">Pending</span>
+              <Clock className="h-4 w-4 text-sand" />
+              <span className="text-xs text-ink/50">Pending</span>
             </div>
-            <p className="text-2xl font-bold text-[#0A0A0A]">
+            <p className="text-2xl font-bold text-ink">
               {loading ? '—' : (data?.pendingReferrals ?? 0)}
             </p>
           </CardContent>
@@ -217,21 +217,21 @@ export default function ReferralsPage() {
       </div>
 
       {/* Referral Link Section */}
-      <Card className="border-[#E5E1DB]">
-        <CardHeader className="border-b border-[#E5E1DB] pb-4">
-          <CardTitle className="font-serif text-xl font-normal text-[#0A0A0A]">
+      <Card className="border-shell">
+        <CardHeader className="border-b border-shell pb-4">
+          <CardTitle className="font-serif text-xl font-normal text-ink">
             Your Referral Link
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-6 space-y-4">
           {loading ? (
-            <div className="flex items-center gap-2 text-[#0A0A0A]/50 text-sm">
+            <div className="flex items-center gap-2 text-ink/50 text-sm">
               <Loader2 className="h-4 w-4 animate-spin" />
               Loading...
             </div>
           ) : data?.code ? (
             <>
-              <p className="text-sm text-[#0A0A0A]/60">
+              <p className="text-sm text-ink/60">
                 Share this link with businesses in your network. When they apply
                 and place their first order, you earn $50 in account credit.
               </p>
@@ -239,12 +239,12 @@ export default function ReferralsPage() {
                 <Input
                   readOnly
                   value={getReferralLink()}
-                  className="flex-1 rounded-none border-[#E5E1DB] bg-[#F9F7F4] font-mono text-sm text-[#0A0A0A]"
+                  className="flex-1 rounded-none border-shell bg-cream font-mono text-sm text-ink"
                 />
                 <Button
                   onClick={copyLink}
                   variant="outline"
-                  className="shrink-0 rounded-none border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors min-w-[100px]"
+                  className="shrink-0 rounded-none border-ink text-ink hover:bg-ink hover:text-cream transition-colors min-w-[100px]"
                 >
                   {copied ? (
                     <>
@@ -259,19 +259,19 @@ export default function ReferralsPage() {
                   )}
                 </Button>
               </div>
-              <p className="text-xs text-[#C8C0B4]">
-                Your code: <span className="font-mono font-medium text-[#0A0A0A]">{data.code}</span>
+              <p className="text-xs text-sand">
+                Your code: <span className="font-mono font-medium text-ink">{data.code}</span>
               </p>
             </>
           ) : (
             <>
-              <p className="text-sm text-[#0A0A0A]/60">
+              <p className="text-sm text-ink/60">
                 Generate your unique referral link to start earning credits.
               </p>
               <Button
                 onClick={generateCode}
                 disabled={generating}
-                className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+                className="bg-ink text-cream hover:bg-ink/80 rounded-none"
               >
                 {generating ? (
                   <>
@@ -288,20 +288,20 @@ export default function ReferralsPage() {
       </Card>
 
       {/* Send Direct Invite */}
-      <Card className="border-[#E5E1DB]">
-        <CardHeader className="border-b border-[#E5E1DB] pb-4">
-          <CardTitle className="font-serif text-xl font-normal text-[#0A0A0A]">
+      <Card className="border-shell">
+        <CardHeader className="border-b border-shell pb-4">
+          <CardTitle className="font-serif text-xl font-normal text-ink">
             Send a Direct Invite
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-6">
           <form onSubmit={sendInvite} className="space-y-4">
-            <p className="text-sm text-[#0A0A0A]/60">
+            <p className="text-sm text-ink/60">
               Enter an email address and we&apos;ll send them a personal invitation from your account.
             </p>
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
-                <Label htmlFor="inviteEmail" className="text-sm text-[#0A0A0A]">
+                <Label htmlFor="inviteEmail" className="text-sm text-ink">
                   Email Address *
                 </Label>
                 <Input
@@ -311,11 +311,11 @@ export default function ReferralsPage() {
                   value={inviteEmail}
                   onChange={(e) => setInviteEmail(e.target.value)}
                   placeholder="contact@business.com"
-                  className="rounded-none border-[#E5E1DB] bg-[#F9F7F4]"
+                  className="rounded-none border-shell bg-cream"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="inviteName" className="text-sm text-[#0A0A0A]">
+                <Label htmlFor="inviteName" className="text-sm text-ink">
                   Name (optional)
                 </Label>
                 <Input
@@ -324,7 +324,7 @@ export default function ReferralsPage() {
                   value={inviteName}
                   onChange={(e) => setInviteName(e.target.value)}
                   placeholder="Jane Smith"
-                  className="rounded-none border-[#E5E1DB] bg-[#F9F7F4]"
+                  className="rounded-none border-shell bg-cream"
                 />
               </div>
             </div>
@@ -343,7 +343,7 @@ export default function ReferralsPage() {
             <Button
               type="submit"
               disabled={sending || !inviteEmail}
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+              className="bg-ink text-cream hover:bg-ink/80 rounded-none"
             >
               {sending ? (
                 <>
@@ -359,53 +359,53 @@ export default function ReferralsPage() {
       </Card>
 
       {/* Referrals Table */}
-      <Card className="border-[#E5E1DB]">
-        <CardHeader className="border-b border-[#E5E1DB] pb-4">
-          <CardTitle className="font-serif text-xl font-normal text-[#0A0A0A]">
+      <Card className="border-shell">
+        <CardHeader className="border-b border-shell pb-4">
+          <CardTitle className="font-serif text-xl font-normal text-ink">
             Your Referrals
           </CardTitle>
         </CardHeader>
         <CardContent className="pt-0 px-0">
           {loading ? (
-            <div className="flex items-center justify-center py-12 text-[#0A0A0A]/50 text-sm gap-2">
+            <div className="flex items-center justify-center py-12 text-ink/50 text-sm gap-2">
               <Loader2 className="h-4 w-4 animate-spin" />
               Loading referrals...
             </div>
           ) : !data?.referrals.length ? (
             <div className="py-12 text-center">
-              <p className="text-[#0A0A0A]/50 text-sm">
+              <p className="text-ink/50 text-sm">
                 No referrals yet. Share your link to start earning.
               </p>
             </div>
           ) : (
             <Table>
               <TableHeader>
-                <TableRow className="border-b border-[#E5E1DB]">
-                  <TableHead className="text-xs uppercase tracking-widest text-[#C8C0B4] font-normal">
+                <TableRow className="border-b border-shell">
+                  <TableHead className="text-xs uppercase tracking-widest text-sand font-normal">
                     Contact
                   </TableHead>
-                  <TableHead className="text-xs uppercase tracking-widest text-[#C8C0B4] font-normal">
+                  <TableHead className="text-xs uppercase tracking-widest text-sand font-normal">
                     Status
                   </TableHead>
-                  <TableHead className="text-xs uppercase tracking-widest text-[#C8C0B4] font-normal">
+                  <TableHead className="text-xs uppercase tracking-widest text-sand font-normal">
                     Date Referred
                   </TableHead>
-                  <TableHead className="text-xs uppercase tracking-widest text-[#C8C0B4] font-normal text-right">
+                  <TableHead className="text-xs uppercase tracking-widest text-sand font-normal text-right">
                     Credit
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {data.referrals.map((referral) => (
-                  <TableRow key={referral.id} className="border-b border-[#E5E1DB]">
+                  <TableRow key={referral.id} className="border-b border-shell">
                     <TableCell>
                       <div>
                         {referral.refereeName && (
-                          <p className="font-medium text-sm text-[#0A0A0A]">
+                          <p className="font-medium text-sm text-ink">
                             {referral.refereeName}
                           </p>
                         )}
-                        <p className="text-sm text-[#0A0A0A]/60">{referral.refereeEmail}</p>
+                        <p className="text-sm text-ink/60">{referral.refereeEmail}</p>
                       </div>
                     </TableCell>
                     <TableCell>
@@ -416,7 +416,7 @@ export default function ReferralsPage() {
                         {STATUS_LABELS[referral.status] || referral.status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-sm text-[#0A0A0A]/60">
+                    <TableCell className="text-sm text-ink/60">
                       {format(new Date(referral.createdAt), 'MMM d, yyyy')}
                     </TableCell>
                     <TableCell className="text-right">
@@ -425,7 +425,7 @@ export default function ReferralsPage() {
                           +{formatCurrency(referral.creditAmount).slice(1)}
                         </span>
                       ) : (
-                        <span className="text-sm text-[#0A0A0A]/40">
+                        <span className="text-sm text-ink/40">
                           {formatCurrency(referral.creditAmount)}
                         </span>
                       )}
@@ -439,28 +439,28 @@ export default function ReferralsPage() {
       </Card>
 
       {/* How it works */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardContent className="pt-6 pb-6">
-          <p className="text-xs tracking-widest uppercase text-[#C8C0B4] mb-4">How It Works</p>
+          <p className="text-xs tracking-widest uppercase text-sand mb-4">How It Works</p>
           <div className="grid gap-6 sm:grid-cols-3">
             <div>
-              <p className="text-2xl font-serif text-[#0A0A0A] mb-2">01</p>
-              <p className="font-medium text-sm text-[#0A0A0A] mb-1">Share Your Link</p>
-              <p className="text-xs text-[#0A0A0A]/60 leading-relaxed">
+              <p className="text-2xl font-serif text-ink mb-2">01</p>
+              <p className="font-medium text-sm text-ink mb-1">Share Your Link</p>
+              <p className="text-xs text-ink/60 leading-relaxed">
                 Copy your unique referral link and share it with businesses in your industry.
               </p>
             </div>
             <div>
-              <p className="text-2xl font-serif text-[#0A0A0A] mb-2">02</p>
-              <p className="font-medium text-sm text-[#0A0A0A] mb-1">They Apply &amp; Get Approved</p>
-              <p className="text-xs text-[#0A0A0A]/60 leading-relaxed">
+              <p className="text-2xl font-serif text-ink mb-2">02</p>
+              <p className="font-medium text-sm text-ink mb-1">They Apply &amp; Get Approved</p>
+              <p className="text-xs text-ink/60 leading-relaxed">
                 They fill out the wholesale application, our team reviews within 24 hours.
               </p>
             </div>
             <div>
-              <p className="text-2xl font-serif text-[#0A0A0A] mb-2">03</p>
-              <p className="font-medium text-sm text-[#0A0A0A] mb-1">You Earn $50</p>
-              <p className="text-xs text-[#0A0A0A]/60 leading-relaxed">
+              <p className="text-2xl font-serif text-ink mb-2">03</p>
+              <p className="font-medium text-sm text-ink mb-1">You Earn $50</p>
+              <p className="text-xs text-ink/60 leading-relaxed">
                 When they place their first order, $50 is automatically added to your account credit balance.
               </p>
             </div>

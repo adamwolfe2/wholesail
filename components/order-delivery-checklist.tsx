@@ -64,7 +64,7 @@ function ChecklistStep({ label, sublabel, confirmedAt, interactive, actionLabel,
         {canAct && (
           <Button
             size="sm"
-            className="mt-2 h-8 text-xs bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+            className="mt-2 h-8 text-xs bg-ink text-cream hover:bg-ink/80 rounded-none"
             onClick={onConfirm}
             disabled={loading}
           >

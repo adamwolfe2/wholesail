@@ -190,7 +190,7 @@ export default function NewQuotePage() {
             variant="ghost"
             size="sm"
             asChild
-            className="text-[#0A0A0A]/50 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none -ml-2"
+            className="text-ink/50 hover:text-ink hover:bg-ink/[0.04] rounded-none -ml-2"
           >
             <Link href="/admin/quotes">
               <ArrowLeft className="h-4 w-4 mr-1" />
@@ -198,15 +198,15 @@ export default function NewQuotePage() {
             </Link>
           </Button>
         </div>
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
           New Quote
         </h2>
       </div>
 
       {/* Client selection */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader>
-          <CardTitle className="font-serif text-base text-[#0A0A0A]">
+          <CardTitle className="font-serif text-base text-ink">
             Client
           </CardTitle>
         </CardHeader>
@@ -221,15 +221,15 @@ export default function NewQuotePage() {
               }}
               onFocus={() => setShowOrgDropdown(true)}
               placeholder="Search for a client organization..."
-              className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A]"
+              className="border-shell bg-cream rounded-none focus:border-ink"
             />
             {showOrgDropdown && filteredOrgs.length > 0 && !selectedOrg && (
-              <div className="absolute top-full left-0 right-0 z-10 border border-[#E5E1DB] bg-[#F9F7F4] max-h-48 overflow-y-auto shadow-sm">
+              <div className="absolute top-full left-0 right-0 z-10 border border-shell bg-cream max-h-48 overflow-y-auto shadow-sm">
                 {filteredOrgs.slice(0, 10).map((org) => (
                   <button
                     key={org.id}
                     type="button"
-                    className="w-full text-left px-3 py-2 text-sm hover:bg-[#0A0A0A]/[0.04] flex items-center justify-between"
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-ink/[0.04] flex items-center justify-between"
                     onClick={() => {
                       setSelectedOrgId(org.id);
                       setOrgSearch("");
@@ -237,7 +237,7 @@ export default function NewQuotePage() {
                     }}
                   >
                     <span>{org.name}</span>
-                    <span className="text-xs text-[#0A0A0A]/40">{org.tier}</span>
+                    <span className="text-xs text-ink/40">{org.tier}</span>
                   </button>
                 ))}
               </div>
@@ -247,9 +247,9 @@ export default function NewQuotePage() {
       </Card>
 
       {/* Line items */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader>
-          <CardTitle className="font-serif text-base text-[#0A0A0A]">
+          <CardTitle className="font-serif text-base text-ink">
             Line Items
           </CardTitle>
         </CardHeader>
@@ -257,7 +257,7 @@ export default function NewQuotePage() {
           {/* Items list */}
           {items.length > 0 && (
             <div className="space-y-2">
-              <div className="grid grid-cols-12 gap-2 text-xs text-[#0A0A0A]/50 uppercase tracking-wider pb-1 border-b border-[#E5E1DB]">
+              <div className="grid grid-cols-12 gap-2 text-xs text-ink/50 uppercase tracking-wider pb-1 border-b border-shell">
                 <div className="col-span-5">Product</div>
                 <div className="col-span-2 text-center">Qty</div>
                 <div className="col-span-3 text-right">Unit Price</div>
@@ -266,14 +266,14 @@ export default function NewQuotePage() {
               </div>
               {items.map((item) => (
                 <div key={item.productId} className="grid grid-cols-12 gap-2 items-center py-1">
-                  <div className="col-span-5 text-sm font-medium text-[#0A0A0A]">
+                  <div className="col-span-5 text-sm font-medium text-ink">
                     {item.name}
                   </div>
                   <div className="col-span-2 flex items-center justify-center gap-1">
                     <button
                       type="button"
                       onClick={() => updateItemQty(item.productId, item.quantity - 1)}
-                      className="w-5 h-5 flex items-center justify-center border border-[#E5E1DB] hover:border-[#0A0A0A] transition-colors"
+                      className="w-5 h-5 flex items-center justify-center border border-shell hover:border-ink transition-colors"
                     >
                       <Minus className="h-3 w-3" />
                     </button>
@@ -284,19 +284,19 @@ export default function NewQuotePage() {
                       onChange={(e) =>
                         updateItemQty(item.productId, parseInt(e.target.value) || 1)
                       }
-                      className="h-7 w-12 text-center border-[#E5E1DB] rounded-none text-sm p-1"
+                      className="h-7 w-12 text-center border-shell rounded-none text-sm p-1"
                     />
                     <button
                       type="button"
                       onClick={() => updateItemQty(item.productId, item.quantity + 1)}
-                      className="w-5 h-5 flex items-center justify-center border border-[#E5E1DB] hover:border-[#0A0A0A] transition-colors"
+                      className="w-5 h-5 flex items-center justify-center border border-shell hover:border-ink transition-colors"
                     >
                       <Plus className="h-3 w-3" />
                     </button>
                   </div>
                   <div className="col-span-3">
                     <div className="flex items-center justify-end">
-                      <span className="text-xs text-[#0A0A0A]/50 mr-1">$</span>
+                      <span className="text-xs text-ink/50 mr-1">$</span>
                       <Input
                         type="number"
                         min={0}
@@ -305,18 +305,18 @@ export default function NewQuotePage() {
                         onChange={(e) =>
                           updateItemPrice(item.productId, parseFloat(e.target.value) || 0)
                         }
-                        className="h-7 w-24 text-right border-[#E5E1DB] rounded-none text-sm p-1"
+                        className="h-7 w-24 text-right border-shell rounded-none text-sm p-1"
                       />
                     </div>
                   </div>
-                  <div className="col-span-1 text-right text-sm font-medium text-[#0A0A0A]">
+                  <div className="col-span-1 text-right text-sm font-medium text-ink">
                     {formatCurrency(item.unitPrice * item.quantity)}
                   </div>
                   <div className="col-span-1 text-right">
                     <button
                       type="button"
                       onClick={() => removeItem(item.productId)}
-                      className="text-[#0A0A0A]/30 hover:text-red-500 transition-colors"
+                      className="text-ink/30 hover:text-red-500 transition-colors"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>
@@ -336,25 +336,25 @@ export default function NewQuotePage() {
               }}
               onFocus={() => setShowProductDropdown(true)}
               placeholder="Search and add a product..."
-              className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A]"
+              className="border-shell bg-cream rounded-none focus:border-ink"
             />
             {showProductDropdown && productSearch.length > 0 && (
-              <div className="absolute top-full left-0 right-0 z-10 border border-[#E5E1DB] bg-[#F9F7F4] max-h-48 overflow-y-auto shadow-sm">
+              <div className="absolute top-full left-0 right-0 z-10 border border-shell bg-cream max-h-48 overflow-y-auto shadow-sm">
                 {filteredProducts.slice(0, 8).map((product) => (
                   <button
                     key={product.id}
                     type="button"
-                    className="w-full text-left px-3 py-2 text-sm hover:bg-[#0A0A0A]/[0.04] flex items-center justify-between"
+                    className="w-full text-left px-3 py-2 text-sm hover:bg-ink/[0.04] flex items-center justify-between"
                     onClick={() => addProduct(product)}
                   >
                     <span>{product.name}</span>
-                    <span className="text-xs text-[#0A0A0A]/50">
+                    <span className="text-xs text-ink/50">
                       {formatCurrency(product.price)} / {product.unit}
                     </span>
                   </button>
                 ))}
                 {filteredProducts.length === 0 && (
-                  <div className="px-3 py-2 text-xs text-[#0A0A0A]/50">
+                  <div className="px-3 py-2 text-xs text-ink/50">
                     No products found
                   </div>
                 )}
@@ -363,15 +363,15 @@ export default function NewQuotePage() {
           </div>
 
           {/* Totals */}
-          <div className="space-y-2 pt-2 border-t border-[#E5E1DB]">
+          <div className="space-y-2 pt-2 border-t border-shell">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-[#0A0A0A]/60">Subtotal</span>
-              <span className="text-[#0A0A0A]">{formatCurrency(subtotal)}</span>
+              <span className="text-ink/60">Subtotal</span>
+              <span className="text-ink">{formatCurrency(subtotal)}</span>
             </div>
             <div className="flex items-center justify-between text-sm">
-              <span className="text-[#0A0A0A]/60">Discount ($)</span>
+              <span className="text-ink/60">Discount ($)</span>
               <div className="flex items-center gap-1">
-                <span className="text-xs text-[#0A0A0A]/50">$</span>
+                <span className="text-xs text-ink/50">$</span>
                 <Input
                   type="number"
                   min={0}
@@ -386,13 +386,13 @@ export default function NewQuotePage() {
                       setDiscount(e.target.value);
                     }
                   }}
-                  className="h-7 w-20 text-right border-[#E5E1DB] rounded-none text-sm p-1"
+                  className="h-7 w-20 text-right border-shell rounded-none text-sm p-1"
                 />
               </div>
             </div>
             <div className="flex items-center justify-between font-semibold">
-              <span className="text-[#0A0A0A]">Total</span>
-              <span className="font-serif text-xl text-[#0A0A0A]">
+              <span className="text-ink">Total</span>
+              <span className="font-serif text-xl text-ink">
                 {formatCurrency(total)}
               </span>
             </div>
@@ -401,9 +401,9 @@ export default function NewQuotePage() {
       </Card>
 
       {/* Options */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader>
-          <CardTitle className="font-serif text-base text-[#0A0A0A]">
+          <CardTitle className="font-serif text-base text-ink">
             Options
           </CardTitle>
         </CardHeader>
@@ -411,7 +411,7 @@ export default function NewQuotePage() {
           <div className="space-y-2">
             <Label
               htmlFor="expires-at"
-              className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider"
+              className="text-xs text-ink/60 uppercase tracking-wider"
             >
               Expiry Date
             </Label>
@@ -421,13 +421,13 @@ export default function NewQuotePage() {
               value={expiresAt}
               min={new Date(Date.now() + 86400000).toISOString().split("T")[0]}
               onChange={(e) => setExpiresAt(e.target.value)}
-              className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A]"
+              className="border-shell bg-cream rounded-none focus:border-ink"
             />
           </div>
           <div className="space-y-2">
             <Label
               htmlFor="quote-notes"
-              className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider"
+              className="text-xs text-ink/60 uppercase tracking-wider"
             >
               Notes
             </Label>
@@ -438,7 +438,7 @@ export default function NewQuotePage() {
               placeholder="Notes visible to the client..."
               rows={3}
               maxLength={1000}
-              className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A] resize-none"
+              className="border-shell bg-cream rounded-none focus:border-ink resize-none"
             />
           </div>
         </CardContent>
@@ -456,7 +456,7 @@ export default function NewQuotePage() {
           onClick={() => save("DRAFT")}
           disabled={saving}
           variant="outline"
-          className="border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] rounded-none"
+          className="border-ink text-ink hover:bg-ink hover:text-cream rounded-none"
         >
           {saving ? (
             <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -468,7 +468,7 @@ export default function NewQuotePage() {
         <Button
           onClick={() => save("SENT")}
           disabled={saving}
-          className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+          className="bg-ink text-cream hover:bg-ink/80 rounded-none"
         >
           {saving ? (
             <Loader2 className="h-4 w-4 animate-spin mr-2" />

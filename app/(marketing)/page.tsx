@@ -520,7 +520,7 @@ export default function WholesailPage() {
                 <div key={i} className="flex items-start gap-3">
                   <X
                     className="w-3.5 h-3.5 flex-shrink-0 mt-0.5"
-                    style={{ color: "#dc2626" }}
+                    style={{ color: 'var(--color-error)' }}
                     strokeWidth={2.5}
                   />
                   <p
@@ -1318,7 +1318,7 @@ export default function WholesailPage() {
                   borderRadius: "4px",
                 }}
               >
-                <X className="w-3 h-3 flex-shrink-0" style={{ color: "#dc2626" }} strokeWidth={2.5} />
+                <X className="w-3 h-3 flex-shrink-0" style={{ color: 'var(--color-error)' }} strokeWidth={2.5} />
                 <span className="font-mono text-[10px] leading-tight" style={{ color: "var(--text-body)" }}>
                   {item}
                 </span>

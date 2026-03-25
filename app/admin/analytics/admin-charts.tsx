@@ -80,7 +80,7 @@ function AovTooltip({
   if (active && payload && payload.length) {
     return (
       <div className="border bg-background p-2 text-xs shadow-sm">
-        <p className="text-[#0A0A0A]/50 mb-1">{label}</p>
+        <p className="text-ink/50 mb-1">{label}</p>
         <p className="font-bold">
           ${payload[0].value.toLocaleString("en-US")} AOV
         </p>
@@ -337,7 +337,7 @@ export function AdminCharts({
           </CardHeader>
           <CardContent>
             {aovByMonth.every((m) => m.aov === 0) ? (
-              <p className="text-sm text-[#0A0A0A]/50">No order data yet.</p>
+              <p className="text-sm text-ink/50">No order data yet.</p>
             ) : (
               <ResponsiveContainer width="100%" height={220}>
                 <LineChart
@@ -375,7 +375,7 @@ export function AdminCharts({
           </CardHeader>
           <CardContent>
             {dayOfWeekCounts.every((d) => d.orders === 0) ? (
-              <p className="text-sm text-[#0A0A0A]/50">No order data yet.</p>
+              <p className="text-sm text-ink/50">No order data yet.</p>
             ) : (
               <ResponsiveContainer width="100%" height={220}>
                 <BarChart

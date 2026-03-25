@@ -42,12 +42,12 @@ export function BuildStatusCard({ buildChecklist, buildLog, status, intakeId }: 
   let stateBg: string;
 
   if (!hasChecklist && buildLog.length === 0) {
-    stateIcon = <Rocket className="h-4 w-4 text-[#0A0A0A]/40" />;
+    stateIcon = <Rocket className="h-4 w-4 text-ink/40" />;
     stateLabel = "Ready to build";
     stateDescription = intakeId
       ? "Click 'Start Build' on the intake page to begin provisioning infrastructure."
       : "Convert an intake submission to start the build pipeline.";
-    stateBg = "bg-[#F9F7F4]";
+    stateBg = "bg-cream";
   } else if (hasChecklist && !autoStepsComplete) {
     stateIcon = <Loader2 className="h-4 w-4 animate-spin text-yellow-600" />;
     stateLabel = "Infrastructure provisioning";
@@ -67,29 +67,29 @@ export function BuildStatusCard({ buildChecklist, buildLog, status, intakeId }: 
         : "All checklist items are done. Ready for QA.";
     stateBg = "bg-green-50";
   } else {
-    stateIcon = <Wrench className="h-4 w-4 text-[#0A0A0A]/40" />;
+    stateIcon = <Wrench className="h-4 w-4 text-ink/40" />;
     stateLabel = "Build in progress";
     stateDescription = "Check the build log for the latest status.";
-    stateBg = "bg-[#F9F7F4]";
+    stateBg = "bg-cream";
   }
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
-          <Wrench className="h-4 w-4 text-[#C8C0B4]" />
+          <Wrench className="h-4 w-4 text-sand" />
           Build Status
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        <div className={`${stateBg} border border-[#E5E1DB] px-3 py-3`}>
+        <div className={`${stateBg} border border-shell px-3 py-3`}>
           <div className="flex items-start gap-2">
             <div className="mt-0.5 shrink-0">{stateIcon}</div>
             <div>
-              <p className="font-mono text-xs font-semibold text-[#0A0A0A]">
+              <p className="font-mono text-xs font-semibold text-ink">
                 {stateLabel}
               </p>
-              <p className="text-[10px] text-[#0A0A0A]/50 mt-0.5">
+              <p className="text-[10px] text-ink/50 mt-0.5">
                 {stateDescription}
               </p>
             </div>
@@ -99,13 +99,13 @@ export function BuildStatusCard({ buildChecklist, buildLog, status, intakeId }: 
         {/* Pending manual steps list */}
         {hasChecklist && pendingManual.length > 0 && pendingManual.length <= 6 && (
           <div className="space-y-1">
-            <p className="font-mono text-[9px] uppercase tracking-widest text-[#0A0A0A]/40">
+            <p className="font-mono text-[9px] uppercase tracking-widest text-ink/40">
               Pending
             </p>
             {pendingManual.map((step) => (
               <div key={step.key} className="flex items-center gap-2 text-xs">
                 <AlertCircle className="h-3 w-3 text-yellow-500 shrink-0" />
-                <span className="font-mono text-[#0A0A0A]/60">{step.label}</span>
+                <span className="font-mono text-ink/60">{step.label}</span>
               </div>
             ))}
           </div>

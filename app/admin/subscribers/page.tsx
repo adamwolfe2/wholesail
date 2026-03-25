@@ -36,10 +36,10 @@ export default async function AdminSubscribersPage() {
     <div className="space-y-6">
       <div>
         <h2 className="font-serif text-3xl font-normal flex items-center gap-3">
-          <Mail className="h-7 w-7 text-[#C8C0B4]" />
+          <Mail className="h-7 w-7 text-sand" />
           Email Subscribers
         </h2>
-        <p className="text-sm text-[#0A0A0A]/50 mt-1 font-mono">
+        <p className="text-sm text-ink/50 mt-1 font-mono">
           {total} total &middot; {thisMonth} this month
         </p>
       </div>
@@ -50,14 +50,14 @@ export default async function AdminSubscribersPage() {
           <Card key={source}>
             <CardContent className="pt-4 pb-3">
               <p className="text-2xl font-serif font-bold">{count}</p>
-              <p className="text-xs font-mono text-[#0A0A0A]/50 mt-0.5">{source}</p>
+              <p className="text-xs font-mono text-ink/50 mt-0.5">{source}</p>
             </CardContent>
           </Card>
         ))}
         <Card>
           <CardContent className="pt-4 pb-3">
             <p className="text-2xl font-serif font-bold">{thisMonth}</p>
-            <p className="text-xs font-mono text-[#0A0A0A]/50 mt-0.5">this month</p>
+            <p className="text-xs font-mono text-ink/50 mt-0.5">this month</p>
           </CardContent>
         </Card>
       </div>
@@ -77,17 +77,17 @@ export default async function AdminSubscribersPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#E5E1DB]">
-                    <th className="text-left py-3 pr-4 font-medium text-[#0A0A0A]/50 font-normal">
+                  <tr className="border-b border-shell">
+                    <th className="text-left py-3 pr-4 font-medium text-ink/50 font-normal">
                       Email
                     </th>
-                    <th className="text-left py-3 pr-4 font-medium text-[#0A0A0A]/50 font-normal hidden sm:table-cell">
+                    <th className="text-left py-3 pr-4 font-medium text-ink/50 font-normal hidden sm:table-cell">
                       Source
                     </th>
-                    <th className="text-left py-3 pr-4 font-medium text-[#0A0A0A]/50 font-normal hidden md:table-cell">
+                    <th className="text-left py-3 pr-4 font-medium text-ink/50 font-normal hidden md:table-cell">
                       Cursive
                     </th>
-                    <th className="text-left py-3 font-medium text-[#0A0A0A]/50 font-normal">
+                    <th className="text-left py-3 font-medium text-ink/50 font-normal">
                       Subscribed
                     </th>
                   </tr>
@@ -96,7 +96,7 @@ export default async function AdminSubscribersPage() {
                   {subscribers.map((sub) => (
                     <tr
                       key={sub.id}
-                      className="border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02] transition-colors"
+                      className="border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors"
                     >
                       <td className="py-3 pr-4 font-mono text-xs">{sub.email}</td>
                       <td className="py-3 pr-4 hidden sm:table-cell">
@@ -108,10 +108,10 @@ export default async function AdminSubscribersPage() {
                         {sub.cursiveContactId ? (
                           <span className="text-xs font-mono text-green-700">synced</span>
                         ) : (
-                          <span className="text-xs font-mono text-[#0A0A0A]/30">—</span>
+                          <span className="text-xs font-mono text-ink/30">—</span>
                         )}
                       </td>
-                      <td className="py-3 text-[#0A0A0A]/60 tabular-nums text-xs">
+                      <td className="py-3 text-ink/60 tabular-nums text-xs">
                         {new Date(sub.subscribedAt).toLocaleDateString("en-US", {
                           month: "short",
                           day: "numeric",

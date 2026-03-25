@@ -44,7 +44,7 @@ export function StripeConnectBadge({ projectId, stripeAccountId }: Props) {
     return (
       <Badge
         variant="outline"
-        className="text-[9px] font-mono bg-[#F9F7F4] text-[#0A0A0A]/40 border-[#E5E1DB] px-1.5 py-0.5"
+        className="text-[9px] font-mono bg-cream text-ink/40 border-shell px-1.5 py-0.5"
       >
         <Loader2 className="h-2.5 w-2.5 mr-0.5 inline animate-spin" />
         Stripe: Checking...

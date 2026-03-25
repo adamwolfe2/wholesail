@@ -100,12 +100,12 @@ export function PortalNav() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 lg:border-r border-[#E5E1DB] bg-[#F9F7F4] z-40">
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:fixed lg:inset-y-0 lg:border-r border-shell bg-cream z-40">
         {/* Wordmark */}
-        <div className="flex items-center h-16 px-5 border-b border-[#E5E1DB]">
+        <div className="flex items-center h-16 px-5 border-b border-shell">
           <Link href="/" className="flex flex-col min-w-0">
-            <span className="font-serif font-bold text-lg sm:text-xl text-[#0A0A0A] tracking-tight leading-tight">{process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'}</span>
-            <span className="font-serif italic text-sm text-[#C8C0B4] leading-tight">Portal</span>
+            <span className="font-serif font-bold text-lg sm:text-xl text-ink tracking-tight leading-tight">{process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'}</span>
+            <span className="font-serif italic text-sm text-sand leading-tight">Portal</span>
           </Link>
         </div>
 
@@ -121,8 +121,8 @@ export function PortalNav() {
                 className={cn(
                   'relative flex items-center gap-3 px-3 py-2.5 text-sm font-medium transition-colors',
                   isActive
-                    ? 'bg-[#0A0A0A] text-[#F9F7F4]'
-                    : 'text-[#0A0A0A]/60 hover:bg-[#0A0A0A]/[0.08] hover:text-[#0A0A0A]'
+                    ? 'bg-ink text-cream'
+                    : 'text-ink/60 hover:bg-ink/[0.08] hover:text-ink'
                 )}
               >
                 <span className="relative shrink-0">
@@ -136,15 +136,15 @@ export function PortalNav() {
         </nav>
 
         {/* Footer */}
-        <div className="border-t border-[#E5E1DB] px-3 py-4 space-y-2">
+        <div className="border-t border-shell px-3 py-4 space-y-2">
           <div className="flex items-center gap-3 px-3 py-2">
             <UserButton afterSignOutUrl="/" />
-            <span className="text-xs text-[#0A0A0A]/50 truncate">Account</span>
+            <span className="text-xs text-ink/50 truncate">Account</span>
             <div className="ml-auto">
               <NotificationBell />
             </div>
           </div>
-          <Button variant="ghost" size="sm" className="w-full justify-start text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.08] transition-colors" onClick={handleLogout}>
+          <Button variant="ghost" size="sm" className="w-full justify-start text-ink/60 hover:text-ink hover:bg-ink/[0.08] transition-colors" onClick={handleLogout}>
             <LogOut className="h-4 w-4 mr-2" />
             Sign Out
           </Button>
@@ -152,15 +152,15 @@ export function PortalNav() {
       </aside>
 
       {/* Mobile top bar */}
-      <header className="sticky top-0 z-50 border-b border-[#E5E1DB] bg-[#F9F7F4]/95 backdrop-blur supports-[backdrop-filter]:bg-[#F9F7F4]/80 lg:hidden">
+      <header className="sticky top-0 z-50 border-b border-shell bg-cream/95 backdrop-blur supports-[backdrop-filter]:bg-cream/80 lg:hidden">
         <div className="flex h-14 items-center justify-between px-4">
           <Link href="/" className="flex flex-col min-w-0">
-            <span className="font-serif font-bold text-sm sm:text-base text-[#0A0A0A] leading-tight">{process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'}</span>
-            <span className="font-serif italic text-[10px] text-[#C8C0B4] leading-tight">Portal</span>
+            <span className="font-serif font-bold text-sm sm:text-base text-ink leading-tight">{process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'}</span>
+            <span className="font-serif italic text-[10px] text-sand leading-tight">Portal</span>
           </Link>
           <div className="flex items-center gap-1">
             <NotificationBell />
-            <Button variant="ghost" size="sm" className="text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.08] transition-colors min-h-[44px] min-w-[44px]" onClick={handleLogout}>
+            <Button variant="ghost" size="sm" className="text-ink/60 hover:text-ink hover:bg-ink/[0.08] transition-colors min-h-[44px] min-w-[44px]" onClick={handleLogout}>
               <LogOut className="h-4 w-4" />
               <span className="sr-only">Sign Out</span>
             </Button>
@@ -169,7 +169,7 @@ export function PortalNav() {
         </div>
 
         {/* Mobile bottom tab bar — core items + More */}
-        <div className="flex border-t border-[#E5E1DB]">
+        <div className="flex border-t border-shell">
           {mobileLinks.map((link) => {
             const isActive = pathname === link.href || (link.href !== '/client-portal/dashboard' && pathname?.startsWith(link.href))
             const badgeCount = link.badge ? counts[link.badge] : 0
@@ -180,8 +180,8 @@ export function PortalNav() {
                 className={cn(
                   'relative flex flex-col items-center gap-1 px-3 py-2.5 text-[10px] font-medium flex-1 min-h-[44px] justify-center transition-colors',
                   isActive
-                    ? 'text-[#0A0A0A] border-b-2 border-[#0A0A0A] bg-[#C8C0B4]/10'
-                    : 'text-[#0A0A0A]/50 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.08]'
+                    ? 'text-ink border-b-2 border-ink bg-sand/10'
+                    : 'text-ink/50 hover:text-ink hover:bg-ink/[0.08]'
                 )}
               >
                 <span className="relative">
@@ -198,8 +198,8 @@ export function PortalNav() {
               className={cn(
                 'relative flex flex-col items-center gap-1 px-3 py-2.5 text-[10px] font-medium flex-1 min-h-[44px] justify-center transition-colors',
                 moreOpen
-                  ? 'text-[#0A0A0A] border-b-2 border-[#0A0A0A] bg-[#C8C0B4]/10'
-                  : 'text-[#0A0A0A]/50 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.08]'
+                  ? 'text-ink border-b-2 border-ink bg-sand/10'
+                  : 'text-ink/50 hover:text-ink hover:bg-ink/[0.08]'
               )}
             >
               <MoreHorizontal className="h-4 w-4" />
@@ -210,14 +210,14 @@ export function PortalNav() {
 
         {/* More menu overlay */}
         {moreOpen && (
-          <div className="absolute left-0 right-0 top-full bg-[#F9F7F4] border-b border-[#E5E1DB] shadow-lg z-50">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-[#E5E1DB]">
-              <span className="text-xs font-semibold uppercase tracking-wider text-[#0A0A0A]/50">More Pages</span>
-              <button onClick={() => setMoreOpen(false)} className="text-[#0A0A0A]/50 hover:text-[#0A0A0A] p-1">
+          <div className="absolute left-0 right-0 top-full bg-cream border-b border-shell shadow-lg z-50">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-shell">
+              <span className="text-xs font-semibold uppercase tracking-wider text-ink/50">More Pages</span>
+              <button onClick={() => setMoreOpen(false)} className="text-ink/50 hover:text-ink p-1">
                 <X className="h-4 w-4" />
               </button>
             </div>
-            <div className="grid grid-cols-2 gap-px bg-[#E5E1DB]">
+            <div className="grid grid-cols-2 gap-px bg-shell">
               {desktopOnlyLinks.map((link) => {
                 const isActive = pathname === link.href || pathname?.startsWith(link.href)
                 return (
@@ -226,10 +226,10 @@ export function PortalNav() {
                     href={link.href}
                     onClick={() => setMoreOpen(false)}
                     className={cn(
-                      'flex items-center gap-3 px-4 py-3.5 text-sm font-medium bg-[#F9F7F4] transition-colors min-h-[48px]',
+                      'flex items-center gap-3 px-4 py-3.5 text-sm font-medium bg-cream transition-colors min-h-[48px]',
                       isActive
-                        ? 'text-[#0A0A0A] bg-[#C8C0B4]/10'
-                        : 'text-[#0A0A0A]/60 hover:bg-[#0A0A0A]/[0.05] hover:text-[#0A0A0A]'
+                        ? 'text-ink bg-sand/10'
+                        : 'text-ink/60 hover:bg-ink/[0.05] hover:text-ink'
                     )}
                   >
                     <link.icon className="h-4 w-4 shrink-0" />
@@ -247,7 +247,7 @@ export function PortalNav() {
 
 export function PortalLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-[#F9F7F4]">
+    <div className="min-h-screen bg-cream">
       <PortalNav />
       <main className="lg:pl-64">
         <div className="mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-10 max-w-7xl animate-fade-in">

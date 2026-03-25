@@ -186,18 +186,18 @@ export function ImportOrdersButton({ onSuccess }: { onSuccess?: () => void }) {
       <Button
         variant="outline"
         onClick={() => setOpen(true)}
-        className="gap-1.5 rounded-none border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04]"
+        className="gap-1.5 rounded-none border-shell text-ink hover:bg-ink/[0.04]"
       >
         <Upload className="h-4 w-4" />
         Import CSV
       </Button>
 
       <Dialog open={open} onOpenChange={(v) => { if (!v) handleClose() }}>
-        <DialogContent className="sm:max-w-lg bg-[#F9F7F4] border-[#E5E1DB] rounded-none">
+        <DialogContent className="sm:max-w-lg bg-cream border-shell rounded-none">
           <DialogHeader>
-            <DialogTitle className="font-serif text-xl text-[#0A0A0A]">Import Order from CSV</DialogTitle>
-            <DialogDescription className="text-sm text-[#0A0A0A]/50">
-              Upload a CSV with columns: <code className="text-xs bg-[#E5E1DB] px-1 rounded-none">product_sku,quantity</code>. All items will be combined into a single order.
+            <DialogTitle className="font-serif text-xl text-ink">Import Order from CSV</DialogTitle>
+            <DialogDescription className="text-sm text-ink/50">
+              Upload a CSV with columns: <code className="text-xs bg-shell px-1 rounded-none">product_sku,quantity</code>. All items will be combined into a single order.
             </DialogDescription>
           </DialogHeader>
 
@@ -206,7 +206,7 @@ export function ImportOrdersButton({ onSuccess }: { onSuccess?: () => void }) {
             <button
               type="button"
               onClick={downloadTemplate}
-              className="inline-flex items-center gap-1.5 text-sm text-[#0A0A0A]/60 hover:text-[#0A0A0A] underline underline-offset-2"
+              className="inline-flex items-center gap-1.5 text-sm text-ink/60 hover:text-ink underline underline-offset-2"
             >
               <Download className="h-3.5 w-3.5" />
               Download CSV template
@@ -214,9 +214,9 @@ export function ImportOrdersButton({ onSuccess }: { onSuccess?: () => void }) {
 
             {/* Organization selector */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium text-[#0A0A0A]">Client Organization</Label>
+              <Label className="text-sm font-medium text-ink">Client Organization</Label>
               <Select value={selectedOrgId} onValueChange={setSelectedOrgId} disabled={orgsLoading}>
-                <SelectTrigger className="border-[#C8C0B4] rounded-none">
+                <SelectTrigger className="border-sand rounded-none">
                   <SelectValue placeholder={orgsLoading ? 'Loading...' : 'Select organization'} />
                 </SelectTrigger>
                 <SelectContent className="rounded-none">
@@ -229,7 +229,7 @@ export function ImportOrdersButton({ onSuccess }: { onSuccess?: () => void }) {
 
             {/* File upload */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium text-[#0A0A0A]">CSV File</Label>
+              <Label className="text-sm font-medium text-ink">CSV File</Label>
               <div className="flex items-center gap-3">
                 <input
                   ref={fileInputRef}
@@ -244,13 +244,13 @@ export function ImportOrdersButton({ onSuccess }: { onSuccess?: () => void }) {
                   variant="outline"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={loading}
-                  className="gap-1.5 rounded-none border-[#C8C0B4]"
+                  className="gap-1.5 rounded-none border-sand"
                 >
                   <FileText className="h-4 w-4" />
                   Choose File
                 </Button>
                 {csvText.trim() && (
-                  <span className="text-sm text-[#0A0A0A]/60">
+                  <span className="text-sm text-ink/60">
                     {previewItems.length} item{previewItems.length !== 1 ? 's' : ''} parsed
                   </span>
                 )}
@@ -259,17 +259,17 @@ export function ImportOrdersButton({ onSuccess }: { onSuccess?: () => void }) {
 
             {/* Preview table */}
             {previewItems.length > 0 && !result && (
-              <div className="border border-[#E5E1DB] bg-white max-h-48 overflow-y-auto">
+              <div className="border border-shell bg-white max-h-48 overflow-y-auto">
                 <table className="w-full text-sm">
-                  <thead className="bg-[#F9F7F4] sticky top-0">
+                  <thead className="bg-cream sticky top-0">
                     <tr>
-                      <th className="text-left px-3 py-1.5 text-[#0A0A0A]/60 font-medium">SKU</th>
-                      <th className="text-right px-3 py-1.5 text-[#0A0A0A]/60 font-medium">Qty</th>
+                      <th className="text-left px-3 py-1.5 text-ink/60 font-medium">SKU</th>
+                      <th className="text-right px-3 py-1.5 text-ink/60 font-medium">Qty</th>
                     </tr>
                   </thead>
                   <tbody>
                     {previewItems.map((item, i) => (
-                      <tr key={i} className="border-t border-[#E5E1DB]">
+                      <tr key={i} className="border-t border-shell">
                         <td className="px-3 py-1.5 font-mono text-xs">{item.sku}</td>
                         <td className="px-3 py-1.5 text-right">{item.quantity}</td>
                       </tr>
@@ -303,12 +303,12 @@ export function ImportOrdersButton({ onSuccess }: { onSuccess?: () => void }) {
 
             {/* Success result */}
             {result && (
-              <div className="border border-[#E5E1DB] bg-white px-4 py-3 space-y-1 rounded-none">
-                <div className="flex items-center gap-2 text-sm font-medium text-[#0A0A0A]">
+              <div className="border border-shell bg-white px-4 py-3 space-y-1 rounded-none">
+                <div className="flex items-center gap-2 text-sm font-medium text-ink">
                   <CheckCircle2 className="h-4 w-4 text-green-600" />
                   Order created successfully
                 </div>
-                <p className="text-sm text-[#0A0A0A]/60">
+                <p className="text-sm text-ink/60">
                   Order <span className="font-mono font-medium">{result.orderNumber}</span> with {result.itemCount} item{result.itemCount !== 1 ? 's' : ''} — {formatCurrency(result.total)}
                 </p>
               </div>
@@ -320,7 +320,7 @@ export function ImportOrdersButton({ onSuccess }: { onSuccess?: () => void }) {
               variant="outline"
               onClick={handleClose}
               disabled={loading}
-              className="border-[#E5E1DB] rounded-none"
+              className="border-shell rounded-none"
             >
               {result ? 'Close' : 'Cancel'}
             </Button>
@@ -328,7 +328,7 @@ export function ImportOrdersButton({ onSuccess }: { onSuccess?: () => void }) {
               <Button
                 onClick={handleImport}
                 disabled={!ready || loading}
-                className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+                className="bg-ink text-cream hover:bg-ink/80 rounded-none"
               >
                 {loading ? (
                   <><Loader2 className="h-4 w-4 animate-spin mr-2" />Importing...</>

@@ -81,7 +81,7 @@ export function NewTaskForm({ repId, orgs }: NewTaskFormProps) {
     return (
       <Button
         onClick={() => setOpen(true)}
-        className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+        className="bg-ink text-cream hover:bg-ink/80 rounded-none"
       >
         <Plus className="h-4 w-4 mr-2" />
         New Task
@@ -92,14 +92,14 @@ export function NewTaskForm({ repId, orgs }: NewTaskFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="border border-[#E5E1DB] bg-[#F9F7F4] p-4 space-y-4"
+      className="border border-shell bg-cream p-4 space-y-4"
     >
-      <h3 className="font-serif text-base font-semibold text-[#0A0A0A]">
+      <h3 className="font-serif text-base font-semibold text-ink">
         New Task
       </h3>
 
       <div className="space-y-2">
-        <Label htmlFor="task-title" className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider">
+        <Label htmlFor="task-title" className="text-xs text-ink/60 uppercase tracking-wider">
           Title *
         </Label>
         <Input
@@ -108,12 +108,12 @@ export function NewTaskForm({ repId, orgs }: NewTaskFormProps) {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Task title"
           required
-          className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A]"
+          className="border-shell bg-cream rounded-none focus:border-ink"
         />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="task-desc" className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider">
+        <Label htmlFor="task-desc" className="text-xs text-ink/60 uppercase tracking-wider">
           Description
         </Label>
         <Textarea
@@ -123,17 +123,17 @@ export function NewTaskForm({ repId, orgs }: NewTaskFormProps) {
           placeholder="Optional details"
           rows={2}
           maxLength={1000}
-          className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A] resize-none"
+          className="border-shell bg-cream rounded-none focus:border-ink resize-none"
         />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <Label className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider">
+          <Label className="text-xs text-ink/60 uppercase tracking-wider">
             Organization
           </Label>
           <Select value={organizationId} onValueChange={setOrganizationId}>
-            <SelectTrigger className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none">
+            <SelectTrigger className="border-shell bg-cream rounded-none">
               <SelectValue placeholder="None" />
             </SelectTrigger>
             <SelectContent>
@@ -148,11 +148,11 @@ export function NewTaskForm({ repId, orgs }: NewTaskFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider">
+          <Label className="text-xs text-ink/60 uppercase tracking-wider">
             Priority
           </Label>
           <Select value={priority} onValueChange={setPriority}>
-            <SelectTrigger className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none">
+            <SelectTrigger className="border-shell bg-cream rounded-none">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -166,7 +166,7 @@ export function NewTaskForm({ repId, orgs }: NewTaskFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="task-due" className="text-xs text-[#0A0A0A]/60 uppercase tracking-wider">
+        <Label htmlFor="task-due" className="text-xs text-ink/60 uppercase tracking-wider">
           Due Date
         </Label>
         <Input
@@ -174,7 +174,7 @@ export function NewTaskForm({ repId, orgs }: NewTaskFormProps) {
           type="date"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
-          className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A]"
+          className="border-shell bg-cream rounded-none focus:border-ink"
         />
       </div>
 
@@ -184,7 +184,7 @@ export function NewTaskForm({ repId, orgs }: NewTaskFormProps) {
         <Button
           type="submit"
           disabled={loading || !title.trim()}
-          className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+          className="bg-ink text-cream hover:bg-ink/80 rounded-none"
         >
           {loading ? (
             <Loader2 className="h-4 w-4 animate-spin mr-2" />
@@ -197,7 +197,7 @@ export function NewTaskForm({ repId, orgs }: NewTaskFormProps) {
           type="button"
           variant="outline"
           onClick={() => setOpen(false)}
-          className="border-[#E5E1DB] text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none"
+          className="border-shell text-ink hover:bg-ink/[0.04] rounded-none"
         >
           Cancel
         </Button>

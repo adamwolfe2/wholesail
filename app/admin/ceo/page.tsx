@@ -463,7 +463,7 @@ export default async function CeoCommandCenter() {
       ? "text-emerald-600"
       : forecast.trendDirection === "down"
         ? "text-red-500"
-        : "text-[#0A0A0A]/50";
+        : "text-ink/50";
   const trendLabel =
     forecast.trendDirection === "up"
       ? "Trending up"
@@ -475,13 +475,13 @@ export default async function CeoCommandCenter() {
     <div className="space-y-8">
       {/* ── Page Header ──────────────────────────────────────────────────── */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
-        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+        <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
           CEO Command Center
         </h2>
         <a
           href="/api/admin/ceo/export"
           download
-          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-[#E5E1DB] bg-[#F9F7F4] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors"
+          className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium border border-shell bg-cream text-ink hover:bg-ink hover:text-cream transition-colors"
         >
           <Download className="h-4 w-4" />
           Export Summary
@@ -492,22 +492,22 @@ export default async function CeoCommandCenter() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7">
         {/* Total Revenue */}
         <div className="xl:col-span-1">
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
                 Total Revenue
               </CardTitle>
-              <DollarSign className="h-4 w-4 text-[#C8C0B4]" />
+              <DollarSign className="h-4 w-4 text-sand" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold font-serif text-[#0A0A0A]">
+              <div className="text-3xl font-bold font-serif text-ink">
                 $
                 {kpis.totalRevenue.toLocaleString("en-US", {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
                 })}
               </div>
-              <p className="text-xs text-[#0A0A0A]/40 mt-1">
+              <p className="text-xs text-ink/40 mt-1">
                 Cumulative all-time
               </p>
             </CardContent>
@@ -516,15 +516,15 @@ export default async function CeoCommandCenter() {
 
         {/* YTD vs Last Year */}
         <div className="xl:col-span-1">
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
                 YTD Revenue
               </CardTitle>
-              <TrendingUp className="h-4 w-4 text-[#C8C0B4]" />
+              <TrendingUp className="h-4 w-4 text-sand" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold font-serif text-[#0A0A0A]">
+              <div className="text-3xl font-bold font-serif text-ink">
                 $
                 {kpis.ytdRevenue.toLocaleString("en-US", {
                   minimumFractionDigits: 0,
@@ -541,7 +541,7 @@ export default async function CeoCommandCenter() {
                   {ytdChangePercent.toFixed(1)}% vs last year
                 </p>
               ) : (
-                <p className="text-xs text-[#0A0A0A]/40 mt-1">
+                <p className="text-xs text-ink/40 mt-1">
                   $
                   {kpis.ytdRevenueLastYear.toLocaleString("en-US", {
                     maximumFractionDigits: 0,
@@ -555,44 +555,44 @@ export default async function CeoCommandCenter() {
 
         {/* MRR (Revenue This Month) */}
         <div className="xl:col-span-1">
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
                 Revenue This Month
               </CardTitle>
-              <TrendingUp className="h-4 w-4 text-[#C8C0B4]" />
+              <TrendingUp className="h-4 w-4 text-sand" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold font-serif text-[#0A0A0A]">
+              <div className="text-3xl font-bold font-serif text-ink">
                 $
                 {kpis.revenueThisMonth.toLocaleString("en-US", {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
                 })}
               </div>
-              <p className="text-xs text-[#0A0A0A]/40 mt-1">Month to date</p>
+              <p className="text-xs text-ink/40 mt-1">Month to date</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Outstanding AR */}
         <div className="xl:col-span-1">
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
                 Outstanding AR
               </CardTitle>
-              <FileText className="h-4 w-4 text-[#C8C0B4]" />
+              <FileText className="h-4 w-4 text-sand" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold font-serif text-[#0A0A0A]">
+              <div className="text-3xl font-bold font-serif text-ink">
                 $
                 {kpis.outstandingAR.toLocaleString("en-US", {
                   minimumFractionDigits: 0,
                   maximumFractionDigits: 0,
                 })}
               </div>
-              <p className="text-xs text-[#0A0A0A]/40 mt-1">
+              <p className="text-xs text-ink/40 mt-1">
                 Pending + overdue invoices
               </p>
             </CardContent>
@@ -601,18 +601,18 @@ export default async function CeoCommandCenter() {
 
         {/* Active Clients */}
         <div className="xl:col-span-1">
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
                 Active Clients
               </CardTitle>
-              <Users className="h-4 w-4 text-[#C8C0B4]" />
+              <Users className="h-4 w-4 text-sand" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold font-serif text-[#0A0A0A]">
+              <div className="text-3xl font-bold font-serif text-ink">
                 {kpis.activeClients}
               </div>
-              <p className="text-xs text-[#0A0A0A]/40 mt-1">
+              <p className="text-xs text-ink/40 mt-1">
                 Active organizations
               </p>
             </CardContent>
@@ -621,27 +621,27 @@ export default async function CeoCommandCenter() {
 
         {/* Orders This Month */}
         <div className="xl:col-span-1">
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
                 Orders This Month
               </CardTitle>
-              <ShoppingCart className="h-4 w-4 text-[#C8C0B4]" />
+              <ShoppingCart className="h-4 w-4 text-sand" />
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold font-serif text-[#0A0A0A]">
+              <div className="text-3xl font-bold font-serif text-ink">
                 {kpis.ordersThisMonth}
               </div>
-              <p className="text-xs text-[#0A0A0A]/40 mt-1">Month to date</p>
+              <p className="text-xs text-ink/40 mt-1">Month to date</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Next 30 Days Forecast */}
         <div className="xl:col-span-1">
-          <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+          <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
                 30-Day Forecast
               </CardTitle>
               {forecast.trendDirection === "up" ? (
@@ -649,11 +649,11 @@ export default async function CeoCommandCenter() {
               ) : forecast.trendDirection === "down" ? (
                 <TrendingDown className="h-4 w-4 text-red-400" />
               ) : (
-                <Minus className="h-4 w-4 text-[#C8C0B4]" />
+                <Minus className="h-4 w-4 text-sand" />
               )}
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold font-serif text-[#0A0A0A]">
+              <div className="text-3xl font-bold font-serif text-ink">
                 $
                 {forecast.forecastAmount.toLocaleString("en-US", {
                   minimumFractionDigits: 0,
@@ -663,7 +663,7 @@ export default async function CeoCommandCenter() {
               <p className={`text-xs mt-1 font-medium ${trendColor}`}>
                 {trendIcon} {trendLabel}
               </p>
-              <p className="text-[10px] text-[#0A0A0A]/30 mt-0.5">
+              <p className="text-[10px] text-ink/30 mt-0.5">
                 Based on last 90 days
               </p>
             </CardContent>
@@ -673,12 +673,12 @@ export default async function CeoCommandCenter() {
 
       {/* ── Second KPI Row: Net Revenue Retention ────────────────────────── */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
               Net Revenue Retention
             </CardTitle>
-            <TrendingUp className="h-4 w-4 text-[#C8C0B4]" />
+            <TrendingUp className="h-4 w-4 text-sand" />
           </CardHeader>
           <CardContent>
             {nrrPct !== null ? (
@@ -688,22 +688,22 @@ export default async function CeoCommandCenter() {
                     nrrPct >= 100
                       ? "text-emerald-600"
                       : nrrPct >= 75
-                        ? "text-[#0A0A0A]"
+                        ? "text-ink"
                         : "text-red-500"
                   }`}
                 >
                   {nrrPct}%
                 </div>
-                <p className="text-xs text-[#0A0A0A]/40 mt-1">
+                <p className="text-xs text-ink/40 mt-1">
                   Existing client spend vs last month
                 </p>
               </>
             ) : (
               <>
-                <div className="text-3xl font-bold font-serif text-[#0A0A0A]/30">
+                <div className="text-3xl font-bold font-serif text-ink/30">
                   —
                 </div>
-                <p className="text-xs text-[#0A0A0A]/40 mt-1">
+                <p className="text-xs text-ink/40 mt-1">
                   No prior month data yet
                 </p>
               </>
@@ -721,32 +721,32 @@ export default async function CeoCommandCenter() {
       {/* ── Top 10 Clients + Churn Risk (side-by-side on large screens) ─── */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Top 10 Clients by LTV */}
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="pb-3">
-            <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+            <CardTitle className="font-serif text-lg text-ink">
               Top 10 Clients by Lifetime Value
             </CardTitle>
           </CardHeader>
           <CardContent>
             {topClients.length === 0 ? (
-              <p className="text-sm text-[#0A0A0A]/40">
+              <p className="text-sm text-ink/40">
                 No client order data yet.
               </p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-[#E5E1DB]">
-                      <th className="text-left py-2 pr-3 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                    <tr className="border-b border-shell">
+                      <th className="text-left py-2 pr-3 text-xs font-medium text-ink/50 uppercase tracking-wider">
                         Organization
                       </th>
-                      <th className="text-right py-2 px-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden sm:table-cell">
+                      <th className="text-right py-2 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">
                         Orders
                       </th>
-                      <th className="text-right py-2 px-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                      <th className="text-right py-2 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider">
                         Total Spent
                       </th>
-                      <th className="text-right py-2 pl-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden md:table-cell">
+                      <th className="text-right py-2 pl-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden md:table-cell">
                         Last Order
                       </th>
                     </tr>
@@ -755,32 +755,32 @@ export default async function CeoCommandCenter() {
                     {topClients.map((client, idx) => (
                       <tr
                         key={client.id}
-                        className="border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02] transition-colors"
+                        className="border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors"
                       >
                         <td className="py-2.5 pr-3">
                           <div className="flex items-center gap-2">
-                            <span className="text-xs text-[#C8C0B4] font-mono w-4">
+                            <span className="text-xs text-sand font-mono w-4">
                               {idx + 1}
                             </span>
                             <Link
                               href={`/admin/clients/${client.id}`}
-                              className="font-medium text-[#0A0A0A] hover:underline truncate max-w-[120px]"
+                              className="font-medium text-ink hover:underline truncate max-w-[120px]"
                             >
                               {client.name}
                             </Link>
                           </div>
                         </td>
-                        <td className="text-right py-2.5 px-2 font-mono text-[#0A0A0A] hidden sm:table-cell">
+                        <td className="text-right py-2.5 px-2 font-mono text-ink hidden sm:table-cell">
                           {client.totalOrders}
                         </td>
-                        <td className="text-right py-2.5 px-2 font-mono font-bold text-[#0A0A0A]">
+                        <td className="text-right py-2.5 px-2 font-mono font-bold text-ink">
                           $
                           {client.totalSpent.toLocaleString("en-US", {
                             minimumFractionDigits: 0,
                             maximumFractionDigits: 0,
                           })}
                         </td>
-                        <td className="text-right py-2.5 pl-2 text-[#0A0A0A]/50 text-xs hidden md:table-cell">
+                        <td className="text-right py-2.5 pl-2 text-ink/50 text-xs hidden md:table-cell">
                           {client.lastOrderDate
                             ? format(client.lastOrderDate, "MMM d")
                             : "—"}
@@ -795,38 +795,38 @@ export default async function CeoCommandCenter() {
         </Card>
 
         {/* Churn Risk: clients who haven't ordered in 60+ days */}
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="pb-3">
             <div className="flex items-center gap-2">
               <AlertTriangle className="h-4 w-4 text-amber-500" />
-              <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+              <CardTitle className="font-serif text-lg text-ink">
                 Churn Risk
               </CardTitle>
             </div>
-            <p className="text-xs text-[#0A0A0A]/50 mt-1">
+            <p className="text-xs text-ink/50 mt-1">
               Clients with no orders in 60+ days
             </p>
           </CardHeader>
           <CardContent>
             {churnRiskClients.length === 0 ? (
-              <p className="text-sm text-[#0A0A0A]/40 py-4 text-center">
+              <p className="text-sm text-ink/40 py-4 text-center">
                 All clients have ordered recently.
               </p>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-[#E5E1DB]">
-                      <th className="text-left py-2 pr-3 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                    <tr className="border-b border-shell">
+                      <th className="text-left py-2 pr-3 text-xs font-medium text-ink/50 uppercase tracking-wider">
                         Organization
                       </th>
-                      <th className="text-right py-2 px-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                      <th className="text-right py-2 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider">
                         Days Idle
                       </th>
-                      <th className="text-right py-2 px-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden sm:table-cell">
+                      <th className="text-right py-2 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">
                         Last Order
                       </th>
-                      <th className="text-right py-2 pl-2 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden sm:table-cell">
+                      <th className="text-right py-2 pl-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">
                         LTV
                       </th>
                     </tr>
@@ -835,12 +835,12 @@ export default async function CeoCommandCenter() {
                     {churnRiskClients.map((client) => (
                       <tr
                         key={client.id}
-                        className="border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02] transition-colors"
+                        className="border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors"
                       >
                         <td className="py-2.5 pr-3">
                           <Link
                             href={`/admin/clients/${client.id}`}
-                            className="font-medium text-[#0A0A0A] hover:underline truncate max-w-[130px] block"
+                            className="font-medium text-ink hover:underline truncate max-w-[130px] block"
                           >
                             {client.name}
                           </Link>
@@ -856,10 +856,10 @@ export default async function CeoCommandCenter() {
                             {client.daysSinceOrder}d
                           </span>
                         </td>
-                        <td className="text-right py-2.5 px-2 text-[#0A0A0A]/50 text-xs hidden sm:table-cell">
+                        <td className="text-right py-2.5 px-2 text-ink/50 text-xs hidden sm:table-cell">
                           {format(client.lastOrderDate, "MMM d, yyyy")}
                         </td>
-                        <td className="text-right py-2.5 pl-2 font-mono text-xs text-[#0A0A0A] hidden sm:table-cell">
+                        <td className="text-right py-2.5 pl-2 font-mono text-xs text-ink hidden sm:table-cell">
                           $
                           {client.totalSpent.toLocaleString("en-US", {
                             minimumFractionDigits: 0,
@@ -877,32 +877,32 @@ export default async function CeoCommandCenter() {
       </div>
 
       {/* ── Product Velocity ─────────────────────────────────────────────── */}
-      <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+      <Card className="border-shell bg-cream">
         <CardHeader className="pb-3">
-          <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+          <CardTitle className="font-serif text-lg text-ink">
             Product Velocity — Top 10 (Last 90 Days)
           </CardTitle>
         </CardHeader>
         <CardContent>
           {productVelocity.length === 0 ? (
-            <p className="text-sm text-[#0A0A0A]/40">
+            <p className="text-sm text-ink/40">
               No product order data yet.
             </p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-[#E5E1DB]">
-                    <th className="text-left py-2 pr-4 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                  <tr className="border-b border-shell">
+                    <th className="text-left py-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider">
                       Product
                     </th>
-                    <th className="text-left py-2 px-3 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider hidden sm:table-cell">
+                    <th className="text-left py-2 px-3 text-xs font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">
                       Category
                     </th>
-                    <th className="text-right py-2 px-3 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                    <th className="text-right py-2 px-3 text-xs font-medium text-ink/50 uppercase tracking-wider">
                       Qty Ordered
                     </th>
-                    <th className="text-right py-2 pl-3 text-xs font-medium text-[#0A0A0A]/50 uppercase tracking-wider">
+                    <th className="text-right py-2 pl-3 text-xs font-medium text-ink/50 uppercase tracking-wider">
                       Revenue
                     </th>
                   </tr>
@@ -911,25 +911,25 @@ export default async function CeoCommandCenter() {
                   {productVelocity.map((item, idx) => (
                     <tr
                       key={item.productId}
-                      className="border-b border-[#E5E1DB] last:border-0 hover:bg-[#0A0A0A]/[0.02] transition-colors"
+                      className="border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors"
                     >
                       <td className="py-3 pr-4">
                         <div className="flex items-center gap-2">
-                          <span className="text-xs text-[#C8C0B4] font-mono w-5">
+                          <span className="text-xs text-sand font-mono w-5">
                             {idx + 1}
                           </span>
-                          <span className="font-medium text-[#0A0A0A]">
+                          <span className="font-medium text-ink">
                             {item.name}
                           </span>
                         </div>
                       </td>
-                      <td className="py-3 px-3 text-[#0A0A0A]/60 text-xs hidden sm:table-cell">
+                      <td className="py-3 px-3 text-ink/60 text-xs hidden sm:table-cell">
                         {item.category}
                       </td>
-                      <td className="text-right py-3 px-3 font-mono font-bold text-[#0A0A0A]">
+                      <td className="text-right py-3 px-3 font-mono font-bold text-ink">
                         {item.totalQty.toLocaleString()}
                       </td>
-                      <td className="text-right py-3 pl-3 font-mono text-[#0A0A0A]">
+                      <td className="text-right py-3 pl-3 font-mono text-ink">
                         $
                         {item.totalRevenue.toLocaleString("en-US", {
                           minimumFractionDigits: 2,
@@ -947,7 +947,7 @@ export default async function CeoCommandCenter() {
 
       {/* ── Growth Intelligence ──────────────────────────────────────────── */}
       <div>
-        <h3 className="font-serif text-xl font-bold text-[#0A0A0A] mb-4">
+        <h3 className="font-serif text-xl font-bold text-ink mb-4">
           Growth Intelligence
         </h3>
         <div className="grid gap-6 lg:grid-cols-2">

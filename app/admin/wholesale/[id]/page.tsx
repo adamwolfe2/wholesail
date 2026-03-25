@@ -26,8 +26,8 @@ function statusBadge(status: WholesaleStatus) {
 function DetailRow({ label, value }: { label: string; value: string | null | undefined }) {
   return (
     <div className="flex flex-col sm:flex-row sm:gap-4">
-      <dt className="text-sm font-medium text-[#0A0A0A]/50 w-48 shrink-0">{label}</dt>
-      <dd className="text-sm text-[#0A0A0A] mt-0.5 sm:mt-0">{value || '—'}</dd>
+      <dt className="text-sm font-medium text-ink/50 w-48 shrink-0">{label}</dt>
+      <dd className="text-sm text-ink mt-0.5 sm:mt-0">{value || '—'}</dd>
     </div>
   )
 }
@@ -53,21 +53,21 @@ export default async function WholesaleApplicationDetailPage({
   return (
     <div className="space-y-6 max-w-3xl">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-[#0A0A0A]/50">
-        <Link href="/admin/wholesale" className="hover:text-[#0A0A0A] transition-colors">
+      <div className="flex items-center gap-2 text-sm text-ink/50">
+        <Link href="/admin/wholesale" className="hover:text-ink transition-colors">
           Wholesale Applications
         </Link>
         <span>/</span>
-        <span className="text-[#0A0A0A]">{application.businessName}</span>
+        <span className="text-ink">{application.businessName}</span>
       </div>
 
       {/* Header */}
       <div className="flex items-start justify-between gap-4">
         <div>
-          <h2 className="font-serif text-3xl font-normal text-[#0A0A0A]">
+          <h2 className="font-serif text-3xl font-normal text-ink">
             {application.businessName}
           </h2>
-          <p className="text-sm text-[#0A0A0A]/50 mt-1">
+          <p className="text-sm text-ink/50 mt-1">
             Applied {application.createdAt.toLocaleDateString('en-US', {
               month: 'long',
               day: 'numeric',
@@ -79,8 +79,8 @@ export default async function WholesaleApplicationDetailPage({
       </div>
 
       {/* Application Details */}
-      <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6 space-y-4">
-        <h3 className="font-serif text-lg font-normal text-[#0A0A0A]">Application Details</h3>
+      <div className="border border-shell bg-cream p-6 space-y-4">
+        <h3 className="font-serif text-lg font-normal text-ink">Application Details</h3>
         <dl className="space-y-3">
           <DetailRow label="Business Name" value={application.businessName} />
           <DetailRow label="Contact Name" value={application.contactName} />
@@ -100,8 +100,8 @@ export default async function WholesaleApplicationDetailPage({
 
       {/* Review Decision (if reviewed) */}
       {isReviewed && (
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6 space-y-3">
-          <h3 className="font-serif text-lg font-normal text-[#0A0A0A]">Review Decision</h3>
+        <div className="border border-shell bg-cream p-6 space-y-3">
+          <h3 className="font-serif text-lg font-normal text-ink">Review Decision</h3>
           <dl className="space-y-3">
             <DetailRow label="Decision" value={application.status} />
             <DetailRow label="Reviewed At" value={
@@ -118,11 +118,11 @@ export default async function WholesaleApplicationDetailPage({
             <DetailRow label="Review Notes" value={application.reviewNotes} />
           </dl>
           {application.status === 'APPROVED' && application.convertedOrgId && (
-            <div className="pt-3 border-t border-[#E5E1DB]">
-              <p className="text-sm text-[#0A0A0A]/60">Organization created:</p>
+            <div className="pt-3 border-t border-shell">
+              <p className="text-sm text-ink/60">Organization created:</p>
               <Link
                 href={`/admin/clients/${application.convertedOrgId}`}
-                className="text-sm text-[#0A0A0A] underline underline-offset-4 hover:opacity-70 transition-opacity"
+                className="text-sm text-ink underline underline-offset-4 hover:opacity-70 transition-opacity"
               >
                 View Client Profile &rarr;
               </Link>
@@ -133,8 +133,8 @@ export default async function WholesaleApplicationDetailPage({
 
       {/* Review Actions (pending only) */}
       {!isReviewed && (
-        <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-6 space-y-4">
-          <h3 className="font-serif text-lg font-normal text-[#0A0A0A]">Review Application</h3>
+        <div className="border border-shell bg-cream p-6 space-y-4">
+          <h3 className="font-serif text-lg font-normal text-ink">Review Application</h3>
           <WholesaleReviewActions
             applicationId={application.id}
             currentStatus={application.status}

@@ -119,10 +119,10 @@ export default function CatalogPage() {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
               Catalog
             </h1>
-            <p className="text-sm text-[#0A0A0A]/50 mt-1">
+            <p className="text-sm text-ink/50 mt-1">
               Browse products and add items to your order
             </p>
           </div>
@@ -132,19 +132,19 @@ export default function CatalogPage() {
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#C8C0B4]" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-sand" />
             <Input
               placeholder="Search products..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-9 border-[#C8C0B4] bg-[#F9F7F4] focus-visible:ring-[#0A0A0A] rounded-none"
+              className="pl-9 border-sand bg-cream focus-visible:ring-ink rounded-none"
             />
           </div>
           <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-            <SelectTrigger className="w-full sm:w-[220px] border-[#C8C0B4] bg-[#F9F7F4] rounded-none">
+            <SelectTrigger className="w-full sm:w-[220px] border-sand bg-cream rounded-none">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
-            <SelectContent className="rounded-none border-[#C8C0B4]">
+            <SelectContent className="rounded-none border-sand">
               <SelectItem value="all">All Categories</SelectItem>
               {categories.map((cat) => (
                 <SelectItem key={cat} value={cat}>
@@ -157,7 +157,7 @@ export default function CatalogPage() {
 
         {/* Product count */}
         {!loading && (
-          <p className="text-xs tracking-widest uppercase text-[#C8C0B4]">
+          <p className="text-xs tracking-widest uppercase text-sand">
             {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''}
             {selectedCategory !== 'all' ? ` in ${selectedCategory}` : ''}
           </p>
@@ -168,46 +168,46 @@ export default function CatalogPage() {
           <CatalogSkeleton />
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-16">
-            <Package className="h-12 w-12 text-[#C8C0B4] mx-auto mb-4" />
-            <h3 className="font-serif text-lg font-medium mb-2 text-[#0A0A0A]">
+            <Package className="h-12 w-12 text-sand mx-auto mb-4" />
+            <h3 className="font-serif text-lg font-medium mb-2 text-ink">
               No products found
             </h3>
-            <p className="text-sm text-[#0A0A0A]/50">
+            <p className="text-sm text-ink/50">
               Try adjusting your search or filter criteria.
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-[#C8C0B4]/30">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-sand/30">
             {filteredProducts.map((product) => {
               const isAdded = addedIds.has(product.id)
               const isAvailable = product.available !== false
               return (
                 <article
                   key={product.id}
-                  className="flex flex-col bg-[#F9F7F4] group transition-colors duration-200 hover:bg-[#C8C0B4]/10"
+                  className="flex flex-col bg-cream group transition-colors duration-200 hover:bg-sand/10"
                 >
                   <div className="flex flex-col flex-1 p-4 sm:p-5">
                     {/* Category */}
-                    <p className="text-[9px] tracking-[0.18em] uppercase text-[#C8C0B4] mb-1.5">
+                    <p className="text-[9px] tracking-[0.18em] uppercase text-sand mb-1.5">
                       {product.category}
                     </p>
 
                     {/* Name */}
-                    <h3 className="font-serif font-bold text-sm sm:text-base leading-tight text-balance mb-2 text-[#0A0A0A]">
+                    <h3 className="font-serif font-bold text-sm sm:text-base leading-tight text-balance mb-2 text-ink">
                       {product.name}
                     </h3>
 
                     {/* Price */}
                     <div className="mb-3 flex items-center">
                       {product.marketRate ? (
-                        <span className="inline-flex items-center gap-1 text-[9px] tracking-[0.15em] uppercase border border-[#C8C0B4] text-[#C8C0B4] px-2 py-0.5">
+                        <span className="inline-flex items-center gap-1 text-[9px] tracking-[0.15em] uppercase border border-sand text-sand px-2 py-0.5">
                           <TrendingUp className="h-2.5 w-2.5" />
                           Market Rate
                         </span>
                       ) : (
-                        <p className="text-base sm:text-lg font-bold leading-none text-[#0A0A0A]">
+                        <p className="text-base sm:text-lg font-bold leading-none text-ink">
                           {formatCurrency(product.price)}{' '}
-                          <span className="text-xs font-normal text-[#0A0A0A]/50">
+                          <span className="text-xs font-normal text-ink/50">
                             {product.unit}
                           </span>
                         </p>
@@ -216,7 +216,7 @@ export default function CatalogPage() {
 
                     {/* Description */}
                     {product.description && (
-                      <p className="text-xs text-[#0A0A0A]/50 leading-relaxed line-clamp-2 mb-auto">
+                      <p className="text-xs text-ink/50 leading-relaxed line-clamp-2 mb-auto">
                         {product.description}
                       </p>
                     )}
@@ -225,18 +225,18 @@ export default function CatalogPage() {
                     {(!isAvailable || product.coldChainRequired || product.prepayRequired) && (
                       <div className="flex flex-wrap gap-1 mt-3">
                         {!isAvailable && (
-                          <span className="text-[9px] tracking-wide uppercase border border-[#C8C0B4] px-1.5 py-0.5 text-[#C8C0B4]">
+                          <span className="text-[9px] tracking-wide uppercase border border-sand px-1.5 py-0.5 text-sand">
                             Out of Stock
                           </span>
                         )}
                         {product.coldChainRequired && (
-                          <span className="text-[9px] tracking-wide uppercase border border-[#C8C0B4] px-1.5 py-0.5 text-[#C8C0B4] inline-flex items-center gap-0.5">
+                          <span className="text-[9px] tracking-wide uppercase border border-sand px-1.5 py-0.5 text-sand inline-flex items-center gap-0.5">
                             <Snowflake className="h-2 w-2" />
                             Cold Chain
                           </span>
                         )}
                         {product.prepayRequired && (
-                          <span className="text-[9px] tracking-wide uppercase border border-[#C8C0B4] px-1.5 py-0.5 text-[#C8C0B4] inline-flex items-center gap-0.5">
+                          <span className="text-[9px] tracking-wide uppercase border border-sand px-1.5 py-0.5 text-sand inline-flex items-center gap-0.5">
                             <CreditCard className="h-2 w-2" />
                             Prepay
                           </span>
@@ -246,7 +246,7 @@ export default function CatalogPage() {
 
                     {/* Minimum order */}
                     {product.minimumOrder && (
-                      <p className="text-[10px] text-[#0A0A0A]/40 mt-2 pt-2 border-t border-[#C8C0B4]/30">
+                      <p className="text-[10px] text-ink/40 mt-2 pt-2 border-t border-sand/30">
                         {product.minimumOrder}
                       </p>
                     )}
@@ -259,10 +259,10 @@ export default function CatalogPage() {
                       disabled={!isAvailable || isAdded || !isSignedIn}
                       className={`w-full h-9 text-xs font-medium flex items-center justify-center gap-1.5 transition-all duration-200 ${
                         isAdded
-                          ? 'bg-[#0A0A0A] text-[#F9F7F4]'
+                          ? 'bg-ink text-cream'
                           : isAvailable && isSignedIn
-                            ? 'border border-[#0A0A0A] text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4]'
-                            : 'border border-[#C8C0B4] text-[#C8C0B4] cursor-not-allowed opacity-50'
+                            ? 'border border-ink text-ink hover:bg-ink hover:text-cream'
+                            : 'border border-sand text-sand cursor-not-allowed opacity-50'
                       }`}
                     >
                       {isAdded ? (
@@ -294,15 +294,15 @@ export default function CatalogPage() {
 
 function CatalogSkeleton() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-[#C8C0B4]/30">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-sand/30">
       {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="bg-[#F9F7F4] p-4 sm:p-5 space-y-3">
-          <Skeleton className="h-3 w-20 bg-[#C8C0B4]/20" />
-          <Skeleton className="h-5 w-3/4 bg-[#C8C0B4]/20" />
-          <Skeleton className="h-6 w-16 bg-[#C8C0B4]/20" />
-          <Skeleton className="h-4 w-full bg-[#C8C0B4]/20" />
-          <Skeleton className="h-4 w-2/3 bg-[#C8C0B4]/20" />
-          <Skeleton className="h-9 w-full bg-[#C8C0B4]/20 mt-4" />
+        <div key={i} className="bg-cream p-4 sm:p-5 space-y-3">
+          <Skeleton className="h-3 w-20 bg-sand/20" />
+          <Skeleton className="h-5 w-3/4 bg-sand/20" />
+          <Skeleton className="h-6 w-16 bg-sand/20" />
+          <Skeleton className="h-4 w-full bg-sand/20" />
+          <Skeleton className="h-4 w-2/3 bg-sand/20" />
+          <Skeleton className="h-9 w-full bg-sand/20 mt-4" />
         </div>
       ))}
     </div>

@@ -53,7 +53,7 @@ export function DistributorAssignment({
   return (
     <div className="flex items-center gap-3">
       <Select value={selectedId} onValueChange={setSelectedId}>
-        <SelectTrigger className="w-64 rounded-none border-[#E5E1DB] text-sm">
+        <SelectTrigger className="w-64 rounded-none border-shell text-sm">
           <SelectValue placeholder="No distributor assigned" />
         </SelectTrigger>
         <SelectContent>
@@ -68,7 +68,7 @@ export function DistributorAssignment({
       <Button
         onClick={save}
         disabled={!isDirty || saving}
-        className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+        className="bg-ink text-cream hover:bg-ink/80 rounded-none"
         size="sm"
       >
         {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : saved ? 'Saved ✓' : 'Save'}
@@ -79,16 +79,16 @@ export function DistributorAssignment({
 
 export function DistributorAssignmentCard(props: DistributorAssignmentProps & { currentDistributorName?: string | null }) {
   return (
-    <div className="border border-[#E5E1DB] bg-[#F9F7F4] p-5">
+    <div className="border border-shell bg-cream p-5">
       <div className="flex items-center gap-2 mb-3">
-        <Truck className="h-4 w-4 text-[#C8C0B4]" />
-        <h3 className="font-medium text-sm text-[#0A0A0A]">Distributor Assignment</h3>
+        <Truck className="h-4 w-4 text-sand" />
+        <h3 className="font-medium text-sm text-ink">Distributor Assignment</h3>
       </div>
-      <p className="text-xs text-[#0A0A0A]/50 mb-4">
+      <p className="text-xs text-ink/50 mb-4">
         Assign a distribution partner who supplies this product. When this product is ordered,
         that distributor will be automatically notified and it will appear in their fulfillment queue.
         {props.currentDistributorName && (
-          <span className="block mt-1 font-medium text-[#0A0A0A]/70">
+          <span className="block mt-1 font-medium text-ink/70">
             Currently assigned to: {props.currentDistributorName}
           </span>
         )}

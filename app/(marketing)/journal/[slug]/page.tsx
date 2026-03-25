@@ -77,10 +77,10 @@ export default async function ArticlePage({ params }: Props) {
         {/* Article header */}
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-6">
-            <span className="text-xs tracking-widest uppercase text-[#C8C0B4]">
+            <span className="text-xs tracking-widest uppercase text-sand">
               {article.category}
             </span>
-            <span className="text-[#E5E1DB]">·</span>
+            <span className="text-shell">·</span>
             <span className="text-xs text-muted-foreground">{article.readTime}</span>
           </div>
           <h1 className="font-serif text-4xl font-normal leading-tight text-foreground mb-6">
@@ -89,7 +89,7 @@ export default async function ArticlePage({ params }: Props) {
           <p className="text-muted-foreground text-lg leading-relaxed">
             {article.description}
           </p>
-          <div className="mt-6 text-xs text-[#C8C0B4]">
+          <div className="mt-6 text-xs text-sand">
             {new Date(article.publishedAt).toLocaleDateString("en-US", {
               year: "numeric",
               month: "long",

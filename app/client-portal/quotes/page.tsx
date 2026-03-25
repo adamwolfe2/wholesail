@@ -74,30 +74,30 @@ export default function ClientQuotesPage() {
           </div>
         )}
         <div>
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+          <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
             Quotes
           </h1>
-          <p className="text-sm text-[#0A0A0A]/50 mt-0.5">
+          <p className="text-sm text-ink/50 mt-0.5">
             Review and respond to pricing proposals from your account manager
           </p>
         </div>
 
-        <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
+        <Card className="border-sand bg-cream">
           <CardHeader>
-            <CardTitle className="font-serif text-lg text-[#0A0A0A]">
+            <CardTitle className="font-serif text-lg text-ink">
               Your Quotes
             </CardTitle>
           </CardHeader>
           <CardContent>
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-[#C8C0B4]" />
+                <Loader2 className="h-6 w-6 animate-spin text-sand" />
               </div>
             ) : !quotes || quotes.length === 0 ? (
               <div className="text-center py-12">
-                <FileCheck className="h-8 w-8 text-[#C8C0B4] mx-auto mb-3" />
-                <p className="text-sm text-[#0A0A0A]/50">No quotes yet.</p>
-                <p className="text-xs text-[#0A0A0A]/40 mt-1">
+                <FileCheck className="h-8 w-8 text-sand mx-auto mb-3" />
+                <p className="text-sm text-ink/50">No quotes yet.</p>
+                <p className="text-xs text-ink/40 mt-1">
                   Your account manager will send you quotes when ready.
                 </p>
               </div>
@@ -106,11 +106,11 @@ export default function ClientQuotesPage() {
                 {quotes.map((quote) => (
                   <div
                     key={quote.id}
-                    className="flex items-center justify-between py-3 border-b border-[#C8C0B4]/30 last:border-0"
+                    className="flex items-center justify-between py-3 border-b border-sand/30 last:border-0"
                   >
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-3">
-                        <p className="text-sm font-mono font-medium text-[#0A0A0A]">
+                        <p className="text-sm font-mono font-medium text-ink">
                           {quote.quoteNumber}
                         </p>
                         <Badge
@@ -120,7 +120,7 @@ export default function ClientQuotesPage() {
                           {quote.status}
                         </Badge>
                       </div>
-                      <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+                      <p className="text-xs text-ink/50 mt-0.5">
                         {format(new Date(quote.createdAt), "MMM d, yyyy")}
                         {quote.rep && <> &bull; {quote.rep.name}</>}
                         {quote.expiresAt && (
@@ -131,10 +131,10 @@ export default function ClientQuotesPage() {
                     </div>
                     <div className="flex items-center gap-4 shrink-0">
                       <div className="text-right hidden sm:block">
-                        <p className="text-sm font-semibold text-[#0A0A0A]">
+                        <p className="text-sm font-semibold text-ink">
                           {formatCurrency(quote.total)}
                         </p>
-                        <p className="text-xs text-[#0A0A0A]/40">
+                        <p className="text-xs text-ink/40">
                           {quote.items.length} item{quote.items.length !== 1 ? "s" : ""}
                         </p>
                       </div>
@@ -142,7 +142,7 @@ export default function ClientQuotesPage() {
                         variant="ghost"
                         size="sm"
                         asChild
-                        className="text-[#0A0A0A]/60 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.06]"
+                        className="text-ink/60 hover:text-ink hover:bg-ink/[0.06]"
                       >
                         <Link href={`/client-portal/quotes/${quote.id}`}>
                           <ArrowRight className="h-4 w-4" />

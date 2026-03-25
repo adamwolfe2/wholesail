@@ -9,7 +9,7 @@ export default function AdminIntakesLoading() {
         <Skeleton className="h-4 w-40" />
       </div>
 
-      <div className="flex gap-1 border-b border-[#E5E1DB] pb-0">
+      <div className="flex gap-1 border-b border-shell pb-0">
         {["pending", "reviewed", "archived"].map((f) => (
           <Skeleton key={f} className="h-9 w-20 mb-px" />
         ))}

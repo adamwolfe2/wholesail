@@ -104,22 +104,22 @@ export function CatalogClient({
   }
 
   return (
-    <div className="min-h-screen bg-[#F9F7F4]">
+    <div className="min-h-screen bg-cream">
       <MarketingHeader />
 
       {/* HERO */}
-      <section className="pt-24 pb-14 sm:pt-32 sm:pb-16 border-b border-[#E5E1DB]">
+      <section className="pt-24 pb-14 sm:pt-32 sm:pb-16 border-b border-shell">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
             <div>
-              <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-4">
+              <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-4">
                 Wholesale Catalog
               </p>
-              <h1 className="font-serif text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.05] text-[#0A0A0A]">
+              <h1 className="font-serif text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold leading-[1.05] text-ink">
                 The Full Catalog.
               </h1>
               {!isSignedIn && (
-                <p className="mt-4 text-sm text-[#0A0A0A]/55">
+                <p className="mt-4 text-sm text-ink/55">
                   <SignInButton mode="modal">
                     <button className="underline underline-offset-2 hover:opacity-70 transition-opacity">
                       Sign in
@@ -135,13 +135,13 @@ export function CatalogClient({
             </div>
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full sm:w-auto">
               <div className="relative w-full sm:w-64">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#C8C0B4]" />
+                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-sand" />
                 <Input
                   type="search"
                   placeholder="Search products…"
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
-                  className="pl-9 rounded-none border-[#E5E1DB] bg-white focus-visible:ring-0 focus-visible:border-[#0A0A0A] transition-colors"
+                  className="pl-9 rounded-none border-shell bg-white focus-visible:ring-0 focus-visible:border-ink transition-colors"
                   suppressHydrationWarning
                 />
               </div>
@@ -149,7 +149,7 @@ export function CatalogClient({
                 <div className="flex items-center gap-3">
                   <button
                     onClick={() => setAiParserOpen(true)}
-                    className="flex-1 sm:flex-none h-10 px-4 flex items-center justify-center gap-2 border border-[#0A0A0A] text-[#0A0A0A] text-sm font-medium hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors whitespace-nowrap"
+                    className="flex-1 sm:flex-none h-10 px-4 flex items-center justify-center gap-2 border border-ink text-ink text-sm font-medium hover:bg-ink hover:text-cream transition-colors whitespace-nowrap"
                   >
                     <Wand2 className="h-3.5 w-3.5" />
                     AI Parse Order
@@ -169,7 +169,7 @@ export function CatalogClient({
             <TabsList className="mb-6 flex flex-nowrap overflow-x-auto h-auto gap-1.5 bg-transparent p-0 pb-2 scrollbar-none">
               <TabsTrigger
                 value="all"
-                className="text-xs sm:text-[11px] tracking-wide rounded-none border border-[#E5E1DB] px-3 py-1.5 sm:px-4 sm:py-2 data-[state=active]:bg-[#0A0A0A] data-[state=active]:text-[#F9F7F4] data-[state=active]:border-[#0A0A0A] transition-all whitespace-nowrap shrink-0"
+                className="text-xs sm:text-[11px] tracking-wide rounded-none border border-shell px-3 py-1.5 sm:px-4 sm:py-2 data-[state=active]:bg-ink data-[state=active]:text-cream data-[state=active]:border-ink transition-all whitespace-nowrap shrink-0"
               >
                 All
               </TabsTrigger>
@@ -177,7 +177,7 @@ export function CatalogClient({
                 <TabsTrigger
                   key={cat}
                   value={cat}
-                  className="text-xs sm:text-[11px] tracking-wide rounded-none border border-[#E5E1DB] px-3 py-1.5 sm:px-4 sm:py-2 data-[state=active]:bg-[#0A0A0A] data-[state=active]:text-[#F9F7F4] data-[state=active]:border-[#0A0A0A] transition-all whitespace-nowrap shrink-0"
+                  className="text-xs sm:text-[11px] tracking-wide rounded-none border border-shell px-3 py-1.5 sm:px-4 sm:py-2 data-[state=active]:bg-ink data-[state=active]:text-cream data-[state=active]:border-ink transition-all whitespace-nowrap shrink-0"
                 >
                   {cat}
                 </TabsTrigger>
@@ -186,14 +186,14 @@ export function CatalogClient({
 
             {/* Sort + count bar */}
             <div className="flex items-center justify-between mb-6 gap-4">
-              <p className="text-xs text-[#0A0A0A]/40 shrink-0">
-                Showing <span className="font-medium text-[#0A0A0A]/70">{filteredProducts.length}</span> of{' '}
-                <span className="font-medium text-[#0A0A0A]/70">{products.length}</span> products
+              <p className="text-xs text-ink/40 shrink-0">
+                Showing <span className="font-medium text-ink/70">{filteredProducts.length}</span> of{' '}
+                <span className="font-medium text-ink/70">{products.length}</span> products
               </p>
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value as SortOption)}
-                className="text-xs border border-[#E5E1DB] bg-white text-[#0A0A0A] px-3 py-1.5 focus:outline-none focus:border-[#0A0A0A] transition-colors cursor-pointer"
+                className="text-xs border border-shell bg-white text-ink px-3 py-1.5 focus:outline-none focus:border-ink transition-colors cursor-pointer"
               >
                 <option value="featured">Sort: Featured</option>
                 <option value="price_asc">Sort: Price Low to High</option>
@@ -204,20 +204,20 @@ export function CatalogClient({
 
             <TabsContent value={selectedCategory} className="mt-0">
               {filteredProducts.length === 0 ? (
-                <div className="text-center py-20 border border-[#E5E1DB]">
-                  <p className="text-[#0A0A0A]/40 text-sm mb-4">No products found.</p>
+                <div className="text-center py-20 border border-shell">
+                  <p className="text-ink/40 text-sm mb-4">No products found.</p>
                   <button
                     onClick={clearFilters}
-                    className="inline-flex items-center gap-1.5 text-xs border border-[#0A0A0A] px-4 py-2 text-[#0A0A0A] hover:bg-[#0A0A0A] hover:text-[#F9F7F4] transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs border border-ink px-4 py-2 text-ink hover:bg-ink hover:text-cream transition-colors"
                   >
                     <X className="h-3 w-3" />
                     Clear filters
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-[#E5E1DB]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-shell">
                   {filteredProducts.map(product => (
-                    <div key={product.id} className="bg-[#F9F7F4]">
+                    <div key={product.id} className="bg-cream">
                       <ProductCard
                         product={product}
                         isSignedIn={!!isSignedIn}
@@ -236,21 +236,21 @@ export function CatalogClient({
 
       {/* BOTTOM CTA */}
       {!isSignedIn && (
-        <section className="py-16 sm:py-20 border-t border-[#E5E1DB] bg-[#0A0A0A]">
+        <section className="py-16 sm:py-20 border-t border-shell bg-ink">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-[10px] tracking-[0.25em] uppercase text-[#C8C0B4] mb-4">
+            <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-4">
               Wholesale Access
             </p>
-            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#F9F7F4] mb-5">
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold text-cream mb-5">
               Ready to Order?
             </h2>
-            <p className="text-[#F9F7F4]/50 text-sm leading-relaxed mb-8 max-w-md mx-auto">
+            <p className="text-cream/50 text-sm leading-relaxed mb-8 max-w-md mx-auto">
               Apply for a wholesale account in under 2 minutes. Our team reviews and activates your
               account within 24 hours.
             </p>
             <Link
               href="/partner"
-              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-[#F9F7F4]/30 text-[#F9F7F4] px-7 py-3.5 text-sm font-medium hover:bg-[#F9F7F4] hover:text-[#0A0A0A] transition-colors"
+              className="inline-flex w-full sm:w-auto items-center justify-center gap-2 border border-cream/30 text-cream px-7 py-3.5 text-sm font-medium hover:bg-cream hover:text-ink transition-colors"
             >
               Apply for Wholesale
             </Link>
@@ -259,18 +259,18 @@ export function CatalogClient({
       )}
 
       {/* FOOTER */}
-      <footer className="border-t border-[#E5E1DB] bg-[#1A1614] text-[#F9F7F4] py-10">
+      <footer className="border-t border-shell bg-ink-dark text-cream py-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <Link href="/" className="font-serif text-xl font-bold">Wholesail</Link>
-          <div className="flex items-center gap-6 text-sm text-[#F9F7F4]/40">
-            <Link href="/" className="hover:text-[#F9F7F4] transition-colors">Home</Link>
-            <Link href="/about" className="hover:text-[#F9F7F4] transition-colors">About</Link>
-            <Link href="/partner" className="hover:text-[#F9F7F4] transition-colors">Wholesale</Link>
+          <div className="flex items-center gap-6 text-sm text-cream/40">
+            <Link href="/" className="hover:text-cream transition-colors">Home</Link>
+            <Link href="/about" className="hover:text-cream transition-colors">About</Link>
+            <Link href="/partner" className="hover:text-cream transition-colors">Wholesale</Link>
             <a
               href="https://www.instagram.com/wholesailhub/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-[#F9F7F4] transition-colors flex items-center gap-1.5"
+              className="hover:text-cream transition-colors flex items-center gap-1.5"
             >
               <Instagram className="h-3.5 w-3.5" />
               @wholesailhub

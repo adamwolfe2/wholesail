@@ -255,19 +255,19 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
     <Card>
       <CardHeader>
         <CardTitle className="font-serif text-lg font-normal flex items-center gap-2">
-          <ListChecks className="h-4 w-4 text-[#C8C0B4]" />
+          <ListChecks className="h-4 w-4 text-sand" />
           Fulfillment Tasks
         </CardTitle>
         <div className="pt-2">
           {/* Overall progress bar */}
           <div className="flex items-center gap-3">
-            <div className="flex-1 h-2.5 bg-[#E5E1DB]">
+            <div className="flex-1 h-2.5 bg-shell">
               <div
-                className="h-full bg-[#0A0A0A] transition-all duration-300"
+                className="h-full bg-ink transition-all duration-300"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
-            <span className="font-mono text-xs text-[#0A0A0A]/60 shrink-0">
+            <span className="font-mono text-xs text-ink/60 shrink-0">
               {completedTasks}/{totalTasks} done
             </span>
           </div>
@@ -284,29 +284,29 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
           const allDone = phaseTotal > 0 && phaseCompleted === phaseTotal;
 
           return (
-            <div key={phase} className="border border-[#E5E1DB]">
+            <div key={phase} className="border border-shell">
               {/* Phase header */}
               <button
                 type="button"
                 onClick={() => togglePhase(phase)}
-                className="w-full flex items-center gap-2 px-3 py-2.5 hover:bg-[#F9F7F4] transition-colors text-left"
+                className="w-full flex items-center gap-2 px-3 py-2.5 hover:bg-cream transition-colors text-left"
               >
                 {isExpanded ? (
-                  <ChevronDown className="h-3.5 w-3.5 text-[#0A0A0A]/40 shrink-0" />
+                  <ChevronDown className="h-3.5 w-3.5 text-ink/40 shrink-0" />
                 ) : (
-                  <ChevronRight className="h-3.5 w-3.5 text-[#0A0A0A]/40 shrink-0" />
+                  <ChevronRight className="h-3.5 w-3.5 text-ink/40 shrink-0" />
                 )}
                 {allDone ? (
                   <CheckCircle2 className="h-3.5 w-3.5 text-green-600 shrink-0" />
                 ) : (
                   <span
-                    className="h-3.5 w-3.5 shrink-0 border border-[#0A0A0A]/20 flex items-center justify-center text-[8px] font-mono text-[#0A0A0A]/50"
+                    className="h-3.5 w-3.5 shrink-0 border border-ink/20 flex items-center justify-center text-[8px] font-mono text-ink/50"
                     style={{ borderRadius: 0 }}
                   >
                     {phase}
                   </span>
                 )}
-                <span className="flex-1 font-mono text-xs text-[#0A0A0A]">
+                <span className="flex-1 font-mono text-xs text-ink">
                   Phase {phase} — {PHASE_LABELS[phase] ?? `Phase ${phase}`}
                 </span>
                 <Badge
@@ -314,7 +314,7 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                   className={`text-[9px] font-mono px-1.5 py-0 shrink-0 ${
                     allDone
                       ? "bg-green-50 text-green-700 border-green-200"
-                      : "bg-[#F9F7F4] text-[#0A0A0A]/50 border-[#E5E1DB]"
+                      : "bg-cream text-ink/50 border-shell"
                   }`}
                 >
                   {phaseCompleted}/{phaseTotal}
@@ -323,7 +323,7 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
 
               {/* Phase tasks */}
               {isExpanded && (
-                <div className="border-t border-[#E5E1DB]">
+                <div className="border-t border-shell">
                   {phaseTasks.map((task) => {
                     const isSaving = savingTasks[task.id];
                     const isExecuting = executingTasks[task.id];
@@ -338,7 +338,7 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                     return (
                       <div
                         key={task.id}
-                        className="border-b border-[#E5E1DB] last:border-0"
+                        className="border-b border-shell last:border-0"
                       >
                         <div className="flex items-start gap-2.5 px-3 py-2">
                           {/* Checkbox */}
@@ -349,11 +349,11 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                             className="mt-0.5 shrink-0 disabled:cursor-wait"
                           >
                             {isSaving ? (
-                              <Loader2 className="h-4 w-4 animate-spin text-[#0A0A0A]/30" />
+                              <Loader2 className="h-4 w-4 animate-spin text-ink/30" />
                             ) : task.completed ? (
                               <CheckCircle2 className="h-4 w-4 text-green-600" />
                             ) : (
-                              <Circle className="h-4 w-4 text-[#0A0A0A]/20 hover:text-[#0A0A0A]/40" />
+                              <Circle className="h-4 w-4 text-ink/20 hover:text-ink/40" />
                             )}
                           </button>
 
@@ -367,15 +367,15 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                               <span
                                 className={`text-xs font-mono block ${
                                   task.completed
-                                    ? "text-[#0A0A0A]/40 line-through"
-                                    : "text-[#0A0A0A]"
+                                    ? "text-ink/40 line-through"
+                                    : "text-ink"
                                 }`}
                               >
                                 {task.label}
                               </span>
                             </button>
                             {isDescExpanded && task.description && (
-                              <p className="text-[10px] text-[#0A0A0A]/50 mt-1 leading-relaxed">
+                              <p className="text-[10px] text-ink/50 mt-1 leading-relaxed">
                                 {task.description}
                               </p>
                             )}
@@ -419,7 +419,7 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                               size="sm"
                               onClick={() => executeTask(task.id, task.automationAction!)}
                               disabled={isExecuting}
-                              className="mt-0 shrink-0 h-6 px-2 text-[10px] font-mono gap-1 border-[#E5E1DB] hover:bg-[#F9F7F4]"
+                              className="mt-0 shrink-0 h-6 px-2 text-[10px] font-mono gap-1 border-shell hover:bg-cream"
                             >
                               {isExecuting ? (
                                 <Loader2 className="h-3 w-3 animate-spin" />
@@ -439,7 +439,7 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                               className="mt-0.5 shrink-0"
                               title="Open external link"
                             >
-                              <ExternalLink className="h-3 w-3 text-[#0A0A0A]/30 hover:text-[#0A0A0A]" />
+                              <ExternalLink className="h-3 w-3 text-ink/30 hover:text-ink" />
                             </a>
                           )}
                         </div>
@@ -449,7 +449,7 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
 
                   {/* Add task row */}
                   {addingPhase === phase ? (
-                    <div className="flex items-center gap-2 px-3 py-2 bg-[#F9F7F4]">
+                    <div className="flex items-center gap-2 px-3 py-2 bg-cream">
                       <input
                         type="text"
                         value={newTaskLabel}
@@ -464,13 +464,13 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                         }}
                         placeholder="Task name..."
                         autoFocus
-                        className="flex-1 text-xs font-mono border border-[#E5E1DB] px-2 py-1.5 bg-white focus:outline-none"
+                        className="flex-1 text-xs font-mono border border-shell px-2 py-1.5 bg-white focus:outline-none"
                       />
                       <button
                         type="button"
                         onClick={() => handleAddTask(phase)}
                         disabled={newTaskSaving || !newTaskLabel.trim()}
-                        className="text-[10px] font-mono font-semibold bg-[#0A0A0A] text-white px-2.5 py-1.5 hover:bg-[#0A0A0A]/80 disabled:opacity-40 transition-colors"
+                        className="text-[10px] font-mono font-semibold bg-ink text-white px-2.5 py-1.5 hover:bg-ink/80 disabled:opacity-40 transition-colors"
                       >
                         {newTaskSaving ? "..." : "Add"}
                       </button>
@@ -480,7 +480,7 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                           setAddingPhase(null);
                           setNewTaskLabel("");
                         }}
-                        className="text-[10px] font-mono text-[#0A0A0A]/50 hover:text-[#0A0A0A] px-1"
+                        className="text-[10px] font-mono text-ink/50 hover:text-ink px-1"
                       >
                         Cancel
                       </button>
@@ -492,7 +492,7 @@ export function ProjectTasks({ projectId, initialTasks }: Props) {
                         setAddingPhase(phase);
                         setNewTaskLabel("");
                       }}
-                      className="w-full flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-mono text-[#0A0A0A]/30 hover:text-[#0A0A0A]/60 hover:bg-[#F9F7F4] transition-colors"
+                      className="w-full flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-mono text-ink/30 hover:text-ink/60 hover:bg-cream transition-colors"
                     >
                       <Plus className="h-3 w-3" />
                       Add task

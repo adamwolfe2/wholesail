@@ -32,19 +32,19 @@ function getStatusColor(status: string) {
   switch (status.toUpperCase()) {
     case 'DELIVERED':
     case 'PAID':
-      return 'bg-[#0A0A0A] text-[#F9F7F4] border-[#0A0A0A]'
+      return 'bg-ink text-cream border-ink'
     case 'PENDING':
-      return 'bg-transparent text-[#0A0A0A]/60 border-[#C8C0B4]'
+      return 'bg-transparent text-ink/60 border-sand'
     case 'CONFIRMED':
     case 'PROCESSING':
-      return 'bg-[#C8C0B4]/30 text-[#0A0A0A] border-[#C8C0B4]'
+      return 'bg-sand/30 text-ink border-sand'
     case 'SHIPPED':
     case 'PACKED':
-      return 'bg-[#0A0A0A]/80 text-[#F9F7F4] border-[#0A0A0A]/70'
+      return 'bg-ink/80 text-cream border-ink/70'
     case 'CANCELLED':
-      return 'bg-transparent text-[#0A0A0A]/40 border-[#C8C0B4]/50'
+      return 'bg-transparent text-ink/40 border-sand/50'
     default:
-      return 'bg-transparent text-[#0A0A0A]/60 border-[#C8C0B4]'
+      return 'bg-transparent text-ink/60 border-sand'
   }
 }
 
@@ -115,14 +115,14 @@ export default function ClientOrdersPage() {
         )}
         <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Orders</h1>
-            <p className="text-sm text-[#0A0A0A]/50 mt-1">
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Orders</h1>
+            <p className="text-sm text-ink/50 mt-1">
               View and track all your orders
             </p>
           </div>
           <Button
             asChild
-            className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 w-full sm:w-auto min-h-[44px]"
+            className="bg-ink text-cream hover:bg-ink/80 w-full sm:w-auto min-h-[44px]"
           >
             <Link href="/catalog">
               <ShoppingBag className="h-4 w-4 mr-2" />
@@ -131,66 +131,66 @@ export default function ClientOrdersPage() {
           </Button>
         </div>
 
-        <Card className="border-[#C8C0B4] bg-[#F9F7F4]">
-          <CardHeader className="border-b border-[#C8C0B4]/50">
-            <CardTitle className="font-serif text-lg text-[#0A0A0A]">Order History</CardTitle>
-            <CardDescription className="text-[#0A0A0A]/50">All orders from your account</CardDescription>
+        <Card className="border-sand bg-cream">
+          <CardHeader className="border-b border-sand/50">
+            <CardTitle className="font-serif text-lg text-ink">Order History</CardTitle>
+            <CardDescription className="text-ink/50">All orders from your account</CardDescription>
           </CardHeader>
           <CardContent className="pt-4">
             {loading ? (
               <div className="flex justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-[#C8C0B4]" />
+                <Loader2 className="h-6 w-6 animate-spin text-sand" />
               </div>
             ) : orders.length === 0 ? (
               <div className="text-center py-12">
-                <ShoppingBag className="h-12 w-12 text-[#C8C0B4] mx-auto mb-4" />
-                <h3 className="font-serif text-lg font-medium mb-2 text-[#0A0A0A]">No orders yet</h3>
-                <p className="text-[#0A0A0A]/50 text-sm mb-6">
+                <ShoppingBag className="h-12 w-12 text-sand mx-auto mb-4" />
+                <h3 className="font-serif text-lg font-medium mb-2 text-ink">No orders yet</h3>
+                <p className="text-ink/50 text-sm mb-6">
                   Browse our catalog and place your first order.
                 </p>
                 <Button
                   asChild
-                  className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 min-h-[44px]"
+                  className="bg-ink text-cream hover:bg-ink/80 min-h-[44px]"
                 >
                   <Link href="/catalog">Browse Catalog</Link>
                 </Button>
               </div>
             ) : (
               <>
-                <p className="text-xs text-[#0A0A0A]/40 mb-4">
-                  Showing <span className="font-medium text-[#0A0A0A]/70">{orders.length}</span> orders
+                <p className="text-xs text-ink/40 mb-4">
+                  Showing <span className="font-medium text-ink/70">{orders.length}</span> orders
                 </p>
 
                 {/* Desktop table */}
                 <div className="overflow-x-auto hidden sm:block">
                   <Table>
                     <TableHeader>
-                      <TableRow className="border-[#C8C0B4]/50">
-                        <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Order #</TableHead>
-                        <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Date</TableHead>
-                        <TableHead className="text-right text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Items</TableHead>
-                        <TableHead className="text-right text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Total</TableHead>
-                        <TableHead className="text-[#0A0A0A]/50 uppercase tracking-wider text-xs">Status</TableHead>
+                      <TableRow className="border-sand/50">
+                        <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Order #</TableHead>
+                        <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Date</TableHead>
+                        <TableHead className="text-right text-ink/50 uppercase tracking-wider text-xs">Items</TableHead>
+                        <TableHead className="text-right text-ink/50 uppercase tracking-wider text-xs">Total</TableHead>
+                        <TableHead className="text-ink/50 uppercase tracking-wider text-xs">Status</TableHead>
                         <TableHead></TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {orders.map((order) => (
-                        <TableRow key={order.id} className="border-[#C8C0B4]/30">
-                          <TableCell className="font-mono font-medium text-[#0A0A0A]">
+                        <TableRow key={order.id} className="border-sand/30">
+                          <TableCell className="font-mono font-medium text-ink">
                             {order.orderNumber}
                           </TableCell>
-                          <TableCell className="text-[#0A0A0A]/60">
+                          <TableCell className="text-ink/60">
                             {new Date(order.createdAt).toLocaleDateString('en-US', {
                               month: 'short',
                               day: 'numeric',
                               year: 'numeric',
                             })}
                           </TableCell>
-                          <TableCell className="text-right text-[#0A0A0A]/60">
+                          <TableCell className="text-right text-ink/60">
                             {order.items.length}
                           </TableCell>
-                          <TableCell className="text-right font-semibold text-[#0A0A0A]">
+                          <TableCell className="text-right font-semibold text-ink">
                             ${Number(order.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                           </TableCell>
                           <TableCell>
@@ -204,7 +204,7 @@ export default function ClientOrdersPage() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="text-[#0A0A0A]/60 hover:text-[#0A0A0A]"
+                                className="text-ink/60 hover:text-ink"
                                 asChild
                               >
                                 <Link href={`/client-portal/orders/${order.orderNumber}`}>
@@ -226,7 +226,7 @@ export default function ClientOrdersPage() {
                       variant="outline"
                       onClick={loadMore}
                       disabled={loadingMore}
-                      className="border-[#C8C0B4] text-[#0A0A0A] hover:bg-[#C8C0B4]/20 min-h-[44px] min-w-[140px]"
+                      className="border-sand text-ink hover:bg-sand/20 min-h-[44px] min-w-[140px]"
                     >
                       {loadingMore ? (
                         <Loader2 className="h-4 w-4 animate-spin" />
@@ -242,11 +242,11 @@ export default function ClientOrdersPage() {
                   {orders.map((order) => (
                     <div
                       key={order.id}
-                      className="border border-[#C8C0B4]/50 p-4 flex items-start justify-between gap-3"
+                      className="border border-sand/50 p-4 flex items-start justify-between gap-3"
                     >
                       <div className="min-w-0 flex-1">
-                        <p className="font-mono text-sm font-semibold text-[#0A0A0A] truncate">{order.orderNumber}</p>
-                        <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+                        <p className="font-mono text-sm font-semibold text-ink truncate">{order.orderNumber}</p>
+                        <p className="text-xs text-ink/50 mt-0.5">
                           {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                           &nbsp;&bull;&nbsp;{order.items.length} items
                         </p>
@@ -257,13 +257,13 @@ export default function ClientOrdersPage() {
                         </div>
                       </div>
                       <div className="text-right shrink-0">
-                        <p className="text-sm font-bold text-[#0A0A0A]">
+                        <p className="text-sm font-bold text-ink">
                           ${Number(order.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}
                         </p>
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="mt-1 h-8 px-2 text-[#0A0A0A]/60 hover:text-[#0A0A0A]"
+                          className="mt-1 h-8 px-2 text-ink/60 hover:text-ink"
                           asChild
                         >
                           <Link href={`/client-portal/orders/${order.orderNumber}`}>

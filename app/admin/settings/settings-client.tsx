@@ -257,15 +257,15 @@ export function SettingsClient() {
         <CardContent className="space-y-4">
           <div className="flex flex-col gap-3">
             <div>
-              <h4 className="text-sm font-medium text-[#0A0A0A] mb-1">Import Bloo.io Conversation History</h4>
-              <p className="text-xs text-[#0A0A0A]/50 mb-3">
+              <h4 className="text-sm font-medium text-ink mb-1">Import Bloo.io Conversation History</h4>
+              <p className="text-xs text-ink/50 mb-3">
                 Pulls up to 100 messages per client from Bloo.io and saves them as conversation threads.
                 Orgs that already have an imported history conversation are skipped.
               </p>
               <Button
                 onClick={importBlooHistory}
                 disabled={historyImporting}
-                className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 gap-1.5"
+                className="bg-ink text-cream hover:bg-ink/80 gap-1.5"
               >
                 {historyImporting ? (
                   <><Loader2 className="h-4 w-4 animate-spin" />Importing...</>
@@ -276,9 +276,9 @@ export function SettingsClient() {
             </div>
 
             {historyResult && (
-              <div className="flex items-start gap-2 px-3 py-2.5 border border-[#E5E1DB] bg-white text-sm">
+              <div className="flex items-start gap-2 px-3 py-2.5 border border-shell bg-white text-sm">
                 <CheckCircle2 className="h-4 w-4 text-green-600 mt-0.5 shrink-0" />
-                <span className="text-[#0A0A0A]">
+                <span className="text-ink">
                   Imported <strong>{historyResult.imported}</strong> conversation{historyResult.imported === 1 ? '' : 's'} from <strong>{historyResult.orgs}</strong> org{historyResult.orgs === 1 ? '' : 's'}
                 </span>
               </div>
@@ -306,7 +306,7 @@ export function SettingsClient() {
               href="https://dashboard.stripe.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-3 rounded-none border hover:bg-[#F9F7F4] transition-colors"
+              className="flex items-center gap-3 p-3 rounded-none border hover:bg-cream transition-colors"
             >
               <CreditCard className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">Stripe Dashboard</span>
@@ -316,7 +316,7 @@ export function SettingsClient() {
               href="https://app.bloo.io"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-3 rounded-none border hover:bg-[#F9F7F4] transition-colors"
+              className="flex items-center gap-3 p-3 rounded-none border hover:bg-cream transition-colors"
             >
               <MessageSquare className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">Bloo.io Dashboard</span>
@@ -326,7 +326,7 @@ export function SettingsClient() {
               href="https://resend.com/emails"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-3 rounded-none border hover:bg-[#F9F7F4] transition-colors"
+              className="flex items-center gap-3 p-3 rounded-none border hover:bg-cream transition-colors"
             >
               <Mail className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">Resend Dashboard</span>
@@ -336,7 +336,7 @@ export function SettingsClient() {
               href="https://dashboard.clerk.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 p-3 rounded-none border hover:bg-[#F9F7F4] transition-colors"
+              className="flex items-center gap-3 p-3 rounded-none border hover:bg-cream transition-colors"
             >
               <Globe className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm">Clerk Dashboard</span>

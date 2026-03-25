@@ -435,12 +435,12 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">Messages</h2>
-          <p className="text-sm text-[#0A0A0A]/50 mt-1">Client communications inbox</p>
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">Messages</h2>
+          <p className="text-sm text-ink/50 mt-1">Client communications inbox</p>
         </div>
         <div className="flex items-center gap-3">
           {totalUnread > 0 && (
-            <Badge className="bg-[#0A0A0A] text-[#F9F7F4]">{totalUnread} unread</Badge>
+            <Badge className="bg-ink text-cream">{totalUnread} unread</Badge>
           )}
           {totalUnread > 0 && (
             <Button
@@ -448,7 +448,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
               size="sm"
               onClick={markAllRead}
               disabled={markingAllRead}
-              className="border-[#E5E1DB] text-[#0A0A0A]/70 hover:text-[#0A0A0A] text-xs gap-1.5"
+              className="border-shell text-ink/70 hover:text-ink text-xs gap-1.5"
             >
               {markingAllRead
                 ? <Loader2 className="h-3.5 w-3.5 animate-spin" />
@@ -459,7 +459,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
           )}
           <Button
             onClick={() => setShowNewConvo(true)}
-            className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 gap-1.5 text-sm"
+            className="bg-ink text-cream hover:bg-ink/80 gap-1.5 text-sm"
           >
             <Plus className="h-4 w-4" />
             New Message
@@ -472,35 +472,35 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
         setShowNewConvo(open)
         if (!open) resetNewConvoForm()
       }}>
-        <DialogContent className="sm:max-w-lg bg-[#F9F7F4] border-[#E5E1DB]">
+        <DialogContent className="sm:max-w-lg bg-cream border-shell">
           <DialogHeader>
-            <DialogTitle className="font-serif text-xl text-[#0A0A0A]">New Conversation</DialogTitle>
+            <DialogTitle className="font-serif text-xl text-ink">New Conversation</DialogTitle>
           </DialogHeader>
 
           <div className="space-y-4 py-2">
             {/* Org picker */}
             <div className="space-y-2">
-              <Label className="text-sm font-medium text-[#0A0A0A]">Client</Label>
+              <Label className="text-sm font-medium text-ink">Client</Label>
               {orgsLoading ? (
-                <div className="flex items-center gap-2 py-2 text-sm text-[#C8C0B4]">
+                <div className="flex items-center gap-2 py-2 text-sm text-sand">
                   <Loader2 className="h-4 w-4 animate-spin" />
                   Loading clients...
                 </div>
               ) : (
                 <>
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#0A0A0A]/40" />
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-ink/40" />
                     <Input
                       placeholder="Search by name, phone, or contact..."
                       value={orgSearch}
                       onChange={e => setOrgSearch(e.target.value)}
-                      className="pl-8 h-9 text-sm border-[#C8C0B4]"
+                      className="pl-8 h-9 text-sm border-sand"
                       aria-label="Search organizations"
                     />
                   </div>
-                  <div className="border border-[#E5E1DB] max-h-40 overflow-y-auto">
+                  <div className="border border-shell max-h-40 overflow-y-auto">
                     {filteredOrgs.length === 0 ? (
-                      <p className="text-sm text-[#C8C0B4] px-3 py-4 text-center">
+                      <p className="text-sm text-sand px-3 py-4 text-center">
                         {orgs.length === 0 ? 'No clients with a phone number found' : 'No matching clients'}
                       </p>
                     ) : (
@@ -510,23 +510,23 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                           type="button"
                           onClick={() => setNewOrgId(org.id)}
                           className={cn(
-                            'w-full text-left px-3 py-2.5 text-sm border-b border-[#E5E1DB] last:border-b-0 transition-colors',
+                            'w-full text-left px-3 py-2.5 text-sm border-b border-shell last:border-b-0 transition-colors',
                             newOrgId === org.id
-                              ? 'bg-[#0A0A0A] text-[#F9F7F4]'
-                              : 'hover:bg-[#0A0A0A]/[0.04] text-[#0A0A0A]'
+                              ? 'bg-ink text-cream'
+                              : 'hover:bg-ink/[0.04] text-ink'
                           )}
                         >
                           <span className="font-medium">{org.name}</span>
                           <span className={cn(
                             'ml-2 text-xs',
-                            newOrgId === org.id ? 'text-[#F9F7F4]/60' : 'text-[#C8C0B4]'
+                            newOrgId === org.id ? 'text-cream/60' : 'text-sand'
                           )}>
                             {org.phone}
                           </span>
                           {org.contactPerson && (
                             <span className={cn(
                               'block text-xs mt-0.5',
-                              newOrgId === org.id ? 'text-[#F9F7F4]/50' : 'text-[#0A0A0A]/40'
+                              newOrgId === org.id ? 'text-cream/50' : 'text-ink/40'
                             )}>
                               {org.contactPerson}
                             </span>
@@ -541,26 +541,26 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
 
             {/* Subject */}
             <div className="space-y-2">
-              <Label htmlFor="new-subject" className="text-sm font-medium text-[#0A0A0A]">Subject</Label>
+              <Label htmlFor="new-subject" className="text-sm font-medium text-ink">Subject</Label>
               <Input
                 id="new-subject"
                 placeholder="e.g. New product availability"
                 value={newSubject}
                 onChange={e => setNewSubject(e.target.value)}
-                className="border-[#C8C0B4]"
+                className="border-sand"
               />
             </div>
 
             {/* Message */}
             <div className="space-y-2">
-              <Label htmlFor="new-body" className="text-sm font-medium text-[#0A0A0A]">Message</Label>
+              <Label htmlFor="new-body" className="text-sm font-medium text-ink">Message</Label>
               <Textarea
                 id="new-body"
                 placeholder="Type your message to the client..."
                 value={newBody}
                 onChange={e => setNewBody(e.target.value)}
                 rows={4}
-                className="border-[#C8C0B4] resize-none"
+                className="border-sand resize-none"
               />
             </div>
 
@@ -586,14 +586,14 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
               variant="outline"
               onClick={() => { setShowNewConvo(false); resetNewConvoForm() }}
               disabled={newConvoLoading}
-              className="border-[#E5E1DB]"
+              className="border-shell"
             >
               Cancel
             </Button>
             <Button
               onClick={submitNewConvo}
               disabled={!newOrgId || !newSubject.trim() || !newBody.trim() || newConvoLoading}
-              className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80"
+              className="bg-ink text-cream hover:bg-ink/80"
             >
               {newConvoLoading ? (
                 <><Loader2 className="h-4 w-4 animate-spin mr-2" />Sending...</>
@@ -605,15 +605,15 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
         </DialogContent>
       </Dialog>
 
-      <Card className="overflow-hidden border-[#E5E1DB]">
+      <Card className="overflow-hidden border-shell">
         <div className="flex" style={{ height: 'calc(100svh - 220px)', minHeight: '500px', maxHeight: '800px' }}>
 
           {/* Conversation list */}
           <div className={cn(
-            'w-full sm:w-80 border-r border-[#E5E1DB] flex flex-col bg-[#F9F7F4]',
+            'w-full sm:w-80 border-r border-shell flex flex-col bg-cream',
             mobileShowThread && 'hidden sm:flex'
           )}>
-            <div className="border-b border-[#E5E1DB]">
+            <div className="border-b border-shell">
               {/* Status filter tabs */}
               <div className="flex">
                 {(['open', 'all', 'closed'] as const).map(f => (
@@ -624,8 +624,8 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                     className={cn(
                       'flex-1 py-2 text-[10px] uppercase tracking-widest font-medium border-b-2 transition-colors',
                       statusFilter === f
-                        ? 'border-[#0A0A0A] text-[#0A0A0A]'
-                        : 'border-transparent text-[#0A0A0A]/40 hover:text-[#0A0A0A]/70'
+                        ? 'border-ink text-ink'
+                        : 'border-transparent text-ink/40 hover:text-ink/70'
                     )}
                   >
                     {f === 'open' && convos.filter(c => c.isOpen).length > 0
@@ -636,12 +636,12 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
               </div>
               <div className="p-3">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-[#0A0A0A]/40" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-ink/40" />
                   <Input
                     placeholder="Search by client or subject..."
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
-                    className="pl-8 h-9 text-sm border-[#C8C0B4]"
+                    className="pl-8 h-9 text-sm border-sand"
                     aria-label="Search conversations"
                   />
                 </div>
@@ -650,15 +650,15 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
             <ScrollArea className="flex-1">
               {filtered.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
-                  <MessageSquare className="h-8 w-8 text-[#C8C0B4] mb-3" />
-                  <p className="text-sm text-[#0A0A0A]/50 mb-3">
+                  <MessageSquare className="h-8 w-8 text-sand mb-3" />
+                  <p className="text-sm text-ink/50 mb-3">
                     {searchQuery ? 'No matching conversations' : 'No client messages yet'}
                   </p>
                   {!searchQuery && (
                     <button
                       type="button"
                       onClick={() => setShowNewConvo(true)}
-                      className="text-xs text-[#0A0A0A]/60 underline underline-offset-2 hover:text-[#0A0A0A] transition-colors"
+                      className="text-xs text-ink/60 underline underline-offset-2 hover:text-ink transition-colors"
                     >
                       Start your first conversation &rarr;
                     </button>
@@ -672,16 +672,16 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                     key={c.id}
                     onClick={() => { setSelectedId(c.id); setMobileShowThread(true) }}
                     className={cn(
-                      'w-full text-left px-4 py-3.5 border-b border-[#E5E1DB] transition-colors',
+                      'w-full text-left px-4 py-3.5 border-b border-shell transition-colors',
                       selectedId === c.id
-                        ? 'bg-[#0A0A0A] text-[#F9F7F4]'
-                        : 'hover:bg-[#F9F7F4]/80 text-[#0A0A0A]'
+                        ? 'bg-ink text-cream'
+                        : 'hover:bg-cream/80 text-ink'
                     )}
                   >
                     <div className="flex items-start justify-between gap-2 mb-0.5">
                       <h4 className={cn(
                         'text-sm font-semibold line-clamp-1',
-                        selectedId === c.id ? 'text-[#F9F7F4]' : 'text-[#0A0A0A]'
+                        selectedId === c.id ? 'text-cream' : 'text-ink'
                       )}>
                         {c.subject}
                       </h4>
@@ -694,7 +694,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                         {c.unreadCount > 0 && (
                           <span className={cn(
                             'h-5 min-w-[20px] rounded-full px-1.5 text-[10px] font-bold flex items-center justify-center',
-                            selectedId === c.id ? 'bg-[#F9F7F4] text-[#0A0A0A]' : 'bg-[#0A0A0A] text-[#F9F7F4]'
+                            selectedId === c.id ? 'bg-cream text-ink' : 'bg-ink text-cream'
                           )}>
                             {c.unreadCount}
                           </span>
@@ -703,27 +703,27 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                     </div>
                     <p className={cn(
                       'text-xs mb-1',
-                      selectedId === c.id ? 'text-[#F9F7F4]/70' : 'text-[#0A0A0A]/50'
+                      selectedId === c.id ? 'text-cream/70' : 'text-ink/50'
                     )}>
                       {c.orgName}
                     </p>
                     <p className={cn(
                       'text-xs line-clamp-1',
-                      selectedId === c.id ? 'text-[#F9F7F4]/60' : 'text-[#0A0A0A]/40'
+                      selectedId === c.id ? 'text-cream/60' : 'text-ink/40'
                     )}>
                       {c.lastMessage || 'No messages'}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
                       <span className={cn(
                         'text-[10px]',
-                        selectedId === c.id ? 'text-[#F9F7F4]/40' : 'text-[#0A0A0A]/30'
+                        selectedId === c.id ? 'text-cream/40' : 'text-ink/30'
                       )}>
                         {formatTimestamp(c.lastMessageAt)}
                       </span>
                       {!c.isOpen && (
                         <span className={cn(
                           'text-[10px] uppercase tracking-wider',
-                          selectedId === c.id ? 'text-[#F9F7F4]/40' : 'text-[#C8C0B4]'
+                          selectedId === c.id ? 'text-cream/40' : 'text-sand'
                         )}>
                           Closed
                         </span>
@@ -751,14 +751,14 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
           )}>
             {!selectedId ? (
               <div className="flex flex-col items-center justify-center flex-1 text-center px-8">
-                <MessageSquare className="h-10 w-10 text-[#C8C0B4] mb-4" />
-                <p className="font-serif text-lg text-[#0A0A0A] mb-2">Select a conversation</p>
-                <p className="text-sm text-[#C8C0B4]">Choose a conversation to reply to the client.</p>
+                <MessageSquare className="h-10 w-10 text-sand mb-4" />
+                <p className="font-serif text-lg text-ink mb-2">Select a conversation</p>
+                <p className="text-sm text-sand">Choose a conversation to reply to the client.</p>
               </div>
             ) : (
               <>
                 {/* Header */}
-                <div className="px-4 py-3 border-b border-[#E5E1DB] flex items-center gap-3 bg-white">
+                <div className="px-4 py-3 border-b border-shell flex items-center gap-3 bg-white">
                   <Button
                     variant="ghost" size="icon"
                     className="sm:hidden h-8 w-8"
@@ -802,17 +802,17 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                 {/* Messages */}
                 <div
                   ref={scrollRef}
-                  className="flex-1 overflow-y-auto px-4 py-5 bg-[#F9F7F4] relative"
+                  className="flex-1 overflow-y-auto px-4 py-5 bg-cream relative"
                   onScroll={() => {
                     if (isAtBottom()) setShowScrollBtn(false)
                   }}
                 >
                   {threadLoading ? (
                     <div className="flex items-center justify-center h-full">
-                      <Loader2 className="h-5 w-5 animate-spin text-[#C8C0B4]" />
+                      <Loader2 className="h-5 w-5 animate-spin text-sand" />
                     </div>
                   ) : !thread?.messages?.length ? (
-                    <div className="flex items-center justify-center h-full text-sm text-[#C8C0B4]">
+                    <div className="flex items-center justify-center h-full text-sm text-sand">
                       No messages
                     </div>
                   ) : (
@@ -823,7 +823,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                         if (isSystem) {
                           return (
                             <div key={msg.id} className="flex justify-center">
-                              <p className="text-[10px] text-[#0A0A0A]/40 bg-[#C8C0B4]/20 px-3 py-1.5 uppercase tracking-wider">
+                              <p className="text-[10px] text-ink/40 bg-sand/20 px-3 py-1.5 uppercase tracking-wider">
                                 {msg.content}
                               </p>
                             </div>
@@ -834,26 +834,26 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                             <div className={cn('flex items-center gap-2 mb-1.5', isStaff ? 'flex-row-reverse' : 'flex-row')}>
                               <div className={cn(
                                 'h-6 w-6 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0',
-                                isStaff ? 'bg-[#0A0A0A] text-[#F9F7F4]' : 'bg-[#C8C0B4] text-[#0A0A0A]'
+                                isStaff ? 'bg-ink text-cream' : 'bg-sand text-ink'
                               )}>
                                 {msg.senderName.charAt(0)}
                               </div>
-                              <span className="text-xs font-medium text-[#0A0A0A]/60">{msg.senderName}</span>
-                              <span className="text-[10px] uppercase tracking-wider text-[#C8C0B4]">
+                              <span className="text-xs font-medium text-ink/60">{msg.senderName}</span>
+                              <span className="text-[10px] uppercase tracking-wider text-sand">
                                 {formatTimestamp(msg.createdAt)}
                               </span>
                             </div>
                             <div className={cn(
                               'max-w-[80%] px-4 py-2.5 text-sm leading-relaxed',
                               isStaff
-                                ? 'bg-[#0A0A0A] text-[#F9F7F4]'
-                                : 'bg-[#C8C0B4]/20 text-[#0A0A0A] border border-[#C8C0B4]/40'
+                                ? 'bg-ink text-cream'
+                                : 'bg-sand/20 text-ink border border-sand/40'
                             )}>
                               {msg.content}
                             </div>
                             {/* Read receipt: show under staff messages that the client has read */}
                             {isStaff && msg.readAt && (
-                              <span className="flex items-center gap-1 text-[10px] text-[#C8C0B4] mt-0.5 mr-0.5">
+                              <span className="flex items-center gap-1 text-[10px] text-sand mt-0.5 mr-0.5">
                                 <CheckCheck className="h-3 w-3 text-blue-400" />
                                 Read {formatReadAt(msg.readAt)}
                               </span>
@@ -871,7 +871,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                     <Button
                       size="sm"
                       onClick={scrollToBottom}
-                      className="pointer-events-auto bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 shadow-lg gap-1.5 text-xs"
+                      className="pointer-events-auto bg-ink text-cream hover:bg-ink/80 shadow-lg gap-1.5 text-xs"
                     >
                       <ArrowDown className="h-3.5 w-3.5" />
                       New message
@@ -889,16 +889,16 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
 
                 {/* Compose */}
                 {thread?.isOpen !== false && (
-                  <div className="border-t border-[#E5E1DB] p-3 sm:p-4 bg-white">
+                  <div className="border-t border-shell p-3 sm:p-4 bg-white">
                     {/* AI suggestions dropdown */}
                     {showSuggestions && suggestedReplies.length > 0 && (
-                      <div className="max-w-2xl mx-auto mb-2 border border-[#E5E1DB] bg-[#F9F7F4]">
-                        <div className="flex items-center justify-between px-3 py-1.5 border-b border-[#E5E1DB]">
-                          <span className="text-[10px] uppercase tracking-widest text-[#C8C0B4] font-medium">AI Reply Suggestions</span>
+                      <div className="max-w-2xl mx-auto mb-2 border border-shell bg-cream">
+                        <div className="flex items-center justify-between px-3 py-1.5 border-b border-shell">
+                          <span className="text-[10px] uppercase tracking-widest text-sand font-medium">AI Reply Suggestions</span>
                           <button
                             type="button"
                             onClick={() => { setShowSuggestions(false); setSuggestedReplies([]) }}
-                            className="text-[#C8C0B4] hover:text-[#0A0A0A] text-xs transition-colors"
+                            className="text-sand hover:text-ink text-xs transition-colors"
                           >
                             ✕
                           </button>
@@ -908,9 +908,9 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                             key={i}
                             type="button"
                             onClick={() => applySuggestion(reply)}
-                            className="w-full text-left px-3 py-2.5 text-sm text-[#0A0A0A] border-b border-[#E5E1DB] last:border-b-0 hover:bg-[#0A0A0A]/[0.04] transition-colors"
+                            className="w-full text-left px-3 py-2.5 text-sm text-ink border-b border-shell last:border-b-0 hover:bg-ink/[0.04] transition-colors"
                           >
-                            <span className="text-[10px] uppercase tracking-wider text-[#C8C0B4] mr-2">
+                            <span className="text-[10px] uppercase tracking-wider text-sand mr-2">
                               {i === 0 ? 'Concise' : i === 1 ? 'Warm' : 'Direct'}
                             </span>
                             {reply}
@@ -937,7 +937,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                         variant="outline"
                         title="AI reply suggestions"
                         aria-label="AI reply suggestions"
-                        className="shrink-0 border-[#C8C0B4] text-[#0A0A0A] hover:bg-[#F9F7F4] min-h-[44px] min-w-[44px]"
+                        className="shrink-0 border-sand text-ink hover:bg-cream min-h-[44px] min-w-[44px]"
                         disabled={suggestLoading}
                         onClick={suggestReply}
                       >
@@ -948,7 +948,7 @@ export function MessagesAdminClient({ conversations: initial }: { conversations:
                       </Button>
                       <Button
                         size="icon"
-                        className="shrink-0 bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 min-h-[44px] min-w-[44px]"
+                        className="shrink-0 bg-ink text-cream hover:bg-ink/80 min-h-[44px] min-w-[44px]"
                         disabled={!newMessage.trim() || sendLoading}
                         onClick={sendReply}
                         aria-label="Send reply"

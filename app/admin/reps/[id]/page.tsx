@@ -15,7 +15,7 @@ export const metadata: Metadata = { title: "Rep Details" };
 const priorityColors: Record<string, string> = {
   URGENT: "bg-red-100 text-red-700 border-red-200",
   HIGH: "bg-orange-100 text-orange-700 border-orange-200",
-  NORMAL: "bg-[#C8C0B4]/30 text-[#0A0A0A] border-[#C8C0B4]",
+  NORMAL: "bg-sand/30 text-ink border-sand",
   LOW: "bg-gray-100 text-gray-500 border-gray-200",
 };
 
@@ -63,7 +63,7 @@ export default async function RepDetailPage({ params }: RepDetailPageProps) {
               variant="ghost"
               size="sm"
               asChild
-              className="text-[#0A0A0A]/50 hover:text-[#0A0A0A] hover:bg-[#0A0A0A]/[0.04] rounded-none -ml-2"
+              className="text-ink/50 hover:text-ink hover:bg-ink/[0.04] rounded-none -ml-2"
             >
               <Link href="/admin/reps">
                 <ArrowLeft className="h-4 w-4 mr-1" />
@@ -71,14 +71,14 @@ export default async function RepDetailPage({ params }: RepDetailPageProps) {
               </Link>
             </Button>
           </div>
-          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-[#0A0A0A]">
+          <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
             {rep.name}
           </h2>
           <div className="flex items-center gap-3 mt-1">
-            <span className="text-sm text-[#0A0A0A]/50">{rep.email}</span>
+            <span className="text-sm text-ink/50">{rep.email}</span>
             <Badge
               variant="outline"
-              className="text-xs border-[#E5E1DB] text-[#0A0A0A]/60"
+              className="text-xs border-shell text-ink/60"
             >
               {rep.role}
             </Badge>
@@ -86,7 +86,7 @@ export default async function RepDetailPage({ params }: RepDetailPageProps) {
         </div>
         <Button
           asChild
-          className="bg-[#0A0A0A] text-[#F9F7F4] hover:bg-[#0A0A0A]/80 rounded-none"
+          className="bg-ink text-cream hover:bg-ink/80 rounded-none"
         >
           <Link href={`/admin/reps/build-cart?repId=${rep.id}`}>
             <ShoppingCart className="h-4 w-4 mr-2" />
@@ -97,19 +97,19 @@ export default async function RepDetailPage({ params }: RepDetailPageProps) {
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Assigned Organizations */}
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="font-serif text-lg text-[#0A0A0A] flex items-center gap-2">
-              <Building2 className="h-4 w-4 text-[#C8C0B4]" />
+            <CardTitle className="font-serif text-lg text-ink flex items-center gap-2">
+              <Building2 className="h-4 w-4 text-sand" />
               Assigned Accounts
             </CardTitle>
-            <span className="text-sm text-[#0A0A0A]/50">
+            <span className="text-sm text-ink/50">
               {rep.managedOrgs.length} total
             </span>
           </CardHeader>
           <CardContent>
             {rep.managedOrgs.length === 0 ? (
-              <p className="text-sm text-[#0A0A0A]/50">No accounts assigned.</p>
+              <p className="text-sm text-ink/50">No accounts assigned.</p>
             ) : (
               <div className="space-y-3">
                 {rep.managedOrgs.map((org) => {
@@ -117,23 +117,23 @@ export default async function RepDetailPage({ params }: RepDetailPageProps) {
                   return (
                     <div
                       key={org.id}
-                      className="flex items-start justify-between py-2 border-b border-[#E5E1DB] last:border-0"
+                      className="flex items-start justify-between py-2 border-b border-shell last:border-0"
                     >
                       <div>
                         <Link
                           href={`/admin/clients/${org.id}`}
-                          className="text-sm font-medium text-[#0A0A0A] hover:underline"
+                          className="text-sm font-medium text-ink hover:underline"
                         >
                           {org.name}
                         </Link>
                         {lastOrder && (
-                          <p className="text-xs text-[#0A0A0A]/50 mt-0.5">
+                          <p className="text-xs text-ink/50 mt-0.5">
                             Last order:{" "}
                             {format(lastOrder.createdAt, "MMM d, yyyy")}
                           </p>
                         )}
                         {!lastOrder && (
-                          <p className="text-xs text-[#0A0A0A]/40 mt-0.5">
+                          <p className="text-xs text-ink/40 mt-0.5">
                             No orders yet
                           </p>
                         )}
@@ -153,38 +153,38 @@ export default async function RepDetailPage({ params }: RepDetailPageProps) {
         </Card>
 
         {/* Open Tasks */}
-        <Card className="border-[#E5E1DB] bg-[#F9F7F4]">
+        <Card className="border-shell bg-cream">
           <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="font-serif text-lg text-[#0A0A0A] flex items-center gap-2">
-              <CheckSquare className="h-4 w-4 text-[#C8C0B4]" />
+            <CardTitle className="font-serif text-lg text-ink flex items-center gap-2">
+              <CheckSquare className="h-4 w-4 text-sand" />
               Open Tasks
             </CardTitle>
-            <span className="text-sm text-[#0A0A0A]/50">
+            <span className="text-sm text-ink/50">
               {openTasks.length} open
             </span>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               {openTasks.length === 0 ? (
-                <p className="text-sm text-[#0A0A0A]/50">No open tasks.</p>
+                <p className="text-sm text-ink/50">No open tasks.</p>
               ) : (
                 openTasks.map((task) => (
                   <div
                     key={task.id}
-                    className="flex items-start justify-between py-2 border-b border-[#E5E1DB] last:border-0"
+                    className="flex items-start justify-between py-2 border-b border-shell last:border-0"
                   >
                     <div className="flex-1 min-w-0 pr-3">
-                      <p className="text-sm font-medium text-[#0A0A0A]">
+                      <p className="text-sm font-medium text-ink">
                         {task.title}
                       </p>
                       <div className="flex items-center gap-2 mt-1">
                         {task.organization && (
-                          <span className="text-xs text-[#0A0A0A]/50">
+                          <span className="text-xs text-ink/50">
                             {task.organization.name}
                           </span>
                         )}
                         {task.dueDate && (
-                          <span className="text-xs text-[#0A0A0A]/50">
+                          <span className="text-xs text-ink/50">
                             Due {format(task.dueDate, "MMM d, yyyy")}
                           </span>
                         )}
@@ -211,7 +211,7 @@ export default async function RepDetailPage({ params }: RepDetailPageProps) {
 
       {/* New Task Form */}
       <div>
-        <h3 className="font-serif text-lg font-semibold text-[#0A0A0A] mb-3">
+        <h3 className="font-serif text-lg font-semibold text-ink mb-3">
           Add Task
         </h3>
         <NewTaskForm repId={rep.id} orgs={orgs} />
