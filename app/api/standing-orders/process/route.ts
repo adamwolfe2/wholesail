@@ -71,7 +71,7 @@ export async function GET(req: Request) {
 
       try {
         // Filter out unavailable products
-        const availableItems = so.items.filter((item) => item.product && (item.product as { available?: boolean }).available !== false)
+        const availableItems = so.items.filter((item) => item.product?.available !== false && item.product != null)
         if (availableItems.length === 0) {
           results.push({
             standingOrderId: so.id,
@@ -84,11 +84,11 @@ export async function GET(req: Request) {
 
         const lineItems = availableItems.map((item) => ({
           productId: item.productId,
-          name: item.product.name,
+          name: item.product?.name ?? 'Deleted product',
           quantity: item.quantity,
-          unitPrice: Number(item.product.price),
-          total: item.quantity * Number(item.product.price),
-          distributorOrgId: item.product.distributorOrgId ?? null,
+          unitPrice: Number(item.product?.price ?? 0),
+          total: item.quantity * Number(item.product?.price ?? 0),
+          distributorOrgId: item.product?.distributorOrgId ?? null,
         }))
 
         const subtotal = lineItems.reduce((sum, i) => sum + i.total, 0)
@@ -178,7 +178,7 @@ export async function GET(req: Request) {
           const { sendMessage } = await import("@/lib/integrations/blooio")
           const itemSummary = so.items
             .slice(0, 3)
-            .map((i: { product: { name: string }; quantity: number }) => `${i.quantity}× ${i.product.name}`)
+            .map((i) => `${i.quantity}× ${i.product?.name ?? 'Deleted product'}`)
             .join(", ")
           const more = so.items.length > 3 ? ` +${so.items.length - 3} more` : ""
           sendMessage({

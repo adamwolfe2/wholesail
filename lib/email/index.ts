@@ -11,6 +11,10 @@ function getResend() {
   return new Resend(process.env.RESEND_API_KEY);
 }
 
+function isValidEmail(email: string | undefined | null): email is string {
+  return !!email && email.includes('@');
+}
+
 const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Wholesail <noreply@wholesailhub.com>";
 const APP_URL = getSiteUrl();
 const OPS_NAME = process.env.OPS_NAME || "our team";
@@ -198,6 +202,7 @@ Have questions? Reply to this email.
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.customerEmail)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.customerEmail,
@@ -258,6 +263,7 @@ Track your order: ${orderUrl}
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.customerEmail)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.customerEmail,
@@ -312,6 +318,7 @@ P.S. Leave feedback or message us anytime through your portal.
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.customerEmail)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.customerEmail,
@@ -394,6 +401,7 @@ Questions? Reply here or message us in your portal.
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.customerEmail)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.customerEmail,
@@ -496,6 +504,7 @@ Browse the catalog: ${catalogUrl}
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.email)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
@@ -546,6 +555,7 @@ We appreciate your interest and hope to have the opportunity to work together in
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.email)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
@@ -613,6 +623,7 @@ Shop now: ${APP_URL}
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.email)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
@@ -708,6 +719,7 @@ ${APP_URL}/drops
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.email)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
@@ -806,6 +818,7 @@ P.S. Reply to this email if you have any questions about pricing, delivery, or y
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.email)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
@@ -889,6 +902,7 @@ Questions? Reply to this email or reach us at ${BRAND_EMAIL}.
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.email)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
@@ -942,6 +956,7 @@ As always, reply here if you have questions about availability, pricing, or deli
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.email)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
@@ -1151,6 +1166,7 @@ export async function sendTierUpgradeEmail(data: {
 }) {
   const r = getResend();
   if (!r) return null;
+  if (!isValidEmail(data.email)) return null;
 
   const isVIP = data.newTier === "VIP";
 
@@ -1325,6 +1341,7 @@ We appreciate your interest and hope to have the opportunity to work together in
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.email)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.email,
@@ -1352,6 +1369,7 @@ export async function sendLapsedClientEmail(data: {
 }) {
   const r = getResend();
   if (!r) return null;
+  if (!isValidEmail(data.email)) return null;
 
   const catalogUrl = `${APP_URL}/catalog`;
 
@@ -1426,6 +1444,7 @@ export async function sendWeeklyDigestEmail(data: {
 }) {
   const r = getResend();
   if (!r) return { success: false, error: "Email not configured" };
+  if (!isValidEmail(data.email)) return { success: false, error: "Invalid email address" };
 
   const settingsUrl = `${APP_URL}/client-portal/settings`;
   const catalogUrl = `${APP_URL}/catalog`;
@@ -1739,6 +1758,7 @@ export async function sendQuoteResponseToRep(data: {
 }): Promise<void> {
   const resend = getResend();
   if (!resend) return;
+  if (!isValidEmail(data.repEmail)) return;
 
   const isAccepted = data.action === "ACCEPTED";
   const adminUrl = isAccepted && data.orderId
@@ -1802,6 +1822,7 @@ export async function sendQuoteToClientEmail(data: {
 }): Promise<void> {
   const resend = getResend();
   if (!resend) return;
+  if (!isValidEmail(data.clientEmail)) return;
 
   const quoteUrl = `${APP_URL}/client-portal/quotes/${data.quoteId}`;
 
@@ -1884,6 +1905,7 @@ export async function sendDistributorOrderNotification(data: {
 }) {
   const r = getResend();
   if (!r) return { success: false, error: 'Email not configured' };
+  if (!isValidEmail(data.distributorEmail)) return { success: false, error: 'Invalid email address' };
 
   const portalUrl = `${APP_URL}/client-portal/fulfillment`;
 
@@ -2031,6 +2053,7 @@ View your order: ${orderUrl}
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.customerEmail)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.customerEmail,
@@ -2088,6 +2111,7 @@ View your order: ${orderUrl}
   try {
     const r = getResend();
     if (!r) return { success: false, error: "Email not configured" };
+    if (!isValidEmail(data.customerEmail)) return { success: false, error: "Invalid email address" };
     await r.emails.send({
       from: FROM_EMAIL,
       to: data.customerEmail,

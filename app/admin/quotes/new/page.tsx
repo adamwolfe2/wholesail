@@ -65,11 +65,11 @@ export default function NewQuotePage() {
   const [showOrgDropdown, setShowOrgDropdown] = useState(false);
   const [showProductDropdown, setShowProductDropdown] = useState(false);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (signal: AbortSignal) => {
     try {
       const [orgsRes, productsRes] = await Promise.all([
-        fetch("/api/admin/build-cart/orgs"),
-        fetch("/api/products"),
+        fetch("/api/admin/build-cart/orgs", { signal }),
+        fetch("/api/products", { signal }),
       ]);
       if (orgsRes.ok) {
         const d = await orgsRes.json();
@@ -79,13 +79,15 @@ export default function NewQuotePage() {
         const d = await productsRes.json();
         setProducts((d.products ?? []).filter((p: Product) => p.available));
       }
-    } catch {
-      // silently fail
+    } catch (err: unknown) {
+      if (err instanceof Error && err.name === 'AbortError') return;
     }
   }, []);
 
   useEffect(() => {
-    fetchData();
+    const controller = new AbortController();
+    fetchData(controller.signal);
+    return () => controller.abort();
   }, [fetchData]);
 
   function addProduct(product: Product) {
@@ -373,9 +375,17 @@ export default function NewQuotePage() {
                 <Input
                   type="number"
                   min={0}
+                  max={subtotal}
                   step={0.01}
                   value={discount}
-                  onChange={(e) => setDiscount(e.target.value)}
+                  onChange={(e) => {
+                    const val = parseFloat(e.target.value);
+                    if (!isNaN(val) && val > subtotal) {
+                      setDiscount(String(subtotal));
+                    } else {
+                      setDiscount(e.target.value);
+                    }
+                  }}
                   className="h-7 w-20 text-right border-[#E5E1DB] rounded-none text-sm p-1"
                 />
               </div>
@@ -409,6 +419,7 @@ export default function NewQuotePage() {
               id="expires-at"
               type="date"
               value={expiresAt}
+              min={new Date(Date.now() + 86400000).toISOString().split("T")[0]}
               onChange={(e) => setExpiresAt(e.target.value)}
               className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A]"
             />
@@ -426,6 +437,7 @@ export default function NewQuotePage() {
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Notes visible to the client..."
               rows={3}
+              maxLength={1000}
               className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A] resize-none"
             />
           </div>

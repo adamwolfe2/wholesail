@@ -92,21 +92,28 @@ function CheckoutContent() {
   const [useLoyalty, setUseLoyalty] = useState(false)
 
   useEffect(() => {
-    if (isSignedIn) {
-      fetch('/api/client/addresses')
-        .then(r => r.json())
-        .then(data => setSavedAddresses(data.addresses ?? []))
-        .catch(() => {})
+    if (!isSignedIn) return
+    const controller = new AbortController()
 
-      fetch('/api/client/credit')
-        .then(r => r.ok ? r.json() : null)
-        .then(data => {
-          if (data && (data.limit !== null || data.used > 0)) {
-            setCreditStatus(data)
-          }
-        })
-        .catch(() => {})
-    }
+    fetch('/api/client/addresses', { signal: controller.signal })
+      .then(r => r.json())
+      .then(data => setSavedAddresses(data.addresses ?? []))
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === 'AbortError') return
+      })
+
+    fetch('/api/client/credit', { signal: controller.signal })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && (data.limit !== null || data.used > 0)) {
+          setCreditStatus(data)
+        }
+      })
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === 'AbortError') return
+      })
+
+    return () => controller.abort()
   }, [isSignedIn])
 
   const subtotal = getTotalPrice()
@@ -478,6 +485,7 @@ function CheckoutContent() {
                       onChange={handleInputChange}
                       placeholder="Special instructions, preferred delivery time, etc."
                       rows={3}
+                      maxLength={500}
                       className="rounded-none border-border bg-background"
                     />
                   </div>

@@ -38,6 +38,8 @@ export async function GET(req: NextRequest) {
       JOIN "Product" p ON p.id = il."productId"
       WHERE p.available = true
         AND il."quantityOnHand" <= il."lowStockThreshold"
+      ORDER BY il."quantityOnHand" ASC
+      LIMIT 500
     `
 
     if (lowStockLevels.length === 0) {

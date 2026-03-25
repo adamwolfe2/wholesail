@@ -76,6 +76,7 @@ export async function GET(req: NextRequest) {
 
       let emailOk = false
       let smsOk = false
+      let smsAttempted = false
 
       // Send reminder email
       try {
@@ -100,6 +101,7 @@ export async function GET(req: NextRequest) {
       if (org.phone && isConfigured()) {
         const e164 = toE164(org.phone)
         if (e164) {
+          smsAttempted = true
           try {
             const smsResult = await sendMessage({
               to: e164,
@@ -119,8 +121,9 @@ export async function GET(req: NextRequest) {
         }
       }
 
-      // Update reminderSentAt if at least one channel succeeded
-      if (emailOk || smsOk) {
+      // Update reminderSentAt only if all attempted channels succeeded
+      const allAttemptedSucceeded = emailOk && (!smsAttempted || smsOk)
+      if (allAttemptedSucceeded) {
         await prisma.invoice.update({
           where: { id: invoice.id },
           data: { reminderSentAt: now },

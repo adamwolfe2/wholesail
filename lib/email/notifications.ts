@@ -9,14 +9,22 @@ const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "adam@wholesailhub.com";
 const BRAND_NAME = process.env.BRAND_NAME || "Wholesail";
 const BRAND_COLOR = process.env.BRAND_PRIMARY_COLOR || "#0A0A0A";
 
-function send(opts: { to: string; subject: string; html: string }) {
+function send(opts: { to: string; subject: string; html: string }): Promise<{ success: boolean; error?: string }> {
   if (!resend) {
-    console.log(`[email] Would send to ${opts.to}: ${opts.subject}`);
-    return;
+    console.warn("Resend not configured — skipping email");
+    return Promise.resolve({ success: false, error: "Email service not configured" });
   }
-  return resend.emails.send({ from: FROM, ...opts }).catch((err) => {
-    console.error("[email] Failed to send:", err);
-  });
+  if (!opts.to || !opts.to.includes('@')) {
+    console.warn(`Invalid email address: ${opts.to}`);
+    return Promise.resolve({ success: false, error: "Invalid email address" });
+  }
+  return resend.emails.send({ from: FROM, ...opts }).then(
+    () => ({ success: true }),
+    (err) => {
+      console.error("[email] Failed to send:", err);
+      return { success: false, error: err instanceof Error ? err.message : "Send failed" };
+    }
+  );
 }
 
 // ── Admin: New intake submission ────────────────────────────────────────────

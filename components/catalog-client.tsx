@@ -40,12 +40,16 @@ export function CatalogClient({
 
   useEffect(() => {
     if (!isSignedIn) return
-    fetch('/api/favorites')
+    const controller = new AbortController()
+    fetch('/api/favorites', { signal: controller.signal })
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (data?.favorites) setFavorites(new Set(data.favorites))
       })
-      .catch((err) => console.error('Failed to load favorites:', err))
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === 'AbortError') return
+      })
+    return () => controller.abort()
   }, [isSignedIn])
 
   async function handleToggleFavorite(productId: string) {

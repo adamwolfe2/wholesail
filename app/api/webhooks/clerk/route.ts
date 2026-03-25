@@ -135,7 +135,34 @@ export async function POST(req: NextRequest) {
     case "user.deleted": {
       const userId = event.data.id;
       if (userId) {
-        await prisma.user.deleteMany({ where: { id: userId } });
+        await prisma.$transaction(async (tx) => {
+          // Nullify references that don't cascade on delete
+          await tx.clientNote.deleteMany({ where: { authorId: userId } });
+          await tx.repTask.deleteMany({ where: { repId: userId } });
+          await tx.quote.updateMany({ where: { repId: userId }, data: { repId: null } });
+
+          // Check if user's org will become orphaned (no other members)
+          const user = await tx.user.findUnique({
+            where: { id: userId },
+            select: { organizationId: true },
+          });
+          if (user?.organizationId) {
+            const remainingMembers = await tx.user.count({
+              where: {
+                organizationId: user.organizationId,
+                id: { not: userId },
+              },
+            });
+            if (remainingMembers === 0) {
+              console.warn(
+                `User ${userId} was the last member of org ${user.organizationId} — org is now orphaned`
+              );
+            }
+          }
+
+          // Delete the user (cascades to orders, audit events, saved carts, etc.)
+          await tx.user.deleteMany({ where: { id: userId } });
+        });
         console.info(`User ${userId} deleted from DB via Clerk webhook`);
       }
       break;

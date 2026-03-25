@@ -219,6 +219,7 @@ export function ProductAddForm() {
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Brief product description..."
                 rows={2}
+                maxLength={2000}
               />
             </div>
 

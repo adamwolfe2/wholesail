@@ -70,6 +70,7 @@ export async function pushContact(contact: EmailBisonContact): Promise<EmailBiso
         contact.city        && { name: 'city',        value: contact.city },
       ].filter(Boolean),
     }),
+    signal: AbortSignal.timeout(10000),
   })
 
   if (!createRes.ok) {
@@ -94,6 +95,7 @@ export async function pushContact(contact: EmailBisonContact): Promise<EmailBiso
         lead_ids: [leadId],
         allow_parallel_sending: false,
       }),
+      signal: AbortSignal.timeout(10000),
     }
   )
 

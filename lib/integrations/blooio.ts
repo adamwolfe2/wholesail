@@ -57,6 +57,7 @@ async function blooFetch(path: string, options: RequestInit = {}): Promise<Respo
       "Content-Type": "application/json",
       ...(options.headers as Record<string, string> || {}),
     },
+    signal: options.signal ?? AbortSignal.timeout(10000),
   });
 }
 

@@ -90,6 +90,30 @@ export async function POST(req: NextRequest) {
             break;
           }
 
+          // Safety check: verify Stripe amount matches quote total
+          const stripeAmountDollars = (session.amount_total ?? 0) / 100;
+          const quoteTotalDollars = Number(existingQuote.total);
+          if (Math.abs(stripeAmountDollars - quoteTotalDollars) > 0.01) {
+            captureWithContext(
+              new Error(`Quote/Stripe amount mismatch: quote ${quoteId} total=${quoteTotalDollars}, stripe=${stripeAmountDollars}`),
+              { route: "webhooks/stripe", quoteId, quoteTotalDollars, stripeAmountDollars }
+            );
+            // Log audit event but continue processing — customer already paid
+            await prisma.auditEvent.create({
+              data: {
+                entityType: "Quote",
+                entityId: quoteId,
+                action: "amount_mismatch_detected",
+                metadata: {
+                  quoteTotal: quoteTotalDollars,
+                  stripeAmount: stripeAmountDollars,
+                  stripeSessionId: session.id,
+                  quoteNumber: existingQuote.quoteNumber,
+                },
+              },
+            });
+          }
+
           // Get org's default shipping address
           const address = await prisma.address.findFirst({
             where: {
@@ -112,8 +136,20 @@ export async function POST(req: NextRequest) {
           }
 
           // Create the order and payment record in a transaction with retry on duplicate order number
+          // Re-check convertedOrderId inside the transaction to prevent race conditions
+          // where two concurrent webhook deliveries both pass the outer idempotency check
           const order = await createOrderWithRetry(async (orderNumber) => {
             return prisma.$transaction(async (tx) => {
+              // Atomic re-check: if another webhook delivery converted this quote
+              // between our outer check and this transaction, bail out
+              const freshQuote = await tx.quote.findUniqueOrThrow({
+                where: { id: quoteId },
+                select: { convertedOrderId: true },
+              });
+              if (freshQuote.convertedOrderId) {
+                return null;
+              }
+
               const newOrder = await tx.order.create({
                 data: {
                   orderNumber,
@@ -178,6 +214,12 @@ export async function POST(req: NextRequest) {
               return newOrder;
             });
           });
+
+          // If transaction returned null, a concurrent webhook already converted this quote
+          if (!order) {
+            console.info(`Quote ${quoteId} already converted by concurrent webhook — skipping`);
+            break;
+          }
 
           // Send order confirmation email (non-fatal)
           sendOrderConfirmation({

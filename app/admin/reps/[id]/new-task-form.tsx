@@ -122,6 +122,7 @@ export function NewTaskForm({ repId, orgs }: NewTaskFormProps) {
           onChange={(e) => setDescription(e.target.value)}
           placeholder="Optional details"
           rows={2}
+          maxLength={1000}
           className="border-[#E5E1DB] bg-[#F9F7F4] rounded-none focus:border-[#0A0A0A] resize-none"
         />
       </div>

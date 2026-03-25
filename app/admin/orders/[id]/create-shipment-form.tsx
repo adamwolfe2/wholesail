@@ -355,6 +355,7 @@ export function CreateShipmentForm({
               onChange={(e) => setDriverNotes(e.target.value)}
               placeholder="e.g. Call client on arrival. Use loading dock entrance."
               rows={2}
+              maxLength={500}
               className="w-full border border-[#E5E1DB] bg-[#F9F7F4] text-[#0A0A0A] px-3 py-2 text-sm focus:outline-none focus:ring-1 focus:ring-[#0A0A0A] resize-none"
             />
           </div>

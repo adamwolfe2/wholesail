@@ -141,16 +141,19 @@ export default function AnalyticsPage() {
       return
     }
 
+    const controller = new AbortController()
+
     async function fetchAnalytics() {
       try {
-        const res = await fetch('/api/client/analytics')
+        const res = await fetch('/api/client/analytics', { signal: controller.signal })
         if (res.ok) {
           const json = await res.json()
           if (json.data && json.data.monthlyRevenue?.length > 0) {
             setAnalytics(json.data)
           }
         }
-      } catch {
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name === 'AbortError') return
         setFetchError(true)
       } finally {
         setLoading(false)
@@ -159,18 +162,20 @@ export default function AnalyticsPage() {
 
     async function fetchPricingTier() {
       try {
-        const res = await fetch('/api/client/pricing-tier')
+        const res = await fetch('/api/client/pricing-tier', { signal: controller.signal })
         if (res.ok) {
           const json = await res.json()
           setPricingTier(json)
         }
-      } catch {
+      } catch (err: unknown) {
+        if (err instanceof Error && err.name === 'AbortError') return
         setFetchError(true)
       }
     }
 
     fetchAnalytics()
     fetchPricingTier()
+    return () => controller.abort()
   }, [isLoaded, isSignedIn])
 
   if (!isLoaded || loading) {

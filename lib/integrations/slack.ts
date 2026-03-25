@@ -30,6 +30,7 @@ export async function notifyNewIntake(data: NewIntakeData): Promise<void> {
   const res = await fetch(webhookUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+    signal: AbortSignal.timeout(10000),
     body: JSON.stringify({
       blocks: [
         {
