@@ -367,17 +367,17 @@ export default async function CeoCommandCenter() {
     }
 
     // Product velocity: enrich with category
-    const productIds = velocityItems.map((v) => v.productId);
+    const productIds = velocityItems.map((v) => v.productId).filter((id): id is string => id !== null);
     const products = await prisma.product.findMany({
       where: { id: { in: productIds } },
       select: { id: true, category: true },
     });
     const productCategoryMap = new Map(products.map((p) => [p.id, p.category]));
 
-    productVelocity = velocityItems.map((v) => ({
-      productId: v.productId,
+    productVelocity = velocityItems.filter((v) => v.productId !== null).map((v) => ({
+      productId: v.productId!,
       name: v.name,
-      category: productCategoryMap.get(v.productId) || "—",
+      category: productCategoryMap.get(v.productId!) || "—",
       totalQty: v._sum.quantity ?? 0,
       totalRevenue: Number(v._sum.total ?? 0),
     }));
@@ -415,7 +415,7 @@ export default async function CeoCommandCenter() {
       _sum: { total: true },
     });
 
-    const allProductIds = catGroups.map((g) => g.productId);
+    const allProductIds = catGroups.map((g) => g.productId).filter((id): id is string => id !== null);
     const allProducts = await prisma.product.findMany({
       where: { id: { in: allProductIds } },
       select: { id: true, category: true },
@@ -426,7 +426,7 @@ export default async function CeoCommandCenter() {
 
     const catRevenueMap = new Map<string, number>();
     for (const g of catGroups) {
-      const cat = allProductCatMap.get(g.productId) ?? "Uncategorized";
+      const cat = (g.productId ? allProductCatMap.get(g.productId) : undefined) ?? "Uncategorized";
       catRevenueMap.set(
         cat,
         (catRevenueMap.get(cat) ?? 0) + Number(g._sum.total ?? 0)

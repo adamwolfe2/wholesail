@@ -91,7 +91,7 @@ export async function GET(req: NextRequest) {
         const orgId = item.order.organizationId
         if (!orgProductCounts.has(orgId)) orgProductCounts.set(orgId, new Map())
         const m = orgProductCounts.get(orgId)!
-        m.set(item.productId, (m.get(item.productId) ?? 0) + 1)
+        if (item.productId) m.set(item.productId, (m.get(item.productId) ?? 0) + 1)
       }
       for (const [orgId, productCounts] of orgProductCounts) {
         topProductIdsByOrg.set(

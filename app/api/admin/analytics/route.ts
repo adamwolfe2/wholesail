@@ -87,7 +87,7 @@ const getAnalyticsData = unstable_cache(
       take: 200,
     });
 
-    const allProductIds = itemGroups.map((g) => g.productId);
+    const allProductIds = itemGroups.map((g) => g.productId).filter((id): id is string => id !== null);
     const products = await prisma.product.findMany({
       where: { id: { in: allProductIds } },
       select: { id: true, category: true },
@@ -96,7 +96,7 @@ const getAnalyticsData = unstable_cache(
 
     const catRevenueMap = new Map<string, number>();
     for (const g of itemGroups) {
-      const cat = productCatMap.get(g.productId) ?? "Uncategorized";
+      const cat = (g.productId ? productCatMap.get(g.productId) : undefined) ?? "Uncategorized";
       catRevenueMap.set(cat, (catRevenueMap.get(cat) ?? 0) + Number(g._sum.total ?? 0));
     }
 

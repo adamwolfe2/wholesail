@@ -794,7 +794,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
         take: limit,
       })
 
-      const allIds = [...new Set([...allTimeRaw.map(p => p.productId), ...thisMonthRaw.map(p => p.productId)])]
+      const allIds = [...new Set([...allTimeRaw.map(p => p.productId), ...thisMonthRaw.map(p => p.productId)])].filter((id): id is string => id !== null)
       const products = await prisma.product.findMany({
         where: { id: { in: allIds } },
         select: { id: true, name: true, category: true },
@@ -805,15 +805,15 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
         metric,
         allTime: allTimeRaw.map((p, i) => ({
           rank: i + 1,
-          name: productMap[p.productId]?.name ?? 'Unknown',
-          category: productMap[p.productId]?.category ?? null,
+          name: (p.productId ? productMap[p.productId]?.name : undefined) ?? 'Unknown',
+          category: (p.productId ? productMap[p.productId]?.category : undefined) ?? null,
           revenue: formatCurrency(p._sum.total ?? 0),
           unitsSold: p._sum.quantity ?? 0,
         })),
         thisMonth: thisMonthRaw.map((p, i) => ({
           rank: i + 1,
-          name: productMap[p.productId]?.name ?? 'Unknown',
-          category: productMap[p.productId]?.category ?? null,
+          name: (p.productId ? productMap[p.productId]?.name : undefined) ?? 'Unknown',
+          category: (p.productId ? productMap[p.productId]?.category : undefined) ?? null,
           revenue: formatCurrency(p._sum.total ?? 0),
           unitsSold: p._sum.quantity ?? 0,
         })),

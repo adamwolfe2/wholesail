@@ -129,7 +129,7 @@ export async function PATCH(
       const clientUserId = quote.organization.members[0].id;
 
       // Fetch distributor assignment for each product
-      const quoteProductIds = quote.items.map((i) => i.productId);
+      const quoteProductIds = quote.items.map((i) => i.productId).filter((id): id is string => id !== null);
       const quoteProducts = await prisma.product.findMany({
         where: { id: { in: quoteProductIds } },
         select: { id: true, distributorOrgId: true },
@@ -168,7 +168,7 @@ export async function PATCH(
                   quantity: item.quantity,
                   unitPrice: item.unitPrice,
                   total: item.total,
-                  distributorOrgId: productDistributorMap.get(item.productId) ?? null,
+                  distributorOrgId: (item.productId ? productDistributorMap.get(item.productId) : undefined) ?? null,
                 })),
               },
             },

@@ -113,7 +113,7 @@ export async function PATCH(
       // Release old inventory reservations
       for (const oldItem of order.items) {
         await tx.inventoryLevel.updateMany({
-          where: { productId: oldItem.productId },
+          where: { productId: oldItem.productId ?? undefined },
           data: { quantityReserved: { decrement: oldItem.quantity } },
         });
       }

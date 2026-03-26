@@ -45,7 +45,7 @@ const getProductTrends = unstable_cache(
     let itemCursor: string | undefined;
 
     const itemWhere = {
-      productId: { in: topProductGroups.map((p) => p.productId) },
+      productId: { in: topProductGroups.map((p) => p.productId).filter((id): id is string => id !== null) },
       order: {
         status: { not: "CANCELLED" as const },
         createdAt: { gte: sixMonthsAgo },

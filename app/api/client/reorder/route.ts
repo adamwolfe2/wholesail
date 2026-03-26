@@ -60,19 +60,21 @@ export async function POST(request: Request) {
     }
 
     // Fetch CURRENT prices and availability for all products (not stale prices from source order)
-    const reorderProductIds = sourceOrder.items.map((i) => i.productId)
+    const reorderProductIds = sourceOrder.items.map((i) => i.productId).filter((id): id is string => id !== null)
     const reorderProducts = await prisma.product.findMany({
       where: { id: { in: reorderProductIds } },
       select: { id: true, name: true, price: true, available: true, distributorOrgId: true },
     })
     const productMap = new Map(reorderProducts.map((p) => [p.id, p]))
 
-    // Filter out unavailable products
+    // Filter out unavailable products (items with null productId are treated as unavailable)
     const unavailable = sourceOrder.items.filter((item) => {
+      if (!item.productId) return true
       const product = productMap.get(item.productId)
       return !product || product.available === false
     })
     const availableItems = sourceOrder.items.filter((item) => {
+      if (!item.productId) return false
       const product = productMap.get(item.productId)
       return product && product.available !== false
     })
@@ -85,7 +87,7 @@ export async function POST(request: Request) {
     }
 
     const subtotal = availableItems.reduce((sum, item) => {
-      const product = productMap.get(item.productId)!
+      const product = productMap.get(item.productId!)!
       return sum + Number(product.price) * item.quantity
     }, 0)
 
@@ -105,7 +107,7 @@ export async function POST(request: Request) {
             : `Reorder of ${sourceOrder.orderNumber}`,
           items: {
             create: availableItems.map((item) => {
-              const product = productMap.get(item.productId)!
+              const product = productMap.get(item.productId!)!
               return {
                 productId: item.productId,
                 name: product.name,

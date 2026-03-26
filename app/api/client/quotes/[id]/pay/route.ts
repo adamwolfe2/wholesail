@@ -70,7 +70,7 @@ export async function POST(
       });
 
       // Fetch distributor assignment for each product
-      const payProductIds = quote.items.map((i) => i.productId);
+      const payProductIds = quote.items.map((i) => i.productId).filter((id): id is string => id !== null);
       const payProducts = await prisma.product.findMany({
         where: { id: { in: payProductIds } },
         select: { id: true, distributorOrgId: true },
@@ -99,7 +99,7 @@ export async function POST(
                 quantity: item.quantity,
                 unitPrice: item.unitPrice,
                 total: item.total,
-                distributorOrgId: payDistributorMap.get(item.productId) ?? null,
+                distributorOrgId: (item.productId ? payDistributorMap.get(item.productId) : undefined) ?? null,
               })),
             },
           },

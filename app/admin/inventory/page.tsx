@@ -62,7 +62,7 @@ async function getInventoryData() {
 
   const consumptionMap: Record<string, number> = {};
   for (const row of consumption) {
-    consumptionMap[row.productId] = row._sum.quantity ?? 0;
+    if (row.productId) consumptionMap[row.productId] = row._sum.quantity ?? 0;
   }
 
   // Distributor self-reported inventory
