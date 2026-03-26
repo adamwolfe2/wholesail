@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import {
   ShoppingCart,
   Bell,
   ArrowUpRight,
   Menu,
   PanelLeftClose,
+  X,
 } from "lucide-react";
 import type { View, ViewProps, CartItem, ScrapeData } from "./types";
 import { NAV_ITEMS, TOUR_STEPS } from "./constants";
@@ -27,6 +28,9 @@ import { AdminClientsView } from "./demo-admin-clients";
 import { AdminInvoicesView } from "./demo-admin-invoices";
 import { AdminProductsView } from "./demo-admin-products";
 import { AdminAnalyticsView } from "./demo-admin-analytics";
+import { AdminPricingView } from "./demo-admin-pricing";
+import { ClientStandingOrdersView } from "./demo-client-standing-orders";
+import { FulfillmentBoardView } from "./demo-fulfillment";
 import { SmsDemoView } from "./demo-sms";
 import { TourOverlay } from "./demo-tour";
 
@@ -42,6 +46,69 @@ function DemoPortalInner() {
   const [cartOpen, setCartOpen] = useState(false);
   const [tourStep, setTourStep] = useState<number | null>(null);
   const [tourDismissed, setTourDismissed] = useState(false);
+
+  // Lead capture state
+  const [leadCaptureVisible, setLeadCaptureVisible] = useState(false);
+  const [leadCaptureDismissed, setLeadCaptureDismissed] = useState(false);
+  const [leadCaptureEmail, setLeadCaptureEmail] = useState("");
+  const [leadCaptureSubmitted, setLeadCaptureSubmitted] = useState(false);
+  const [leadCaptureSubmitting, setLeadCaptureSubmitting] = useState(false);
+  const navClickCount = useRef(0);
+  const demoStartTime = useRef(0);
+
+  // Check sessionStorage for prior dismissal on mount
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem("demo_lead_dismissed") === "1") {
+        setLeadCaptureDismissed(true);
+        return;
+      }
+    } catch { /* SSR or quota */ }
+    demoStartTime.current = Date.now();
+  }, []);
+
+  // Show lead capture after 60s of demo exploration
+  useEffect(() => {
+    if (leadCaptureDismissed || leadCaptureVisible || leadCaptureSubmitted) return;
+    const timer = setTimeout(() => {
+      if (Date.now() - demoStartTime.current >= 60_000) {
+        setLeadCaptureVisible(true);
+      }
+    }, 60_000);
+    return () => clearTimeout(timer);
+  }, [leadCaptureDismissed, leadCaptureVisible, leadCaptureSubmitted]);
+
+  const handleNavClick = useCallback((targetView: View) => {
+    setView(targetView);
+    navClickCount.current += 1;
+    if (navClickCount.current >= 3 && !leadCaptureDismissed && !leadCaptureVisible && !leadCaptureSubmitted) {
+      setLeadCaptureVisible(true);
+    }
+  }, [leadCaptureDismissed, leadCaptureVisible, leadCaptureSubmitted]);
+
+  const dismissLeadCapture = useCallback(() => {
+    setLeadCaptureVisible(false);
+    setLeadCaptureDismissed(true);
+    try { sessionStorage.setItem("demo_lead_dismissed", "1"); } catch { /* ignore */ }
+  }, []);
+
+  const submitLeadCapture = useCallback(async () => {
+    const email = leadCaptureEmail.trim();
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
+    setLeadCaptureSubmitting(true);
+    try {
+      await fetch("/api/intake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contactEmail: email, source: "demo_lead_capture" }),
+      });
+    } catch { /* best-effort — store locally as fallback */ }
+    try { localStorage.setItem("demo_lead_email", email); } catch { /* ignore */ }
+    setLeadCaptureSubmitted(true);
+    setLeadCaptureVisible(false);
+    setLeadCaptureSubmitting(false);
+    try { sessionStorage.setItem("demo_lead_dismissed", "1"); } catch { /* ignore */ }
+  }, [leadCaptureEmail]);
 
   // Collapse sidebar on mobile by default
   useEffect(() => {
@@ -100,7 +167,7 @@ function DemoPortalInner() {
   return (
     <div className="min-h-screen bg-cream flex flex-col">
       {/* Demo banner */}
-      <div className="px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between gap-2" style={{ backgroundColor: brand.color, borderBottom: `1px solid ${brand.color}` }}>
+      <div className="px-3 sm:px-4 py-2.5 sm:py-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3" style={{ backgroundColor: "var(--color-ink)", borderBottom: "1px solid var(--color-ink)" }}>
         <div className="flex items-center gap-2 sm:gap-3 min-w-0">
           {brand.logo && (
             // eslint-disable-next-line @next/next/no-img-element
@@ -111,20 +178,40 @@ function DemoPortalInner() {
               onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
             />
           )}
-          <span className="text-[10px] sm:text-xs text-white/70 truncate">
-            Demo preview of <strong className="text-white">{brand.company}</strong>
-            <span className="hidden sm:inline">&apos;s wholesale portal</span>
-          </span>
+          <div className="min-w-0">
+            <span className="text-[10px] sm:text-xs text-white/70 truncate block">
+              Demo preview of <strong className="text-white">{brand.company}</strong>
+              <span className="hidden sm:inline">&apos;s wholesale portal</span>
+            </span>
+            <span className="text-[9px] sm:text-[10px] text-white/40 font-mono hidden sm:block">
+              Includes everything you see here + custom branding
+            </span>
+          </div>
         </div>
-        <a
-          href="/#intake-form"
-          className="text-[9px] sm:text-[10px] uppercase tracking-wide text-white/60 hover:text-white border border-white/20 px-2 sm:px-3 py-1 hover:border-white/60 transition-colors flex items-center gap-1 flex-shrink-0"
-        >
-          <span className="hidden sm:inline">Start Your Build</span>
-          <span className="sm:hidden">Build</span>
-          <ArrowUpRight className="w-3 h-3" />
-        </a>
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          <a
+            href="https://cal.com/wholesail/intro"
+            className="text-[9px] sm:text-[10px] uppercase tracking-wide text-white/50 hover:text-white font-mono transition-colors flex items-center gap-1"
+          >
+            Book a Call
+          </a>
+          <a
+            href="/#intake-form"
+            className="inline-flex items-center gap-1.5 bg-cream text-ink font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-wide px-3 sm:px-4 py-1.5 sm:py-2 hover:bg-white transition-colors flex-shrink-0"
+            style={{ animation: "demoBannerPulse 3s ease-in-out infinite" }}
+          >
+            <span className="hidden sm:inline">Ready to launch? Start your build</span>
+            <span className="sm:hidden">Start Build</span>
+            <ArrowUpRight className="w-3 h-3" />
+          </a>
+        </div>
       </div>
+      <style>{`
+        @keyframes demoBannerPulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.85; box-shadow: 0 0 0 2px rgba(249,247,244,0.3); }
+        }
+      `}</style>
 
       <div className="flex flex-1 overflow-hidden">
         {/* Sidebar -- collapsible: expanded (240px), collapsed (52px icons only), hidden (0px) */}
@@ -176,7 +263,7 @@ function DemoPortalInner() {
                     return (
                       <button
                         key={item.id}
-                        onClick={() => setView(item.id)}
+                        onClick={() => handleNavClick(item.id)}
                         title={sidebarCollapsed ? item.label : undefined}
                         className={`w-full flex items-center text-sm font-medium transition-colors relative ${sidebarCollapsed ? "justify-center px-0 py-2" : "gap-3 px-3 py-2"}`}
                         style={
@@ -254,15 +341,17 @@ function DemoPortalInner() {
             {view === "client-invoices" && <ClientInvoicesView {...viewProps} />}
             {view === "client-analytics" && <ClientAnalyticsView {...viewProps} />}
             {view === "client-referrals" && <ClientReferralsView {...viewProps} />}
+            {view === "client-standing-orders" && <ClientStandingOrdersView {...viewProps} />}
             {view === "client-settings" && <ClientSettingsView {...viewProps} />}
             {view === "admin-dashboard" && <AdminDashboardView {...viewProps} />}
             {view === "admin-orders" && <AdminOrdersView {...viewProps} />}
-            {view === "admin-fulfillment" && <PlaceholderView brand={brand} title="Fulfillment Board" description="Kanban-style board for picking, packing, and shipping orders. Includes pick lists, batch processing, and carrier label generation." />}
+            {view === "admin-fulfillment" && <FulfillmentBoardView {...viewProps} />}
             {view === "admin-clients" && <AdminClientsView {...viewProps} />}
             {view === "admin-invoices" && <AdminInvoicesView {...viewProps} />}
             {view === "admin-products" && <AdminProductsView {...viewProps} />}
             {view === "admin-leads" && <PlaceholderView brand={brand} title="Lead Management" description="Full CRM for wholesale leads — from giveaway signup to qualification to conversion. Includes health scoring, follow-up automation, and rep assignment." />}
             {view === "admin-analytics" && <AdminAnalyticsView {...viewProps} />}
+            {view === "admin-pricing" && <AdminPricingView {...viewProps} />}
             {view === "sms-demo" && <SmsDemoView {...viewProps} />}
           </div>
         </main>
@@ -301,6 +390,55 @@ function DemoPortalInner() {
             setTourDismissed(true);
           }}
         />
+      )}
+
+      {/* Lead capture banner — non-blocking bottom toast */}
+      {leadCaptureVisible && !leadCaptureSubmitted && (
+        <div className="fixed bottom-0 left-0 right-0 z-50 px-3 pb-3 pointer-events-none">
+          <div
+            className="max-w-xl mx-auto bg-ink border border-shell px-4 py-3 pointer-events-auto"
+            style={{ boxShadow: "0 -4px 24px rgba(0,0,0,0.15)" }}
+          >
+            <div className="flex items-start justify-between gap-3 mb-2">
+              <p className="font-mono text-xs text-cream/80 leading-relaxed">
+                Like what you see? Get a personalized quote for your business.
+              </p>
+              <button
+                onClick={dismissLeadCapture}
+                className="flex-shrink-0 text-cream/40 hover:text-cream transition-colors"
+                aria-label="Dismiss"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+            <form
+              onSubmit={(e) => { e.preventDefault(); submitLeadCapture(); }}
+              className="flex items-center gap-2"
+            >
+              <input
+                type="email"
+                placeholder="you@company.com"
+                value={leadCaptureEmail}
+                onChange={(e) => setLeadCaptureEmail(e.target.value)}
+                className="flex-1 bg-white/10 border border-cream/20 text-cream font-mono text-xs px-3 py-2 placeholder:text-cream/30 focus:outline-none focus:border-cream/50"
+                required
+              />
+              <button
+                type="submit"
+                disabled={leadCaptureSubmitting}
+                className="bg-cream text-ink font-mono text-xs font-semibold px-4 py-2 hover:bg-white transition-colors disabled:opacity-40 flex-shrink-0"
+              >
+                {leadCaptureSubmitting ? "Sending..." : "Get Quote"}
+              </button>
+            </form>
+            <button
+              onClick={dismissLeadCapture}
+              className="font-mono text-[10px] text-cream/30 hover:text-cream/60 mt-2 transition-colors"
+            >
+              No thanks
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );

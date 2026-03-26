@@ -1111,6 +1111,7 @@ export function IntakeWizard() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [attempted, setAttempted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [draft, setDraft] = useState<ReturnType<typeof loadDraft>>(null);
   const [draftChecked, setDraftChecked] = useState(false);
 
@@ -1165,6 +1166,7 @@ export function IntakeWizard() {
       return;
     }
     setAttempted(false);
+    setSubmitError(null);
     // On the final data step (step 2 → step 3), submit to API
     if (currentStep === 2 && !submitted) {
       setSubmitting(true);
@@ -1209,10 +1211,18 @@ export function IntakeWizard() {
           // Clear saved draft on successful submission
           try { localStorage.removeItem(DRAFT_KEY); } catch { /* ignore */ }
         } else {
-          console.warn("Intake API returned", res.status, "— proceeding to booking");
+          setSubmitError(
+            `Something went wrong submitting your information. Please try again, or email us at ${portalConfig.contactEmail}.`
+          );
+          setSubmitting(false);
+          return;
         }
       } catch {
-        console.warn("Intake API unavailable — proceeding to booking");
+        setSubmitError(
+          `Something went wrong submitting your information. Please try again, or email us at ${portalConfig.contactEmail}.`
+        );
+        setSubmitting(false);
+        return;
       } finally {
         setSubmitting(false);
       }
@@ -1312,6 +1322,26 @@ export function IntakeWizard() {
           <Step4 step1={step1} step2={step2} step3={step3} />
         )}
       </div>
+
+      {/* Submit error banner */}
+      {submitError && (
+        <div
+          className="px-4 sm:px-6 py-3 flex items-start justify-between gap-3"
+          style={{ backgroundColor: "#FEF2F2", borderTop: "1px solid var(--border)" }}
+        >
+          <p className="font-mono text-xs leading-relaxed" style={{ color: "var(--color-error, #dc2626)" }}>
+            {submitError}
+          </p>
+          <button
+            type="button"
+            onClick={() => setSubmitError(null)}
+            className="flex-shrink-0 text-xs font-mono"
+            style={{ color: "var(--text-muted)" }}
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
 
       {/* Navigation */}
       {currentStep < 3 && (

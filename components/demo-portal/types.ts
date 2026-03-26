@@ -102,6 +102,7 @@ export type View =
   | "client-invoices"
   | "client-analytics"
   | "client-referrals"
+  | "client-standing-orders"
   | "client-settings"
   | "admin-dashboard"
   | "admin-orders"
@@ -111,6 +112,7 @@ export type View =
   | "admin-products"
   | "admin-leads"
   | "admin-analytics"
+  | "admin-pricing"
   | "sms-demo";
 
 export type ViewProps = {

@@ -57,6 +57,12 @@ export function CtaSection() {
           No credit card required · Try the demo instantly · Builds start
           within 48 hours of your call
         </div>
+        <div
+          className="font-mono text-[11px] mt-3"
+          style={{ color: "rgba(255,255,255,0.4)" }}
+        >
+          Current build queue: 2-3 weeks | Limited onboarding slots available
+        </div>
       </div>
     </section>
   );

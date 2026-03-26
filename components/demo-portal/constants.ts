@@ -11,6 +11,8 @@ import {
   Settings,
   Truck,
   Zap,
+  Repeat,
+  DollarSign,
 } from "lucide-react";
 import type { NavItem, View } from "./types";
 
@@ -25,11 +27,13 @@ export const NAV_ITEMS: NavItem[] = [
   { id: "admin-invoices", label: "Invoices", icon: FileText, group: "Admin Panel", badge: 2 },
   { id: "admin-products", label: "Products", icon: Package, group: "Admin Panel" },
   { id: "admin-leads", label: "Leads", icon: Zap, group: "Admin Panel", badge: 5 },
+  { id: "admin-pricing", label: "Pricing Rules", icon: DollarSign, group: "Admin Panel" },
   { id: "admin-analytics", label: "Analytics", icon: BarChart3, group: "Admin Panel" },
   // Client portal -- what their customers see
   { id: "client-dashboard", label: "Dashboard", icon: LayoutDashboard, group: "Client Portal" },
   { id: "client-orders", label: "Orders", icon: ShoppingCart, group: "Client Portal" },
   { id: "client-invoices", label: "Invoices", icon: FileText, group: "Client Portal" },
+  { id: "client-standing-orders", label: "Standing Orders", icon: Repeat, group: "Client Portal" },
   { id: "catalog", label: "Product Catalog", icon: Package, group: "Client Portal" },
   { id: "client-analytics", label: "Analytics", icon: BarChart3, group: "Client Portal" },
   { id: "client-referrals", label: "Refer & Earn", icon: Heart, group: "Client Portal" },

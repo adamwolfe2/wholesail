@@ -55,6 +55,9 @@ export function HeroSection() {
           <div className="font-mono text-xs" style={{ color: "var(--text-muted)" }}>
             No signup required · Starting at $25K · Live in under 2 weeks
           </div>
+          <div className="font-mono text-[11px] text-sand mt-2">
+            Current build queue: 2-3 weeks | Limited onboarding slots
+          </div>
         </div>
 
         {/* Right side -- animated build demo */}
