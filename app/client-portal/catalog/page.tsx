@@ -38,7 +38,8 @@ interface CatalogProduct {
 
 export default function CatalogPage() {
   const { isSignedIn } = useUser()
-  const { addItem } = useCart()
+  const { addItem, getTotalItems } = useCart()
+  const totalItems = getTotalItems()
 
   const [products, setProducts] = useState<CatalogProduct[]>([])
   const [categories, setCategories] = useState<string[]>([])
@@ -186,74 +187,99 @@ export default function CatalogPage() {
                   key={product.id}
                   className="flex flex-col bg-cream group transition-colors duration-200 hover:bg-sand/10"
                 >
-                  <div className="flex flex-col flex-1 p-4 sm:p-5">
-                    {/* Category */}
-                    <p className="text-[9px] tracking-[0.18em] uppercase text-sand mb-1.5">
-                      {product.category}
-                    </p>
+                  {/* Mobile: horizontal layout for single-column */}
+                  <div className="flex flex-row sm:flex-col flex-1 p-4 sm:p-5 gap-3 sm:gap-0">
+                    <div className="flex-1 min-w-0 flex flex-col">
+                      {/* Category */}
+                      <p className="text-[9px] tracking-[0.18em] uppercase text-sand mb-1.5">
+                        {product.category}
+                      </p>
 
-                    {/* Name */}
-                    <h3 className="font-serif font-bold text-sm sm:text-base leading-tight text-balance mb-2 text-ink">
-                      {product.name}
-                    </h3>
+                      {/* Name */}
+                      <h3 className="font-serif font-bold text-base sm:text-base leading-tight text-balance mb-2 text-ink">
+                        {product.name}
+                      </h3>
 
-                    {/* Price */}
-                    <div className="mb-3 flex items-center">
-                      {product.marketRate ? (
-                        <span className="inline-flex items-center gap-1 text-[9px] tracking-[0.15em] uppercase border border-sand text-sand px-2 py-0.5">
-                          <TrendingUp className="h-2.5 w-2.5" />
-                          Market Rate
-                        </span>
-                      ) : (
-                        <p className="text-base sm:text-lg font-bold leading-none text-ink">
-                          {formatCurrency(product.price)}{' '}
-                          <span className="text-xs font-normal text-ink/50">
-                            {product.unit}
+                      {/* Price */}
+                      <div className="mb-2 sm:mb-3 flex items-center">
+                        {product.marketRate ? (
+                          <span className="inline-flex items-center gap-1 text-[9px] tracking-[0.15em] uppercase border border-sand text-sand px-2 py-0.5">
+                            <TrendingUp className="h-2.5 w-2.5" />
+                            Market Rate
                           </span>
+                        ) : (
+                          <p className="text-lg font-bold leading-none text-ink">
+                            {formatCurrency(product.price)}{' '}
+                            <span className="text-xs font-normal text-ink/50">
+                              {product.unit}
+                            </span>
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Description */}
+                      {product.description && (
+                        <p className="text-xs text-ink/50 leading-relaxed line-clamp-2 mb-auto">
+                          {product.description}
+                        </p>
+                      )}
+
+                      {/* Flags */}
+                      {(!isAvailable || product.coldChainRequired || product.prepayRequired) && (
+                        <div className="flex flex-wrap gap-1 mt-2 sm:mt-3">
+                          {!isAvailable && (
+                            <span className="text-[9px] tracking-wide uppercase border border-sand px-1.5 py-0.5 text-sand">
+                              Out of Stock
+                            </span>
+                          )}
+                          {product.coldChainRequired && (
+                            <span className="text-[9px] tracking-wide uppercase border border-sand px-1.5 py-0.5 text-sand inline-flex items-center gap-0.5">
+                              <Snowflake className="h-2 w-2" />
+                              Cold Chain
+                            </span>
+                          )}
+                          {product.prepayRequired && (
+                            <span className="text-[9px] tracking-wide uppercase border border-sand px-1.5 py-0.5 text-sand inline-flex items-center gap-0.5">
+                              <CreditCard className="h-2 w-2" />
+                              Prepay
+                            </span>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Minimum order */}
+                      {product.minimumOrder && (
+                        <p className="text-[10px] text-ink/40 mt-2 pt-2 border-t border-sand/30">
+                          {product.minimumOrder}
                         </p>
                       )}
                     </div>
 
-                    {/* Description */}
-                    {product.description && (
-                      <p className="text-xs text-ink/50 leading-relaxed line-clamp-2 mb-auto">
-                        {product.description}
-                      </p>
-                    )}
-
-                    {/* Flags */}
-                    {(!isAvailable || product.coldChainRequired || product.prepayRequired) && (
-                      <div className="flex flex-wrap gap-1 mt-3">
-                        {!isAvailable && (
-                          <span className="text-[9px] tracking-wide uppercase border border-sand px-1.5 py-0.5 text-sand">
-                            Out of Stock
-                          </span>
+                    {/* Mobile: side add-to-cart button */}
+                    <div className="flex sm:hidden items-center shrink-0">
+                      <button
+                        onClick={() => handleAddToCart(product)}
+                        disabled={!isAvailable || isAdded || !isSignedIn}
+                        className={`h-12 w-12 flex items-center justify-center transition-all duration-200 ${
+                          isAdded
+                            ? 'bg-ink text-cream'
+                            : isAvailable && isSignedIn
+                              ? 'border border-ink text-ink active:bg-ink active:text-cream'
+                              : 'border border-sand text-sand cursor-not-allowed opacity-50'
+                        }`}
+                        aria-label={isAdded ? 'Added to cart' : 'Add to cart'}
+                      >
+                        {isAdded ? (
+                          <Check className="h-5 w-5" />
+                        ) : (
+                          <ShoppingCart className="h-5 w-5" />
                         )}
-                        {product.coldChainRequired && (
-                          <span className="text-[9px] tracking-wide uppercase border border-sand px-1.5 py-0.5 text-sand inline-flex items-center gap-0.5">
-                            <Snowflake className="h-2 w-2" />
-                            Cold Chain
-                          </span>
-                        )}
-                        {product.prepayRequired && (
-                          <span className="text-[9px] tracking-wide uppercase border border-sand px-1.5 py-0.5 text-sand inline-flex items-center gap-0.5">
-                            <CreditCard className="h-2 w-2" />
-                            Prepay
-                          </span>
-                        )}
-                      </div>
-                    )}
-
-                    {/* Minimum order */}
-                    {product.minimumOrder && (
-                      <p className="text-[10px] text-ink/40 mt-2 pt-2 border-t border-sand/30">
-                        {product.minimumOrder}
-                      </p>
-                    )}
+                      </button>
+                    </div>
                   </div>
 
-                  {/* Add to Cart */}
-                  <div className="px-4 sm:px-5 pb-4 sm:pb-5 mt-auto">
+                  {/* Desktop: full-width add to cart button */}
+                  <div className="hidden sm:block px-4 sm:px-5 pb-4 sm:pb-5 mt-auto">
                     <button
                       onClick={() => handleAddToCart(product)}
                       disabled={!isAvailable || isAdded || !isSignedIn}
@@ -287,6 +313,15 @@ export default function CatalogPage() {
             })}
           </div>
         )}
+
+        {/* Sticky mobile cart bar -- visible when items are in cart */}
+        {totalItems > 0 && (
+          <div className="sm:hidden fixed bottom-0 inset-x-0 z-40 border-t border-sand bg-cream px-4 py-3" style={{ paddingBottom: 'max(12px, env(safe-area-inset-bottom))' }}>
+            <CartDrawer />
+          </div>
+        )}
+        {/* Spacer for sticky bar */}
+        {totalItems > 0 && <div className="sm:hidden h-[72px]" />}
       </div>
     </PortalLayout>
   )
@@ -296,13 +331,15 @@ function CatalogSkeleton() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-sand/30">
       {Array.from({ length: 8 }).map((_, i) => (
-        <div key={i} className="bg-cream p-4 sm:p-5 space-y-3">
-          <Skeleton className="h-3 w-20 bg-sand/20" />
-          <Skeleton className="h-5 w-3/4 bg-sand/20" />
-          <Skeleton className="h-6 w-16 bg-sand/20" />
-          <Skeleton className="h-4 w-full bg-sand/20" />
-          <Skeleton className="h-4 w-2/3 bg-sand/20" />
-          <Skeleton className="h-9 w-full bg-sand/20 mt-4" />
+        <div key={i} className="bg-cream p-4 sm:p-5 flex flex-row sm:flex-col gap-3 sm:gap-0 sm:space-y-3">
+          <div className="flex-1 space-y-3">
+            <Skeleton className="h-3 w-20 bg-sand/20" />
+            <Skeleton className="h-5 w-3/4 bg-sand/20" />
+            <Skeleton className="h-6 w-16 bg-sand/20" />
+            <Skeleton className="h-4 w-full bg-sand/20" />
+            <Skeleton className="h-4 w-2/3 bg-sand/20" />
+          </div>
+          <Skeleton className="h-12 w-12 sm:h-9 sm:w-full bg-sand/20 shrink-0 self-center sm:self-auto sm:mt-4" />
         </div>
       ))}
     </div>

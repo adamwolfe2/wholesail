@@ -1,13 +1,23 @@
 import { NextResponse } from "next/server";
 import { captureWithContext } from "@/lib/sentry";
 import { prisma } from "@/lib/db";
-import { sendPartnerDay3Email, sendPartnerDay7Email } from "@/lib/email";
+import {
+  sendPartnerDay3Email,
+  sendPartnerDay3StandingOrdersEmail,
+  sendPartnerDay7Email,
+  sendPartnerDay7AnalyticsEmail,
+} from "@/lib/email";
 
-// Onboarding drip — runs daily at 10am via Vercel Cron.
-// Step 1 (set at approval): Day 0 welcome email already sent by the wholesale approval route.
-// Step 2 trigger: 1+ day after approvedAt → send Day 1 "catalog guide" email.
-// Step 3 trigger: 3+ days after approvedAt + no orders placed → send Day 7 nudge.
-// Step 4: done — no more onboarding emails.
+/**
+ * Onboarding drip -- runs daily at 10am via Vercel Cron.
+ *
+ * Step 0 (at approval): Welcome email already sent by the wholesale approval route.
+ * Step 1 -> 2: 1+ day after approval  -> Day 1: "Before your first order" (catalog guide)
+ * Step 2 -> 3: 3+ days after approval -> Day 3: "Standing orders" (auto-reorder setup)
+ * Step 3 -> 4: 7+ days after approval -> Day 7: "Analytics dashboard" (track spending)
+ *              OR if they still haven't ordered, send the "What are you running low on?" nudge
+ * Step 4: done -- no more onboarding emails.
+ */
 
 export async function GET(req: Request) {
   // Fail-secure: abort if CRON_SECRET is not configured
@@ -27,9 +37,10 @@ export async function GET(req: Request) {
   const day7Cutoff = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
 
   let day1Sent = 0;
+  let day3Sent = 0;
   let day7Sent = 0;
 
-  // Step 1 → 2: orgs that got Day 0 welcome but not Day 1 yet, and it's been 1+ days
+  // ── Step 1 -> 2: Day 1 catalog guide ────────────────────────────────────────
   const day1Targets = await prisma.organization.findMany({
     where: {
       onboardingStep: 1,
@@ -63,20 +74,18 @@ export async function GET(req: Request) {
     }
   }
 
-  // Step 2 → 3: orgs that got Day 1 but not Day 7 nudge, 3+ days old, no orders placed
+  // ── Step 2 -> 3: Day 3 standing orders guide ────────────────────────────────
   const day3Targets = await prisma.organization.findMany({
     where: {
       onboardingStep: 2,
       approvedAt: { lte: day3Cutoff },
-      // Skip if they've placed an order
-      orders: { none: { status: { not: "CANCELLED" } } },
     },
     select: { id: true, email: true, contactPerson: true, name: true },
   });
 
   for (const org of day3Targets) {
     try {
-      await sendPartnerDay7Email({
+      await sendPartnerDay3StandingOrdersEmail({
         name: org.contactPerson,
         email: org.email,
         businessName: org.name,
@@ -85,7 +94,7 @@ export async function GET(req: Request) {
         where: { id: org.id },
         data: { onboardingStep: 3 },
       });
-      day7Sent++;
+      day3Sent++;
     } catch (err) {
       captureWithContext(err, { route: "cron/onboarding-drip", step: "day3", orgId: org.id });
       await prisma.auditEvent.create({
@@ -99,18 +108,67 @@ export async function GET(req: Request) {
     }
   }
 
-  // Step 3 → 4: orgs at step 3 that are 7+ days old — mark done regardless
-  await prisma.organization.updateMany({
+  // ── Step 3 -> 4: Day 7 analytics + final nudge ─────────────────────────────
+  const day7Targets = await prisma.organization.findMany({
     where: {
       onboardingStep: 3,
       approvedAt: { lte: day7Cutoff },
     },
-    data: { onboardingStep: 4 },
+    select: {
+      id: true,
+      email: true,
+      contactPerson: true,
+      name: true,
+      orders: {
+        where: { status: { not: "CANCELLED" } },
+        select: { id: true },
+        take: 1,
+      },
+    },
   });
+
+  for (const org of day7Targets) {
+    try {
+      const hasOrders = org.orders.length > 0;
+
+      if (hasOrders) {
+        // They've ordered -- send analytics guide
+        await sendPartnerDay7AnalyticsEmail({
+          name: org.contactPerson,
+          email: org.email,
+          businessName: org.name,
+        });
+      } else {
+        // No orders yet -- send nudge + analytics
+        await sendPartnerDay7Email({
+          name: org.contactPerson,
+          email: org.email,
+          businessName: org.name,
+        });
+      }
+
+      await prisma.organization.update({
+        where: { id: org.id },
+        data: { onboardingStep: 4 },
+      });
+      day7Sent++;
+    } catch (err) {
+      captureWithContext(err, { route: "cron/onboarding-drip", step: "day7", orgId: org.id });
+      await prisma.auditEvent.create({
+        data: {
+          action: "onboarding_drip_failed",
+          entityType: "Organization",
+          entityId: org.id,
+          metadata: { step: 7, error: String(err) },
+        },
+      }).catch(() => {});
+    }
+  }
 
   return NextResponse.json({
     success: true,
     day1Sent,
+    day3Sent,
     day7Sent,
   });
 }

@@ -242,32 +242,37 @@ export default function ClientOrdersPage() {
                   {orders.map((order) => (
                     <div
                       key={order.id}
-                      className="border border-sand/50 p-4 flex items-start justify-between gap-3"
+                      className="border border-sand/50 p-4"
                     >
-                      <div className="min-w-0 flex-1">
-                        <p className="font-mono text-sm font-semibold text-ink truncate">{order.orderNumber}</p>
-                        <p className="text-xs text-ink/50 mt-0.5">
-                          {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-                          &nbsp;&bull;&nbsp;{order.items.length} items
-                        </p>
-                        <div className="mt-2">
-                          <Badge variant="outline" className={`text-[10px] ${getStatusColor(order.status)}`}>
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0 flex-1">
+                          <p className="font-mono text-sm font-semibold text-ink truncate">{order.orderNumber}</p>
+                          <p className="text-xs text-ink/50 mt-0.5">
+                            {new Date(order.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                            &nbsp;&bull;&nbsp;{order.items.length} items
+                          </p>
+                        </div>
+                        <div className="text-right shrink-0">
+                          <p className="text-sm font-bold text-ink">
+                            ${Number(order.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                          </p>
+                          <Badge variant="outline" className={`text-[10px] mt-1 ${getStatusColor(order.status)}`}>
                             {order.status}
                           </Badge>
                         </div>
                       </div>
-                      <div className="text-right shrink-0">
-                        <p className="text-sm font-bold text-ink">
-                          ${Number(order.total).toLocaleString('en-US', { minimumFractionDigits: 2 })}
-                        </p>
+                      {/* Mobile action row */}
+                      <div className="flex items-center gap-2 mt-3 pt-3 border-t border-sand/30">
+                        <ReorderButton orderNumber={order.orderNumber} size="sm" variant="outline" />
                         <Button
-                          variant="ghost"
+                          variant="outline"
                           size="sm"
-                          className="mt-1 h-8 px-2 text-ink/60 hover:text-ink"
+                          className="flex-1 border-sand text-ink hover:bg-sand/20 min-h-[44px]"
                           asChild
                         >
                           <Link href={`/client-portal/orders/${order.orderNumber}`}>
-                            <ArrowRight className="h-4 w-4" />
+                            View Details
+                            <ArrowRight className="h-4 w-4 ml-1" />
                           </Link>
                         </Button>
                       </div>

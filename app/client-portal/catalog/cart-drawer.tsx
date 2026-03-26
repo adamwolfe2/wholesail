@@ -97,22 +97,29 @@ export function CartDrawer() {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetTrigger asChild>
           <Button
-            className="bg-ink text-cream hover:bg-ink/80 rounded-none min-h-[44px] relative"
+            className="bg-ink text-cream hover:bg-ink/80 rounded-none min-h-[44px] w-full sm:w-auto relative"
           >
             <ShoppingCart className="h-4 w-4 mr-2" />
-            Cart
+            <span className="sm:hidden">
+              View Cart ({totalItems} {totalItems === 1 ? 'item' : 'items'}) &mdash; {formatCurrency(totalPrice)}
+            </span>
+            <span className="hidden sm:inline">Cart</span>
             {totalItems > 0 && (
-              <Badge className="ml-2 bg-cream text-ink hover:bg-cream rounded-none h-5 min-w-[20px] px-1 flex items-center justify-center text-xs">
+              <Badge className="ml-2 hidden sm:flex bg-cream text-ink hover:bg-cream rounded-none h-5 min-w-[20px] px-1 items-center justify-center text-xs">
                 {totalItems}
               </Badge>
             )}
           </Button>
         </SheetTrigger>
         <SheetContent
-          className="w-full sm:max-w-lg flex flex-col p-0 h-screen overflow-hidden rounded-none border-l border-sand bg-cream"
+          className="w-full sm:max-w-lg flex flex-col p-0 overflow-hidden rounded-none border-sand bg-cream max-sm:inset-x-0 max-sm:bottom-0 max-sm:top-auto max-sm:h-[85vh] max-sm:border-t max-sm:data-[state=closed]:slide-out-to-bottom max-sm:data-[state=open]:slide-in-from-bottom sm:h-screen sm:inset-y-0 sm:right-0 sm:border-l sm:data-[state=closed]:slide-out-to-right sm:data-[state=open]:slide-in-from-right"
           aria-describedby={undefined}
         >
-          <SheetHeader className="px-5 sm:px-6 pt-5 sm:pt-6 pb-4 border-b border-sand">
+          {/* Mobile drag handle */}
+          <div className="sm:hidden flex justify-center pt-3 pb-1">
+            <div className="w-10 h-1 bg-sand" />
+          </div>
+          <SheetHeader className="px-5 sm:px-6 pt-3 sm:pt-6 pb-4 border-b border-sand">
             <SheetTitle className="font-serif text-xl text-ink">
               Your Order ({totalItems} {totalItems === 1 ? 'item' : 'items'})
             </SheetTitle>
