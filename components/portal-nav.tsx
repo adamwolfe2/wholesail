@@ -213,7 +213,7 @@ export function PortalNav() {
           <div className="absolute left-0 right-0 top-full bg-cream border-b border-shell shadow-lg z-50">
             <div className="flex items-center justify-between px-4 py-3 border-b border-shell">
               <span className="text-xs font-semibold uppercase tracking-wider text-ink/50">More Pages</span>
-              <button onClick={() => setMoreOpen(false)} className="text-ink/50 hover:text-ink p-1">
+              <button onClick={() => setMoreOpen(false)} aria-label="Close menu" className="text-ink/50 hover:text-ink p-1">
                 <X className="h-4 w-4" />
               </button>
             </div>
