@@ -13,6 +13,7 @@ import { ProductDetailActions } from '@/components/product-detail-actions'
 import { auth } from '@clerk/nextjs/server'
 import type { Product } from '@/lib/products'
 import { getSiteUrl } from '@/lib/get-site-url'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 export const dynamic = 'force-dynamic'
 
@@ -197,6 +198,13 @@ export default async function ProductDetailPage({ params }: Props) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }}
         />
+        <BreadcrumbSchema
+          items={[
+            { name: "Home", href: "/" },
+            { name: "Catalog", href: "/catalog" },
+            { name: category.name },
+          ]}
+        />
 
         <MarketingHeader />
 
@@ -322,6 +330,7 @@ export default async function ProductDetailPage({ params }: Props) {
     description: product.description || product.name,
     category: product.category,
     url: `${SITE_URL}/catalog/${product.slug}`,
+    ...(product.image ? { image: product.image } : {}),
     brand: {
       '@type': 'Brand',
       name: 'Wholesail',
@@ -355,6 +364,13 @@ export default async function ProductDetailPage({ params }: Props) {
         id={`product-schema-${product.slug}`}
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(productJson) }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Catalog", href: "/catalog" },
+          { name: product.name },
+        ]}
       />
 
       <MarketingHeader />

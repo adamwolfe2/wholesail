@@ -385,6 +385,7 @@ export default function MessagesPage() {
                     placeholder="Search conversations..."
                     value={searchQuery}
                     onChange={e => setSearchQuery(e.target.value)}
+                    aria-label="Search conversations"
                     className="pl-8 h-9 bg-cream border-sand text-ink placeholder:text-ink/40 focus-visible:ring-ink text-sm"
                   />
                 </div>

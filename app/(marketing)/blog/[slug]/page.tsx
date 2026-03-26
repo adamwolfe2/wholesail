@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, ArrowRight, Clock, Calendar } from "lucide-react";
 import { getPostBySlug, getAllPosts, type BlogPost } from "@/lib/blog/posts";
 import { EmailSubscribeForm } from "@/components/email-subscribe-form";
+import { BreadcrumbSchema } from "@/components/seo/breadcrumb-schema";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -129,6 +130,13 @@ export default async function BlogPostPage({ params }: Props) {
       style={{ backgroundColor: "var(--bg-primary)" }}
     >
       <ArticleSchema post={post} />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "Blog", href: "/blog" },
+          { name: post.title },
+        ]}
+      />
 
       {/* Nav */}
       <nav

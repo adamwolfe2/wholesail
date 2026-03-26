@@ -138,6 +138,7 @@ export default function CatalogPage() {
               placeholder="Search products..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              aria-label="Search products"
               className="pl-9 border-sand bg-cream focus-visible:ring-ink rounded-none"
             />
           </div>

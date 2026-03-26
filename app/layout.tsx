@@ -68,6 +68,21 @@ export const metadata: Metadata = {
 
 const hasClerk = !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: portalConfig.brandName,
+  url: portalConfig.appUrl,
+  description:
+    "Wholesail builds custom wholesale ordering portals for distribution companies. Your clients order online, you manage everything in one place.",
+  contactPoint: {
+    "@type": "ContactPoint",
+    email: portalConfig.contactEmail,
+    contactType: "sales",
+  },
+  sameAs: [portalConfig.instagramUrl],
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -79,6 +94,17 @@ export default function RootLayout({
         className="antialiased font-serif"
         style={{ backgroundColor: "var(--bg-primary)", color: "var(--text-body)" }}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:text-sm focus:font-medium"
+          style={{ backgroundColor: "var(--text-headline)", color: "var(--bg-primary)" }}
+        >
+          Skip to content
+        </a>
         <PostHogProvider>{children}</PostHogProvider>
         <Toaster />
         <Analytics />

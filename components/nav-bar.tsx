@@ -6,6 +6,7 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import {
   Sheet,
   SheetContent,
+  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 
@@ -269,7 +270,8 @@ export function NavBar() {
               </button>
             </SheetTrigger>
 
-            <SheetContent side="right" className="w-72 p-0" style={{ backgroundColor: "var(--bg-primary)" }}>
+            <SheetContent side="right" className="w-72 p-0" style={{ backgroundColor: "var(--bg-primary)" }} aria-describedby={undefined}>
+              <SheetTitle className="sr-only">Navigation menu</SheetTitle>
               {/* Sheet header */}
               <div
                 className="flex items-center gap-2 px-5 py-4"

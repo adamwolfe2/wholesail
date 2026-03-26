@@ -244,14 +244,14 @@ function DemoPortalInner() {
                   <span className="font-serif font-bold text-[15px] text-ink leading-tight block truncate">{brand.company}</span>
                   <span className="font-serif italic text-xs text-sand leading-tight">Wholesale</span>
                 </div>
-                <button onClick={toggleSidebar} className="flex-shrink-0 p-1 text-sand hover:text-ink">
+                <button onClick={toggleSidebar} className="flex-shrink-0 p-1 text-sand hover:text-ink" aria-label="Collapse sidebar">
                   <PanelLeftClose className="w-3.5 h-3.5" />
                 </button>
               </>
             )}
           </div>
           {/* Nav */}
-          <nav className="py-3" style={{ minWidth: sidebarCollapsed ? 52 : 240, padding: sidebarCollapsed ? "12px 6px" : "12px 8px" }}>
+          <nav aria-label="Demo portal navigation" className="py-3" style={{ minWidth: sidebarCollapsed ? 52 : 240, padding: sidebarCollapsed ? "12px 6px" : "12px 8px" }}>
             {groups.map((group) => (
               <div key={group} className="mb-3">
                 {!sidebarCollapsed && (
@@ -309,22 +309,23 @@ function DemoPortalInner() {
             <button
               onClick={toggleSidebar}
               className="text-xs text-sand hover:text-ink transition-colors flex items-center gap-1.5"
+              aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
               {sidebarCollapsed ? <><Menu className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Expand</span></> : <><PanelLeftClose className="w-3.5 h-3.5" /> <span className="hidden sm:inline">Collapse</span></>}
             </button>
             <div className="flex items-center gap-3">
               {cartCount > 0 && (
-                <button onClick={() => setCartOpen(true)} className="relative p-1">
+                <button onClick={() => setCartOpen(true)} className="relative p-1" aria-label="Open shopping cart">
                   <ShoppingCart className="w-4 h-4 text-ink/60 hover:text-ink" />
                   <span className="absolute -top-1 -right-1 h-4 w-4 text-cream text-[9px] font-bold flex items-center justify-center" style={{ backgroundColor: brand.color }}>
                     {cartCount}
                   </span>
                 </button>
               )}
-              <div className="relative">
+              <button type="button" className="relative" aria-label="Notifications">
                 <Bell className="w-4 h-4 text-sand cursor-pointer hover:text-ink" />
                 <span className="absolute -top-0.5 -right-0.5 w-2 h-2" style={{ backgroundColor: brand.color }} />
-              </div>
+              </button>
               <div className="w-7 h-7 flex items-center justify-center font-mono text-[10px] text-cream" style={{ backgroundColor: brand.color }}>
                 A
               </div>
@@ -421,6 +422,7 @@ function DemoPortalInner() {
                 placeholder="you@company.com"
                 value={leadCaptureEmail}
                 onChange={(e) => setLeadCaptureEmail(e.target.value)}
+                aria-label="Email address"
                 className="flex-1 bg-white/10 border border-cream/20 text-cream font-mono text-xs px-3 py-2 placeholder:text-cream/30 focus:outline-none focus:border-cream/50"
                 required
               />

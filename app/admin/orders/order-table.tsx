@@ -148,6 +148,7 @@ export function OrderTable({ orders }: { orders: OrderRow[] }) {
             placeholder="Search by order # or client..."
             value={search}
             onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            aria-label="Search orders"
             className="pl-9"
           />
         </div>

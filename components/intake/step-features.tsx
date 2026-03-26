@@ -42,6 +42,7 @@ export function StepFeatures({
                 key={f.id}
                 type="button"
                 onClick={() => toggleFeature(f.id)}
+                aria-pressed={selected}
                 className="text-left px-4 py-3 border font-mono transition-all flex items-start gap-3"
                 style={{
                   backgroundColor: selected ? "var(--blue)" : "var(--bg-white)",
@@ -84,7 +85,7 @@ export function StepFeatures({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label htmlFor="intake-primaryColor" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Primary Brand Color
           </label>
           <div className="flex items-center gap-3">
@@ -94,8 +95,10 @@ export function StepFeatures({
               onChange={(e) => onChange({ primaryColor: e.target.value })}
               className="w-12 h-12 border cursor-pointer p-0"
               style={{ borderColor: "var(--border-strong)", borderRadius: "4px" }}
+              aria-label="Primary brand color picker"
             />
             <input
+              id="intake-primaryColor"
               type="text"
               value={data.primaryColor}
               onChange={(e) => onChange({ primaryColor: e.target.value })}
@@ -132,10 +135,11 @@ export function StepFeatures({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label htmlFor="intake-logoUrl" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Logo File URL
           </label>
           <input
+            id="intake-logoUrl"
             type="text"
             value={data.logoUrl}
             onChange={(e) => onChange({ logoUrl: e.target.value })}
@@ -145,7 +149,7 @@ export function StepFeatures({
           />
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label htmlFor="intake-secondaryColor" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Secondary / Accent Color
           </label>
           <div className="flex items-center gap-3">
@@ -155,8 +159,10 @@ export function StepFeatures({
               onChange={(e) => onChange({ brandSecondaryColor: e.target.value })}
               className="w-12 h-12 border cursor-pointer p-0"
               style={{ borderColor: "var(--border-strong)", borderRadius: "4px" }}
+              aria-label="Secondary brand color picker"
             />
             <input
+              id="intake-secondaryColor"
               type="text"
               value={data.brandSecondaryColor}
               onChange={(e) => onChange({ brandSecondaryColor: e.target.value })}
@@ -189,6 +195,7 @@ export function StepFeatures({
                 onChange({ inspirationUrls: updated });
               }}
               placeholder={`Inspiration site ${i + 1}`}
+              aria-label={`Inspiration site ${i + 1}`}
               className="w-full border px-4 py-3 font-mono text-sm bg-white focus:outline-none"
               style={{ borderColor: "var(--border-strong)", borderRadius: "4px", color: "var(--text-headline)" }}
             />
@@ -197,10 +204,11 @@ export function StepFeatures({
       </div>
 
       <div>
-        <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+        <label htmlFor="intake-additionalNotes" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
           Anything else we should know?
         </label>
         <textarea
+          id="intake-additionalNotes"
           value={data.additionalNotes}
           onChange={(e) => onChange({ additionalNotes: e.target.value })}
           placeholder="e.g. We need to migrate from an existing system. We have specific compliance requirements. We want to integrate with our ERP..."

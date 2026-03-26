@@ -375,6 +375,7 @@ export default function BuildCartPage() {
             value={productSearch}
             onChange={(e) => setProductSearch(e.target.value)}
             placeholder="Search products..."
+            aria-label="Search products"
             className="border-shell bg-cream rounded-none focus:border-ink max-w-sm"
           />
 

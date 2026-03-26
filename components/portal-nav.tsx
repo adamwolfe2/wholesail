@@ -111,7 +111,7 @@ export function PortalNav() {
         </div>
 
         {/* Nav links */}
-        <nav className="flex-1 flex flex-col py-5 px-3 gap-0.5">
+        <nav aria-label="Portal navigation" className="flex-1 flex flex-col py-5 px-3 gap-0.5">
           {portalLinks.map((link) => {
             const isActive = pathname === link.href || (link.href !== '/client-portal/dashboard' && pathname?.startsWith(link.href))
             const badgeCount = link.badge ? counts[link.badge] : 0
@@ -250,7 +250,7 @@ export function PortalLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-cream">
       <PortalNav />
-      <main className="lg:pl-64">
+      <main id="main-content" className="lg:pl-64">
         <div className="mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-10 max-w-7xl animate-fade-in">
           {children}
         </div>

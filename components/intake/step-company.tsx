@@ -18,10 +18,11 @@ export function StepCompany({
     <div className="space-y-6">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label htmlFor="intake-companyName" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Company Name *
           </label>
           <input
+            id="intake-companyName"
             type="text"
             value={data.companyName}
             onChange={(e) => onChange({ companyName: e.target.value })}
@@ -31,10 +32,11 @@ export function StepCompany({
           {err(data.companyName) && <span className="font-mono text-[10px] mt-1 block" style={{ color: "var(--destructive)" }}>Required</span>}
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label htmlFor="intake-shortName" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Short Name / Abbreviation
           </label>
           <input
+            id="intake-shortName"
             type="text"
             value={data.shortName}
             onChange={(e) => onChange({ shortName: e.target.value })}
@@ -49,10 +51,11 @@ export function StepCompany({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label htmlFor="intake-website" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Website
           </label>
           <input
+            id="intake-website"
             type="text"
             value={data.website}
             onChange={(e) => onChange({ website: e.target.value })}
@@ -61,10 +64,11 @@ export function StepCompany({
           />
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label htmlFor="intake-location" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Location
           </label>
           <input
+            id="intake-location"
             type="text"
             value={data.location}
             onChange={(e) => onChange({ location: e.target.value })}
@@ -76,10 +80,11 @@ export function StepCompany({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label htmlFor="intake-targetDomain" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Target Domain
           </label>
           <input
+            id="intake-targetDomain"
             type="text"
             value={data.targetDomain}
             onChange={(e) => onChange({ targetDomain: e.target.value })}
@@ -88,10 +93,10 @@ export function StepCompany({
           />
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label id="goLiveTimeline-label" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             When do you want to go live?
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-2" role="group" aria-labelledby="goLiveTimeline-label">
             {GO_LIVE_TIMELINES.map((t) => (
               <OptionButton
                 key={t}
@@ -107,10 +112,11 @@ export function StepCompany({
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label htmlFor="intake-contactName" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Your Name *
           </label>
           <input
+            id="intake-contactName"
             type="text"
             value={data.contactName}
             onChange={(e) => onChange({ contactName: e.target.value })}
@@ -120,10 +126,11 @@ export function StepCompany({
           {err(data.contactName) && <span className="font-mono text-[10px] mt-1 block" style={{ color: "var(--destructive)" }}>Required</span>}
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label htmlFor="intake-contactEmail" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Email *
           </label>
           <input
+            id="intake-contactEmail"
             type="email"
             value={data.contactEmail}
             onChange={(e) => onChange({ contactEmail: e.target.value })}
@@ -133,10 +140,11 @@ export function StepCompany({
           {err(data.contactEmail) && <span className="font-mono text-[10px] mt-1 block" style={{ color: "var(--destructive)" }}>Required</span>}
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label htmlFor="intake-contactPhone" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Phone
           </label>
           <input
+            id="intake-contactPhone"
             type="tel"
             value={data.contactPhone}
             onChange={(e) => onChange({ contactPhone: e.target.value })}
@@ -148,10 +156,10 @@ export function StepCompany({
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label id="role-label" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Your Role
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-2" role="group" aria-labelledby="role-label">
             {ROLES.map((r) => (
               <OptionButton
                 key={r}
@@ -164,10 +172,10 @@ export function StepCompany({
           </div>
         </div>
         <div>
-          <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+          <label id="revenue-label" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
             Annual Revenue
           </label>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-1 gap-2" role="group" aria-labelledby="revenue-label">
             {REVENUES.map((r) => (
               <OptionButton
                 key={r}

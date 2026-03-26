@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Instagram } from 'lucide-react'
 import { MarketingHeader } from '@/components/marketing-header'
+import { BreadcrumbSchema } from '@/components/seo/breadcrumb-schema'
 
 export const revalidate = 86400 // ISR: rebuild at most once per day
 
@@ -77,6 +78,12 @@ export default function GuidePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: "Home", href: "/" },
+          { name: "How to Order" },
+        ]}
       />
 
       <MarketingHeader />

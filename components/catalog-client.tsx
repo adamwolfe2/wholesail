@@ -141,6 +141,7 @@ export function CatalogClient({
                   placeholder="Search products…"
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
+                  aria-label="Search products"
                   className="pl-9 rounded-none border-shell bg-white focus-visible:ring-0 focus-visible:border-ink transition-colors"
                   suppressHydrationWarning
                 />

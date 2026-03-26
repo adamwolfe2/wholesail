@@ -15,6 +15,7 @@ export function OptionButton({
     <button
       type="button"
       onClick={onClick}
+      aria-pressed={selected}
       className="text-left px-4 py-3 border font-mono text-xs uppercase tracking-wide transition-all"
       style={{
         backgroundColor: selected ? "var(--blue)" : "var(--bg-white)",

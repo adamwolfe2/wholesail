@@ -71,6 +71,7 @@ export function CatalogView({ brand, data, cart, onAddToCart, onOpenCart }: View
               placeholder="Search..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
+              aria-label="Search products"
               className="border border-shell bg-white pl-9 pr-4 py-2 text-xs w-40 focus:outline-none focus:border-ink"
             />
           </div>

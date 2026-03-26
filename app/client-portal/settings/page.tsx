@@ -260,7 +260,7 @@ export default function SettingsPage() {
   if (!isLoaded) {
     return (
       <PortalLayout>
-        <div className="flex items-center justify-center min-h-[60vh]">
+        <div className="flex items-center justify-center min-h-[60vh]" role="status" aria-label="Loading settings">
           <Loader2 className="h-8 w-8 animate-spin text-sand" />
         </div>
       </PortalLayout>
@@ -522,7 +522,7 @@ export default function SettingsPage() {
               <form onSubmit={handleAddAddress} className="space-y-3 border border-sand/50 p-4">
                 <p className="text-sm font-medium text-ink">Add New Address</p>
                 <div className="space-y-1.5">
-                  <Label className="text-xs text-ink/60">Type</Label>
+                  <Label htmlFor="address-type" className="text-xs text-ink/60">Type</Label>
                   <Select
                     value={newAddress.type}
                     onValueChange={(v) => setNewAddress((p) => ({ ...p, type: v as 'BILLING' | 'SHIPPING' }))}
@@ -537,8 +537,9 @@ export default function SettingsPage() {
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <Label className="text-xs text-ink/60">Street *</Label>
+                  <Label htmlFor="address-street" className="text-xs text-ink/60">Street *</Label>
                   <Input
+                    id="address-street"
                     required
                     value={newAddress.street}
                     onChange={(e) => setNewAddress((p) => ({ ...p, street: e.target.value }))}
@@ -548,8 +549,9 @@ export default function SettingsPage() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <div className="space-y-1.5 col-span-1">
-                    <Label className="text-xs text-ink/60">City *</Label>
+                    <Label htmlFor="address-city" className="text-xs text-ink/60">City *</Label>
                     <Input
+                      id="address-city"
                       required
                       value={newAddress.city}
                       onChange={(e) => setNewAddress((p) => ({ ...p, city: e.target.value }))}
@@ -558,8 +560,9 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-xs text-ink/60">State *</Label>
+                    <Label htmlFor="address-state" className="text-xs text-ink/60">State *</Label>
                     <Input
+                      id="address-state"
                       required
                       value={newAddress.state}
                       onChange={(e) => setNewAddress((p) => ({ ...p, state: e.target.value }))}
@@ -569,8 +572,9 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-xs text-ink/60">ZIP *</Label>
+                    <Label htmlFor="address-zip" className="text-xs text-ink/60">ZIP *</Label>
                     <Input
+                      id="address-zip"
                       required
                       value={newAddress.zip}
                       onChange={(e) => setNewAddress((p) => ({ ...p, zip: e.target.value }))}
@@ -674,6 +678,7 @@ export default function SettingsPage() {
                     checked={notifPrefs[item.key]}
                     onCheckedChange={() => handleNotifToggle(item.key)}
                     disabled={notifSaving}
+                    aria-label={item.label}
                     className="data-[state=checked]:bg-ink ml-4 shrink-0"
                   />
                 </div>

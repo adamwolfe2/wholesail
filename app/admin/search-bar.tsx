@@ -98,6 +98,7 @@ function SearchPanel({
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search clients, orders..."
+          aria-label="Search clients, orders, and invoices"
           className="pl-8 pr-8 h-8 text-sm border-shell bg-white focus-visible:ring-0 focus-visible:border-ink placeholder:text-ink/30"
           autoFocus
         />
@@ -315,6 +316,7 @@ export function AdminSearchBar() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search clients, orders..."
+            aria-label="Search clients, orders, and invoices"
             className="pl-8 pr-8 h-8 text-sm border-shell bg-white focus-visible:ring-0 focus-visible:border-ink placeholder:text-ink/30"
           />
           {loading && (

@@ -221,6 +221,7 @@ export default function NewQuotePage() {
               }}
               onFocus={() => setShowOrgDropdown(true)}
               placeholder="Search for a client organization..."
+              aria-label="Search client organizations"
               className="border-shell bg-cream rounded-none focus:border-ink"
             />
             {showOrgDropdown && filteredOrgs.length > 0 && !selectedOrg && (
@@ -336,6 +337,7 @@ export default function NewQuotePage() {
               }}
               onFocus={() => setShowProductDropdown(true)}
               placeholder="Search and add a product..."
+              aria-label="Search products"
               className="border-shell bg-cream rounded-none focus:border-ink"
             />
             {showProductDropdown && productSearch.length > 0 && (

@@ -492,7 +492,7 @@ function CheckoutContent() {
                   </div>
 
                   {error && (
-                    <p className="text-sm text-destructive border border-destructive/30 bg-destructive/5 px-3 py-2">
+                    <p role="alert" className="text-sm text-destructive border border-destructive/30 bg-destructive/5 px-3 py-2">
                       {error}
                     </p>
                   )}
@@ -625,7 +625,7 @@ export default function CheckoutPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="min-h-screen bg-background flex items-center justify-center" role="status" aria-label="Loading checkout">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       }

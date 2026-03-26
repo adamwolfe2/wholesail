@@ -59,10 +59,11 @@ export function StepDistribution({
       </div>
 
       <div>
-        <label className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
+        <label htmlFor="intake-productCategories" className="font-mono text-[10px] uppercase tracking-widest block mb-2" style={{ color: "var(--text-muted)" }}>
           Main product categories (comma-separated)
         </label>
         <input
+          id="intake-productCategories"
           type="text"
           value={data.productCategories}
           onChange={(e) => onChange({ productCategories: e.target.value })}
@@ -118,6 +119,7 @@ export function StepDistribution({
               key={m}
               type="button"
               onClick={() => toggleOrdering(m)}
+              aria-pressed={data.currentOrdering.includes(m)}
               className="text-left px-3 py-2.5 border font-mono text-xs uppercase tracking-wide transition-all flex items-center gap-2"
               style={{
                 backgroundColor: data.currentOrdering.includes(m) ? "var(--blue)" : "var(--bg-white)",
@@ -180,6 +182,7 @@ export function StepDistribution({
               key={t}
               type="button"
               onClick={() => togglePayment(t)}
+              aria-pressed={data.paymentTerms.includes(t)}
               className="text-left px-3 py-2.5 border font-mono text-xs uppercase tracking-wide transition-all flex items-center gap-2"
               style={{
                 backgroundColor: data.paymentTerms.includes(t) ? "var(--blue)" : "var(--bg-white)",
