@@ -11,6 +11,7 @@ const securityHeaders = [
   { key: "X-XSS-Protection", value: "1; mode=block" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+  { key: "X-DNS-Prefetch-Control", value: "on" },
   {
     key: "Strict-Transport-Security",
     value: "max-age=63072000; includeSubDomains; preload",
@@ -37,7 +38,7 @@ const securityHeaders = [
 const nextConfig = {
   poweredByHeader: false,
   experimental: {
-    optimizePackageImports: ["lucide-react"],
+    optimizePackageImports: ["lucide-react", "recharts", "date-fns", "@radix-ui/react-icons"],
   },
   async redirects() {
     // These TBGC template pages were carried over from the distribution portal
@@ -64,9 +65,21 @@ const nextConfig = {
     }));
   },
   async headers() {
-    return [{ source: "/(.*)", headers: securityHeaders }];
+    return [
+      { source: "/(.*)", headers: securityHeaders },
+      {
+        source: "/:all*(svg|jpg|jpeg|png|webp|avif|woff2|ico)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+    ];
   },
   images: {
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       { protocol: "https", hostname: "www.google.com" },
       { protocol: "https", hostname: "img.clerk.com" },

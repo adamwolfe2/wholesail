@@ -4,6 +4,8 @@ import { PostHogProvider } from "@/components/posthog-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Newsreader, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { portalConfig } from "@/lib/portal-config";
 
 const newsreader = Newsreader({
@@ -79,6 +81,8 @@ export default function RootLayout({
       >
         <PostHogProvider>{children}</PostHogProvider>
         <Toaster />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
