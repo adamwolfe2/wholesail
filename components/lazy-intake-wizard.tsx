@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 
 export const LazyIntakeWizard = dynamic(
-  () => import("@/components/intake-wizard").then((m) => ({ default: m.IntakeWizard })),
+  () => import("@/components/intake").then((m) => ({ default: m.IntakeWizard })),
   {
     loading: () => (
       <div

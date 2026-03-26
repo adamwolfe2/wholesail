@@ -29,6 +29,7 @@ import { AdminInvoicesView } from "./demo-admin-invoices";
 import { AdminProductsView } from "./demo-admin-products";
 import { AdminAnalyticsView } from "./demo-admin-analytics";
 import { AdminPricingView } from "./demo-admin-pricing";
+import { AdminLeadsView } from "./demo-admin-leads";
 import { ClientStandingOrdersView } from "./demo-client-standing-orders";
 import { FulfillmentBoardView } from "./demo-fulfillment";
 import { SmsDemoView } from "./demo-sms";
@@ -349,7 +350,7 @@ function DemoPortalInner() {
             {view === "admin-clients" && <AdminClientsView {...viewProps} />}
             {view === "admin-invoices" && <AdminInvoicesView {...viewProps} />}
             {view === "admin-products" && <AdminProductsView {...viewProps} />}
-            {view === "admin-leads" && <PlaceholderView brand={brand} title="Lead Management" description="Full CRM for wholesale leads — from giveaway signup to qualification to conversion. Includes health scoring, follow-up automation, and rep assignment." />}
+            {view === "admin-leads" && <AdminLeadsView {...viewProps} />}
             {view === "admin-analytics" && <AdminAnalyticsView {...viewProps} />}
             {view === "admin-pricing" && <AdminPricingView {...viewProps} />}
             {view === "sms-demo" && <SmsDemoView {...viewProps} />}
