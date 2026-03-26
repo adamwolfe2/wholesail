@@ -3,6 +3,7 @@ import { captureWithContext } from '@/lib/sentry'
 import { prisma } from '@/lib/db'
 import { notifyDistributorsForOrder } from '@/lib/db/orders'
 import { createOrderWithRetry } from '@/lib/order-number'
+import { portalConfig } from '@/lib/portal-config'
 
 function getNextRunDate(
   frequency: 'WEEKLY' | 'BIWEEKLY' | 'MONTHLY',
@@ -183,7 +184,7 @@ export async function GET(req: Request) {
           const more = so.items.length > 3 ? ` +${so.items.length - 3} more` : ""
           sendMessage({
             to: orgPhone,
-            message: `Your standing order "${so.name}" has been placed (${orderNumber}): ${itemSummary}${more}. ${process.env.OPS_NAME ?? 'Our team'} will confirm shortly. Reply STOP to skip next week's order.`,
+            message: `Your standing order "${so.name}" has been placed (${orderNumber}): ${itemSummary}${more}. ${portalConfig.opsName} will confirm shortly. Reply STOP to skip next week's order.`,
           }).catch(console.error)
         }
 

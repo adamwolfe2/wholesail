@@ -14,6 +14,7 @@ import {
 import { Menu, Package } from "lucide-react";
 import { adminNav } from "./nav-config";
 import { cn } from "@/lib/utils";
+import { portalConfig } from "@/lib/portal-config";
 
 export function AdminMobileNav({ navBadges = {} }: { navBadges?: Record<string, number> }) {
   const [open, setOpen] = useState(false);
@@ -31,7 +32,7 @@ export function AdminMobileNav({ navBadges = {} }: { navBadges?: Record<string, 
         <SheetHeader className="p-4 border-b">
           <SheetTitle className="flex items-center gap-2">
             <Package className="h-5 w-5" />
-            {process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'} Admin
+            {portalConfig.brandName} Admin
           </SheetTitle>
         </SheetHeader>
         <nav className="p-3 space-y-1">

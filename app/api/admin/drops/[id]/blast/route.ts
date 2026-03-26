@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { requireAdmin } from '@/lib/auth/require-admin'
 import { prisma } from '@/lib/db'
-import { sendDropBlastEmail } from '@/lib/email'
+import { sendDropBlastEmail, shouldSendEmail } from '@/lib/email'
 import { sendMessage, toE164 } from '@/lib/integrations/blooio'
 import { notifyLimiter, checkRateLimit } from '@/lib/rate-limit'
 import { getSiteUrl } from '@/lib/brand'
@@ -37,7 +37,7 @@ export async function POST(
   // Fetch all approved wholesale organizations
   const orgs = await prisma.organization.findMany({
     where: { isWholesaler: true },
-    select: { id: true, name: true, email: true, phone: true },
+    select: { id: true, name: true, email: true, phone: true, notificationPrefs: true },
   })
 
   if (orgs.length === 0) {
@@ -55,6 +55,7 @@ export async function POST(
 
   let emailsSent = 0
   let smsSent = 0
+  let optedOut = 0
   const emailErrors: string[] = []
   const smsErrors: string[] = []
 
@@ -64,6 +65,15 @@ export async function POST(
     const batch = orgs.slice(i, i + BATCH_SIZE)
     await Promise.allSettled(
       batch.map(async (org) => {
+        // Check notification preferences — skip if opted out of drop alerts
+        const prefs = org.notificationPrefs as
+          | { emailDropAlerts?: boolean; emailOrderUpdates?: boolean; emailWeeklyDigest?: boolean }
+          | null
+        if (!shouldSendEmail(prefs, 'drops')) {
+          optedOut++
+          return
+        }
+
         // Email
         const emailResult = await sendDropBlastEmail({
           email: org.email,
@@ -111,6 +121,7 @@ export async function POST(
         total: orgs.length,
         emailsSent,
         smsSent,
+        optedOut,
         emailErrors,
         smsErrors,
         dropTitle: drop.title,
@@ -123,6 +134,7 @@ export async function POST(
     total: orgs.length,
     emailsSent,
     smsSent,
+    optedOut,
     emailErrors,
     smsErrors,
   })

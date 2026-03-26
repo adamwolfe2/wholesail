@@ -167,7 +167,9 @@ export function verifyWebhookSignature(
 // Message templates — brand-aware
 // ============================================================
 
-const brand = () => process.env.BRAND_NAME || "Wholesail";
+import { portalConfig } from "@/lib/portal-config";
+
+const brand = () => portalConfig.brandNameServer;
 
 export function orderConfirmationMessage(orderNumber: string, businessName: string): string {
   return `Hi ${businessName} — your ${brand()} order #${orderNumber} has been confirmed. We'll be in touch shortly with delivery details. Questions? Reply here.`;
@@ -186,12 +188,10 @@ export function invoiceReminderMessage(
   amount: string,
   dueDate: string
 ): string {
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://wholesailhub.com'
-  return `${brand()} Invoice #${invoiceNumber} for $${amount} is due on ${dueDate}. Log in at ${siteUrl} to pay or view details. Questions? Reply here.`;
+  return `${brand()} Invoice #${invoiceNumber} for $${amount} is due on ${dueDate}. Log in at ${portalConfig.appUrl} to pay or view details. Questions? Reply here.`;
 }
 
 export function welcomePartnerMessage(businessName: string, contactName: string | null): string {
   const name = contactName ?? businessName;
-  const siteUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://wholesailhub.com'
-  return `Welcome to ${brand()}, ${name}! Your wholesale account is ready. Browse our full catalog at ${siteUrl}. Your account rep will reach out shortly. — The ${brand()} Team`;
+  return `Welcome to ${brand()}, ${name}! Your wholesale account is ready. Browse our full catalog at ${portalConfig.appUrl}. Your account rep will reach out shortly. — The ${brand()} Team`;
 }

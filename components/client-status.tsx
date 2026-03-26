@@ -16,6 +16,7 @@ import {
   type ClientProject,
   type ClientStatus as ClientStatusType,
 } from "@/lib/client-data";
+import { portalConfig } from "@/lib/portal-config";
 
 function SailLogo({ className = "w-6 h-6" }: { className?: string }) {
   return (
@@ -55,7 +56,7 @@ function ProjectStatus({ client }: { client: ClientProject }) {
               className="font-serif text-sm tracking-[0.05em] font-bold"
               style={{ color: "var(--text-headline)" }}
             >
-              {process.env.NEXT_PUBLIC_BRAND_NAME?.toUpperCase() || 'WHOLESAIL'}
+              {portalConfig.brandName.toUpperCase()}
             </span>
           </span>
           <span
@@ -383,7 +384,7 @@ function ProjectStatus({ client }: { client: ClientProject }) {
             Questions about your build? We respond within 2 hours.
           </p>
           <a
-            href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'orders@wholesailhub.com'}`}
+            href={`mailto:${portalConfig.contactEmail}`}
             className="inline-flex items-center gap-2 text-white px-5 py-2.5 font-mono text-xs font-semibold"
             style={{ backgroundColor: "var(--blue)" }}
           >
@@ -526,7 +527,7 @@ export function ClientStatusPage() {
               style={{ color: "var(--text-body)" }}
             >
               No project found for that email. Check your spelling or contact us
-              at {process.env.NEXT_PUBLIC_CONTACT_EMAIL || 'orders@wholesailhub.com'}
+              at {portalConfig.contactEmail}
             </p>
           )}
 

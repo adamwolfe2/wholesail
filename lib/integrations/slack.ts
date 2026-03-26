@@ -5,6 +5,8 @@
  *   SLACK_WEBHOOK_URL — Incoming webhook URL from Slack app settings
  */
 
+import { portalConfig } from "@/lib/portal-config";
+
 export interface NewIntakeData {
   companyName: string;
   contactName: string;
@@ -24,7 +26,7 @@ export async function notifyNewIntake(data: NewIntakeData): Promise<void> {
   if (!webhookUrl) return;
 
   const adminUrl =
-    (data.appUrl ?? process.env.NEXT_PUBLIC_APP_URL ?? "https://wholesailhub.com") +
+    (data.appUrl ?? portalConfig.appUrl) +
     `/admin/intakes/${data.intakeId}`;
 
   const res = await fetch(webhookUrl, {

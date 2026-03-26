@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { captureWithContext } from '@/lib/sentry'
 import { prisma } from '@/lib/db'
-import { sendLapsedClientEmail } from '@/lib/email/index'
+import { sendLapsedClientEmail, shouldSendEmail } from '@/lib/email/index'
 import { sendMessage, toE164 } from '@/lib/integrations/blooio'
 import { getSiteUrl } from '@/lib/brand'
 
@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     // Find all approved wholesale orgs
     const orgs = await prisma.organization.findMany({
       where: { isWholesaler: true },
-      select: { id: true, name: true, email: true, phone: true, contactPerson: true },
+      select: { id: true, name: true, email: true, phone: true, contactPerson: true, notificationPrefs: true },
       take: 500,
     })
 
@@ -114,6 +114,16 @@ export async function GET(req: NextRequest) {
 
     for (const org of qualifyingOrgs) {
       try {
+        // Check notification preferences — skip if opted out of order-related emails
+        const prefs = org.notificationPrefs as
+          | { emailDropAlerts?: boolean; emailOrderUpdates?: boolean; emailWeeklyDigest?: boolean }
+          | null
+        if (!shouldSendEmail(prefs, 'orders')) {
+          skipped++
+          console.info(`[lapsed-clients] Skipped org ${org.id} — opted out of order emails`)
+          continue
+        }
+
         const lastOrderAt = lastOrderAtByOrg.get(org.id)!
         const daysSince = Math.floor((now.getTime() - lastOrderAt.getTime()) / (1000 * 60 * 60 * 24))
 

@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Loader2, CheckCircle2, Search } from 'lucide-react'
+import { portalConfig } from '@/lib/portal-config'
 
 type State = 'idle' | 'searching' | 'submitting' | 'success' | 'not_found' | 'already_exists' | 'error'
 
@@ -302,8 +303,8 @@ export default function ClaimPage() {
           </p>
           <p className="text-sm text-sand">
             Didn&apos;t receive it? Check your spam folder, or email{' '}
-            <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="underline underline-offset-2">
-              {process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}
+            <a href={`mailto:${portalConfig.contactEmail}`} className="underline underline-offset-2">
+              {portalConfig.contactEmail}
             </a>
             .
           </p>
@@ -331,8 +332,8 @@ export default function ClaimPage() {
           </div>
           <p className="mt-8 text-sm text-sand">
             Having trouble?{' '}
-            <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="underline underline-offset-2">
-              {process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}
+            <a href={`mailto:${portalConfig.contactEmail}`} className="underline underline-offset-2">
+              {portalConfig.contactEmail}
             </a>
           </p>
         </div>
@@ -354,8 +355,8 @@ export default function ClaimPage() {
           </p>
           <p className="text-ink/70 mb-10 leading-relaxed">
             Email us at{' '}
-            <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="underline underline-offset-2 text-ink">
-              {process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}
+            <a href={`mailto:${portalConfig.contactEmail}`} className="underline underline-offset-2 text-ink">
+              {portalConfig.contactEmail}
             </a>{' '}
             and we&apos;ll help you get access.
           </p>
@@ -509,7 +510,7 @@ export default function ClaimPage() {
                       <p className="font-medium mb-1">No account found</p>
                       <p className="text-amber-700">
                         We couldn&apos;t match that information to an existing account. Try a different email or company name, or{' '}
-                        <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="underline underline-offset-2">
+                        <a href={`mailto:${portalConfig.contactEmail}`} className="underline underline-offset-2">
                           contact us
                         </a>
                         .
@@ -612,8 +613,8 @@ export default function ClaimPage() {
           <p className="text-sm text-ink/60 leading-relaxed">
             If you placed orders with us before our new portal launched, your account already exists — just enter the
             email we have on file. Can&apos;t remember which email? Reach us at{' '}
-            <a href={`mailto:${process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}`} className="text-ink underline underline-offset-2">
-              {process.env.NEXT_PUBLIC_CONTACT_EMAIL || "orders@wholesailhub.com"}
+            <a href={`mailto:${portalConfig.contactEmail}`} className="text-ink underline underline-offset-2">
+              {portalConfig.contactEmail}
             </a>{' '}
             and we&apos;ll sort it out.
           </p>

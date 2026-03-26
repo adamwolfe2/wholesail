@@ -1,7 +1,9 @@
+import { portalConfig } from "@/lib/portal-config";
+
 const GITHUB_API = "https://api.github.com";
-const GITHUB_OWNER = process.env.GITHUB_OWNER ?? "adamwolfe2";
+const GITHUB_OWNER = portalConfig.githubOwner;
 /** The template repo that contains the full Wholesail portal codebase */
-const TEMPLATE_REPO = process.env.GITHUB_TEMPLATE_REPO ?? "wholesail";
+const TEMPLATE_REPO = portalConfig.githubTemplateRepo;
 
 function headers() {
   const token = process.env.GITHUB_PAT;

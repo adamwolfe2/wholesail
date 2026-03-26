@@ -10,10 +10,11 @@ function getResend() {
   return new Resend(process.env.RESEND_API_KEY);
 }
 
-const FROM_EMAIL =
-  process.env.RESEND_FROM_EMAIL || "Wholesail <noreply@wholesailhub.com>";
-const BRAND_NAME = process.env.BRAND_NAME || "Wholesail";
-const BRAND_COLOR = process.env.BRAND_PRIMARY_COLOR || "#0A0A0A";
+import { portalConfig } from "@/lib/portal-config";
+
+const FROM_EMAIL = portalConfig.fromEmail;
+const BRAND_NAME = portalConfig.brandNameServer;
+const BRAND_COLOR = portalConfig.primaryColor;
 const APP_URL = getSiteUrl();
 
 type ProjectEmailData = {

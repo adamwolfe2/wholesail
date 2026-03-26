@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
+import { portalConfig } from "@/lib/portal-config";
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com";
+const BASE_URL = portalConfig.appUrl;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

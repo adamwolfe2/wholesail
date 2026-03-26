@@ -8,6 +8,7 @@
 import Stripe from "stripe";
 import { STRIPE_API_VERSION } from "./constants";
 import { StripeNotConfiguredError } from "./errors";
+import { portalConfig } from "@/lib/portal-config";
 
 let _stripe: Stripe | null = null;
 
@@ -32,7 +33,7 @@ export function getStripeClient(): Stripe {
       apiVersion: STRIPE_API_VERSION,
       typescript: true,
       appInfo: {
-        name: process.env.BRAND_NAME || "Wholesail",
+        name: portalConfig.brandNameServer,
         version: "1.0.0",
       },
     });

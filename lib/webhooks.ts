@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/db";
 import crypto from "crypto";
 
-const MAX_RETRIES = 3;
+const MAX_RETRIES = 5;
 const TIMEOUT_MS = 10_000;
 
 export type WebhookEvent =
@@ -12,7 +12,7 @@ export type WebhookEvent =
 
 /**
  * Dispatch a webhook event to all active endpoints subscribed to it.
- * Non-blocking — fires and forgets with retry logic.
+ * Non-blocking — fires and forgets. On failure, queues for cron-based retry.
  */
 export async function dispatchWebhook(
   event: WebhookEvent,
@@ -45,7 +45,10 @@ export async function dispatchWebhook(
   }
 }
 
-async function deliverWebhook(
+/**
+ * Attempt a single webhook delivery. Used by both initial dispatch and cron retry.
+ */
+export async function deliverWebhook(
   endpointId: string,
   url: string,
   secret: string,
@@ -86,6 +89,13 @@ async function deliverWebhook(
     responseText = err instanceof Error ? err.message : "Unknown error";
   }
 
+  // Compute retry fields for failed deliveries
+  const retryCount = success ? 0 : attempt;
+  const nextRetryAt =
+    !success && attempt < MAX_RETRIES
+      ? new Date(Date.now() + Math.pow(2, attempt) * 1000) // exponential backoff: 2s, 4s, 8s, 16s, 32s
+      : null;
+
   // Log the attempt
   try {
     await prisma.webhookLog.create({
@@ -97,19 +107,11 @@ async function deliverWebhook(
         response: responseText?.slice(0, 1000) ?? null,
         attempt,
         success,
+        retryCount,
+        nextRetryAt,
       },
     });
   } catch {
     // non-fatal
-  }
-
-  // Retry on failure
-  if (!success && attempt < MAX_RETRIES) {
-    const delay = Math.pow(2, attempt) * 1000; // exponential backoff: 2s, 4s, 8s
-    setTimeout(() => {
-      deliverWebhook(endpointId, url, secret, event, body, attempt + 1).catch(
-        (err) => console.error(`Webhook retry error (${endpointId}):`, err),
-      );
-    }, delay);
   }
 }

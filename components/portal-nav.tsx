@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { UserButton, useClerk } from '@clerk/nextjs'
 import { cn } from '@/lib/utils'
+import { portalConfig } from '@/lib/portal-config'
 import { NotificationBell } from '@/components/notification-bell'
 import {
   LayoutDashboard,
@@ -104,7 +105,7 @@ export function PortalNav() {
         {/* Wordmark */}
         <div className="flex items-center h-16 px-5 border-b border-shell">
           <Link href="/" className="flex flex-col min-w-0">
-            <span className="font-serif font-bold text-lg sm:text-xl text-ink tracking-tight leading-tight">{process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'}</span>
+            <span className="font-serif font-bold text-lg sm:text-xl text-ink tracking-tight leading-tight">{portalConfig.brandName}</span>
             <span className="font-serif italic text-sm text-sand leading-tight">Portal</span>
           </Link>
         </div>
@@ -155,7 +156,7 @@ export function PortalNav() {
       <header className="sticky top-0 z-50 border-b border-shell bg-cream/95 backdrop-blur supports-[backdrop-filter]:bg-cream/80 lg:hidden">
         <div className="flex h-14 items-center justify-between px-4">
           <Link href="/" className="flex flex-col min-w-0">
-            <span className="font-serif font-bold text-sm sm:text-base text-ink leading-tight">{process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'}</span>
+            <span className="font-serif font-bold text-sm sm:text-base text-ink leading-tight">{portalConfig.brandName}</span>
             <span className="font-serif italic text-[10px] text-sand leading-tight">Portal</span>
           </Link>
           <div className="flex items-center gap-1">

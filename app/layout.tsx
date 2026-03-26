@@ -4,6 +4,7 @@ import { PostHogProvider } from "@/components/posthog-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { Newsreader, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { portalConfig } from "@/lib/portal-config";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
   title: "Wholesail — Wholesale Ordering Portals for Distribution Companies",
   description:
     "Wholesail builds custom ordering portals for distribution companies. Your clients order online, you manage everything in one place. Live in under 2 weeks.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"),
+  metadataBase: new URL(portalConfig.appUrl),
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

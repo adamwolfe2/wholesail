@@ -15,13 +15,15 @@ function isValidEmail(email: string | undefined | null): email is string {
   return !!email && email.includes('@');
 }
 
-const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || "Wholesail <noreply@wholesailhub.com>";
+import { portalConfig } from "@/lib/portal-config";
+
+const FROM_EMAIL = portalConfig.fromEmail;
 const APP_URL = getSiteUrl();
-const OPS_NAME = process.env.OPS_NAME || "our team";
-const BRAND_NAME = process.env.BRAND_NAME || "Wholesail";
-const BRAND_LOCATION = process.env.BRAND_LOCATION || "";
-const BRAND_EMAIL = process.env.ADMIN_EMAIL || "${BRAND_EMAIL}";
-const BRAND_COLOR = process.env.BRAND_PRIMARY_COLOR || "#0A0A0A";
+const OPS_NAME = portalConfig.opsName;
+const BRAND_NAME = portalConfig.brandNameServer;
+const BRAND_LOCATION = portalConfig.brandLocation;
+const BRAND_EMAIL = portalConfig.adminEmail;
+const BRAND_COLOR = portalConfig.primaryColor;
 
 // ---------------------------------------------------------------------------
 // buildBaseHtml — private helper that wraps content in the Wholesail branded
@@ -985,7 +987,7 @@ export async function sendLowStockAlert(
 ) {
   const r = getResend();
   if (!r) return null;
-  const from = process.env.RESEND_FROM_EMAIL || "${BRAND_EMAIL}";
+  const from = portalConfig.fromEmail;
   const to = process.env.OPS_NOTIFICATION_EMAIL || from;
 
   const itemRowsHtml = items

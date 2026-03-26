@@ -1112,9 +1112,12 @@ model WebhookLog {
   response   String?
   attempt    Int             @default(1)
   success    Boolean         @default(false)
+  retryCount  Int            @default(0)
+  nextRetryAt DateTime?
   createdAt  DateTime        @default(now())
 
   @@index([endpointId, createdAt(sort: Desc)])
+  @@index([success, nextRetryAt, retryCount])
 }
 
 // ============================================================

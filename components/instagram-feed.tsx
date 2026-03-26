@@ -5,9 +5,11 @@ import Script from 'next/script'
 import Image from 'next/image'
 import { Instagram, ArrowUpRight } from 'lucide-react'
 
-const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'
-const INSTAGRAM_URL = process.env.NEXT_PUBLIC_INSTAGRAM_URL || 'https://www.instagram.com/wholesailhub/'
-const INSTAGRAM_HANDLE = process.env.NEXT_PUBLIC_INSTAGRAM_HANDLE || '@wholesailhub'
+import { portalConfig } from '@/lib/portal-config'
+
+const BRAND_NAME = portalConfig.brandName
+const INSTAGRAM_URL = portalConfig.instagramUrl
+const INSTAGRAM_HANDLE = portalConfig.instagramHandle
 
 const FAN_IMAGES = [
   { src: '/food-1.jpg', alt: `Partner creation — ${BRAND_NAME}` },

@@ -3,10 +3,11 @@ import { CartProvider } from '@/lib/cart-context'
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
+import { portalConfig } from '@/lib/portal-config'
 
 export const dynamic = 'force-dynamic'
 
-const BRAND_NAME = process.env.NEXT_PUBLIC_BRAND_NAME || 'Wholesail'
+const BRAND_NAME = portalConfig.brandName
 
 export const metadata: Metadata = {
   title: { template: `%s | ${BRAND_NAME}`, default: `Home | ${BRAND_NAME}` },

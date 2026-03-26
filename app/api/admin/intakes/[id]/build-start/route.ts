@@ -24,6 +24,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import crypto from "crypto";
 import { INDUSTRY_DEFAULTS, CONFIG_SKELETON, primaryForeground } from "@/lib/build/config-template";
 import { AI_MODEL, BRAND_EMAIL } from "@/lib/brand";
+import { portalConfig } from "@/lib/portal-config";
 
 function ts() {
   return new Date().toISOString();
@@ -477,7 +478,7 @@ export async function POST(
       try {
         const vercelProject = await createVercelProject(
           repoName,
-          `${process.env.GITHUB_OWNER || 'adamwolfe2'}/${repoName}`
+          `${portalConfig.githubOwner}/${repoName}`
         );
         vercelProjectId = vercelProject.id;
 
@@ -899,7 +900,7 @@ export async function POST(
       process.env.WS_VERCEL_TOKEN
     ) {
       try {
-        const deployment = await triggerDeployment(vercelProjectId, `${process.env.GITHUB_OWNER || 'adamwolfe2'}/${repoName}`);
+        const deployment = await triggerDeployment(vercelProjectId, `${portalConfig.githubOwner}/${repoName}`);
         deploymentId = deployment.deploymentId;
 
         await logCost(projectId, {

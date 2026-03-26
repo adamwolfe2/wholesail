@@ -143,7 +143,7 @@ describe("webhooks", () => {
       });
     });
 
-    it("retries on fetch failure with exponential backoff", async () => {
+    it("queues failed deliveries for cron-based retry via database", async () => {
       const endpoint = {
         id: "ep-1",
         url: "https://example.com/hook",
@@ -154,29 +154,35 @@ describe("webhooks", () => {
       mockPrisma.webhookEndpoint.findMany.mockResolvedValue([endpoint]);
       mockPrisma.webhookLog.create.mockResolvedValue({});
 
-      // First attempt fails
+      // Attempt fails
       mockFetch.mockRejectedValueOnce(new Error("Network error"));
-      // Second attempt succeeds
-      mockFetch.mockResolvedValueOnce({
-        ok: true,
-        status: 200,
-        text: () => Promise.resolve("OK"),
-      });
 
       await dispatchWebhook("invoice.created", { invoiceId: "i1" });
 
-      // Let the first attempt fire-and-forget resolve
+      // Let the fire-and-forget promise resolve
       await vi.advanceTimersByTimeAsync(0);
 
+      // Only one fetch call — no setTimeout-based retries
       expect(mockFetch).toHaveBeenCalledTimes(1);
 
-      // Advance by 2s (2^1 * 1000) for the first retry
-      await vi.advanceTimersByTimeAsync(2000);
+      // Verify the log was created with retry fields for cron pickup
+      expect(mockPrisma.webhookLog.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({
+          endpointId: "ep-1",
+          event: "invoice.created",
+          success: false,
+          attempt: 1,
+          retryCount: 1,
+          nextRetryAt: expect.any(Date),
+        }),
+      });
 
-      expect(mockFetch).toHaveBeenCalledTimes(2);
+      // No further retries via setTimeout — advancing timers should not trigger more fetches
+      await vi.advanceTimersByTimeAsync(10000);
+      expect(mockFetch).toHaveBeenCalledTimes(1);
     });
 
-    it("does not retry after MAX_RETRIES (3) attempts", async () => {
+    it("does not schedule retry when max retries reached", async () => {
       const endpoint = {
         id: "ep-1",
         url: "https://example.com/hook",
@@ -187,26 +193,21 @@ describe("webhooks", () => {
       mockPrisma.webhookEndpoint.findMany.mockResolvedValue([endpoint]);
       mockPrisma.webhookLog.create.mockResolvedValue({});
 
-      // All attempts fail
-      mockFetch.mockRejectedValue(new Error("Network error"));
+      mockFetch.mockRejectedValueOnce(new Error("Network error"));
 
-      await dispatchWebhook("payment.received", { paymentId: "p1" });
+      // Import deliverWebhook directly to test max retry behavior
+      const { deliverWebhook } = await import("@/lib/webhooks");
 
-      // Attempt 1
-      await vi.advanceTimersByTimeAsync(0);
-      expect(mockFetch).toHaveBeenCalledTimes(1);
+      // Simulate attempt 5 (MAX_RETRIES = 5), so no more retries should be scheduled
+      await deliverWebhook("ep-1", "https://example.com/hook", "s", "payment.received", '{"test":true}', 5);
 
-      // Attempt 2 after 2s
-      await vi.advanceTimersByTimeAsync(2000);
-      expect(mockFetch).toHaveBeenCalledTimes(2);
-
-      // Attempt 3 after 4s
-      await vi.advanceTimersByTimeAsync(4000);
-      expect(mockFetch).toHaveBeenCalledTimes(3);
-
-      // No attempt 4 after 8s — MAX_RETRIES is 3
-      await vi.advanceTimersByTimeAsync(8000);
-      expect(mockFetch).toHaveBeenCalledTimes(3);
+      expect(mockPrisma.webhookLog.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({
+          success: false,
+          retryCount: 5,
+          nextRetryAt: null, // No more retries
+        }),
+      });
     });
   });
 });

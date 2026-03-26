@@ -4,6 +4,7 @@ import { prisma } from '@/lib/db'
 import { formatCurrency } from '@/lib/utils'
 import { Resend } from 'resend'
 import { BRAND_EMAIL, BRAND_NAME as BRAND_NAME_IMPORT } from '@/lib/brand'
+import { portalConfig } from '@/lib/portal-config'
 
 function getResend() {
   if (!process.env.RESEND_API_KEY) return null
@@ -32,7 +33,7 @@ export async function GET(req: NextRequest) {
   const BRAND_NAME = BRAND_NAME_IMPORT
   const FROM_EMAIL = BRAND_EMAIL
   // Support multiple recipients via REPORT_RECIPIENTS (comma-separated)
-  const recipientStr = process.env.REPORT_RECIPIENTS || process.env.OPS_NOTIFICATION_EMAIL || FROM_EMAIL
+  const recipientStr = portalConfig.reportRecipients || process.env.OPS_NOTIFICATION_EMAIL || FROM_EMAIL
   const recipients = recipientStr.split(',').map((e: string) => e.trim()).filter(Boolean)
 
   const now = new Date()

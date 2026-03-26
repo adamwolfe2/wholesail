@@ -55,6 +55,7 @@ import { LoyaltyPanel } from './loyalty-panel'
 import { StripeConnectPanel } from './stripe-connect-panel'
 import { NewTaskDialog } from '@/components/new-task-dialog'
 import { TaskActions } from '@/app/admin/reps/[id]/task-actions'
+import { portalConfig } from '@/lib/portal-config'
 
 export const metadata: Metadata = { title: "Client Details" };
 export const dynamic = 'force-dynamic'
@@ -795,7 +796,7 @@ export default async function AdminClientDetailPage({
             <div>
               <p className="text-xs text-muted-foreground mb-1">Referral Link</p>
               <p className="font-mono text-sm text-muted-foreground break-all">
-                {process.env.NEXT_PUBLIC_APP_URL || 'https://wholesailhub.com'}/refer/{client.referralCode}
+                {portalConfig.appUrl}/refer/{client.referralCode}
               </p>
             </div>
           )}

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/db'
-import { sendPartnerDay3Email, sendPartnerDay7Email } from '@/lib/email'
+import { sendPartnerDay3Email, sendPartnerDay7Email, shouldSendEmail } from '@/lib/email'
 
 // Vercel cron calls this as GET with Authorization header
 // Schedule: 0 10 * * * (10am UTC daily)
@@ -36,13 +36,31 @@ export async function GET(req: NextRequest) {
     const [day3Candidates, day7Candidates] = await Promise.all([
       prisma.wholesaleApplication.findMany({
         where: { status: 'APPROVED', reviewedAt: { gte: day3Start, lt: day3End } },
-        select: { id: true, contactName: true, email: true, businessName: true },
+        select: { id: true, contactName: true, email: true, businessName: true, convertedOrgId: true },
       }),
       prisma.wholesaleApplication.findMany({
         where: { status: 'APPROVED', reviewedAt: { gte: day7Start, lt: day7End } },
-        select: { id: true, contactName: true, email: true, businessName: true },
+        select: { id: true, contactName: true, email: true, businessName: true, convertedOrgId: true },
       }),
     ])
+
+    // Batch-fetch notification prefs for converted orgs
+    const allConvertedOrgIds = [
+      ...day3Candidates,
+      ...day7Candidates,
+    ]
+      .map((a) => a.convertedOrgId)
+      .filter((id): id is string => !!id)
+    const orgPrefsMap = new Map<string, { notificationPrefs: unknown }>()
+    if (allConvertedOrgIds.length > 0) {
+      const orgs = await prisma.organization.findMany({
+        where: { id: { in: allConvertedOrgIds } },
+        select: { id: true, notificationPrefs: true },
+      })
+      for (const org of orgs) {
+        orgPrefsMap.set(org.id, { notificationPrefs: org.notificationPrefs })
+      }
+    }
 
     const allCandidateIds = [
       ...day3Candidates.map(a => a.id),
@@ -68,6 +86,19 @@ export async function GET(req: NextRequest) {
       if (sentSet.has(`${app.id}:nurture_day3_sent`)) {
         skipped++
         continue
+      }
+
+      // Check converted org's notification preferences
+      if (app.convertedOrgId) {
+        const orgData = orgPrefsMap.get(app.convertedOrgId)
+        const prefs = orgData?.notificationPrefs as
+          | { emailDropAlerts?: boolean; emailOrderUpdates?: boolean; emailWeeklyDigest?: boolean }
+          | null
+        if (!shouldSendEmail(prefs, 'drops')) {
+          skipped++
+          console.info(`[partner-nurture] Skipped day-3 for ${app.id} — org opted out`)
+          continue
+        }
       }
 
       try {
@@ -102,6 +133,19 @@ export async function GET(req: NextRequest) {
       if (sentSet.has(`${app.id}:nurture_day7_sent`)) {
         skipped++
         continue
+      }
+
+      // Check converted org's notification preferences
+      if (app.convertedOrgId) {
+        const orgData = orgPrefsMap.get(app.convertedOrgId)
+        const prefs = orgData?.notificationPrefs as
+          | { emailDropAlerts?: boolean; emailOrderUpdates?: boolean; emailWeeklyDigest?: boolean }
+          | null
+        if (!shouldSendEmail(prefs, 'drops')) {
+          skipped++
+          console.info(`[partner-nurture] Skipped day-7 for ${app.id} — org opted out`)
+          continue
+        }
       }
 
       try {

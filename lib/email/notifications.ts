@@ -4,10 +4,12 @@ const resend = process.env.RESEND_API_KEY
   ? new Resend(process.env.RESEND_API_KEY)
   : null;
 
-const FROM = process.env.RESEND_FROM_EMAIL || "Wholesail <noreply@wholesailhub.com>";
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || "adam@wholesailhub.com";
-const BRAND_NAME = process.env.BRAND_NAME || "Wholesail";
-const BRAND_COLOR = process.env.BRAND_PRIMARY_COLOR || "#0A0A0A";
+import { portalConfig } from "@/lib/portal-config";
+
+const FROM = portalConfig.fromEmail;
+const ADMIN_EMAIL = portalConfig.adminEmail;
+const BRAND_NAME = portalConfig.brandNameServer;
+const BRAND_COLOR = portalConfig.primaryColor;
 
 function send(opts: { to: string; subject: string; html: string }): Promise<{ success: boolean; error?: string }> {
   if (!resend) {
@@ -49,7 +51,7 @@ export function notifyAdminNewIntake(data: {
           <tr><td style="padding: 4px 16px 4px 0; color: #8B92A5;">Features</td><td>${data.featureCount} selected</td></tr>
         </table>
         <p style="margin-top: 20px;">
-          <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"}/admin" style="color: #2A52BE;">
+          <a href="${portalConfig.appUrl}/admin" style="color: #2A52BE;">
             View in Admin Dashboard →
           </a>
         </p>
@@ -79,8 +81,8 @@ export function sendIntakeConfirmation(data: {
           In the meantime, you can check your build status anytime at:
         </p>
         <p>
-          <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"}/status" style="color: #2A52BE;">
-            ${process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"}/status
+          <a href="${portalConfig.appUrl}/status" style="color: #2A52BE;">
+            ${portalConfig.appUrl}/status
           </a>
         </p>
         <p style="color: #8B92A5; font-size: 12px; margin-top: 24px;">
@@ -127,7 +129,7 @@ export function sendIntakeNurtureDay3(data: {
         </p>
         <p style="color: #8B92A5; font-size: 12px; margin-top: 24px;">
           — The ${BRAND_NAME} Team<br/>
-          <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"}" style="color: #8B92A5;">${(process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com").replace(/^https?:\/\//, "")}</a>
+          <a href="${portalConfig.appUrl}" style="color: #8B92A5;">${portalConfig.appDomain}</a>
         </p>
       </div>
     `,
@@ -171,7 +173,7 @@ export function sendIntakeNurtureDay7(data: {
         </p>
         <p style="color: #8B92A5; font-size: 12px; margin-top: 24px;">
           — The ${BRAND_NAME} Team<br/>
-          <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"}" style="color: #8B92A5;">${(process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com").replace(/^https?:\/\//, "")}</a>
+          <a href="${portalConfig.appUrl}" style="color: #8B92A5;">${portalConfig.appDomain}</a>
         </p>
       </div>
     `,
@@ -197,7 +199,7 @@ export function notifyAdminCallBooked(data: {
           <tr><td style="padding: 4px 16px 4px 0; color: #8B92A5;">Contact</td><td>${data.contactName} (${data.contactEmail})</td></tr>
         </table>
         <p style="margin-top: 20px;">
-          <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"}/admin/intakes/${data.intakeId}" style="color: #2A52BE;">
+          <a href="${portalConfig.appUrl}/admin/intakes/${data.intakeId}" style="color: #2A52BE;">
             View intake in Admin →
           </a>
         </p>
@@ -237,7 +239,7 @@ export function notifyClientStatusChange(data: {
         </p>
         ${data.message ? `<p style="color: #3D4556; line-height: 1.6;">${data.message}</p>` : ""}
         <p>
-          <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"}/status" style="color: #2A52BE;">
+          <a href="${portalConfig.appUrl}/status" style="color: #2A52BE;">
             Check your full build progress →
           </a>
         </p>
@@ -288,7 +290,7 @@ export function sendStripeOnboardingEmail(params: {
         </p>
         <p style="color: #8B92A5; font-size: 12px; margin-top: 24px;">
           — The ${BRAND_NAME} Team<br/>
-          <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com"}" style="color: #8B92A5;">${(process.env.NEXT_PUBLIC_APP_URL || "https://wholesailhub.com").replace(/^https?:\/\//, "")}</a>
+          <a href="${portalConfig.appUrl}" style="color: #8B92A5;">${portalConfig.appDomain}</a>
         </p>
       </div>
     `,

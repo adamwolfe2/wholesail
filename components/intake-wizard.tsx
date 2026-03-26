@@ -22,6 +22,7 @@ import {
   Warehouse,
 } from "lucide-react";
 import { FEATURES as FEATURE_DATA } from "@/lib/client-data";
+import { portalConfig } from "@/lib/portal-config";
 
 const FEATURE_VALUES = Object.fromEntries(
   FEATURE_DATA.map((f) => [f.id, f.value])
@@ -899,7 +900,7 @@ function Step3({
 }
 
 // ── Cal.com Embed ────────────────────────────────────────────────────────
-const CAL_NAMESPACE = process.env.NEXT_PUBLIC_CAL_NAMESPACE || 'wholesail'
+const CAL_NAMESPACE = portalConfig.calNamespace
 
 function CalEmbed({ name, email }: { name?: string; email?: string }) {
   useEffect(() => {

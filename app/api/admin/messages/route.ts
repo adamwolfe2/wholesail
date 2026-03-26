@@ -3,6 +3,7 @@ import { requireAdminOrRep } from '@/lib/auth/require-admin'
 import { prisma } from '@/lib/db'
 import { isConfigured as blooConfigured, sendMessage as blooSend, toE164 } from '@/lib/integrations/blooio'
 import { parseCursorParams, buildPrismaCursorArgs, buildCursorResponse } from '@/lib/pagination'
+import { portalConfig } from '@/lib/portal-config'
 
 // GET /api/admin/messages — all conversations across all orgs
 // Returns { conversations, nextCursor, hasMore }
@@ -87,7 +88,7 @@ export async function POST(req: NextRequest) {
       select: { name: true },
     })
 
-    const brandName = process.env.BRAND_NAME || 'Wholesail'
+    const brandName = portalConfig.brandNameServer
     const now = new Date()
     const [conversation] = await prisma.$transaction([
       prisma.conversation.create({

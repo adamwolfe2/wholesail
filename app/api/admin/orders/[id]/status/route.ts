@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import { dispatchWebhook } from "@/lib/webhooks";
 import { getSiteUrl } from "@/lib/brand";
 import { notifyOrg } from "@/lib/notifications";
+import { portalConfig } from "@/lib/portal-config";
 
 const statusSchema = z.object({
   status: z.enum([
@@ -73,7 +74,7 @@ export async function PATCH(
 
         // SMS notification to client
         const APP_URL = getSiteUrl()
-        const brandName = process.env.BRAND_NAME || "Wholesail"
+        const brandName = portalConfig.brandNameServer
         const clientPhone = fullOrder.organization?.phone
         if (clientPhone) {
           const { sendMessage, toE164 } = await import("@/lib/integrations/blooio")

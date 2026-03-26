@@ -12,6 +12,7 @@ import {
   sendInvoiceEmail,
 } from '@/lib/email'
 import { clerkClient } from '@clerk/nextjs/server'
+import { portalConfig } from '@/lib/portal-config'
 
 // ---------------------------------------------------------------------------
 // Tool execute functions (keyed by tool name)
@@ -546,7 +547,7 @@ export const toolExecutors: Record<string, (input: ToolInput, ctx: ToolContext) 
         clerk.invitations.createInvitation({
           emailAddress: app.email,
           publicMetadata: { organizationId: org.id, organizationName: org.name, role: 'CLIENT' },
-          redirectUrl: (process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000') + '/sign-up',
+          redirectUrl: portalConfig.appUrl + '/sign-up',
         }).catch(() => {})
       ).catch(() => {})
 

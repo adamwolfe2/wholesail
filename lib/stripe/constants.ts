@@ -2,6 +2,8 @@
  * Wholesail Stripe Integration — Constants
  */
 
+import { portalConfig } from "@/lib/portal-config";
+
 /** Stripe API version pinned for this project */
 export const STRIPE_API_VERSION = "2026-02-25.clover" as const;
 
@@ -15,7 +17,7 @@ export type NetTermDays = (typeof NET_TERM_OPTIONS)[number];
 /** Tax rates by jurisdiction (California focus) */
 export const TAX_RATES = {
   /** Default rate — reads from env var with CA rate as fallback */
-  CA_DEFAULT: Number(process.env.DEFAULT_TAX_RATE) || 0.0875,
+  CA_DEFAULT: portalConfig.defaultTaxRate,
   /** Rate for tax-exempt orgs (restaurant resale, etc.) */
   EXEMPT: 0,
 } as const;

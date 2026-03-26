@@ -9,12 +9,13 @@ import { CommandPalette } from "./command-palette";
 import { AdminSearchBar } from "./search-bar";
 import { AdminSidebar } from "./admin-sidebar";
 import { AdminNotifications } from "@/components/admin-notifications";
+import { portalConfig } from "@/lib/portal-config";
 
 import type { Metadata } from "next";
 
 export const dynamic = 'force-dynamic';
 
-const BRAND_NAME = process.env.BRAND_NAME || "Wholesail";
+const BRAND_NAME = portalConfig.brandNameServer;
 
 export const metadata: Metadata = {
   title: { template: `%s | ${BRAND_NAME} Admin`, default: `${BRAND_NAME} Admin` },

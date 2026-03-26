@@ -3,6 +3,7 @@ import { verifyWebhookSignature, sendMessage } from "@/lib/integrations/blooio";
 import { prisma } from "@/lib/db";
 import { formatCurrency } from "@/lib/utils";
 import { aiCallLimiter, checkRateLimit } from "@/lib/rate-limit";
+import { portalConfig } from "@/lib/portal-config";
 
 // ============================================================
 // Bloo.io Webhook Handler
@@ -217,7 +218,7 @@ export async function POST(req: NextRequest) {
                   );
                   await sendMessage({
                     to: fromPhone,
-                    message: `Got it! Order ${orderNumber} is in — ${process.env.OPS_NAME ?? 'our team'} will review and confirm within the hour. You'll get a text when it's confirmed and again when it ships.`,
+                    message: `Got it! Order ${orderNumber} is in — ${portalConfig.opsName} will review and confirm within the hour. You'll get a text when it's confirmed and again when it ships.`,
                   });
                 }
               } catch (e) {
