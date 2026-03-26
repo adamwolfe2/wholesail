@@ -178,7 +178,7 @@ export function AdminPricingView({ brand }: ViewProps) {
                           ? { backgroundColor: brand.color, color: "var(--color-cream)", borderColor: brand.color }
                           : row.tier === "REPEAT"
                             ? { backgroundColor: `${brand.color}18`, color: brand.color, borderColor: `${brand.color}30` }
-                            : { backgroundColor: "transparent", color: "#C8C0B4", borderColor: "var(--color-shell)" }
+                            : { backgroundColor: "transparent", color: "var(--color-sand)", borderColor: "var(--color-shell)" }
                       }
                     >
                       {row.tier}

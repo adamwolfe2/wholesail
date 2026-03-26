@@ -359,8 +359,11 @@ export default async function AdminAnalyticsPage() {
       getTopProducts(),
       getClientHealth(),
     ]);
-  } catch {
-    // DB not connected
+  } catch (error) {
+    const { captureWithContext } = await import("@/lib/sentry");
+    captureWithContext(error instanceof Error ? error : new Error("Analytics query failed"), {
+      route: "GET /admin/analytics",
+    });
   }
 
   return (

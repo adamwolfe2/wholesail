@@ -1214,14 +1214,12 @@ export function IntakeWizard() {
           setSubmitError(
             `Something went wrong submitting your information. Please try again, or email us at ${portalConfig.contactEmail}.`
           );
-          setSubmitting(false);
           return;
         }
       } catch {
         setSubmitError(
           `Something went wrong submitting your information. Please try again, or email us at ${portalConfig.contactEmail}.`
         );
-        setSubmitting(false);
         return;
       } finally {
         setSubmitting(false);
@@ -1326,8 +1324,8 @@ export function IntakeWizard() {
       {/* Submit error banner */}
       {submitError && (
         <div
-          className="px-4 sm:px-6 py-3 flex items-start justify-between gap-3"
-          style={{ backgroundColor: "#FEF2F2", borderTop: "1px solid var(--border)" }}
+          className="px-4 sm:px-6 py-3 flex items-start justify-between gap-3 bg-error/5"
+          style={{ borderTop: "1px solid var(--border)" }}
         >
           <p className="font-mono text-xs leading-relaxed" style={{ color: "var(--color-error, #dc2626)" }}>
             {submitError}

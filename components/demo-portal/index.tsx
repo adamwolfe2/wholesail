@@ -271,7 +271,7 @@ function DemoPortalInner() {
                             ? { backgroundColor: brand.color, color: "var(--color-cream)" }
                             : { color: "rgba(10,10,10,0.6)" }
                         }
-                        onMouseEnter={(e) => { if (!active) { e.currentTarget.style.backgroundColor = `${brand.color}0A`; e.currentTarget.style.color = "#0A0A0A"; } }}
+                        onMouseEnter={(e) => { if (!active) { e.currentTarget.style.backgroundColor = `${brand.color}0A`; e.currentTarget.style.color = "var(--color-ink)"; } }}
                         onMouseLeave={(e) => { if (!active) { e.currentTarget.style.backgroundColor = "transparent"; e.currentTarget.style.color = "rgba(10,10,10,0.6)"; } }}
                       >
                         <Icon className="w-4 h-4 flex-shrink-0" />

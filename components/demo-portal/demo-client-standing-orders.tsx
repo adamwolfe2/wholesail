@@ -155,7 +155,7 @@ export function ClientStandingOrdersView({ brand }: ViewProps) {
                           }
                         : {
                             backgroundColor: "transparent",
-                            color: "#C8C0B4",
+                            color: "var(--color-sand)",
                             borderColor: "var(--color-shell)",
                           }
                     }
