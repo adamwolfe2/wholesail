@@ -111,8 +111,8 @@ export function EditClientDialog({ client }: { client: ClientData }) {
         </DialogHeader>
 
         <div className="space-y-4 mt-2">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-2 space-y-1.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="col-span-1 sm:col-span-2 space-y-1.5">
               <Label>Business Name</Label>
               <Input value={form.name} onChange={(e) => set('name', e.target.value)} />
             </div>
@@ -124,17 +124,17 @@ export function EditClientDialog({ client }: { client: ClientData }) {
               <Label>Phone</Label>
               <Input value={form.phone} onChange={(e) => set('phone', e.target.value)} />
             </div>
-            <div className="col-span-2 space-y-1.5">
+            <div className="col-span-1 sm:col-span-2 space-y-1.5">
               <Label>Email</Label>
               <Input type="email" value={form.email} onChange={(e) => set('email', e.target.value)} />
             </div>
-            <div className="col-span-2 space-y-1.5">
+            <div className="col-span-1 sm:col-span-2 space-y-1.5">
               <Label>Website</Label>
               <Input placeholder="https://..." value={form.website} onChange={(e) => set('website', e.target.value)} />
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <Label>Payment Terms</Label>
               <Select value={form.paymentTerms} onValueChange={(v) => set('paymentTerms', v)}>

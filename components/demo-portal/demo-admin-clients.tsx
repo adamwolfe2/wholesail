@@ -17,14 +17,14 @@ export function AdminClientsView({ brand, seed }: ViewProps) {
         </button>
       </div>
 
-      <div className="border border-shell bg-cream">
-        <div className="grid grid-cols-6 gap-4 px-4 py-2 border-b border-shell">
+      <div className="border border-shell bg-cream overflow-x-auto">
+        <div className="grid grid-cols-6 gap-4 px-4 py-2 border-b border-shell min-w-[600px]">
           {["Client", "Tier", "Lifetime Spend", "Health", "Orders", "Last Order"].map((h) => (
             <div key={h} className="text-ink/50 uppercase tracking-wider text-xs font-mono">{h}</div>
           ))}
         </div>
         {seed.clients.map((client) => (
-          <div key={client.name} className="grid grid-cols-6 gap-4 px-4 py-3 border-b border-shell/50 hover:bg-white/50 cursor-pointer">
+          <div key={client.name} className="grid grid-cols-6 gap-4 px-4 py-3 border-b border-shell/50 hover:bg-white/50 cursor-pointer min-w-[600px]">
             <div className="font-mono text-xs font-semibold text-ink">{client.name}</div>
             <div><StatusBadge status={client.tier} brandColor={brand.color} /></div>
             <div className="font-mono text-xs font-semibold text-ink">{client.spend}</div>

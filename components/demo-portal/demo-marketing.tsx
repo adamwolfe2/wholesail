@@ -21,7 +21,7 @@ export function MarketingView({ brand, data, onNavigate }: ViewProps) {
   return (
     <div className="space-y-0">
       {/* -- Hero -- */}
-      <section className="px-6 sm:px-10 py-12 sm:py-20 bg-cream border-b border-shell">
+      <section className="px-4 sm:px-6 lg:px-10 py-12 sm:py-20 bg-cream border-b border-shell">
         <div className="max-w-3xl">
           <p className="text-[10px] sm:text-xs tracking-[0.25em] uppercase text-sand mb-5">
             Wholesale · Est. {data.location || "United States"}
@@ -72,7 +72,7 @@ export function MarketingView({ brand, data, onNavigate }: ViewProps) {
 
       {/* -- This Week's Highlights (gap-px grid) -- */}
       <section className="py-10 sm:py-16 border-b border-shell bg-cream/50">
-        <div className="px-6 sm:px-10 mb-8">
+        <div className="px-4 sm:px-6 lg:px-10 mb-8">
           <p className="text-xs tracking-[0.2em] uppercase text-sand mb-3">Curated Selection</p>
           <div className="flex items-end justify-between">
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-ink">This Week&apos;s Highlights</h2>
@@ -84,7 +84,7 @@ export function MarketingView({ brand, data, onNavigate }: ViewProps) {
             </button>
           </div>
         </div>
-        <div className="mx-6 sm:mx-10 grid grid-cols-2 lg:grid-cols-4 gap-px bg-shell">
+        <div className="mx-4 sm:mx-6 lg:mx-10 grid grid-cols-2 lg:grid-cols-4 gap-px bg-shell">
           {displayProducts.map((p, i) => (
             <div key={`${p.name}-${i}`} className="bg-cream flex flex-col group hover:bg-cream-hover transition-colors">
               <ProductImage product={p} brandColor={brand.color} size="lg" />
@@ -121,11 +121,11 @@ export function MarketingView({ brand, data, onNavigate }: ViewProps) {
 
       {/* -- How It Works -- */}
       <section className="border-b border-shell">
-        <div className="px-6 sm:px-10 pt-10 sm:pt-16 mb-8">
+        <div className="px-4 sm:px-6 lg:px-10 pt-10 sm:pt-16 mb-8">
           <p className="text-xs tracking-[0.2em] uppercase text-sand mb-3">Simple Process</p>
           <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-ink">How It Works</h2>
         </div>
-        <div className="mx-6 sm:mx-10 mb-10 sm:mb-16 grid grid-cols-1 sm:grid-cols-3 gap-px bg-shell">
+        <div className="mx-4 sm:mx-6 lg:mx-10 mb-10 sm:mb-16 grid grid-cols-1 sm:grid-cols-3 gap-px bg-shell">
           {[
             { step: "01", title: "Apply", desc: `Submit a quick wholesale application. We review and approve qualified ${data.industry?.toLowerCase() || "business"} partners within 24 hours.` },
             { step: "02", title: "Order", desc: "Browse the full catalog, build your order online or text it via SMS. We handle the rest — same-week fulfillment." },
@@ -143,11 +143,11 @@ export function MarketingView({ brand, data, onNavigate }: ViewProps) {
       {/* -- Testimonials -- */}
       {data.testimonials.length > 0 && (
         <section className="py-10 sm:py-16 border-b border-shell">
-          <div className="px-6 sm:px-10 mb-8">
+          <div className="px-4 sm:px-6 lg:px-10 mb-8">
             <p className="text-xs tracking-[0.2em] uppercase text-sand mb-3">Trusted By</p>
             <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-ink">What Our Partners Say</h2>
           </div>
-          <div className="mx-6 sm:mx-10 grid grid-cols-1 sm:grid-cols-3 gap-px bg-shell">
+          <div className="mx-4 sm:mx-6 lg:mx-10 grid grid-cols-1 sm:grid-cols-3 gap-px bg-shell">
             {data.testimonials.slice(0, 3).map((t, i) => (
               <div key={i} className="bg-cream p-8 sm:p-10 flex flex-col justify-between min-h-[200px]">
                 <div>
@@ -166,7 +166,7 @@ export function MarketingView({ brand, data, onNavigate }: ViewProps) {
 
       {/* -- Newsletter / CTA Section -- */}
       <section className="border-b border-shell bg-cream overflow-hidden">
-        <div className="px-6 sm:px-10 py-16 sm:py-24 max-w-lg">
+        <div className="px-4 sm:px-6 lg:px-10 py-16 sm:py-24 max-w-lg">
           <p className="text-[10px] tracking-[0.25em] uppercase text-sand mb-5">Stay Connected</p>
           <h2 className="font-serif text-4xl sm:text-5xl font-bold italic text-ink leading-none mb-4">
             Get the Latest.
@@ -204,7 +204,7 @@ export function MarketingView({ brand, data, onNavigate }: ViewProps) {
 
       {/* -- Certifications -- */}
       {data.certifications.length > 0 && (
-        <div className="px-6 sm:px-10 py-6 border-b border-shell bg-cream">
+        <div className="px-4 sm:px-6 lg:px-10 py-6 border-b border-shell bg-cream">
           <div className="flex flex-wrap gap-2">
             {data.certifications.map((cert, i) => (
               <span key={i} className="border border-shell px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider text-sand flex items-center gap-1.5">
@@ -216,7 +216,7 @@ export function MarketingView({ brand, data, onNavigate }: ViewProps) {
       )}
 
       {/* -- Footer -- */}
-      <footer className="bg-ink-dark text-cream px-6 sm:px-10 py-10 sm:py-14">
+      <footer className="bg-ink-dark text-cream px-4 sm:px-6 lg:px-10 py-10 sm:py-14">
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10">
           <div className="col-span-2">
             <p className="font-serif text-xl font-bold mb-2">{brand.company}</p>

@@ -219,7 +219,7 @@ function AddLeadTab({ onLeadAdded }: { onLeadAdded: (lead: Lead) => void }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5 max-w-2xl">
       {/* Name row */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="space-y-1.5">
           <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">First Name *</Label>
           <Input
@@ -242,7 +242,7 @@ function AddLeadTab({ onLeadAdded }: { onLeadAdded: (lead: Lead) => void }) {
       </div>
 
       {/* Email + Company */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div className="space-y-1.5">
           <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">Email *</Label>
           <Input
@@ -418,7 +418,7 @@ function BulkImportTab({ onImportComplete }: { onImportComplete: () => void }) {
       <div className="space-y-4 max-w-lg">
         <div className="border border-shell p-6 space-y-4">
           <p className="font-serif text-xl font-bold text-ink">Import Complete</p>
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div className="text-center p-3 bg-emerald-50">
               <p className="text-2xl font-bold font-serif text-emerald-700">{result.imported}</p>
               <p className="text-[10px] uppercase tracking-wider text-emerald-600 mt-1">Imported</p>
@@ -627,7 +627,7 @@ function PipelineTab({
               <DialogTitle className="font-serif text-xl text-ink">Add to Pipeline</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleAddLead} className="space-y-4 mt-2">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1.5">
                   <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">Name *</Label>
                   <Input required value={form.name} onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} placeholder="Full name" className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink" />
@@ -637,7 +637,7 @@ function PipelineTab({
                   <Input required type="email" value={form.email} onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))} placeholder="email@example.com" className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink" />
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1.5">
                   <Label className="text-xs font-medium text-ink/60 uppercase tracking-wide">Phone</Label>
                   <Input value={form.phone} onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))} placeholder="+1 (310) 555-0100" className="border-shell bg-white focus-visible:ring-0 focus-visible:border-ink" />

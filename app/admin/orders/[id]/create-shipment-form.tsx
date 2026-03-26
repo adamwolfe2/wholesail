@@ -274,7 +274,7 @@ export function CreateShipmentForm({
           </div>
 
           {/* Driver Name + Phone */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label htmlFor="driverName" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
                 Driver Name
@@ -303,7 +303,7 @@ export function CreateShipmentForm({
           </div>
 
           {/* ETA Window */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label htmlFor="etaStart" className="text-xs font-medium text-ink/60 uppercase tracking-wider">
                 ETA From

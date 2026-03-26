@@ -20,7 +20,7 @@ export function TourOverlay({
   brandColor: string;
 }) {
   return (
-    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[420px] max-w-[calc(100vw-2rem)]">
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-[420px] px-4 sm:px-0">
       <div className="text-cream p-5 shadow-2xl" style={{ backgroundColor: brandColor, border: "1px solid rgba(255,255,255,0.15)" }}>
         <div className="flex items-center justify-between mb-2">
           <span className="font-mono text-[9px] uppercase tracking-widest text-cream/40">

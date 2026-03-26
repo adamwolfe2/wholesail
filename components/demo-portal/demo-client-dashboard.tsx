@@ -86,11 +86,11 @@ export function ClientDashboardView({ brand, data, seed, onNavigate }: ViewProps
                   <p className="text-xs text-ink/40 mt-0.5">Last ordered {3 + i}d ago</p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="h-7 w-7 border border-sand text-ink flex items-center justify-center hover:bg-sand/20 transition-colors">
+                  <button className="h-9 w-9 border border-sand text-ink flex items-center justify-center hover:bg-sand/20 transition-colors">
                     <Minus className="w-3 h-3" />
                   </button>
                   <span className="text-sm font-semibold text-ink w-6 text-center">{2 + i}</span>
-                  <button className="h-7 w-7 border border-sand text-ink flex items-center justify-center hover:bg-sand/20 transition-colors">
+                  <button className="h-9 w-9 border border-sand text-ink flex items-center justify-center hover:bg-sand/20 transition-colors">
                     <Plus className="w-3 h-3" />
                   </button>
                 </div>

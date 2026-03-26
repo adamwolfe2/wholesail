@@ -154,11 +154,11 @@ function ConfirmationContent() {
         </CardHeader>
         <CardContent className="space-y-5 px-4 sm:px-6 pt-5">
           <div className="grid gap-3 text-sm">
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3">
               <span className="text-xs tracking-widest uppercase text-muted-foreground">Order #</span>
               <span className="col-span-2 font-mono font-medium">{orderData.orderNumber}</span>
             </div>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3">
               <span className="text-xs tracking-widest uppercase text-muted-foreground">Status</span>
               <span className="col-span-2">
                 <Badge variant="outline" className={statusColors[orderData.status] || ''}>
@@ -166,7 +166,7 @@ function ConfirmationContent() {
                 </Badge>
               </span>
             </div>
-            <div className="grid grid-cols-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3">
               <span className="text-xs tracking-widest uppercase text-muted-foreground">Date</span>
               <span className="col-span-2">
                 {new Date(orderData.createdAt).toLocaleDateString('en-US', {

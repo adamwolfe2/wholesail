@@ -143,7 +143,7 @@ export function LoyaltyPanel({ organizationId }: { organizationId: string }) {
         ) : status ? (
           <>
             {/* Points Overview */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <p className="text-xs text-muted-foreground mb-1">Current Balance</p>
                 <p className="text-2xl font-bold">{status.currentPoints.toLocaleString()}</p>

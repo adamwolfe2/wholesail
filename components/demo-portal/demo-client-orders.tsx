@@ -17,14 +17,14 @@ export function ClientOrdersView({ brand, seed }: ViewProps) {
         </button>
       </div>
 
-      <div className="border border-shell bg-cream">
-        <div className="grid grid-cols-6 gap-4 px-4 py-2 border-b border-shell">
+      <div className="border border-shell bg-cream overflow-x-auto">
+        <div className="grid grid-cols-6 gap-4 px-4 py-2 border-b border-shell min-w-[600px]">
           {["Order", "Date", "Items", "Total", "Status", ""].map((h) => (
             <div key={h || "action"} className="text-ink/50 uppercase tracking-wider text-xs font-mono">{h}</div>
           ))}
         </div>
         {seed.orders.slice(0, 6).map((order) => (
-          <div key={order.number} className="grid grid-cols-6 gap-4 px-4 py-3 border-b border-shell/50 hover:bg-white/50 cursor-pointer">
+          <div key={order.number} className="grid grid-cols-6 gap-4 px-4 py-3 border-b border-shell/50 hover:bg-white/50 cursor-pointer min-w-[600px]">
             <div className="font-mono text-xs font-semibold" style={{ color: brand.color }}>{order.number}</div>
             <div className="font-mono text-xs text-ink/70">{order.date}</div>
             <div className="font-mono text-xs text-sand">{order.itemCount} items</div>

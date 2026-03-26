@@ -126,8 +126,8 @@ export function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
 
           {/* Order & Invoice details */}
           <div className="border border-shell bg-white text-left mb-6">
-            <div className="grid grid-cols-2 border-b border-shell">
-              <div className="p-5 border-r border-shell">
+            <div className="grid grid-cols-1 sm:grid-cols-2 border-b border-shell">
+              <div className="p-5 sm:border-r border-b sm:border-b-0 border-shell">
                 <p className="text-[9px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Order Number</p>
                 <p className="font-mono text-sm font-bold text-ink">{orderNum}</p>
               </div>
@@ -136,12 +136,12 @@ export function CheckoutView({ brand, data, cart, onNavigate }: ViewProps) {
                 <p className="font-mono text-sm font-bold text-ink">{invoiceNum}</p>
               </div>
             </div>
-            <div className="grid grid-cols-3 border-b border-shell">
-              <div className="p-5 border-r border-shell">
+            <div className="grid grid-cols-1 sm:grid-cols-3 border-b border-shell">
+              <div className="p-5 sm:border-r border-b sm:border-b-0 border-shell">
                 <p className="text-[9px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Payment</p>
                 <p className="text-xs font-medium text-ink">Net 30 Invoice</p>
               </div>
-              <div className="p-5 border-r border-shell">
+              <div className="p-5 sm:border-r border-b sm:border-b-0 border-shell">
                 <p className="text-[9px] tracking-[0.25em] uppercase text-sand font-mono mb-1">Items</p>
                 <p className="text-xs font-medium text-ink">{items.length} products</p>
               </div>
