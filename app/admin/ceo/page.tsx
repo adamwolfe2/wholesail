@@ -1,22 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Download } from "lucide-react";
 import { prisma } from "@/lib/db";
-import { format } from "date-fns";
-import {
-  DollarSign,
-  Users,
-  ShoppingCart,
-  TrendingUp,
-  AlertTriangle,
-  FileText,
-  TrendingDown,
-  Minus,
-  Download,
-} from "lucide-react";
 import { CeoCharts } from "./ceo-charts";
 import { CohortChart } from "./cohort-chart";
 import { ProductTrends } from "./product-trends";
+import { KpiCards } from "./kpi-cards";
+import { TopClientsTable } from "./top-clients-table";
+import { ChurnRiskTable } from "./churn-risk-table";
+import { ProductVelocityTable } from "./product-velocity-table";
 
 export const metadata: Metadata = { title: "CEO Dashboard" };
 
@@ -117,12 +108,10 @@ export default async function CeoCommandCenter() {
       last12MonthOrders,
       last90DayOrders,
     ] = await Promise.all([
-      // Total revenue all time
       prisma.order.aggregate({
         where: { status: { not: "CANCELLED" } },
         _sum: { total: true },
       }),
-      // Revenue this month
       prisma.order.aggregate({
         where: {
           status: { not: "CANCELLED" },
@@ -130,11 +119,8 @@ export default async function CeoCommandCenter() {
         },
         _sum: { total: true },
       }),
-      // Active clients (all orgs)
       prisma.organization.count(),
-      // Orders this month
       prisma.order.count({ where: { createdAt: { gte: startOfMonth } } }),
-      // YTD revenue (current year)
       prisma.order.aggregate({
         where: {
           status: { not: "CANCELLED" },
@@ -142,7 +128,6 @@ export default async function CeoCommandCenter() {
         },
         _sum: { total: true },
       }),
-      // Same period last year
       prisma.order.aggregate({
         where: {
           status: { not: "CANCELLED" },
@@ -150,12 +135,10 @@ export default async function CeoCommandCenter() {
         },
         _sum: { total: true },
       }),
-      // Outstanding AR: sum of PENDING + OVERDUE invoices
       prisma.invoice.aggregate({
         where: { status: { in: ["PENDING", "OVERDUE"] } },
         _sum: { total: true },
       }),
-      // Top 10 clients by LTV — group by org
       prisma.order.groupBy({
         by: ["organizationId"],
         where: { status: { not: "CANCELLED" } },
@@ -164,7 +147,6 @@ export default async function CeoCommandCenter() {
         orderBy: { _sum: { total: "desc" } },
         take: 10,
       }),
-      // Product velocity: top 10 products by qty ordered in last 90 days
       prisma.orderItem.groupBy({
         by: ["productId", "name"],
         where: {
@@ -177,7 +159,6 @@ export default async function CeoCommandCenter() {
         orderBy: { _sum: { quantity: "desc" } },
         take: 10,
       }),
-      // Last 12 months orders for revenue trend
       prisma.order.findMany({
         where: {
           status: { not: "CANCELLED" },
@@ -185,7 +166,6 @@ export default async function CeoCommandCenter() {
         },
         select: { total: true, createdAt: true },
       }),
-      // Last 90 days orders for forecast calculation
       prisma.order.findMany({
         where: {
           status: { not: "CANCELLED" },
@@ -206,7 +186,6 @@ export default async function CeoCommandCenter() {
     };
 
     // ── Revenue Forecasting ──────────────────────────────────────────────────
-    // Compute rolling windows from the 90-day order set
     const last30Revenue = last90DayOrders
       .filter((o) => new Date(o.createdAt) >= thirtyDaysAgo)
       .reduce((sum, o) => sum + Number(o.total), 0);
@@ -223,7 +202,6 @@ export default async function CeoCommandCenter() {
     const prev30DailyAvg = prev30Revenue / 30;
     const forecastAmount = Math.round(last30DailyAvg * 30);
 
-    // Trend: >5% difference is considered directional
     let trendDirection: "up" | "flat" | "down" = "flat";
     if (prev30DailyAvg > 0) {
       const changePct =
@@ -377,7 +355,7 @@ export default async function CeoCommandCenter() {
     productVelocity = velocityItems.filter((v) => v.productId !== null).map((v) => ({
       productId: v.productId!,
       name: v.name,
-      category: productCategoryMap.get(v.productId!) || "—",
+      category: productCategoryMap.get(v.productId!) || "--",
       totalQty: v._sum.quantity ?? 0,
       totalRevenue: Number(v._sum.total ?? 0),
     }));
@@ -473,7 +451,7 @@ export default async function CeoCommandCenter() {
 
   return (
     <div className="space-y-8">
-      {/* ── Page Header ──────────────────────────────────────────────────── */}
+      {/* Page Header */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <h2 className="font-serif text-2xl sm:text-3xl font-bold text-ink">
           CEO Command Center
@@ -488,464 +466,30 @@ export default async function CeoCommandCenter() {
         </a>
       </div>
 
-      {/* ── KPI Row ──────────────────────────────────────────────────────── */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7">
-        {/* Total Revenue */}
-        <div className="xl:col-span-1">
-          <Card className="border-shell bg-cream">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
-                Total Revenue
-              </CardTitle>
-              <DollarSign className="h-4 w-4 text-sand" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold font-serif text-ink">
-                $
-                {kpis.totalRevenue.toLocaleString("en-US", {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 0,
-                })}
-              </div>
-              <p className="text-xs text-ink/40 mt-1">
-                Cumulative all-time
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+      <KpiCards
+        kpis={kpis}
+        forecast={forecast}
+        ytdChangePercent={ytdChangePercent}
+        nrrPct={nrrPct}
+        trendIcon={trendIcon}
+        trendColor={trendColor}
+        trendLabel={trendLabel}
+      />
 
-        {/* YTD vs Last Year */}
-        <div className="xl:col-span-1">
-          <Card className="border-shell bg-cream">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
-                YTD Revenue
-              </CardTitle>
-              <TrendingUp className="h-4 w-4 text-sand" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold font-serif text-ink">
-                $
-                {kpis.ytdRevenue.toLocaleString("en-US", {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 0,
-                })}
-              </div>
-              {ytdChangePercent !== null ? (
-                <p
-                  className={`text-xs mt-1 font-medium ${
-                    ytdChangePercent >= 0 ? "text-emerald-600" : "text-red-500"
-                  }`}
-                >
-                  {ytdChangePercent >= 0 ? "+" : ""}
-                  {ytdChangePercent.toFixed(1)}% vs last year
-                </p>
-              ) : (
-                <p className="text-xs text-ink/40 mt-1">
-                  $
-                  {kpis.ytdRevenueLastYear.toLocaleString("en-US", {
-                    maximumFractionDigits: 0,
-                  })}{" "}
-                  last year
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* MRR (Revenue This Month) */}
-        <div className="xl:col-span-1">
-          <Card className="border-shell bg-cream">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
-                Revenue This Month
-              </CardTitle>
-              <TrendingUp className="h-4 w-4 text-sand" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold font-serif text-ink">
-                $
-                {kpis.revenueThisMonth.toLocaleString("en-US", {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 0,
-                })}
-              </div>
-              <p className="text-xs text-ink/40 mt-1">Month to date</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Outstanding AR */}
-        <div className="xl:col-span-1">
-          <Card className="border-shell bg-cream">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
-                Outstanding AR
-              </CardTitle>
-              <FileText className="h-4 w-4 text-sand" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold font-serif text-ink">
-                $
-                {kpis.outstandingAR.toLocaleString("en-US", {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 0,
-                })}
-              </div>
-              <p className="text-xs text-ink/40 mt-1">
-                Pending + overdue invoices
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Active Clients */}
-        <div className="xl:col-span-1">
-          <Card className="border-shell bg-cream">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
-                Active Clients
-              </CardTitle>
-              <Users className="h-4 w-4 text-sand" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold font-serif text-ink">
-                {kpis.activeClients}
-              </div>
-              <p className="text-xs text-ink/40 mt-1">
-                Active organizations
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Orders This Month */}
-        <div className="xl:col-span-1">
-          <Card className="border-shell bg-cream">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
-                Orders This Month
-              </CardTitle>
-              <ShoppingCart className="h-4 w-4 text-sand" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold font-serif text-ink">
-                {kpis.ordersThisMonth}
-              </div>
-              <p className="text-xs text-ink/40 mt-1">Month to date</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Next 30 Days Forecast */}
-        <div className="xl:col-span-1">
-          <Card className="border-shell bg-cream">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
-                30-Day Forecast
-              </CardTitle>
-              {forecast.trendDirection === "up" ? (
-                <TrendingUp className="h-4 w-4 text-emerald-500" />
-              ) : forecast.trendDirection === "down" ? (
-                <TrendingDown className="h-4 w-4 text-red-400" />
-              ) : (
-                <Minus className="h-4 w-4 text-sand" />
-              )}
-            </CardHeader>
-            <CardContent>
-              <div className="text-3xl font-bold font-serif text-ink">
-                $
-                {forecast.forecastAmount.toLocaleString("en-US", {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits: 0,
-                })}
-              </div>
-              <p className={`text-xs mt-1 font-medium ${trendColor}`}>
-                {trendIcon} {trendLabel}
-              </p>
-              <p className="text-[10px] text-ink/30 mt-0.5">
-                Based on last 90 days
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* ── Second KPI Row: Net Revenue Retention ────────────────────────── */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-shell bg-cream">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
-              Net Revenue Retention
-            </CardTitle>
-            <TrendingUp className="h-4 w-4 text-sand" />
-          </CardHeader>
-          <CardContent>
-            {nrrPct !== null ? (
-              <>
-                <div
-                  className={`text-3xl font-bold font-serif ${
-                    nrrPct >= 100
-                      ? "text-emerald-600"
-                      : nrrPct >= 75
-                        ? "text-ink"
-                        : "text-red-500"
-                  }`}
-                >
-                  {nrrPct}%
-                </div>
-                <p className="text-xs text-ink/40 mt-1">
-                  Existing client spend vs last month
-                </p>
-              </>
-            ) : (
-              <>
-                <div className="text-3xl font-bold font-serif text-ink/30">
-                  —
-                </div>
-                <p className="text-xs text-ink/40 mt-1">
-                  No prior month data yet
-                </p>
-              </>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* ── Charts (client component) ────────────────────────────────────── */}
       <CeoCharts
         monthlyRevenue={monthlyRevenue}
         categoryRevenue={categoryRevenue}
       />
 
-      {/* ── Top 10 Clients + Churn Risk (side-by-side on large screens) ─── */}
+      {/* Top 10 Clients + Churn Risk (side-by-side on large screens) */}
       <div className="grid gap-6 lg:grid-cols-2">
-        {/* Top 10 Clients by LTV */}
-        <Card className="border-shell bg-cream">
-          <CardHeader className="pb-3">
-            <CardTitle className="font-serif text-lg text-ink">
-              Top 10 Clients by Lifetime Value
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            {topClients.length === 0 ? (
-              <p className="text-sm text-ink/40">
-                No client order data yet.
-              </p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-shell">
-                      <th className="text-left py-2 pr-3 text-xs font-medium text-ink/50 uppercase tracking-wider">
-                        Organization
-                      </th>
-                      <th className="text-right py-2 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">
-                        Orders
-                      </th>
-                      <th className="text-right py-2 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider">
-                        Total Spent
-                      </th>
-                      <th className="text-right py-2 pl-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden md:table-cell">
-                        Last Order
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {topClients.map((client, idx) => (
-                      <tr
-                        key={client.id}
-                        className="border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors"
-                      >
-                        <td className="py-2.5 pr-3">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-sand font-mono w-4">
-                              {idx + 1}
-                            </span>
-                            <Link
-                              href={`/admin/clients/${client.id}`}
-                              className="font-medium text-ink hover:underline truncate max-w-[120px]"
-                            >
-                              {client.name}
-                            </Link>
-                          </div>
-                        </td>
-                        <td className="text-right py-2.5 px-2 font-mono text-ink hidden sm:table-cell">
-                          {client.totalOrders}
-                        </td>
-                        <td className="text-right py-2.5 px-2 font-mono font-bold text-ink">
-                          $
-                          {client.totalSpent.toLocaleString("en-US", {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                          })}
-                        </td>
-                        <td className="text-right py-2.5 pl-2 text-ink/50 text-xs hidden md:table-cell">
-                          {client.lastOrderDate
-                            ? format(client.lastOrderDate, "MMM d")
-                            : "—"}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Churn Risk: clients who haven't ordered in 60+ days */}
-        <Card className="border-shell bg-cream">
-          <CardHeader className="pb-3">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-amber-500" />
-              <CardTitle className="font-serif text-lg text-ink">
-                Churn Risk
-              </CardTitle>
-            </div>
-            <p className="text-xs text-ink/50 mt-1">
-              Clients with no orders in 60+ days
-            </p>
-          </CardHeader>
-          <CardContent>
-            {churnRiskClients.length === 0 ? (
-              <p className="text-sm text-ink/40 py-4 text-center">
-                All clients have ordered recently.
-              </p>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-shell">
-                      <th className="text-left py-2 pr-3 text-xs font-medium text-ink/50 uppercase tracking-wider">
-                        Organization
-                      </th>
-                      <th className="text-right py-2 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider">
-                        Days Idle
-                      </th>
-                      <th className="text-right py-2 px-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">
-                        Last Order
-                      </th>
-                      <th className="text-right py-2 pl-2 text-xs font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">
-                        LTV
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {churnRiskClients.map((client) => (
-                      <tr
-                        key={client.id}
-                        className="border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors"
-                      >
-                        <td className="py-2.5 pr-3">
-                          <Link
-                            href={`/admin/clients/${client.id}`}
-                            className="font-medium text-ink hover:underline truncate max-w-[130px] block"
-                          >
-                            {client.name}
-                          </Link>
-                        </td>
-                        <td className="text-right py-2.5 px-2">
-                          <span
-                            className={`font-mono text-xs font-bold ${
-                              client.daysSinceOrder >= 90
-                                ? "text-red-500"
-                                : "text-amber-500"
-                            }`}
-                          >
-                            {client.daysSinceOrder}d
-                          </span>
-                        </td>
-                        <td className="text-right py-2.5 px-2 text-ink/50 text-xs hidden sm:table-cell">
-                          {format(client.lastOrderDate, "MMM d, yyyy")}
-                        </td>
-                        <td className="text-right py-2.5 pl-2 font-mono text-xs text-ink hidden sm:table-cell">
-                          $
-                          {client.totalSpent.toLocaleString("en-US", {
-                            minimumFractionDigits: 0,
-                            maximumFractionDigits: 0,
-                          })}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <TopClientsTable clients={topClients} />
+        <ChurnRiskTable clients={churnRiskClients} />
       </div>
 
-      {/* ── Product Velocity ─────────────────────────────────────────────── */}
-      <Card className="border-shell bg-cream">
-        <CardHeader className="pb-3">
-          <CardTitle className="font-serif text-lg text-ink">
-            Product Velocity — Top 10 (Last 90 Days)
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {productVelocity.length === 0 ? (
-            <p className="text-sm text-ink/40">
-              No product order data yet.
-            </p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-shell">
-                    <th className="text-left py-2 pr-4 text-xs font-medium text-ink/50 uppercase tracking-wider">
-                      Product
-                    </th>
-                    <th className="text-left py-2 px-3 text-xs font-medium text-ink/50 uppercase tracking-wider hidden sm:table-cell">
-                      Category
-                    </th>
-                    <th className="text-right py-2 px-3 text-xs font-medium text-ink/50 uppercase tracking-wider">
-                      Qty Ordered
-                    </th>
-                    <th className="text-right py-2 pl-3 text-xs font-medium text-ink/50 uppercase tracking-wider">
-                      Revenue
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {productVelocity.map((item, idx) => (
-                    <tr
-                      key={item.productId}
-                      className="border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors"
-                    >
-                      <td className="py-3 pr-4">
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-sand font-mono w-5">
-                            {idx + 1}
-                          </span>
-                          <span className="font-medium text-ink">
-                            {item.name}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-3 text-ink/60 text-xs hidden sm:table-cell">
-                        {item.category}
-                      </td>
-                      <td className="text-right py-3 px-3 font-mono font-bold text-ink">
-                        {item.totalQty.toLocaleString()}
-                      </td>
-                      <td className="text-right py-3 pl-3 font-mono text-ink">
-                        $
-                        {item.totalRevenue.toLocaleString("en-US", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <ProductVelocityTable items={productVelocity} />
 
-      {/* ── Growth Intelligence ──────────────────────────────────────────── */}
+      {/* Growth Intelligence */}
       <div>
         <h3 className="font-serif text-xl font-bold text-ink mb-4">
           Growth Intelligence

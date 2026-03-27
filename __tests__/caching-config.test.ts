@@ -83,15 +83,15 @@ describe("AI cost optimization", () => {
       ),
       "utf-8"
     );
-    const buildStart = fs.readFileSync(
+    const generateConfig = fs.readFileSync(
       path.resolve(
         __dirname,
-        "../app/api/admin/intakes/[id]/build-start/route.ts"
+        "../lib/build/generate-config.ts"
       ),
       "utf-8"
     );
     expect(genConfig).toContain("max_tokens: 2048");
-    expect(buildStart).toContain("max_tokens: 2048");
+    expect(generateConfig).toContain("max_tokens: 2048");
   });
 
   it("Suggest reply uses gemini-2.0-flash", () => {

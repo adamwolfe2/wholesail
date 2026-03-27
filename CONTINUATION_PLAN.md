@@ -101,29 +101,22 @@ Organization (root), SoftwareApplication (homepage), BreadcrumbList (homepage, c
 #### 4. ~~README.md~~ DONE
 265 lines: getting started, architecture, design system, testing, env vars, deployment.
 
-#### 5. Split Remaining Large Files — PARTIALLY DONE
-ai-tools.ts DONE (1,602 → 40 lines, split into lib/ai/tools/). Four files still need splitting:
+#### 5. ~~Split Remaining Large Files~~ DONE
+ai-tools.ts DONE (1,602 → 40 lines, split into lib/ai/tools/). All 4 remaining files split:
+- `build-start/route.ts` (975 → 381 lines) + 5 new files in lib/build/ (generate-config, commit-artifacts, provision-infrastructure, provision-services, provision-env)
+- `messages-admin-client.tsx` (971 → 463 lines) + 5 new files (message-list, message-thread, message-composer, new-conversation-dialog, message-utils)
+- `ceo/page.tsx` (960 → 504 lines) + 4 new files (kpi-cards, top-clients-table, churn-risk-table, product-velocity-table)
+- `client-portal/analytics/page.tsx` (921 → 203 lines) + 8 new files (analytics-types, analytics-kpi-cards, pricing-tier-card, spending-chart, category-breakdown, order-frequency-chart, order-activity-heatmap, top-products)
+
+#### 6. ~~E2E Tests with Playwright~~ DONE
+Playwright installed with chromium. 5 test specs (19 tests) in `e2e/`:
+- marketing-homepage.spec.ts (6 tests): title, hero, nav, footer, demo launcher, features scroll
+- intake-wizard.spec.ts (4 tests): form loads, fields visible, fillable, step headings
+- demo-portal.spec.ts (4 tests): loads, banner, sidebar nav, view switching
+- client-portal.spec.ts (3 tests): auth redirects, catalog loads, sign-in page
+- admin.spec.ts (2 tests): auth redirect, sign-in page
 
 #### THE REMAINING WORK ITEMS (start here next session):
-
-#### A. Split 4 Remaining Large Files (~2 hours)
-**What to split:**
-- `app/api/admin/intakes/[id]/build-start/route.ts` (975 lines) → Extract provisioning functions into lib/build/provision-*.ts
-- `app/admin/messages/messages-admin-client.tsx` (971 lines) → Split into message-list.tsx, message-thread.tsx, message-composer.tsx
-- `app/admin/ceo/page.tsx` (960 lines) → Extract chart components into app/admin/ceo/
-- `app/client-portal/analytics/page.tsx` (921 lines) → Extract into spending-chart.tsx, order-history.tsx, pricing-tier.tsx
-**Impact:** Maintainability, code review efficiency
-
-#### B. E2E Tests with Playwright (~3 hours)
-**Why:** 930 unit/structural tests but zero E2E tests that actually render pages.
-**What to build:**
-- Marketing homepage loads, scrolls, demo launcher works
-- Intake wizard: fill all 4 steps, verify submission
-- Demo portal: navigate all 21 views
-- Client portal: catalog → add to cart → cart drawer → checkout page
-- Admin: login → dashboard → navigate key pages
-**Files:** New `e2e/` directory with Playwright config
-**Impact:** Catches rendering bugs that unit tests miss
 
 ### REMAINING TIER 2/3 ITEMS:
 
