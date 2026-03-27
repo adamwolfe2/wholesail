@@ -28,6 +28,7 @@ import {
 } from 'lucide-react'
 import { PortalLayout } from '@/components/portal-nav'
 import { AIOrderParser } from '@/components/ai-order-parser'
+import { OnboardingBanner } from '@/components/onboarding-banner'
 
 interface DashboardStats {
   orderCount: number
@@ -239,6 +240,10 @@ export default function ClientDashboard() {
             Unable to load data. Please refresh the page or try again later.
           </div>
         )}
+
+        {/* Onboarding Banner — shown until dismissed */}
+        <OnboardingBanner orderCount={stats?.orderCount ?? 0} />
+
         {/* Welcome Section */}
         <div className="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
