@@ -30,12 +30,20 @@ export function OnboardingBanner({ orderCount }: OnboardingBannerProps) {
   const [dismissed, setDismissed] = useState(true)
 
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY)
-    setDismissed(stored === 'true')
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY)
+      setDismissed(stored === 'true')
+    } catch {
+      // Storage unavailable (e.g. Safari private browsing) — keep hidden
+    }
   }, [])
 
   function handleDismiss() {
-    localStorage.setItem(STORAGE_KEY, 'true')
+    try {
+      localStorage.setItem(STORAGE_KEY, 'true')
+    } catch {
+      // Storage unavailable — dismiss in memory only
+    }
     setDismissed(true)
   }
 

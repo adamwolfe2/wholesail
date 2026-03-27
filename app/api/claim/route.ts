@@ -4,41 +4,50 @@ import { prisma } from '@/lib/db'
 import { z } from 'zod'
 import { BRAND_EMAIL } from '@/lib/brand'
 import { getSiteUrl } from '@/lib/get-site-url'
+import { publicSignupLimiter, checkRateLimit } from '@/lib/rate-limit'
 
 // ---------------------------------------------------------------------------
-// Simple in-memory rate limiter: max 3 requests per email per hour.
-// Keyed by lowercased email. Values are arrays of timestamps (ms).
+// Rate limiting: max 3 requests per email per hour via Redis (Upstash).
+// Falls back to in-memory if Redis is unavailable.
 // ---------------------------------------------------------------------------
-const rateLimitMap = new Map<string, number[]>()
+const fallbackMap = new Map<string, number[]>()
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000 // 1 hour
 const RATE_LIMIT_MAX = 3
 
-function isRateLimited(email: string): boolean {
+function isRateLimitedFallback(email: string): boolean {
   const now = Date.now()
   const key = email.toLowerCase()
-  const timestamps = (rateLimitMap.get(key) ?? []).filter(
+  const timestamps = (fallbackMap.get(key) ?? []).filter(
     ts => now - ts < RATE_LIMIT_WINDOW_MS,
   )
 
   if (timestamps.length >= RATE_LIMIT_MAX) return true
 
-  // Record this attempt
   timestamps.push(now)
-  rateLimitMap.set(key, timestamps)
+  fallbackMap.set(key, timestamps)
 
-  // Periodic cleanup: remove entries that are entirely expired
-  if (rateLimitMap.size > 5000) {
-    for (const [k, ts] of rateLimitMap.entries()) {
+  if (fallbackMap.size > 5000) {
+    for (const [k, ts] of fallbackMap.entries()) {
       const active = ts.filter(t => now - t < RATE_LIMIT_WINDOW_MS)
       if (active.length === 0) {
-        rateLimitMap.delete(k)
+        fallbackMap.delete(k)
       } else {
-        rateLimitMap.set(k, active)
+        fallbackMap.set(k, active)
       }
     }
   }
 
   return false
+}
+
+async function isRateLimited(email: string): Promise<boolean> {
+  try {
+    const { allowed } = await checkRateLimit(publicSignupLimiter, email.toLowerCase())
+    return !allowed
+  } catch {
+    // Redis unavailable — fall back to in-memory
+    return isRateLimitedFallback(email)
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -159,7 +168,7 @@ export async function POST(req: NextRequest) {
   const emailNorm = normalizeEmail(email)
 
   // Rate limit check
-  if (isRateLimited(emailLower)) {
+  if (await isRateLimited(emailLower)) {
     return NextResponse.json(
       { error: 'Too many requests. Please wait and try again.' },
       { status: 429 },

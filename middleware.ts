@@ -1,13 +1,14 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-const isAdminRoute = createRouteMatcher([
+const isProtectedRoute = createRouteMatcher([
   "/admin(.*)",
   "/api/admin(.*)",
+  "/client-portal(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isAdminRoute(req)) {
+  if (isProtectedRoute(req)) {
     const { userId } = await auth();
     if (!userId) {
       // Redirect to sign-in without a redirect_url parameter — Clerk v6
