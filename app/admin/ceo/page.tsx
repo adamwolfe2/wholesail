@@ -1,13 +1,27 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import { Download } from "lucide-react";
 import { prisma } from "@/lib/db";
-import { CeoCharts } from "./ceo-charts";
-import { CohortChart } from "./cohort-chart";
-import { ProductTrends } from "./product-trends";
 import { KpiCards } from "./kpi-cards";
 import { TopClientsTable } from "./top-clients-table";
 import { ChurnRiskTable } from "./churn-risk-table";
 import { ProductVelocityTable } from "./product-velocity-table";
+
+const CeoCharts = dynamic(() =>
+  import("./ceo-charts").then((m) => ({ default: m.CeoCharts })),
+  { ssr: false, loading: () => <div className="h-[300px] animate-pulse rounded-lg bg-muted" /> }
+);
+
+const CohortChart = dynamic(() =>
+  import("./cohort-chart").then((m) => ({ default: m.CohortChart })),
+  { ssr: false, loading: () => <div className="h-[300px] animate-pulse rounded-lg bg-muted" /> }
+);
+
+const ProductTrends = dynamic(() =>
+  import("./product-trends").then((m) => ({ default: m.ProductTrends })),
+  { ssr: false, loading: () => <div className="h-[300px] animate-pulse rounded-lg bg-muted" /> }
+);
 
 export const metadata: Metadata = { title: "CEO Dashboard" };
 
@@ -476,10 +490,12 @@ export default async function CeoCommandCenter() {
         trendLabel={trendLabel}
       />
 
-      <CeoCharts
-        monthlyRevenue={monthlyRevenue}
-        categoryRevenue={categoryRevenue}
-      />
+      <Suspense fallback={<div className="h-[300px] animate-pulse rounded-lg bg-muted" />}>
+        <CeoCharts
+          monthlyRevenue={monthlyRevenue}
+          categoryRevenue={categoryRevenue}
+        />
+      </Suspense>
 
       {/* Top 10 Clients + Churn Risk (side-by-side on large screens) */}
       <div className="grid gap-6 lg:grid-cols-2">
@@ -495,8 +511,12 @@ export default async function CeoCommandCenter() {
           Growth Intelligence
         </h3>
         <div className="grid gap-6 lg:grid-cols-2">
-          <CohortChart />
-          <ProductTrends />
+          <Suspense fallback={<div className="h-[300px] animate-pulse rounded-lg bg-muted" />}>
+            <CohortChart />
+          </Suspense>
+          <Suspense fallback={<div className="h-[300px] animate-pulse rounded-lg bg-muted" />}>
+            <ProductTrends />
+          </Suspense>
         </div>
       </div>
     </div>

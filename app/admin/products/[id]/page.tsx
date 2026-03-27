@@ -30,8 +30,13 @@ import {
   ToggleLeft,
   ToggleRight,
 } from "lucide-react";
-import { PriceHistoryChart } from "./price-history-chart";
+import dynamic from "next/dynamic";
 import { DistributorAssignmentCard } from "./distributor-assignment";
+
+const PriceHistoryChart = dynamic(() =>
+  import("./price-history-chart").then((m) => ({ default: m.PriceHistoryChart })),
+  { ssr: false, loading: () => <div className="h-[250px] animate-pulse rounded-lg bg-muted" /> }
+);
 
 export const metadata: Metadata = { title: "Product Details" };
 

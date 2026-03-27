@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
+import dynamic from "next/dynamic";
 import { unstable_cache } from "next/cache";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
@@ -9,10 +11,30 @@ import {
   TrendingUp,
   Package,
 } from "lucide-react";
-import { AdminCharts } from "./admin-charts";
-import { SmartReorderAlerts } from "./smart-reorder-alerts";
 import { ClientHealthOverview } from "./client-health";
 import { TopProducts } from "./top-products";
+
+const AdminCharts = dynamic(() =>
+  import("./admin-charts").then((m) => ({ default: m.AdminCharts })),
+  { ssr: false, loading: () => <ChartSkeleton /> }
+);
+
+const SmartReorderAlerts = dynamic(() =>
+  import("./smart-reorder-alerts").then((m) => ({ default: m.SmartReorderAlerts })),
+  { ssr: false }
+);
+
+function ChartSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="h-[300px] animate-pulse rounded-lg bg-muted" />
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="h-[250px] animate-pulse rounded-lg bg-muted" />
+        <div className="h-[250px] animate-pulse rounded-lg bg-muted" />
+      </div>
+    </div>
+  );
+}
 
 export const metadata: Metadata = { title: "Analytics" };
 
@@ -427,16 +449,18 @@ export default async function AdminAnalyticsPage() {
         </Card>
       </div>
 
-      {/* Charts (client component) */}
-      <AdminCharts
-        monthlyRevenue={stats.monthlyRevenue}
-        topClients={stats.topClients}
-        statusBreakdown={stats.statusBreakdown}
-        topCategories={stats.topCategories}
-        topCategoryRevenue={stats.topCategoryRevenue}
-        aovByMonth={stats.aovByMonth}
-        dayOfWeekCounts={stats.dayOfWeekCounts}
-      />
+      {/* Charts (lazy-loaded client component) */}
+      <Suspense fallback={<ChartSkeleton />}>
+        <AdminCharts
+          monthlyRevenue={stats.monthlyRevenue}
+          topClients={stats.topClients}
+          statusBreakdown={stats.statusBreakdown}
+          topCategories={stats.topCategories}
+          topCategoryRevenue={stats.topCategoryRevenue}
+          aovByMonth={stats.aovByMonth}
+          dayOfWeekCounts={stats.dayOfWeekCounts}
+        />
+      </Suspense>
 
       {/* Top Products by Revenue and Quantity */}
       <TopProducts

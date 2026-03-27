@@ -1,5 +1,6 @@
 import type { Tool } from '@anthropic-ai/sdk/resources/messages'
 import { prisma } from '@/lib/db'
+import type { Prisma } from '@prisma/client'
 import { formatCurrency } from '@/lib/utils'
 import { cachedTool } from '@/lib/ai/tool-cache'
 
@@ -78,7 +79,7 @@ export const productExecutors: Record<string, (input: ToolInput, ctx: ToolContex
 
     await prisma.product.update({ where: { id: productId }, data: fields })
     await prisma.auditEvent.create({
-      data: { entityType: 'Product', entityId: productId, action: 'product_updated_by_ai', userId: ctx.userId, metadata: fields as Record<string, unknown> },
+      data: { entityType: 'Product', entityId: productId, action: 'product_updated_by_ai', userId: ctx.userId, metadata: fields as Prisma.InputJsonValue },
     })
 
     return { success: true, productName: product.name, updated: fields, link: `/admin/products/${productId}` }

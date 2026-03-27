@@ -38,7 +38,17 @@ const securityHeaders = [
 const nextConfig = {
   poweredByHeader: false,
   experimental: {
-    optimizePackageImports: ["lucide-react", "recharts", "date-fns", "@radix-ui/react-icons"],
+    optimizePackageImports: [
+      "lucide-react",
+      "recharts",
+      "date-fns",
+      "@radix-ui/react-icons",
+      "@sentry/nextjs",
+      "framer-motion",
+      "posthog-js",
+      "cmdk",
+      "@clerk/nextjs",
+    ],
   },
   async redirects() {
     // These TBGC template pages were carried over from the distribution portal
