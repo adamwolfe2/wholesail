@@ -8,12 +8,14 @@ Wholesail is a white-label B2B distribution portal template. Two things in one r
 ## Stack
 Next.js 16, React 19, TypeScript strict, Prisma + Neon (HTTP adapter), Clerk auth, Stripe payments, Resend email, Anthropic Claude + Google Gemini AI, PostHog analytics, Sentry error tracking, shadcn/ui, Tailwind v4, recharts, @react-pdf/renderer
 
-## Current State (as of 2026-03-26)
+## Current State (as of 2026-03-26, end of session)
 - **Live at**: wholesailhub.com
-- **Tests**: 930/930 passing (24 test suites)
+- **Tests**: 1,104/1,104 passing (28 test suites)
 - **TypeScript**: 0 errors
 - **Build**: Clean on Vercel with env vars
-- **160 pages, 192 API routes, 25+ Prisma models**
+- **160 pages, 192 API routes, 25+ Prisma models
+- **19 commits this session**
+- **README.md**: Complete (265 lines)
 
 ## What Was Done in the Last Session (16 commits)
 
@@ -87,64 +89,32 @@ Next.js 16, React 19, TypeScript strict, Prisma + Neon (HTTP adapter), Clerk aut
 
 ### TIER 1: Highest Impact (do these first)
 
-#### 1. Test Coverage for Critical Flows (~2-3 hours)
-**Why:** 192 API routes, ~5 have tests. The checkout flow, cron jobs, and Stripe/Clerk webhooks are completely untested.
-**What to build:**
-- `__tests__/checkout-flow.test.ts` — Test the checkout API validates prices server-side, handles missing cart, creates order with items, reserves inventory
-- `__tests__/cron-jobs.test.ts` — Test all 10 cron routes exist, export GET, validate CRON_SECRET, have proper error handling
-- `__tests__/stripe-webhook.test.ts` — Test event routing, signature validation pattern, idempotency checks
-- `__tests__/clerk-webhook.test.ts` — Test user creation/update/deletion handlers, org linking
-- `__tests__/api-validation.test.ts` — Scan all POST/PUT/PATCH routes for Zod validation
-**Files:** All in `__tests__/`
-**Impact:** Prevents regressions on money-handling code
+#### 1. ~~Test Coverage for Critical Flows~~ DONE
+174 new tests: checkout-flow (21), stripe-webhook (30), clerk-webhook (21), cron-jobs (102).
 
-#### 2. Accessibility Pass (~2 hours)
-**Why:** Only 9% of 395 TSX files have aria-labels. Forms, modals, and interactive elements need proper ARIA attributes.
-**What to build:**
-- Add `aria-label` to all icon-only buttons across components/
-- Add `role="dialog"` to all modal/sheet components
-- Add `aria-live="polite"` to loading states and toast notifications
-- Add `htmlFor` attributes to all form labels
-- Add `aria-describedby` for form error messages
-**Files:** components/ui/*.tsx, components/portal-nav.tsx, all form components
-**Impact:** WCAG compliance, screen reader support
+#### 2. ~~Accessibility Pass~~ DONE
+30+ form fields with htmlFor/id, aria-pressed on toggles, aria-label on icon buttons/search, skip-to-content link, role="status"/"alert" on loading/error states.
 
-#### 3. JSON-LD Structured Data (~1.5 hours)
-**Why:** 0% structured data coverage. Google won't show rich results for products, FAQ, or business info.
-**What to build:**
-- Product schema on catalog/[slug]/page.tsx (already has basic JSON-LD, enhance it)
-- FAQPage schema on FAQ section (homepage)
-- Organization schema on marketing pages
-- BreadcrumbList on all marketing pages
-- SoftwareApplication schema on homepage
-**Files:** app/(marketing)/, app/catalog/, components/homepage/faq-section.tsx
-**Impact:** SEO ranking boost, rich search results
+#### 3. ~~JSON-LD Structured Data~~ DONE
+Organization (root), SoftwareApplication (homepage), BreadcrumbList (homepage, catalog, guide, blog), enhanced Product schema. FAQPage/Article already existed.
 
-### TIER 2: High Impact
+#### 4. ~~README.md~~ DONE
+265 lines: getting started, architecture, design system, testing, env vars, deployment.
 
-#### 4. README.md (~1 hour)
-**Why:** No documentation exists. A new developer (or operator) can't get started.
-**What to build:**
-- Getting started (clone, install, env setup)
-- Architecture overview (app structure, key directories)
-- Design system (tokens, fonts, rules)
-- Build pipeline overview
-- Deployment guide
-- Testing guide
-**File:** README.md at project root
-**Impact:** Developer onboarding, portfolio presentation
+#### 5. Split Remaining Large Files — PARTIALLY DONE
+ai-tools.ts DONE (1,602 → 40 lines, split into lib/ai/tools/). Four files still need splitting:
 
-#### 5. Split Remaining Large Files (~2 hours)
-**Why:** 5 files still exceed 800 lines, violating the style guide.
+#### THE REMAINING WORK ITEMS (start here next session):
+
+#### A. Split 4 Remaining Large Files (~2 hours)
 **What to split:**
-- `lib/ai/ai-tools.ts` (1,602 lines) → Split by tool category
-- `app/api/admin/intakes/[id]/build-start/route.ts` (975 lines) → Extract provisioning functions into lib/build/
-- `app/admin/messages/messages-admin-client.tsx` (971 lines) → Split into message-list, message-thread, message-composer
-- `app/admin/ceo/page.tsx` (960 lines) → Extract chart components
-- `app/client-portal/analytics/page.tsx` (921 lines) → Extract chart sections
+- `app/api/admin/intakes/[id]/build-start/route.ts` (975 lines) → Extract provisioning functions into lib/build/provision-*.ts
+- `app/admin/messages/messages-admin-client.tsx` (971 lines) → Split into message-list.tsx, message-thread.tsx, message-composer.tsx
+- `app/admin/ceo/page.tsx` (960 lines) → Extract chart components into app/admin/ceo/
+- `app/client-portal/analytics/page.tsx` (921 lines) → Extract into spending-chart.tsx, order-history.tsx, pricing-tier.tsx
 **Impact:** Maintainability, code review efficiency
 
-#### 6. E2E Tests with Playwright (~3 hours)
+#### B. E2E Tests with Playwright (~3 hours)
 **Why:** 930 unit/structural tests but zero E2E tests that actually render pages.
 **What to build:**
 - Marketing homepage loads, scrolls, demo launcher works
@@ -155,7 +125,7 @@ Next.js 16, React 19, TypeScript strict, Prisma + Neon (HTTP adapter), Clerk aut
 **Files:** New `e2e/` directory with Playwright config
 **Impact:** Catches rendering bugs that unit tests miss
 
-### TIER 3: Medium Impact
+### REMAINING TIER 2/3 ITEMS:
 
 #### 7. Open Graph Images for Remaining Pages (~1 hour)
 **Why:** 56% OG coverage on public pages. Social sharing shows generic previews for 70 pages.
