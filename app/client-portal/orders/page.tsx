@@ -18,6 +18,9 @@ import {
 import { ShoppingBag, Loader2, ArrowRight } from 'lucide-react'
 import { toast } from 'sonner'
 import { ReorderButton } from '@/components/reorder-button'
+import { motion } from 'framer-motion'
+import { fadeUp, staggerContainer } from '@/lib/animations'
+import { EmptyState } from '@/components/empty-state'
 
 interface Order {
   id: string
@@ -142,19 +145,12 @@ export default function ClientOrdersPage() {
                 <Loader2 className="h-6 w-6 animate-spin text-sand" />
               </div>
             ) : orders.length === 0 ? (
-              <div className="text-center py-12">
-                <ShoppingBag className="h-12 w-12 text-sand mx-auto mb-4" />
-                <h3 className="font-serif text-lg font-medium mb-2 text-ink">No orders yet</h3>
-                <p className="text-ink/50 text-sm mb-6">
-                  Browse our catalog and place your first order.
-                </p>
-                <Button
-                  asChild
-                  className="bg-ink text-cream hover:bg-ink/80 min-h-[44px]"
-                >
-                  <Link href="/catalog">Browse Catalog</Link>
-                </Button>
-              </div>
+              <EmptyState
+                icon={ShoppingBag}
+                title="No orders yet"
+                description="Browse our catalog and place your first order."
+                action={{ label: 'Browse Catalog', href: '/catalog' }}
+              />
             ) : (
               <>
                 <p className="text-xs text-ink/40 mb-4">
@@ -175,8 +171,14 @@ export default function ClientOrdersPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {orders.map((order) => (
-                        <TableRow key={order.id} className="border-sand/30">
+                      {orders.map((order, i) => (
+                        <motion.tr
+                          key={order.id}
+                          className="border-b border-sand/30"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.35, delay: i * 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
+                        >
                           <TableCell className="font-mono font-medium text-ink">
                             {order.orderNumber}
                           </TableCell>
@@ -213,7 +215,7 @@ export default function ClientOrdersPage() {
                               </Button>
                             </div>
                           </TableCell>
-                        </TableRow>
+                        </motion.tr>
                       ))}
                     </TableBody>
                   </Table>
@@ -238,10 +240,16 @@ export default function ClientOrdersPage() {
                 )}
 
                 {/* Mobile card list */}
-                <div className="sm:hidden space-y-3">
+                <motion.div
+                  className="sm:hidden space-y-3"
+                  initial="hidden"
+                  animate="visible"
+                  variants={staggerContainer}
+                >
                   {orders.map((order) => (
-                    <div
+                    <motion.div
                       key={order.id}
+                      variants={fadeUp}
                       className="border border-sand/50 p-4"
                     >
                       <div className="flex items-start justify-between gap-3">
@@ -276,9 +284,9 @@ export default function ClientOrdersPage() {
                           </Link>
                         </Button>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </>
             )}
           </CardContent>

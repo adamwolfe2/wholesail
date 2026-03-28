@@ -1,4 +1,9 @@
+"use client";
+
 import { FAQ } from "@/components/faq";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { fadeUp } from "@/lib/animations";
 
 const FAQ_SCHEMA = {
   "@context": "https://schema.org",
@@ -56,6 +61,9 @@ const FAQ_SCHEMA = {
 };
 
 export function FaqSection() {
+  const ref = useRef<HTMLDivElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
     <>
       <script
@@ -63,21 +71,28 @@ export function FaqSection() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_SCHEMA) }}
       />
       <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
-        <div className="mb-10 text-center">
-          <span
-            className="font-mono text-xs uppercase tracking-widest mb-4 block"
-            style={{ color: "var(--text-muted)" }}
+        <div ref={ref}>
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="mb-10 text-center"
           >
-            Questions
-          </span>
-          <h2
-            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal"
-            style={{ color: "var(--text-headline)" }}
-          >
-            Frequently asked questions.
-          </h2>
+            <span
+              className="font-mono text-xs uppercase tracking-widest mb-4 block"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Questions
+            </span>
+            <h2
+              className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal"
+              style={{ color: "var(--text-headline)" }}
+            >
+              Frequently asked questions.
+            </h2>
+          </motion.div>
+          <FAQ />
         </div>
-        <FAQ />
       </section>
     </>
   );

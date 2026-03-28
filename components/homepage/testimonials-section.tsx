@@ -1,3 +1,9 @@
+"use client";
+
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { fadeUp, staggerContainer } from "@/lib/animations";
+
 const TESTIMONIALS = [
   {
     beforeContext: "Before: 200 orders/week managed via text message and Google Sheets",
@@ -25,10 +31,31 @@ const TESTIMONIALS = [
   },
 ];
 
+const cardVariant = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
+
 export function TestimonialsSection() {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
-      <div className="mb-10">
+    <section
+      ref={ref}
+      className="py-16"
+      style={{ borderTop: "1px solid var(--border)" }}
+    >
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="mb-10"
+      >
         <span
           className="font-mono text-xs uppercase tracking-widest mb-4 block"
           style={{ color: "var(--text-muted)" }}
@@ -41,14 +68,19 @@ export function TestimonialsSection() {
         >
           What distribution owners say.
         </h2>
-      </div>
-      <div
+      </motion.div>
+
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
         className="grid grid-cols-1 lg:grid-cols-3 gap-0"
         style={{ border: "1px solid var(--border-strong)" }}
       >
         {TESTIMONIALS.map((t, i) => (
-          <div
+          <motion.div
             key={t.name}
+            variants={cardVariant}
             className={`p-4 sm:p-6 lg:p-8 ${i < TESTIMONIALS.length - 1 ? "border-b lg:border-b-0 lg:border-r" : ""}`}
             style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-white)" }}
           >
@@ -94,9 +126,9 @@ export function TestimonialsSection() {
                 {t.industry}
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

@@ -8,6 +8,7 @@ import { ShoppingCart, Minus, Plus, Trash2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export function CartSidebar() {
   const { items, updateQuantity, removeItem, getTotalItems, getTotalPrice } = useCart()
@@ -29,7 +30,7 @@ export function CartSidebar() {
       </SheetTrigger>
       <SheetContent className="w-full sm:max-w-lg flex flex-col p-0 h-screen overflow-hidden" aria-describedby={undefined}>
         <SheetHeader className="px-5 sm:px-6 pt-5 sm:pt-6 pb-4 border-b">
-          <SheetTitle className="text-xl">Your Order ({totalItems} {totalItems === 1 ? 'item' : 'items'})</SheetTitle>
+          <SheetTitle className="text-xl" aria-live="polite">Your Order ({totalItems} {totalItems === 1 ? 'item' : 'items'})</SheetTitle>
         </SheetHeader>
 
         {items.length === 0 ? (
@@ -42,62 +43,76 @@ export function CartSidebar() {
           <>
             <ScrollArea className="flex-1 min-h-0 py-4">
               <div className="space-y-6 px-5 sm:px-6">
-                {items.map(item => (
-                  <div key={item.id} className="space-y-3 pb-6 border-b last:border-0">
-                    <div className="flex gap-3">
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-base leading-tight mb-1 text-pretty">{item.name}</h4>
-                        <p className="text-sm text-muted-foreground">{item.category}</p>
-                        <p className="text-sm font-medium mt-1">
-                          {formatCurrency(item.price)} {item.unit}
+                <AnimatePresence initial={false}>
+                  {items.map(item => (
+                    <motion.div
+                      key={item.id}
+                      layout
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.25 }}
+                      className="space-y-3 pb-6 border-b last:border-0 overflow-hidden"
+                    >
+                      <div className="flex gap-3">
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-semibold text-base leading-tight mb-1 text-pretty">{item.name}</h4>
+                          <p className="text-sm text-muted-foreground">{item.category}</p>
+                          <p className="text-sm font-medium mt-1">
+                            {formatCurrency(item.price)} {item.unit}
+                          </p>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 shrink-0"
+                          onClick={() => removeItem(item.id)}
+                          aria-label="Remove item"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-10 w-10"
+                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            aria-label="Decrease quantity"
+                          >
+                            <Minus className="h-4 w-4" />
+                          </Button>
+                          <span className="text-base font-semibold w-10 text-center">{item.quantity}</span>
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            className="h-10 w-10"
+                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            aria-label="Increase quantity"
+                          >
+                            <Plus className="h-4 w-4" />
+                          </Button>
+                        </div>
+                        <p className="text-lg font-bold">
+                          {formatCurrency(item.price * item.quantity)}
                         </p>
                       </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 shrink-0"
-                        onClick={() => removeItem(item.id)}
-                        aria-label="Remove item"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-10 w-10"
-                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                          aria-label="Decrease quantity"
-                        >
-                          <Minus className="h-4 w-4" />
-                        </Button>
-                        <span className="text-base font-semibold w-10 text-center">{item.quantity}</span>
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="h-10 w-10"
-                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          aria-label="Increase quantity"
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <p className="text-lg font-bold">
-                        {formatCurrency(item.price * item.quantity)}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </div>
             </ScrollArea>
 
             <div className="border-t px-5 sm:px-6 py-5 sm:py-6 space-y-4 mt-auto">
-              <div className="flex items-center justify-between">
+              <motion.div
+                className="flex items-center justify-between"
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              >
                 <span className="text-xl font-bold">Total</span>
-                <span className="text-2xl font-bold">{formatCurrency(totalPrice)}</span>
-              </div>
+                <span className="text-2xl font-bold" aria-live="polite">{formatCurrency(totalPrice)}</span>
+              </motion.div>
               <Button asChild className="w-full h-12 text-base" size="lg">
                 <Link href="/checkout">Proceed to Checkout</Link>
               </Button>

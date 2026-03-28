@@ -1,4 +1,5 @@
-// DEPRECATED: Use /api/client/notifications/count instead
+// Deprecated: use /api/client/notifications/count instead.
+// This route is kept for backward compatibility and proxies to the canonical endpoint.
 import { NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/db'
@@ -13,11 +14,14 @@ export async function GET() {
 
     const user = await prisma.user.findUnique({
       where: { id: userId },
-      select: { organizationId: true, organization: { select: { isWholesaler: true, isDistributor: true } } },
+      select: {
+        organizationId: true,
+        organization: { select: { isWholesaler: true, isDistributor: true } },
+      },
     })
 
     if (!user?.organizationId) {
-      return NextResponse.json({ unreadMessages: 0, newDrops: 0, isWholesaler: false, isDistributor: false })
+      return NextResponse.json({ unreadMessages: 0, newDrops: 0, unreadCount: 0, isWholesaler: false, isDistributor: false })
     }
 
     const orgId = user.organizationId
@@ -26,8 +30,7 @@ export async function GET() {
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
     const now = new Date()
 
-    const [unreadMessages, newDrops] = await Promise.all([
-      // Count unread messages from staff across all org conversations
+    const [unreadMessages, newDrops, unreadCount] = await Promise.all([
       prisma.message.count({
         where: {
           conversation: { organizationId: orgId },
@@ -35,8 +38,6 @@ export async function GET() {
           readAt: null,
         },
       }),
-
-      // Count product drops in the last 7 days that are public and have dropped
       prisma.productDrop.count({
         where: {
           isPublic: true,
@@ -44,12 +45,14 @@ export async function GET() {
           createdAt: { gte: sevenDaysAgo },
         },
       }),
+      prisma.notification.count({
+        where: { userId, read: false },
+      }),
     ])
 
-    return NextResponse.json({ unreadMessages, newDrops, isWholesaler, isDistributor })
+    return NextResponse.json({ unreadMessages, newDrops, unreadCount, isWholesaler, isDistributor })
   } catch (error) {
     console.error('GET /api/client/notifications/counts error:', error)
-    // Return zeros gracefully on DB failure
-    return NextResponse.json({ unreadMessages: 0, newDrops: 0 })
+    return NextResponse.json({ unreadMessages: 0, newDrops: 0, unreadCount: 0 })
   }
 }

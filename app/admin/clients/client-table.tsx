@@ -2,6 +2,8 @@
 
 import { useState, useMemo, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import { fadeUp, staggerContainer } from "@/lib/animations";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import {
@@ -166,12 +168,17 @@ export function ClientTable({ clients }: { clients: ClientRow[] }) {
                 <SortableHeader field="health" current={sortField} dir={sortDir} onClick={toggleSort} className="hidden sm:table-cell">Health</SortableHeader>
               </tr>
             </thead>
-            <tbody>
+            <motion.tbody
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+            >
               {filtered.map((client) => {
                 const health = healthMap.get(client.id);
                 return (
-                  <tr
+                  <motion.tr
                     key={client.id}
+                    variants={fadeUp}
                     className="border-b hover:bg-muted/50 cursor-pointer"
                   >
                     <td className="py-3 font-medium">
@@ -216,10 +223,10 @@ export function ClientTable({ clients }: { clients: ClientRow[] }) {
                         <span className="text-xs text-muted-foreground">—</span>
                       )}
                     </td>
-                  </tr>
+                  </motion.tr>
                 );
               })}
-            </tbody>
+            </motion.tbody>
           </table>
         </div>
       )}

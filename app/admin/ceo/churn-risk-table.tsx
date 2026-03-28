@@ -1,7 +1,11 @@
+'use client'
+
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle } from "lucide-react";
 import { format } from "date-fns";
+import { motion } from "framer-motion";
+import { fadeUp, staggerContainer } from "@/lib/animations";
 
 interface ChurnRiskClient {
   id: string;
@@ -53,10 +57,15 @@ export function ChurnRiskTable({ clients }: ChurnRiskTableProps) {
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <motion.tbody
+                initial="hidden"
+                animate="visible"
+                variants={staggerContainer}
+              >
                 {clients.map((client) => (
-                  <tr
+                  <motion.tr
                     key={client.id}
+                    variants={fadeUp}
                     className="border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors"
                   >
                     <td className="py-2.5 pr-3">
@@ -88,9 +97,9 @@ export function ChurnRiskTable({ clients }: ChurnRiskTableProps) {
                         maximumFractionDigits: 0,
                       })}
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))}
-              </tbody>
+              </motion.tbody>
             </table>
           </div>
         )}

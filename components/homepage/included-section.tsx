@@ -1,4 +1,9 @@
+"use client";
+
 import { CheckCircle2 } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { fadeUp, staggerContainer } from "@/lib/animations";
 
 const INCLUDED = [
   {
@@ -48,10 +53,31 @@ const INCLUDED = [
   },
 ];
 
+const colVariant = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
+
 export function IncludedSection() {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
-      <div className="mb-10">
+    <section
+      ref={ref}
+      className="py-16"
+      style={{ borderTop: "1px solid var(--border)" }}
+    >
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="mb-10"
+      >
         <span
           className="font-mono text-xs uppercase tracking-widest mb-4 block"
           style={{ color: "var(--text-muted)" }}
@@ -64,14 +90,19 @@ export function IncludedSection() {
         >
           Three parts. One platform. Everything your distribution business runs on.
         </h2>
-      </div>
-      <div
+      </motion.div>
+
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
         className="grid grid-cols-1 lg:grid-cols-3 gap-0"
         style={{ border: "1px solid var(--border-strong)" }}
       >
         {INCLUDED.map((col, ci) => (
-          <div
+          <motion.div
             key={col.category}
+            variants={colVariant}
             className={
               ci < INCLUDED.length - 1
                 ? "border-b lg:border-b-0 lg:border-r"
@@ -109,9 +140,9 @@ export function IncludedSection() {
                 </div>
               ))}
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ChefHat,
   GlassWater,
@@ -8,6 +10,9 @@ import {
   Package,
   Heart,
 } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { fadeUp, staggerContainer, scaleUp } from "@/lib/animations";
 
 const INDUSTRIES = [
   { icon: Utensils, name: "Food & Beverage", desc: "Specialty foods, produce, dairy", href: "/food-beverage" },
@@ -21,9 +26,21 @@ const INDUSTRIES = [
 ];
 
 export function IndustriesSection() {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <section className="py-12" style={{ borderTop: "1px solid var(--border)" }}>
-      <div className="mb-8 text-center">
+    <section
+      ref={ref}
+      className="py-12"
+      style={{ borderTop: "1px solid var(--border)" }}
+    >
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="mb-8 text-center"
+      >
         <span
           className="font-mono text-xs uppercase tracking-widest mb-3 block"
           style={{ color: "var(--text-muted)" }}
@@ -38,8 +55,12 @@ export function IndustriesSection() {
           If you&apos;re a specialty distributor doing $1M–$20M with 2–25 employees, still taking orders by phone
           or spreadsheet, and you&apos;ve been scared off by ERP pricing — this is for you.
         </p>
-      </div>
-      <div
+      </motion.div>
+
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
         className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-0"
         style={{ border: "1px solid var(--border-strong)" }}
       >
@@ -47,44 +68,48 @@ export function IndustriesSection() {
           const Icon = industry.icon;
           const Tag = industry.href ? "a" : "div";
           return (
-            <Tag
-              key={industry.name}
-              {...(industry.href ? { href: industry.href } : {})}
-              className={`p-4 flex flex-col items-center text-center transition-colors ${
-                i < INDUSTRIES.length - 1 ? "border-b sm:border-b-0 sm:border-r" : ""
-              } ${industry.href ? "hover:opacity-80 cursor-pointer" : ""}`}
-              style={{
-                borderColor: "var(--border-strong)",
-                backgroundColor: "var(--bg-white)",
-                textDecoration: "none",
-              }}
-            >
-              <Icon
-                className="w-5 h-5 mb-2"
-                style={{ color: "var(--blue)" }}
-                strokeWidth={1.5}
-              />
-              <div
-                className="font-mono text-[9px] uppercase tracking-wide font-semibold mb-0.5"
-                style={{ color: "var(--text-headline)" }}
+            <motion.div key={industry.name} variants={scaleUp}>
+              <Tag
+                {...(industry.href ? { href: industry.href } : {})}
+                className={`p-4 flex flex-col items-center text-center transition-colors ${
+                  i < INDUSTRIES.length - 1 ? "border-b sm:border-b-0 sm:border-r" : ""
+                } ${industry.href ? "hover:opacity-80 cursor-pointer" : ""}`}
+                style={{
+                  borderColor: "var(--border-strong)",
+                  backgroundColor: "var(--bg-white)",
+                  textDecoration: "none",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
               >
-                {industry.name}
-              </div>
-              <div
-                className="font-mono text-[8px] leading-tight"
-                style={{ color: "var(--text-muted)" }}
-              >
-                {industry.desc}
-              </div>
-              {industry.href && (
-                <div className="font-mono text-[7px] uppercase tracking-wider mt-1" style={{ color: "var(--blue)" }}>
-                  Learn more →
+                <Icon
+                  className="w-5 h-5 mb-2"
+                  style={{ color: "var(--blue)" }}
+                  strokeWidth={1.5}
+                />
+                <div
+                  className="font-mono text-[9px] uppercase tracking-wide font-semibold mb-0.5"
+                  style={{ color: "var(--text-headline)" }}
+                >
+                  {industry.name}
                 </div>
-              )}
-            </Tag>
+                <div
+                  className="font-mono text-[8px] leading-tight"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {industry.desc}
+                </div>
+                {industry.href && (
+                  <div className="font-mono text-[7px] uppercase tracking-wider mt-1" style={{ color: "var(--blue)" }}>
+                    Learn more →
+                  </div>
+                )}
+              </Tag>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
     </section>
   );
 }

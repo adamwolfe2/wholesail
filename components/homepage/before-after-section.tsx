@@ -1,4 +1,9 @@
+"use client";
+
 import { CheckCircle2, X } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { fadeUp, slideInLeft, slideInRight } from "@/lib/animations";
 
 const BEFORE_AFTER = [
   {
@@ -24,9 +29,21 @@ const BEFORE_AFTER = [
 ];
 
 export function BeforeAfterSection() {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
-      <div className="mb-10">
+    <section
+      ref={ref}
+      className="py-16"
+      style={{ borderTop: "1px solid var(--border)" }}
+    >
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="mb-10"
+      >
         <span
           className="font-mono text-xs uppercase tracking-widest mb-4 block"
           style={{ color: "var(--text-muted)" }}
@@ -39,13 +56,17 @@ export function BeforeAfterSection() {
         >
           What changes when you go live.
         </h2>
-      </div>
+      </motion.div>
+
       <div
         className="grid grid-cols-1 lg:grid-cols-2 gap-0"
         style={{ border: "1px solid var(--border-strong)" }}
       >
         {/* Before column */}
-        <div
+        <motion.div
+          variants={slideInLeft}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
           className="p-4 sm:p-6 lg:p-8 border-b lg:border-b-0 lg:border-r"
           style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--bg-white)" }}
         >
@@ -60,7 +81,7 @@ export function BeforeAfterSection() {
               <div key={i} className="flex items-start gap-3">
                 <X
                   className="w-3.5 h-3.5 flex-shrink-0 mt-0.5"
-                  style={{ color: 'var(--color-error)' }}
+                  style={{ color: "var(--color-error)" }}
                   strokeWidth={2.5}
                 />
                 <p
@@ -72,9 +93,13 @@ export function BeforeAfterSection() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
+
         {/* After column */}
-        <div
+        <motion.div
+          variants={slideInRight}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
           className="p-4 sm:p-6 lg:p-8"
           style={{ backgroundColor: "var(--bg-blue)" }}
         >
@@ -101,7 +126,7 @@ export function BeforeAfterSection() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

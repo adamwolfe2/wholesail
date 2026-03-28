@@ -155,9 +155,12 @@ export default function SettingsPage() {
       setBizProfile(data.profile)
       setBizEditing(false)
       setBizSaved(true)
+      toast.success('Business profile saved.')
       setTimeout(() => setBizSaved(false), 2500)
     } catch (err) {
-      setBizError(err instanceof Error ? err.message : 'Something went wrong')
+      const msg = err instanceof Error ? err.message : 'Something went wrong'
+      setBizError(msg)
+      toast.error(msg)
     } finally {
       setBizSaving(false)
     }
@@ -195,11 +198,14 @@ export default function SettingsPage() {
     try {
       const res = await fetch(`/api/client/addresses/${id}`, { method: 'DELETE' })
       if (res.ok) {
+        toast.success('Address deleted.')
         setAddresses((prev) => prev.filter((a) => a.id !== id))
       } else {
+        toast.error('Failed to delete address.')
         setAddressError('Failed to delete address')
       }
     } catch {
+      toast.error('Network error — please try again.')
       setAddressError('Network error — please try again')
     } finally {
       setDeletingId(null)
@@ -221,11 +227,14 @@ export default function SettingsPage() {
                 : a
             )
           )
+          toast.success('Default address updated.')
         }
       } else {
+        toast.error('Failed to set default address.')
         setAddressError('Failed to set default address')
       }
     } catch {
+      toast.error('Network error — please try again.')
       setAddressError('Network error — please try again')
     } finally {
       setSettingDefaultId(null)
@@ -244,13 +253,16 @@ export default function SettingsPage() {
       })
       if (res.ok) {
         const data = await res.json()
+        toast.success('Address added.')
         setAddresses((prev) => [...prev, data.address])
         setShowAddForm(false)
         setNewAddress({ street: '', city: '', state: '', zip: '', type: 'SHIPPING' })
       } else {
+        toast.error('Failed to add address.')
         setAddressError('Failed to add address')
       }
     } catch {
+      toast.error('Network error — please try again.')
       setAddressError('Network error — please try again')
     } finally {
       setAddingAddress(false)

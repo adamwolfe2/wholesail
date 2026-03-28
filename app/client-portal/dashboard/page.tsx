@@ -29,6 +29,8 @@ import {
 import { PortalLayout } from '@/components/portal-nav'
 import { AIOrderParser } from '@/components/ai-order-parser'
 import { OnboardingBanner } from '@/components/onboarding-banner'
+import { motion } from 'framer-motion'
+import { fadeUp, scaleUp, staggerContainer } from '@/lib/animations'
 
 interface DashboardStats {
   orderCount: number
@@ -277,14 +279,19 @@ export default function ClientDashboard() {
 
         {!hasOrders ? (
           /* Onboarding empty state */
-          <div className="border border-shell bg-white p-8 text-center">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            className="border border-shell bg-white p-8 text-center"
+          >
             <Package className="h-8 w-8 text-sand mx-auto mb-3" />
             <p className="font-serif text-lg text-ink mb-1">No orders yet</p>
             <p className="text-sm text-ink/50 mb-4">Browse our catalog and place your first order.</p>
             <Button asChild className="bg-ink text-cream hover:bg-ink/80 rounded-none">
               <Link href="/catalog">Browse Products</Link>
             </Button>
-          </div>
+          </motion.div>
         ) : (
           <>
             {/* Quick Reorder */}
@@ -294,50 +301,68 @@ export default function ClientDashboard() {
                   <RefreshCw className="h-4 w-4 text-sand" />
                   <h2 className="font-serif text-lg font-bold text-ink">Quick Reorder</h2>
                 </div>
-                <div className="flex gap-3 overflow-x-auto pb-1">
+                <motion.div
+                  className="flex gap-3 overflow-x-auto pb-1"
+                  initial="hidden"
+                  animate="visible"
+                  variants={staggerContainer}
+                >
                   {quickReorderProducts.map((product) => (
-                    <QuickReorderCard key={product.name} product={product} />
+                    <motion.div key={product.name} variants={scaleUp}>
+                      <QuickReorderCard product={product} />
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </div>
             )}
 
             {/* Stats Overview */}
-            <div className={`grid gap-4 grid-cols-1 sm:grid-cols-2 ${creditStatus || loyaltyStatus ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} mb-6 sm:mb-8`}>
-              <Card className="border-sand bg-cream">
-                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                  <CardTitle className="text-xs sm:text-sm font-medium text-ink/60 uppercase tracking-wider">Total Spend</CardTitle>
-                  <DollarSign className="h-4 w-4 text-sand" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-xl sm:text-2xl font-bold text-ink">${stats.totalSpent.toLocaleString()}</div>
-                  <p className="text-xs text-ink/40 mt-1">All time</p>
-                </CardContent>
-              </Card>
+            <motion.div
+              className={`grid gap-4 grid-cols-1 sm:grid-cols-2 ${creditStatus || loyaltyStatus ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} mb-6 sm:mb-8`}
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+            >
+              <motion.div variants={scaleUp}>
+                <Card className="border-sand bg-cream">
+                  <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                    <CardTitle className="text-xs sm:text-sm font-medium text-ink/60 uppercase tracking-wider">Total Spend</CardTitle>
+                    <DollarSign className="h-4 w-4 text-sand" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-xl sm:text-2xl font-bold text-ink">${stats.totalSpent.toLocaleString()}</div>
+                    <p className="text-xs text-ink/40 mt-1">All time</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-              <Card className="border-sand bg-cream">
-                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                  <CardTitle className="text-xs sm:text-sm font-medium text-ink/60 uppercase tracking-wider">Total Orders</CardTitle>
-                  <Package className="h-4 w-4 text-sand" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-xl sm:text-2xl font-bold text-ink">{stats.orderCount}</div>
-                  <p className="text-xs text-ink/40 mt-1">Lifetime orders</p>
-                </CardContent>
-              </Card>
+              <motion.div variants={scaleUp}>
+                <Card className="border-sand bg-cream">
+                  <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                    <CardTitle className="text-xs sm:text-sm font-medium text-ink/60 uppercase tracking-wider">Total Orders</CardTitle>
+                    <Package className="h-4 w-4 text-sand" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-xl sm:text-2xl font-bold text-ink">{stats.orderCount}</div>
+                    <p className="text-xs text-ink/40 mt-1">Lifetime orders</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-              <Card className="border-sand bg-cream">
-                <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                  <CardTitle className="text-xs sm:text-sm font-medium text-ink/60 uppercase tracking-wider">Avg Order Value</CardTitle>
-                  <TrendingUp className="h-4 w-4 text-sand" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-xl sm:text-2xl font-bold text-ink">
-                    ${Math.round(stats.totalSpent / stats.orderCount).toLocaleString()}
-                  </div>
-                  <p className="text-xs text-ink/40 mt-1">Per order</p>
-                </CardContent>
-              </Card>
+              <motion.div variants={scaleUp}>
+                <Card className="border-sand bg-cream">
+                  <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                    <CardTitle className="text-xs sm:text-sm font-medium text-ink/60 uppercase tracking-wider">Avg Order Value</CardTitle>
+                    <TrendingUp className="h-4 w-4 text-sand" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-xl sm:text-2xl font-bold text-ink">
+                      ${Math.round(stats.totalSpent / stats.orderCount).toLocaleString()}
+                    </div>
+                    <p className="text-xs text-ink/40 mt-1">Per order</p>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
               {/* Loyalty Points Card */}
               {loyaltyStatus && (() => {
@@ -363,51 +388,54 @@ export default function ClientDashboard() {
                   : 1
 
                 return (
-                  <Card className="border-sand bg-cream">
-                    <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                      <CardTitle className="text-xs sm:text-sm font-medium text-ink/60 uppercase tracking-wider">
-                        Loyalty Points
-                      </CardTitle>
-                      <Star className="h-4 w-4 text-sand" />
-                    </CardHeader>
-                    <CardContent>
-                      <div className="text-xl sm:text-2xl font-bold text-ink">
-                        {loyaltyStatus.currentPoints.toLocaleString()}
-                      </div>
-                      <p className="text-[10px] text-ink/40 mt-0.5">
-                        {formatCurrency(loyaltyStatus.currentPoints / 100)} value
-                      </p>
-                      <div className="flex items-center gap-2 mt-1.5">
-                        <Badge
-                          variant="outline"
-                          className={`text-[10px] px-1.5 py-0 border ${tierBadgeStyles[loyaltyStatus.tier]}`}
-                        >
-                          {loyaltyStatus.tier}
-                        </Badge>
-                      </div>
-                      <div className="mt-2">
-                        <div className="flex justify-between text-[10px] text-ink/40 mb-1">
-                          <span>{loyaltyStatus.tier}</span>
-                          <span>
-                            {nextTier
-                              ? `${Math.max(nextTierPts - lifetimePts, 0)} pts to ${nextTier}`
-                              : 'Top tier'}
-                          </span>
+                  <motion.div key="loyalty" variants={scaleUp}>
+                    <Card className="border-sand bg-cream">
+                      <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                        <CardTitle className="text-xs sm:text-sm font-medium text-ink/60 uppercase tracking-wider">
+                          Loyalty Points
+                        </CardTitle>
+                        <Star className="h-4 w-4 text-sand" />
+                      </CardHeader>
+                      <CardContent>
+                        <div className="text-xl sm:text-2xl font-bold text-ink">
+                          {loyaltyStatus.currentPoints.toLocaleString()}
                         </div>
-                        <div className="h-1.5 bg-shell w-full">
-                          <div
-                            className="h-1.5 bg-ink transition-all"
-                            style={{ width: `${Math.min(progress * 100, 100)}%` }}
-                          />
+                        <p className="text-[10px] text-ink/40 mt-0.5">
+                          {formatCurrency(loyaltyStatus.currentPoints / 100)} value
+                        </p>
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <Badge
+                            variant="outline"
+                            className={`text-[10px] px-1.5 py-0 border ${tierBadgeStyles[loyaltyStatus.tier]}`}
+                          >
+                            {loyaltyStatus.tier}
+                          </Badge>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
+                        <div className="mt-2">
+                          <div className="flex justify-between text-[10px] text-ink/40 mb-1">
+                            <span>{loyaltyStatus.tier}</span>
+                            <span>
+                              {nextTier
+                                ? `${Math.max(nextTierPts - lifetimePts, 0)} pts to ${nextTier}`
+                                : 'Top tier'}
+                            </span>
+                          </div>
+                          <div className="h-1.5 bg-shell w-full">
+                            <div
+                              className="h-1.5 bg-ink transition-all"
+                              style={{ width: `${Math.min(progress * 100, 100)}%` }}
+                            />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
                 )
               })()}
 
               {/* Credit Status Card — shown only when credit limit is set or there is outstanding balance */}
               {creditStatus && (
+                <motion.div variants={scaleUp}>
                 <Card className={`border bg-cream ${
                   creditStatus.isAtLimit
                     ? 'border-red-400'
@@ -478,8 +506,9 @@ export default function ClientDashboard() {
                     )}
                   </CardContent>
                 </Card>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
 
             {/* Main Content */}
             <div className="space-y-6">
@@ -492,9 +521,14 @@ export default function ClientDashboard() {
                   </CardHeader>
                   <CardContent className="pt-4">
                     {orders.length > 0 ? (
-                      <div className="space-y-3">
+                      <motion.div
+                        className="space-y-3"
+                        initial="hidden"
+                        animate="visible"
+                        variants={staggerContainer}
+                      >
                         {orders.slice(0, 5).map((order) => (
-                          <div key={order.id} className="flex items-center justify-between py-1">
+                          <motion.div key={order.id} variants={fadeUp} className="flex items-center justify-between py-1">
                             <div className="space-y-0.5 min-w-0 mr-3">
                               <p className="text-sm font-medium font-mono text-ink truncate">{order.id}</p>
                               <p className="text-xs text-ink/50">
@@ -507,9 +541,9 @@ export default function ClientDashboard() {
                                 {order.status}
                               </Badge>
                             </div>
-                          </div>
+                          </motion.div>
                         ))}
-                      </div>
+                      </motion.div>
                     ) : (
                       <p className="text-sm text-ink/50 py-4">No recent orders.</p>
                     )}
@@ -570,14 +604,20 @@ export default function ClientDashboard() {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {topProducts.map((product) => (
-                            <TableRow key={product.name} className="border-sand/30">
+                          {topProducts.map((product, i) => (
+                            <motion.tr
+                              key={product.name}
+                              className="border-b border-sand/30"
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.35, delay: i * 0.06, ease: [0.25, 0.46, 0.45, 0.94] }}
+                            >
                               <TableCell className="font-medium text-ink">{product.name}</TableCell>
                               <TableCell className="text-right text-ink/60">{product.orders}</TableCell>
                               <TableCell className="text-right font-semibold text-ink">
                                 ${product.revenue.toLocaleString()}
                               </TableCell>
-                            </TableRow>
+                            </motion.tr>
                           ))}
                         </TableBody>
                       </Table>

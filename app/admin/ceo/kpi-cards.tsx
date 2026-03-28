@@ -1,3 +1,5 @@
+'use client'
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   DollarSign,
@@ -8,6 +10,8 @@ import {
   Minus,
   FileText,
 } from "lucide-react";
+import { motion } from "framer-motion";
+import { scaleUp, staggerContainer } from "@/lib/animations";
 
 interface KpiData {
   totalRevenue: number;
@@ -48,9 +52,14 @@ export function KpiCards({
   return (
     <>
       {/* KPI Row */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7">
+      <motion.div
+        className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-7"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
         {/* Total Revenue */}
-        <div className="xl:col-span-1">
+        <motion.div className="xl:col-span-1" variants={scaleUp}>
           <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
@@ -71,10 +80,10 @@ export function KpiCards({
               </p>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
 
         {/* YTD vs Last Year */}
-        <div className="xl:col-span-1">
+        <motion.div className="xl:col-span-1" variants={scaleUp}>
           <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
@@ -110,10 +119,10 @@ export function KpiCards({
               )}
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
 
         {/* MRR (Revenue This Month) */}
-        <div className="xl:col-span-1">
+        <motion.div className="xl:col-span-1" variants={scaleUp}>
           <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
@@ -132,10 +141,10 @@ export function KpiCards({
               <p className="text-xs text-ink/40 mt-1">Month to date</p>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
 
         {/* Outstanding AR */}
-        <div className="xl:col-span-1">
+        <motion.div className="xl:col-span-1" variants={scaleUp}>
           <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
@@ -156,10 +165,10 @@ export function KpiCards({
               </p>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
 
         {/* Active Clients */}
-        <div className="xl:col-span-1">
+        <motion.div className="xl:col-span-1" variants={scaleUp}>
           <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
@@ -176,10 +185,10 @@ export function KpiCards({
               </p>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
 
         {/* Orders This Month */}
-        <div className="xl:col-span-1">
+        <motion.div className="xl:col-span-1" variants={scaleUp}>
           <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
@@ -194,10 +203,10 @@ export function KpiCards({
               <p className="text-xs text-ink/40 mt-1">Month to date</p>
             </CardContent>
           </Card>
-        </div>
+        </motion.div>
 
         {/* Next 30 Days Forecast */}
-        <div className="xl:col-span-1">
+        <motion.div className="xl:col-span-1" variants={scaleUp}>
           <Card className="border-shell bg-cream">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
@@ -227,49 +236,56 @@ export function KpiCards({
               </p>
             </CardContent>
           </Card>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Second KPI Row: Net Revenue Retention */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-shell bg-cream">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
-              Net Revenue Retention
-            </CardTitle>
-            <TrendingUp className="h-4 w-4 text-sand" />
-          </CardHeader>
-          <CardContent>
-            {nrrPct !== null ? (
-              <>
-                <div
-                  className={`text-3xl font-bold font-serif ${
-                    nrrPct >= 100
-                      ? "text-emerald-600"
-                      : nrrPct >= 75
-                        ? "text-ink"
-                        : "text-red-500"
-                  }`}
-                >
-                  {nrrPct}%
-                </div>
-                <p className="text-xs text-ink/40 mt-1">
-                  Existing client spend vs last month
-                </p>
-              </>
-            ) : (
-              <>
-                <div className="text-3xl font-bold font-serif text-ink/30">
-                  --
-                </div>
-                <p className="text-xs text-ink/40 mt-1">
-                  No prior month data yet
-                </p>
-              </>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+      <motion.div
+        className="grid gap-4 md:grid-cols-2 lg:grid-cols-4"
+        initial="hidden"
+        animate="visible"
+        variants={staggerContainer}
+      >
+        <motion.div variants={scaleUp}>
+          <Card className="border-shell bg-cream">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <CardTitle className="text-xs font-medium text-ink/50 uppercase tracking-wider">
+                Net Revenue Retention
+              </CardTitle>
+              <TrendingUp className="h-4 w-4 text-sand" />
+            </CardHeader>
+            <CardContent>
+              {nrrPct !== null ? (
+                <>
+                  <div
+                    className={`text-3xl font-bold font-serif ${
+                      nrrPct >= 100
+                        ? "text-emerald-600"
+                        : nrrPct >= 75
+                          ? "text-ink"
+                          : "text-red-500"
+                    }`}
+                  >
+                    {nrrPct}%
+                  </div>
+                  <p className="text-xs text-ink/40 mt-1">
+                    Existing client spend vs last month
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="text-3xl font-bold font-serif text-ink/30">
+                    --
+                  </div>
+                  <p className="text-xs text-ink/40 mt-1">
+                    No prior month data yet
+                  </p>
+                </>
+              )}
+            </CardContent>
+          </Card>
+        </motion.div>
+      </motion.div>
     </>
   );
 }

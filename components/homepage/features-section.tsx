@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ShoppingCart,
   LayoutDashboard,
@@ -12,6 +14,9 @@ import {
   Globe,
   Package,
 } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { fadeUp, staggerContainer } from "@/lib/animations";
 
 const FEATURES = [
   {
@@ -88,10 +93,31 @@ const FEATURES = [
   },
 ];
 
+const cardVariant = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
+
 export function FeaturesSection() {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
-      <div className="mb-10">
+    <section
+      ref={ref}
+      className="py-16"
+      style={{ borderTop: "1px solid var(--border)" }}
+    >
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="mb-10"
+      >
         <span
           className="font-mono text-xs uppercase tracking-widest mb-4 block"
           style={{ color: "var(--text-muted)" }}
@@ -106,16 +132,21 @@ export function FeaturesSection() {
           <br />
           <span style={{ color: "var(--text-muted)" }}>Nothing it doesn&apos;t.</span>
         </h2>
-      </div>
-      <div
+      </motion.div>
+
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border"
         style={{ borderColor: "var(--border-strong)", backgroundColor: "var(--border-strong)", gap: "1px" }}
       >
         {FEATURES.map((feature) => {
           const Icon = feature.icon;
           return (
-            <div
+            <motion.div
               key={feature.label}
+              variants={cardVariant}
               className="p-6"
               style={{
                 backgroundColor: "var(--bg-white)",
@@ -154,10 +185,10 @@ export function FeaturesSection() {
               >
                 {feature.body}
               </p>
-            </div>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
     </section>
   );
 }

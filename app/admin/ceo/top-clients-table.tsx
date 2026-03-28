@@ -1,6 +1,10 @@
+'use client'
+
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";
+import { motion } from "framer-motion";
+import { fadeUp, staggerContainer } from "@/lib/animations";
 
 interface TopClient {
   id: string;
@@ -47,10 +51,15 @@ export function TopClientsTable({ clients }: TopClientsTableProps) {
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <motion.tbody
+                initial="hidden"
+                animate="visible"
+                variants={staggerContainer}
+              >
                 {clients.map((client, idx) => (
-                  <tr
+                  <motion.tr
                     key={client.id}
+                    variants={fadeUp}
                     className="border-b border-shell last:border-0 hover:bg-ink/[0.02] transition-colors"
                   >
                     <td className="py-2.5 pr-3">
@@ -81,9 +90,9 @@ export function TopClientsTable({ clients }: TopClientsTableProps) {
                         ? format(client.lastOrderDate, "MMM d")
                         : "--"}
                     </td>
-                  </tr>
+                  </motion.tr>
                 ))}
-              </tbody>
+              </motion.tbody>
             </table>
           </div>
         )}

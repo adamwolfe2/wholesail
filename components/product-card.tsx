@@ -6,6 +6,7 @@ import { useCart } from '@/lib/cart-context'
 import { SignInButton } from '@clerk/nextjs'
 import { ShoppingCart, Check, Snowflake, TrendingUp, CreditCard, Heart } from 'lucide-react'
 import { memo, useState } from 'react'
+import { motion } from 'framer-motion'
 
 interface ProductCardProps {
   product: Product
@@ -36,10 +37,12 @@ export const ProductCard = memo(function ProductCard({ product, isSignedIn = fal
   const isAvailable = product.available !== false
 
   return (
-    <article
+    <motion.article
       className={`flex flex-col h-full group transition-colors duration-200 hover:bg-muted/40 ${
         featured ? 'min-h-[260px]' : ''
       }`}
+      whileHover={{ y: -2, boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}
+      transition={{ duration: 0.2 }}
     >
       {/* Body */}
       <div className="flex flex-col flex-1 p-4 sm:p-5">
@@ -128,9 +131,10 @@ export const ProductCard = memo(function ProductCard({ product, isSignedIn = fal
       {/* CTA */}
       <div className="px-4 sm:px-5 pb-4 sm:pb-5 mt-auto">
         {isSignedIn ? (
-          <button
+          <motion.button
             onClick={handleAdd}
             disabled={!isAvailable || added}
+            whileTap={isAvailable && !added ? { scale: 0.97 } : undefined}
             className={`w-full h-9 text-xs font-medium flex items-center justify-center gap-1.5 transition-all duration-200 ${
               added
                 ? 'bg-foreground text-background'
@@ -150,7 +154,7 @@ export const ProductCard = memo(function ProductCard({ product, isSignedIn = fal
                 {isAvailable ? 'Add to Order' : 'Out of Stock'}
               </>
             )}
-          </button>
+          </motion.button>
         ) : (
           <SignInButton mode="modal">
             <button
@@ -163,6 +167,6 @@ export const ProductCard = memo(function ProductCard({ product, isSignedIn = fal
           </SignInButton>
         )}
       </div>
-    </article>
+    </motion.article>
   )
 })

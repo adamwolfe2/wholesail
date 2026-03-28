@@ -1,5 +1,6 @@
 import { PwaInstallPrompt } from '@/components/pwa-install-prompt'
 import { CartProvider } from '@/lib/cart-context'
+import { PortalPageTransition } from '@/components/portal-page-transition'
 import { auth } from '@clerk/nextjs/server'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
@@ -24,7 +25,9 @@ export default async function ClientPortalLayout({
 
   return (
     <CartProvider>
-      {children}
+      <PortalPageTransition>
+        {children}
+      </PortalPageTransition>
       <PwaInstallPrompt />
     </CartProvider>
   )

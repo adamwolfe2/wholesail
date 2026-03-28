@@ -170,6 +170,13 @@ export function SettingsClient() {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
+                      <span
+                        className="h-2 w-2 rounded-full shrink-0"
+                        style={{
+                          backgroundColor: integration.configured ? '#16a34a' : '#ca8a04',
+                        }}
+                        aria-hidden="true"
+                      />
                       <h4 className="font-medium text-sm">{integration.name}</h4>
                       {integration.configured ? (
                         <Badge variant="outline" className="bg-neutral-900 text-white border-neutral-800 text-xs">

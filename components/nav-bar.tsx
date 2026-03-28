@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { ChevronDown, Menu, X } from "lucide-react";
+import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import {
   Sheet,
   SheetContent,
@@ -193,6 +195,26 @@ function CardGridButton({
   );
 }
 
+/** Nav link with animated underline on active */
+function ActiveNavLink({ href, children }: { href: string; children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isActive = pathname === href || (href !== "/" && pathname.startsWith(href.split("#")[0]));
+
+  return (
+    <Link href={href} className="font-mono text-[13px] link-body relative inline-block">
+      {children}
+      {isActive && (
+        <motion.span
+          layoutId="nav-underline"
+          className="absolute bottom-[-3px] left-0 right-0 h-[2px]"
+          style={{ backgroundColor: "var(--blue)" }}
+          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+        />
+      )}
+    </Link>
+  );
+}
+
 /** Flat list of nav items for the mobile sheet */
 const MOBILE_NAV_LINKS: NavItem[] = [
   { label: "Platform",  href: "/#demo" },
@@ -220,12 +242,8 @@ export function NavBar() {
 
         {/* Desktop nav — hidden on mobile */}
         <div className="hidden md:flex items-center gap-5">
-          <Link href="/#demo" className="font-mono text-[13px] link-body">
-            Platform
-          </Link>
-          <Link href="/#pricing" className="font-mono text-[13px] link-body">
-            Pricing
-          </Link>
+          <ActiveNavLink href="/#demo">Platform</ActiveNavLink>
+          <ActiveNavLink href="/#pricing">Pricing</ActiveNavLink>
           <CardGridButton
             label="Industries"
             items={ALL_INDUSTRIES}
@@ -233,12 +251,8 @@ export function NavBar() {
             width={760}
             eyebrow="All Industries"
           />
-          <Link href="/blog" className="font-mono text-[13px] link-body">
-            Blog
-          </Link>
-          <Link href="/about" className="font-mono text-[13px] link-body">
-            About
-          </Link>
+          <ActiveNavLink href="/blog">Blog</ActiveNavLink>
+          <ActiveNavLink href="/about">About</ActiveNavLink>
           <CardGridButton
             label="More"
             items={MORE_ITEMS}

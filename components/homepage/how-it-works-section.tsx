@@ -1,3 +1,9 @@
+"use client";
+
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { fadeUp, staggerContainer, scaleUp } from "@/lib/animations";
+
 const STEPS = [
   {
     step: "01",
@@ -21,10 +27,31 @@ const STEPS = [
   },
 ];
 
+const stepVariant = {
+  hidden: { opacity: 0, x: -24 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
+
 export function HowItWorksSection() {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
-      <div className="mb-10">
+    <section
+      ref={ref}
+      className="py-16"
+      style={{ borderTop: "1px solid var(--border)" }}
+    >
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="mb-10"
+      >
         <span
           className="font-mono text-xs uppercase tracking-widest mb-4 block"
           style={{ color: "var(--text-muted)" }}
@@ -37,16 +64,21 @@ export function HowItWorksSection() {
         >
           From intake to live portal in under 2 weeks.
         </h2>
-      </div>
-      <div
+      </motion.div>
+
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0"
         style={{ border: "1px solid var(--border-strong)" }}
       >
         {STEPS.map((item, i) => {
           const isFirst = i === 0;
           return (
-            <div
+            <motion.div
               key={item.step}
+              variants={stepVariant}
               className={`p-6 ${
                 i < STEPS.length - 1
                   ? "border-b sm:border-b-0 sm:border-r"
@@ -62,12 +94,13 @@ export function HowItWorksSection() {
                 color: i < 2 ? "var(--text-on-blue)" : "var(--text-headline)",
               }}
             >
-              <div
+              <motion.div
+                variants={scaleUp}
                 className="font-mono text-[9px] uppercase tracking-widest mb-3"
                 style={{ opacity: i < 2 ? 0.5 : undefined, color: i >= 2 ? "var(--text-muted)" : undefined }}
               >
                 Step {item.step}
-              </div>
+              </motion.div>
               <div className="font-serif text-lg mb-2">{item.title}</div>
               <p
                 className="font-mono text-[11px] leading-relaxed"
@@ -77,10 +110,10 @@ export function HowItWorksSection() {
               >
                 {item.desc}
               </p>
-            </div>
+            </motion.div>
           );
         })}
-      </div>
+      </motion.div>
     </section>
   );
 }

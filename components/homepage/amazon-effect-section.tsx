@@ -1,14 +1,40 @@
+"use client";
+
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { fadeUp, staggerContainer } from "@/lib/animations";
+
 const BUYER_STATS = [
   { stat: "83%", label: "of B2B buyers prefer self-service ordering over sales rep interaction", source: "Gartner B2B Buyer Report" },
   { stat: "74%", label: "of B2B buyers would switch suppliers for a better digital ordering experience", source: "Forrester, 2024" },
-  { stat: "3\u00d7", label: "more likely to reorder when clients have a self-service portal vs. email/phone", source: "Shopify B2B Research" },
+  { stat: "3×", label: "more likely to reorder when clients have a self-service portal vs. email/phone", source: "Shopify B2B Research" },
 ];
 
+const statCardVariant = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
+
 export function AmazonEffectSection() {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
+    <section
+      ref={ref}
+      className="py-16"
+      style={{ borderTop: "1px solid var(--border)" }}
+    >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-        <div>
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
           <span
             className="font-mono text-xs uppercase tracking-widest mb-4 block"
             style={{ color: "var(--text-muted)" }}
@@ -40,14 +66,19 @@ export function AmazonEffectSection() {
             clients can order themselves, reorder in 2 clicks, and pay invoices online — they
             don&apos;t switch. Convenience is stickier than price.
           </p>
-        </div>
-        <div
+        </motion.div>
+
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
           className="p-4 sm:p-6 lg:p-8"
           style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
         >
           {BUYER_STATS.map((item, i) => (
-            <div
+            <motion.div
               key={item.stat}
+              variants={statCardVariant}
               className={`py-5 ${i < 2 ? "border-b" : ""}`}
               style={{ borderColor: "var(--border-strong)" }}
             >
@@ -69,9 +100,9 @@ export function AmazonEffectSection() {
               >
                 {item.source}
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

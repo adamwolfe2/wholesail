@@ -1,9 +1,14 @@
+"use client";
+
 import { Clock, DollarSign, TrendingUp, Zap } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { fadeUp, staggerContainer, scaleUp } from "@/lib/animations";
 
 const STATS = [
   {
     icon: Clock,
-    stat: "3\u20134 hrs",
+    stat: "3–4 hrs",
     label: "per day the average distribution team spends manually entering orders, confirming inventory, and chasing payments",
     source: "Conexiom, 2024",
   },
@@ -16,32 +21,52 @@ const STATS = [
   {
     icon: TrendingUp,
     stat: "12 days",
-    label: "faster invoice collection when clients can pay online \u2014 less time chasing, better cash flow, fewer phone calls",
+    label: "faster invoice collection when clients can pay online — less time chasing, better cash flow, fewer phone calls",
     source: "Industry average",
   },
   {
     icon: Zap,
     stat: "< 2 wks",
-    label: "from first call to fully deployed portal \u2014 versus 9\u201312 months for a standard ERP implementation",
+    label: "from first call to fully deployed portal — versus 9–12 months for a standard ERP implementation",
     source: "vs. ERP average",
   },
 ];
 
 export function StatsSection() {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <section className="py-16" style={{ borderTop: "1px solid var(--border)" }}>
-      <div className="mb-8">
-        <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
+    <section
+      ref={ref}
+      className="py-16"
+      style={{ borderTop: "1px solid var(--border)" }}
+    >
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="mb-8"
+      >
+        <span
+          className="font-mono text-xs uppercase tracking-widest"
+          style={{ color: "var(--text-muted)" }}
+        >
           The numbers don&apos;t lie
         </span>
-      </div>
-      <div
+      </motion.div>
+
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0"
         style={{ border: "1px solid var(--border-strong)" }}
       >
         {STATS.map((item, i) => (
-          <div
+          <motion.div
             key={item.stat}
+            variants={scaleUp}
             className={`p-6 ${
               i < STATS.length - 1
                 ? "border-b sm:border-b lg:border-b-0 sm:border-r"
@@ -75,9 +100,9 @@ export function StatsSection() {
             >
               {item.source}
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

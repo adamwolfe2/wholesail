@@ -1,5 +1,10 @@
+"use client";
+
 import { CheckCircle2 } from "lucide-react";
 import { LazyDemoLauncher } from "@/components/lazy-demo-launcher";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { fadeUp, fadeIn } from "@/lib/animations";
 
 const DEMO_FEATURES = [
   "Full product catalog with your branding",
@@ -11,11 +16,23 @@ const DEMO_FEATURES = [
 ];
 
 export function DemoSection() {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <section className="py-16" id="demo" style={{ borderTop: "1px solid var(--border)" }}>
+    <section
+      ref={ref}
+      className="py-16"
+      id="demo"
+      style={{ borderTop: "1px solid var(--border)" }}
+    >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         {/* Left -- copy */}
-        <div>
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
           <span
             className="font-mono text-xs uppercase tracking-widest mb-4 block"
             style={{ color: "var(--text-muted)" }}
@@ -51,11 +68,17 @@ export function DemoSection() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
+
         {/* Right -- demo launcher */}
-        <div>
+        <motion.div
+          variants={fadeIn}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          transition={{ delay: 0.15 }}
+        >
           <LazyDemoLauncher />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

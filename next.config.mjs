@@ -48,6 +48,8 @@ const nextConfig = {
       "posthog-js",
       "cmdk",
       "@clerk/nextjs",
+      "sonner",
+      "zod",
     ],
   },
   async redirects() {

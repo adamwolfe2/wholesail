@@ -526,7 +526,7 @@ export default async function AdminProjectDetailPage({
                       className="h-full transition-all"
                       style={{
                         width: `${qaTasks.length > 0 ? Math.round((qaCompleted / qaTasks.length) * 100) : 0}%`,
-                        backgroundColor: qaCompleted === qaTasks.length ? "#16a34a" : "#0A0A0A",
+                        backgroundColor: qaCompleted === qaTasks.length ? '#16a34a' : 'var(--color-ink, #0A0A0A)',
                       }}
                     />
                   </div>

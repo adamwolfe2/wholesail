@@ -16,6 +16,30 @@ import { Separator } from '@/components/ui/separator'
 import { portalConfig } from '@/lib/portal-config'
 import { formatCurrency } from '@/lib/utils'
 import { Loader2, AlertTriangle } from 'lucide-react'
+import { motion } from 'framer-motion'
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06, delayChildren: 0.1 } },
+}
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] as const },
+  },
+}
+
+const slideInRight = {
+  hidden: { opacity: 0, x: 24 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] as const },
+  },
+}
 
 interface CreditStatus {
   limit: number | null
@@ -306,8 +330,14 @@ function CheckoutContent() {
                 <CardDescription className="text-sm">Please provide your contact and delivery details</CardDescription>
               </CardHeader>
               <CardContent className="pt-6 px-4 sm:px-6">
-                <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6">
-                  <div className="grid gap-4 sm:grid-cols-2">
+                <motion.form
+                  onSubmit={handleSubmit}
+                  className="space-y-5 sm:space-y-6"
+                  variants={staggerContainer}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <motion.div variants={fadeUp} className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-2">
                       <Label htmlFor="businessName">Business Name *</Label>
                       <Input
@@ -334,9 +364,8 @@ function CheckoutContent() {
                       />
                       {fieldErrors.contactName && <p className="text-xs text-destructive">{fieldErrors.contactName}</p>}
                     </div>
-                  </div>
-
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  </motion.div>
+                  <motion.div variants={fadeUp} className="grid gap-4 sm:grid-cols-2">
                     <div className="space-y-2">
                       <Label htmlFor="email">Email *</Label>
                       <Input
@@ -365,7 +394,7 @@ function CheckoutContent() {
                       />
                       {fieldErrors.phone && <p className="text-xs text-destructive">{fieldErrors.phone}</p>}
                     </div>
-                  </div>
+                  </motion.div>
 
                   {savedAddresses.length > 0 && (
                     <div className="mb-2">
@@ -419,7 +448,7 @@ function CheckoutContent() {
                     </div>
                   )}
 
-                  <div className="space-y-2">
+                  <motion.div variants={fadeUp} className="space-y-2">
                     <Label htmlFor="deliveryAddress">Delivery Address *</Label>
                     <Input
                       id="deliveryAddress"
@@ -431,9 +460,9 @@ function CheckoutContent() {
                       className={`rounded-none bg-background ${fieldErrors.deliveryAddress ? 'border-destructive' : 'border-border'}`}
                     />
                     {fieldErrors.deliveryAddress && <p className="text-xs text-destructive">{fieldErrors.deliveryAddress}</p>}
-                  </div>
+                  </motion.div>
 
-                  <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
+                  <motion.div variants={fadeUp} className="grid gap-4 grid-cols-1 sm:grid-cols-3">
                     <div className="space-y-2">
                       <Label htmlFor="city">City *</Label>
                       <Input
@@ -475,9 +504,9 @@ function CheckoutContent() {
                       />
                       {fieldErrors.zip && <p className="text-xs text-destructive">{fieldErrors.zip}</p>}
                     </div>
-                  </div>
+                  </motion.div>
 
-                  <div className="space-y-2">
+                  <motion.div variants={fadeUp} className="space-y-2">
                     <Label htmlFor="notes">Order Notes (Optional)</Label>
                     <Textarea
                       id="notes"
@@ -489,7 +518,7 @@ function CheckoutContent() {
                       maxLength={500}
                       className="rounded-none border-border bg-background"
                     />
-                  </div>
+                  </motion.div>
 
                   {error && (
                     <p role="alert" className="text-sm text-destructive border border-destructive/30 bg-destructive/5 px-3 py-2">
@@ -497,28 +526,37 @@ function CheckoutContent() {
                     </p>
                   )}
 
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full bg-foreground text-background hover:bg-foreground/80 rounded-none"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Processing...
-                      </>
-                    ) : (
-                      'Proceed to Payment'
-                    )}
-                  </Button>
-                </form>
+                  <motion.div variants={fadeUp}>
+                    <motion.div whileTap={{ scale: 0.98 }}>
+                      <Button
+                        type="submit"
+                        size="lg"
+                        className="w-full bg-foreground text-background hover:bg-foreground/80 rounded-none"
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Processing...
+                          </>
+                        ) : (
+                          'Proceed to Payment'
+                        )}
+                      </Button>
+                    </motion.div>
+                  </motion.div>
+                </motion.form>
               </CardContent>
             </Card>
           </div>
 
           {/* Order Summary */}
-          <div className="lg:col-span-1 order-first lg:order-last">
+          <motion.div
+            className="lg:col-span-1 order-first lg:order-last"
+            variants={slideInRight}
+            initial="hidden"
+            animate="visible"
+          >
             <Card className="border-border lg:sticky lg:top-24">
               <CardHeader className="border-b border-border pb-5">
                 <CardTitle className="font-serif text-xl sm:text-2xl font-normal">Order Summary</CardTitle>
@@ -614,7 +652,7 @@ function CheckoutContent() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>

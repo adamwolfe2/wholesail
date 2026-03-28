@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useCart } from '@/lib/cart-context'
 import { Button } from '@/components/ui/button'
 import { RefreshCw, Loader2, Check } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 interface ReorderItem {
   id: string
@@ -82,21 +83,29 @@ export function ReorderButton({
 
   return (
     <>
-    <Button
-      variant={variant}
-      size={size}
-      onClick={handleReorder}
-      disabled={loading || done}
+    <motion.div
+      whileHover={!loading && !done ? { scale: 1.02 } : undefined}
+      whileTap={!loading && !done ? { scale: 0.95 } : undefined}
+      animate={loading ? { opacity: [1, 0.6, 1] } : { opacity: 1 }}
+      transition={loading ? { duration: 1, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.15 }}
+      style={{ display: 'inline-block' }}
     >
-      {loading ? (
-        <Loader2 className="h-4 w-4 animate-spin mr-1" />
-      ) : done ? (
-        <Check className="h-4 w-4 mr-1" />
-      ) : (
-        <RefreshCw className="h-4 w-4 mr-1" />
-      )}
-      {done ? 'Added!' : 'Reorder'}
-    </Button>
+      <Button
+        variant={variant}
+        size={size}
+        onClick={handleReorder}
+        disabled={loading || done}
+      >
+        {loading ? (
+          <Loader2 className="h-4 w-4 animate-spin mr-1" />
+        ) : done ? (
+          <Check className="h-4 w-4 mr-1" />
+        ) : (
+          <RefreshCw className="h-4 w-4 mr-1" />
+        )}
+        {done ? 'Added!' : 'Reorder'}
+      </Button>
+    </motion.div>
     {error && <p className="text-xs text-destructive mt-1">{error}</p>}
     </>
   )

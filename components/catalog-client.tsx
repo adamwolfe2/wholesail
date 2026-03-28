@@ -12,6 +12,21 @@ import { Search, Instagram, X } from 'lucide-react'
 import { AIOrderParser } from '@/components/ai-order-parser'
 import { Wand2 } from 'lucide-react'
 import type { Product } from '@/lib/products'
+import { motion, AnimatePresence } from 'framer-motion'
+
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.04, delayChildren: 0.1 } },
+}
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] as const },
+  },
+}
 
 type SortOption = 'featured' | 'price_asc' | 'price_desc' | 'name_asc'
 
@@ -168,19 +183,21 @@ export function CatalogClient({
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs defaultValue="all" value={selectedCategory} onValueChange={setSelectedCategory}>
             <TabsList className="mb-6 flex flex-nowrap overflow-x-auto h-auto gap-1.5 bg-transparent p-0 pb-2 scrollbar-none">
-              <TabsTrigger
-                value="all"
-                className="text-xs sm:text-[11px] tracking-wide rounded-none border border-shell px-3 py-1.5 sm:px-4 sm:py-2 data-[state=active]:bg-ink data-[state=active]:text-cream data-[state=active]:border-ink transition-all whitespace-nowrap shrink-0"
-              >
-                All
-              </TabsTrigger>
-              {categories.map(cat => (
+              {['all', ...categories].map(cat => (
                 <TabsTrigger
                   key={cat}
                   value={cat}
-                  className="text-xs sm:text-[11px] tracking-wide rounded-none border border-shell px-3 py-1.5 sm:px-4 sm:py-2 data-[state=active]:bg-ink data-[state=active]:text-cream data-[state=active]:border-ink transition-all whitespace-nowrap shrink-0"
+                  className="relative text-xs sm:text-[11px] tracking-wide rounded-none border border-shell px-3 py-1.5 sm:px-4 sm:py-2 data-[state=active]:bg-ink data-[state=active]:text-cream data-[state=active]:border-ink transition-all whitespace-nowrap shrink-0"
                 >
-                  {cat}
+                  {selectedCategory === cat && (
+                    <motion.span
+                      layoutId="catalog-tab-indicator"
+                      className="absolute inset-0 bg-ink"
+                      style={{ zIndex: -1 }}
+                      transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+                    />
+                  )}
+                  {cat === 'all' ? 'All' : cat}
                 </TabsTrigger>
               ))}
             </TabsList>
@@ -204,32 +221,47 @@ export function CatalogClient({
             </div>
 
             <TabsContent value={selectedCategory} className="mt-0">
-              {filteredProducts.length === 0 ? (
-                <div className="text-center py-20 border border-shell">
-                  <p className="text-ink/40 text-sm mb-4">No products found.</p>
-                  <button
-                    onClick={clearFilters}
-                    className="inline-flex items-center gap-1.5 text-xs border border-ink px-4 py-2 text-ink hover:bg-ink hover:text-cream transition-colors"
+              <AnimatePresence mode="wait">
+                {filteredProducts.length === 0 ? (
+                  <motion.div
+                    key="empty"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-center py-20 border border-shell"
                   >
-                    <X className="h-3 w-3" />
-                    Clear filters
-                  </button>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-shell">
-                  {filteredProducts.map(product => (
-                    <div key={product.id} className="bg-cream">
-                      <ProductCard
-                        product={product}
-                        isSignedIn={!!isSignedIn}
-                        quantityOnHand={lowStock[product.id] ?? null}
-                        isFavorited={favorites.has(product.id)}
-                        onToggleFavorite={isSignedIn ? handleToggleFavorite : undefined}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+                    <p className="text-ink/40 text-sm mb-4">No products found.</p>
+                    <button
+                      onClick={clearFilters}
+                      className="inline-flex items-center gap-1.5 text-xs border border-ink px-4 py-2 text-ink hover:bg-ink hover:text-cream transition-colors"
+                    >
+                      <X className="h-3 w-3" />
+                      Clear filters
+                    </button>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key={`${selectedCategory}-${searchQuery}-${filteredProducts.length}`}
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-px bg-shell"
+                    variants={staggerContainer}
+                    initial="hidden"
+                    animate="visible"
+                  >
+                    {filteredProducts.map(product => (
+                      <motion.div key={product.id} className="bg-cream" variants={fadeUp}>
+                        <ProductCard
+                          product={product}
+                          isSignedIn={!!isSignedIn}
+                          quantityOnHand={lowStock[product.id] ?? null}
+                          isFavorited={favorites.has(product.id)}
+                          onToggleFavorite={isSignedIn ? handleToggleFavorite : undefined}
+                        />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </TabsContent>
           </Tabs>
         </div>

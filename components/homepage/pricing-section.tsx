@@ -1,4 +1,9 @@
+"use client";
+
 import { CheckCircle2, X } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { fadeUp, staggerContainer, scaleUp } from "@/lib/animations";
 
 const BUILD_ITEMS = [
   "Every feature selected in your build",
@@ -27,10 +32,32 @@ const REPLACES = [
   "Manual invoice follow-up",
 ];
 
+const cardVariant = {
+  hidden: { opacity: 0, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.45, ease: [0.34, 1.56, 0.64, 1] },
+  },
+};
+
 export function PricingSection() {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <section className="py-16" id="pricing" style={{ borderTop: "1px solid var(--border)" }}>
-      <div className="mb-10">
+    <section
+      ref={ref}
+      className="py-16"
+      id="pricing"
+      style={{ borderTop: "1px solid var(--border)" }}
+    >
+      <motion.div
+        variants={fadeUp}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
+        className="mb-10"
+      >
         <span
           className="font-mono text-xs uppercase tracking-widest mb-4 block"
           style={{ color: "var(--text-muted)" }}
@@ -53,13 +80,18 @@ export function PricingSection() {
           together. We build your portal, migrate your data, train your
           team, and keep everything running.
         </p>
-      </div>
-      <div
+      </motion.div>
+
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate={isInView ? "visible" : "hidden"}
         className="grid grid-cols-1 md:grid-cols-2 gap-0"
         style={{ border: "1px solid var(--border-strong)" }}
       >
         {/* Build */}
-        <div
+        <motion.div
+          variants={cardVariant}
           className="p-4 sm:p-6 lg:p-8 border-b md:border-b-0 md:border-r"
           style={{
             borderColor: "var(--border-strong)",
@@ -94,9 +126,11 @@ export function PricingSection() {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
+
         {/* Retainer */}
-        <div
+        <motion.div
+          variants={cardVariant}
           className="p-4 sm:p-6 lg:p-8"
           style={{ backgroundColor: "var(--bg-white)" }}
         >
@@ -142,8 +176,9 @@ export function PricingSection() {
               </div>
             ))}
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
+
       {/* ROI callout */}
       <div
         className="border border-t-0 p-6"
@@ -209,6 +244,7 @@ export function PricingSection() {
           </div>
         </div>
       </div>
+
       {/* What Wholesail replaces */}
       <div
         className="border border-t-0 p-6"
@@ -233,7 +269,7 @@ export function PricingSection() {
                 borderRadius: "4px",
               }}
             >
-              <X className="w-3 h-3 flex-shrink-0" style={{ color: 'var(--color-error)' }} strokeWidth={2.5} />
+              <X className="w-3 h-3 flex-shrink-0" style={{ color: "var(--color-error)" }} strokeWidth={2.5} />
               <span className="font-mono text-[10px] leading-tight" style={{ color: "var(--text-body)" }}>
                 {item}
               </span>

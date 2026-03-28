@@ -10,9 +10,10 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
-import { Loader2 } from 'lucide-react'
+import { Loader2, CheckCircle } from 'lucide-react'
 import { formatCurrency } from '@/lib/utils'
 import { portalConfig } from '@/lib/portal-config'
+import { motion } from 'framer-motion'
 
 interface OrderData {
   id: string
@@ -140,14 +141,46 @@ function ConfirmationContent() {
     <div className="container mx-auto px-3 py-10 sm:px-6 sm:py-14 lg:px-8 max-w-3xl">
       {/* Hero */}
       <div className="mb-10 sm:mb-12">
-        <p className="text-xs tracking-widest uppercase text-muted-foreground mb-4">Confirmation</p>
-        <h1 className="font-serif text-4xl sm:text-5xl leading-tight mb-4">Order Confirmed.</h1>
-        <p className="text-base text-muted-foreground leading-relaxed max-w-xl">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+          className="mb-5 inline-flex"
+        >
+          <CheckCircle className="h-12 w-12 text-foreground" />
+        </motion.div>
+        <motion.p
+          className="text-xs tracking-widest uppercase text-muted-foreground mb-4"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.3 }}
+        >
+          Confirmation
+        </motion.p>
+        <motion.h1
+          className="font-serif text-4xl sm:text-5xl leading-tight mb-4"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.3 }}
+        >
+          Order Confirmed.
+        </motion.h1>
+        <motion.p
+          className="text-base text-muted-foreground leading-relaxed max-w-xl"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.4 }}
+        >
           We&apos;ll review your order and contact you shortly to confirm pricing and delivery details.
           Expect to hear from us within 24 hours.
-        </p>
+        </motion.p>
       </div>
 
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.5 }}
+      >
       <Card className="border-border mb-6">
         <CardHeader className="border-b border-border pb-5">
           <CardTitle className="font-serif text-xl sm:text-2xl font-normal">Order Details</CardTitle>
@@ -260,6 +293,7 @@ function ConfirmationContent() {
           </div>
         </CardContent>
       </Card>
+      </motion.div>
 
       {/* What happens next */}
       <div className="border border-border bg-muted/30 p-5 sm:p-6 mb-8">

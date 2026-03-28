@@ -140,7 +140,7 @@ function SearchPanel({
               )}
               {results.orders.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell border-t border-t-[#E5E1DB]">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell border-t border-t-shell">
                     Orders
                   </p>
                   {results.orders.map((order) => (
@@ -163,7 +163,7 @@ function SearchPanel({
               )}
               {results.invoices.length > 0 && (
                 <div>
-                  <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell border-t border-t-[#E5E1DB]">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell border-t border-t-shell">
                     Invoices
                   </p>
                   {results.invoices.map((inv) => (
@@ -361,7 +361,7 @@ export function AdminSearchBar() {
                 )}
                 {results.orders.length > 0 && (
                   <div>
-                    <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell border-t border-t-[#E5E1DB]">
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell border-t border-t-shell">
                       Orders
                     </p>
                     {results.orders.map((order) => (
@@ -384,7 +384,7 @@ export function AdminSearchBar() {
                 )}
                 {results.invoices.length > 0 && (
                   <div>
-                    <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell border-t border-t-[#E5E1DB]">
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-ink/40 px-3 py-2 border-b border-shell border-t border-t-shell">
                       Invoices
                     </p>
                     {results.invoices.map((inv) => (

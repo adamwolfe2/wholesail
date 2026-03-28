@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { getHealthColors } from "@/lib/client-health";
 import type { ClientHealthRow } from "@/app/api/admin/clients/health-scores/route";
+import { motion } from "framer-motion";
+import { scaleUp, staggerContainer } from "@/lib/animations";
 
 type Label = "Champion" | "Healthy" | "At Risk" | "Dormant";
 
@@ -41,13 +43,19 @@ export function HealthSummaryCards() {
   if (!loading && !summary) return null;
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+    <motion.div
+      className="grid grid-cols-2 lg:grid-cols-4 gap-3"
+      initial="hidden"
+      animate="visible"
+      variants={staggerContainer}
+    >
       {LABELS.map((label) => {
         const { colorClass, bgClass, borderClass } = getHealthColors(label);
         const count = summary ? summary[label] : null;
         return (
-          <div
+          <motion.div
             key={label}
+            variants={scaleUp}
             className={`border p-4 ${bgClass} ${borderClass}`}
           >
             <p className={`text-xs font-medium uppercase tracking-wide mb-1 ${colorClass}`}>
@@ -61,9 +69,9 @@ export function HealthSummaryCards() {
               </p>
             )}
             <p className="text-xs text-muted-foreground mt-1">clients</p>
-          </div>
+          </motion.div>
         );
       })}
-    </div>
+    </motion.div>
   );
 }

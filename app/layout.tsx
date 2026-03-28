@@ -100,10 +100,9 @@ export default function RootLayout({
         />
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:text-sm focus:font-medium"
-          style={{ backgroundColor: "var(--text-headline)", color: "var(--bg-primary)" }}
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-ink focus:text-cream focus:font-mono focus:text-sm"
         >
-          Skip to content
+          Skip to main content
         </a>
         <PostHogProvider>{children}</PostHogProvider>
         <Toaster />

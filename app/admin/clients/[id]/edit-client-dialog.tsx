@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Pencil, Loader2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface ClientData {
   id: string
@@ -85,13 +86,17 @@ export function EditClientDialog({ client }: { client: ClientData }) {
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))
-        setError(data.error ?? 'Failed to save')
+        const msg = data.error ?? 'Failed to save'
+        setError(msg)
+        toast.error(msg)
         return
       }
+      toast.success('Client updated.')
       setOpen(false)
       router.refresh()
     } catch {
       setError('Network error')
+      toast.error('Network error — please try again.')
     } finally {
       setSaving(false)
     }

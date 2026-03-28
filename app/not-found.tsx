@@ -1,33 +1,52 @@
 import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
+import { NavBar } from '@/components/nav-bar'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen bg-cream flex flex-col items-center justify-center px-6 text-center">
-      <p className="text-[10px] tracking-[0.3em] uppercase text-sand mb-6">
-        404 · Page Not Found
-      </p>
-      <h1 className="font-serif text-5xl sm:text-7xl font-bold text-ink mb-4 leading-none">
-        Page not found.
-      </h1>
-      <p className="text-ink/50 text-sm sm:text-base max-w-sm leading-relaxed mb-10">
-        The page you&apos;re looking for doesn&apos;t exist or has moved. Let&apos;s get you back.
-      </p>
-      <div className="flex flex-col sm:flex-row gap-3">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 border border-ink text-ink px-7 py-3.5 text-sm font-medium hover:bg-ink hover:text-cream transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Home
-        </Link>
-        <Link
-          href="#"
-          className="inline-flex items-center gap-2 border border-shell text-ink/60 px-7 py-3.5 text-sm font-medium hover:border-ink hover:text-ink transition-colors"
-        >
-          View Platform
-        </Link>
-      </div>
-    </div>
+    <>
+      <NavBar />
+      <main
+        id="main-content"
+        className="min-h-screen flex flex-col items-center justify-center px-4"
+        style={{ backgroundColor: 'var(--bg-primary)' }}
+      >
+        <div className="text-center max-w-lg">
+          <p
+            className="font-mono text-xs tracking-[0.15em] uppercase mb-4"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            404
+          </p>
+          <h1
+            className="font-serif text-4xl md:text-5xl font-normal mb-4"
+            style={{ color: 'var(--text-headline)' }}
+          >
+            Page not found
+          </h1>
+          <p
+            className="font-mono text-sm leading-relaxed mb-8"
+            style={{ color: 'var(--text-body)' }}
+          >
+            The page you&apos;re looking for doesn&apos;t exist or has been moved.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center font-mono text-sm font-semibold btn-blue"
+              style={{ padding: '12px 24px' }}
+            >
+              Back to Home
+            </Link>
+            <Link
+              href="/catalog"
+              className="inline-flex items-center justify-center font-mono text-sm btn-outline"
+              style={{ padding: '12px 24px' }}
+            >
+              Browse Catalog
+            </Link>
+          </div>
+        </div>
+      </main>
+    </>
   )
 }

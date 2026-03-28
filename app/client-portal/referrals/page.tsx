@@ -16,6 +16,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Copy, Check, Loader2, Gift, Users, DollarSign, Clock } from 'lucide-react'
+import { EmptyState } from '@/components/empty-state'
 import { format } from 'date-fns'
 import { toast } from 'sonner'
 import { PortalLayout } from '@/components/portal-nav'
@@ -372,11 +373,11 @@ export default function ReferralsPage() {
               Loading referrals...
             </div>
           ) : !data?.referrals.length ? (
-            <div className="py-12 text-center">
-              <p className="text-ink/50 text-sm">
-                No referrals yet. Share your link to start earning.
-              </p>
-            </div>
+            <EmptyState
+              icon={Users}
+              title="No referrals yet"
+              description="Share your referral link to start earning credits."
+            />
           ) : (
             <Table>
               <TableHeader>

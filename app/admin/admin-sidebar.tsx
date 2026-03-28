@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { adminNavGroups, type NavGroup } from "./nav-config";
+import { motion } from "framer-motion";
 
 const STORAGE_KEY = "admin-nav-collapsed";
 
@@ -90,16 +91,24 @@ export function AdminSidebar({
                       key={item.href}
                       href={item.href}
                       className={cn(
-                        "flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors",
+                        "relative flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors",
                         isActive
-                          ? "bg-ink text-cream"
+                          ? "text-cream"
                           : "text-ink/60 hover:bg-ink/[0.06] hover:text-ink",
                       )}
                     >
-                      <item.icon className="h-4 w-4 shrink-0" />
-                      {item.label}
+                      {isActive && (
+                        <motion.span
+                          layoutId="admin-nav-indicator"
+                          className="absolute inset-0 bg-ink"
+                          style={{ borderRadius: 0 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                        />
+                      )}
+                      <item.icon className="relative h-4 w-4 shrink-0" />
+                      <span className="relative">{item.label}</span>
                       {badgeCount > 0 && (
-                        <span className="ml-auto text-[10px] font-bold bg-ink text-cream px-1.5 py-0.5 min-w-[18px] text-center leading-tight">
+                        <span className="relative ml-auto text-[10px] font-bold bg-ink text-cream px-1.5 py-0.5 min-w-[18px] text-center leading-tight">
                           {badgeCount > 99 ? "99+" : badgeCount}
                         </span>
                       )}

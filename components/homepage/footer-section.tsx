@@ -1,8 +1,23 @@
+"use client";
+
 import { SailLogo } from "./sail-logo";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { fadeIn } from "@/lib/animations";
 
 export function FooterSection() {
+  const ref = useRef<HTMLElement>(null);
+  const isInView = useInView(ref, { once: true, margin: "-80px" });
+
   return (
-    <footer className="py-12" style={{ borderTop: "1px solid var(--border)" }}>
+    <motion.footer
+      ref={ref}
+      variants={fadeIn}
+      initial="hidden"
+      animate={isInView ? "visible" : "hidden"}
+      className="py-12"
+      style={{ borderTop: "1px solid var(--border)" }}
+    >
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 mb-2">
@@ -111,6 +126,6 @@ export function FooterSection() {
           </a>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }

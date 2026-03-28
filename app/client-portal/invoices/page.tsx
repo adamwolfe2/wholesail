@@ -26,6 +26,9 @@ import {
 } from '@/components/ui/dialog'
 import { DollarSign, Clock, AlertTriangle, Download, Eye, Loader2, FileText, CheckCircle, CreditCard } from 'lucide-react'
 import { toast } from 'sonner'
+import { motion } from 'framer-motion'
+import { scaleUp, fadeUp, staggerContainer } from '@/lib/animations'
+import { EmptyState } from '@/components/empty-state'
 
 interface DbInvoice {
   id: string
@@ -246,42 +249,63 @@ export default function InvoicesPage() {
         </div>
 
         {/* Summary Cards */}
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
-          <Card className="border-sand bg-cream">
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">Paid</CardTitle>
-              <DollarSign className="h-4 w-4 text-sand" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-ink">${paidTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
-              <p className="text-xs text-ink/40 mt-1">{paidCount} invoices</p>
-            </CardContent>
-          </Card>
+        <motion.div
+          className="grid gap-4 grid-cols-1 sm:grid-cols-3"
+          initial="hidden"
+          animate="visible"
+          variants={staggerContainer}
+        >
+          <motion.div variants={scaleUp}>
+            <Card className="border-sand bg-cream">
+              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">
+                  Paid
+                </CardTitle>
+                <DollarSign className="h-4 w-4 text-sand" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-ink">
+                  ${paidTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                </div>
+                <p className="text-xs text-ink/40 mt-1">{paidCount} invoices</p>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-          <Card className="border-sand bg-cream">
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">Pending</CardTitle>
-              <Clock className="h-4 w-4 text-sand" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-ink">${pendingTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}</div>
-              <p className="text-xs text-ink/40 mt-1">{pendingCount} invoices</p>
-            </CardContent>
-          </Card>
+          <motion.div variants={scaleUp}>
+            <Card className="border-sand bg-cream">
+              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">
+                  Pending
+                </CardTitle>
+                <Clock className="h-4 w-4 text-sand" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold text-ink">
+                  ${pendingTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                </div>
+                <p className="text-xs text-ink/40 mt-1">{pendingCount} invoices</p>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-          <Card className="border-sand bg-cream">
-            <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-              <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">Overdue</CardTitle>
-              <AlertTriangle className="h-4 w-4 text-red-400" />
-            </CardHeader>
-            <CardContent>
-              <div className={`text-2xl font-bold ${overdueTotal > 0 ? 'text-red-600' : 'text-ink'}`}>
-                ${overdueTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
-              </div>
-              <p className="text-xs text-ink/40 mt-1">{overdueCount} invoices</p>
-            </CardContent>
-          </Card>
-        </div>
+          <motion.div variants={scaleUp}>
+            <Card className="border-sand bg-cream">
+              <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+                <CardTitle className="text-xs font-medium text-ink/60 uppercase tracking-wider">
+                  Overdue
+                </CardTitle>
+                <AlertTriangle className="h-4 w-4 text-red-400" />
+              </CardHeader>
+              <CardContent>
+                <div className={`text-2xl font-bold ${overdueTotal > 0 ? 'text-red-600' : 'text-ink'}`}>
+                  ${overdueTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                </div>
+                <p className="text-xs text-ink/40 mt-1">{overdueCount} invoices</p>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </motion.div>
 
         {/* All Invoices */}
         <Card className="border-sand bg-cream">
@@ -310,8 +334,14 @@ export default function InvoicesPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {dbInvoices.map((invoice) => (
-                        <TableRow key={invoice.id} className="border-sand/30">
+                      {dbInvoices.map((invoice, i) => (
+                        <motion.tr
+                          key={invoice.id}
+                          className="border-b border-sand/30"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.35, delay: i * 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
+                        >
                           <TableCell>
                             <p className="font-medium font-mono text-ink">{invoice.invoiceNumber}</p>
                           </TableCell>
@@ -357,15 +387,20 @@ export default function InvoicesPage() {
                               <InvoiceDetailModal invoice={invoice} />
                             </div>
                           </TableCell>
-                        </TableRow>
+                        </motion.tr>
                       ))}
                     </TableBody>
                   </Table>
                 </div>
                 {/* Mobile card list */}
-                <div className="sm:hidden space-y-3">
+                <motion.div
+                  className="sm:hidden space-y-3"
+                  initial="hidden"
+                  animate="visible"
+                  variants={staggerContainer}
+                >
                   {dbInvoices.map((invoice) => (
-                    <div key={invoice.id} className="border border-sand/50 p-4">
+                    <motion.div key={invoice.id} variants={fadeUp} className="border border-sand/50 p-4">
                       <div className="flex items-start justify-between gap-3 mb-2">
                         <div>
                           <p className="font-mono text-sm font-semibold text-ink">{invoice.invoiceNumber}</p>
@@ -408,18 +443,16 @@ export default function InvoicesPage() {
                           <InvoiceDetailModal invoice={invoice} />
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </>
             ) : (
-              <div className="text-center py-12">
-                <FileText className="h-12 w-12 text-sand mx-auto mb-4" />
-                <h3 className="font-serif text-lg font-medium mb-2 text-ink">No invoices yet</h3>
-                <p className="text-ink/50 text-sm">
-                  Invoices will appear here after your orders are processed.
-                </p>
-              </div>
+              <EmptyState
+                icon={FileText}
+                title="No invoices yet"
+                description="Invoices will appear here after your orders are processed."
+              />
             )}
           </CardContent>
         </Card>

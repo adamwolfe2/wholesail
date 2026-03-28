@@ -28,6 +28,7 @@ import {
 import { Switch } from '@/components/ui/switch'
 import { RefreshCw, Loader2, Plus, Pencil, Trash2 } from 'lucide-react'
 import { toast } from 'sonner'
+import { EmptyState } from '@/components/empty-state'
 
 interface StandingOrderItem {
   id: string
@@ -173,9 +174,12 @@ export default function StandingOrdersPage() {
         method: 'DELETE',
       })
       if (res.ok) {
+        toast.success('Standing order deleted.')
         setOrders((prev) => prev.filter((o) => o.id !== orderToDelete.id))
         setDeleteDialogOpen(false)
         setOrderToDelete(null)
+      } else {
+        toast.error('Failed to delete. Please try again.')
       }
     } catch {
       toast.error('Failed to delete. Please try again.')
@@ -201,9 +205,12 @@ export default function StandingOrdersPage() {
         }),
       })
       if (res.ok) {
+        toast.success('Standing order created.')
         setDialogOpen(false)
         resetForm()
         await fetchOrders()
+      } else {
+        toast.error('Failed to create order. Please try again.')
       }
     } catch {
       toast.error('Failed to create order. Please try again.')
@@ -230,9 +237,12 @@ export default function StandingOrdersPage() {
         }),
       })
       if (res.ok) {
+        toast.success('Standing order updated.')
         setDialogOpen(false)
         resetForm()
         await fetchOrders()
+      } else {
+        toast.error('Failed to save changes. Please try again.')
       }
     } catch {
       toast.error('Failed to save changes. Please try again.')
@@ -444,22 +454,11 @@ export default function StandingOrdersPage() {
                 <p className="text-ink/50 text-sm">Sign in to view standing orders.</p>
               </div>
             ) : orders.length === 0 ? (
-              <div className="text-center py-12">
-                <RefreshCw className="h-12 w-12 text-sand mx-auto mb-4" />
-                <h3 className="font-serif text-lg font-medium mb-2 text-ink">
-                  No standing orders yet
-                </h3>
-                <p className="text-ink/50 text-sm mb-6">
-                  Set up auto-reorder for your staples and we&apos;ll handle the rest.
-                </p>
-                <Button
-                  onClick={openNewDialog}
-                  className="bg-ink text-cream hover:bg-ink/80 rounded-none min-h-[44px]"
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Create Your First
-                </Button>
-              </div>
+              <EmptyState
+                icon={RefreshCw}
+                title="No standing orders yet"
+                description="Set up auto-reorder for your staples and we'll handle the rest."
+              />
             ) : (
               <div className="space-y-3">
                 {orders.map((order) => {

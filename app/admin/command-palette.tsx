@@ -171,6 +171,10 @@ export function CommandPalette() {
               <Kanban className="mr-2 h-4 w-4" />
               Pipeline
             </CommandItem>
+            <CommandItem onSelect={() => navigate("/admin/projects")} keywords={["builds", "deployments", "client portals"]}>
+              <Briefcase className="mr-2 h-4 w-4" />
+              Projects
+            </CommandItem>
             <CommandItem onSelect={() => navigate("/admin/reps")} keywords={["salespeople", "agents"]}>
               <UserCheck className="mr-2 h-4 w-4" />
               Sales Reps
