@@ -1,27 +1,12 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import dynamic from "next/dynamic";
 import { Download } from "lucide-react";
 import { prisma } from "@/lib/db";
 import { KpiCards } from "./kpi-cards";
 import { TopClientsTable } from "./top-clients-table";
 import { ChurnRiskTable } from "./churn-risk-table";
 import { ProductVelocityTable } from "./product-velocity-table";
-
-const CeoCharts = dynamic(() =>
-  import("./ceo-charts").then((m) => ({ default: m.CeoCharts })),
-  { ssr: false, loading: () => <div className="h-[300px] animate-pulse rounded-lg bg-muted" /> }
-);
-
-const CohortChart = dynamic(() =>
-  import("./cohort-chart").then((m) => ({ default: m.CohortChart })),
-  { ssr: false, loading: () => <div className="h-[300px] animate-pulse rounded-lg bg-muted" /> }
-);
-
-const ProductTrends = dynamic(() =>
-  import("./product-trends").then((m) => ({ default: m.ProductTrends })),
-  { ssr: false, loading: () => <div className="h-[300px] animate-pulse rounded-lg bg-muted" /> }
-);
+import { CeoCharts, CohortChart, ProductTrends } from "./ceo-charts-client";
 
 export const metadata: Metadata = { title: "CEO Dashboard" };
 

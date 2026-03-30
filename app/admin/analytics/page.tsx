@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import dynamic from "next/dynamic";
 import { unstable_cache } from "next/cache";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { prisma } from "@/lib/db";
@@ -13,16 +12,7 @@ import {
 } from "lucide-react";
 import { ClientHealthOverview } from "./client-health";
 import { TopProducts } from "./top-products";
-
-const AdminCharts = dynamic(() =>
-  import("./admin-charts").then((m) => ({ default: m.AdminCharts })),
-  { ssr: false, loading: () => <ChartSkeleton /> }
-);
-
-const SmartReorderAlerts = dynamic(() =>
-  import("./smart-reorder-alerts").then((m) => ({ default: m.SmartReorderAlerts })),
-  { ssr: false }
-);
+import { AdminCharts, SmartReorderAlerts } from "./analytics-charts-client";
 
 function ChartSkeleton() {
   return (
