@@ -204,26 +204,6 @@ export default function RouteManagementPage() {
         </section>
 
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div
-            className="p-8 sm:p-12"
-            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
-          >
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote
-              className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
-              style={{ color: "var(--text-body)" }}
-            >
-              We had three drivers running their own versions of our routes. Every week someone was out of sequence and an account got pushed to the end of the day. Since we set up Wholesail&apos;s route board, dispatch actually knows what&apos;s happening in real time. Our accounts stopped calling about delivery windows because they can just check their portal. It changed how our whole operation runs.
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>Marcus T.</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>Tri-State Produce Distribution</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>Fresh Produce Distribution</div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-0" style={{ border: "1px solid var(--border-strong)" }}>
             {[
               {

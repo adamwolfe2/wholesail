@@ -204,26 +204,6 @@ export default function OrderHistoryPage() {
         </section>
 
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div
-            className="p-8 sm:p-12"
-            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
-          >
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote
-              className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
-              style={{ color: "var(--text-body)" }}
-            >
-              Our reps were spending real time every week fielding calls from accounts asking what they ordered the month before. It sounds minor but it adds up fast. Since we went live with Wholesail, those calls have basically stopped. Accounts check their own history, hit reorder, and they&apos;re done. Our reps are using that time to actually pursue new business. Order volume is up and our team isn&apos;t bigger.
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>Sandra K.</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>Great Lakes Dry Goods</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>Specialty Food Distribution</div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-0" style={{ border: "1px solid var(--border-strong)" }}>
             {[
               {

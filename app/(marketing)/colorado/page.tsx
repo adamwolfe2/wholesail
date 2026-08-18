@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board, CRM, and revenue analytics in one dashboard",
     "Bulk client import to onboard your existing Colorado accounts in minutes",
   ],
-  testimonial: {
-    quote: "We distribute craft beer and spirits to about 130 bars, restaurants, and retailers across the Front Range. Managing seasonal releases and limited SKUs by phone was killing our team every time a new batch dropped. Wholesail lets us set the catalog, set the pricing, and accounts place their own orders. We actually enjoy launch days now instead of dreading the call volume.",
-    name: "Tom B.",
-    company: "Mile High Craft Distribution",
-    industry: "Craft Beer & Spirits Distribution \u2014 Denver / Front Range",
-  },
   stats: [
     {
       stat: "#1",

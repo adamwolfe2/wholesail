@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "Minimum order quantity enforcement per product and account type",
     "Order history and one-click reorder for repeat job-site purchases",
   ],
-  testimonial: {
-    quote:
-      "We were manually converting square footage to boxes on every contractor order — and we still got it wrong enough to cause real problems on job sites. The portal does the conversion automatically, captures dye lot requirements upfront, and our contractor accounts actually prefer ordering this way. Returns are down and our order desk has time to do something other than math.",
-    name: "Derek M.",
-    company: "Cascade Flooring Supply",
-    industry: "Flooring Distribution",
-  },
   sectionTitle: "What changes for flooring distributors.",
   featuresTitle: "Everything a flooring distributor needs.",
   stats: [

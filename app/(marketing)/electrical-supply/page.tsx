@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Bulk order entry for large commercial electrical jobs",
     "Admin order and fulfillment board with will-call queue and delivery tracking",
   ],
-  testimonial: {
-    quote:
-      "My guys used to call from the job site, get put on hold, and half the time the part wasn't there. Now they check inventory on their phone, place the order, and schedule pickup while they're still on the roof. I haven't lost an order to a competitor in months.",
-    name: "Ray K.",
-    company: "Apex Electrical Supply",
-    industry: "Electrical Supply Distribution",
-  },
   sectionTitle: "What changes for electrical supply distributors.",
   featuresTitle: "Everything an electrical supply distributor needs.",
   stats: [

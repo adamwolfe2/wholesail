@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Backorder management with real-time inventory status",
     "Wholesale account portal branded to your company",
   ],
-  testimonial: {
-    quote:
-      "I used to get 40 emails after every lookbook drop — buyers replying with notes like 'medium in the blue, two of the tan.' Now they go into the portal, click their sizes, and submit. My order entry time is basically zero.",
-    name: "Nina T.",
-    company: "Metropolitan Apparel Group",
-    industry: "Apparel & Fashion Distribution",
-  },
   sectionTitle: "What changes for apparel and fashion distributors.",
   featuresTitle: "Everything an apparel distributor needs.",
   stats: [

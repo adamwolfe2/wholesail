@@ -204,26 +204,6 @@ export default function SmsOrderingPage() {
         </section>
 
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div
-            className="p-8 sm:p-12"
-            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
-          >
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote
-              className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
-              style={{ color: "var(--text-body)" }}
-            >
-              About a third of our restaurant accounts text orders. They&apos;ve done it for years and they weren&apos;t going to stop. Instead of forcing them to change, we set up Wholesail&apos;s SMS intake. Now those texts go to a business number, parse into real orders, and show up in our dashboard next to everything else. We didn&apos;t lose a single account in the transition and our rep got her personal phone back.
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>Angela F.</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>Fountain City Distributors</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>Food & Beverage Distribution</div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-0" style={{ border: "1px solid var(--border-strong)" }}>
             {[
               {

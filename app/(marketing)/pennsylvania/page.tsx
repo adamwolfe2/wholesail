@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board, CRM, and revenue analytics in one dashboard",
     "Bulk client import to onboard your existing Pennsylvania accounts in minutes",
   ],
-  testimonial: {
-    quote: "We distribute specialty food to about 110 restaurants and retailers in the Philadelphia metro. Before Wholesail, we were drowning in texts, emails, and voicemails every Monday. Now accounts log in, see their pricing, reorder what they need, and we\u2019re done. Our error rate dropped to almost nothing and our reps finally have time to sell.",
-    name: "Diane K.",
-    company: "Keystone Fine Foods",
-    industry: "Specialty Food Distribution \u2014 Greater Philadelphia",
-  },
   stats: [
     {
       stat: "Top 5",

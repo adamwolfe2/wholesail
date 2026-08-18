@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board, CRM, and revenue analytics in one dashboard",
     "Bulk client import to onboard your existing Arizona accounts in minutes",
   ],
-  testimonial: {
-    quote: "We supply restaurant equipment and food service supplies to hotels and restaurants across the Phoenix and Scottsdale resort corridor. The volume was growing faster than our reps could handle. Wholesail gave every account their own ordering portal and we went from fielding 40 calls a day to maybe 5. The ones that still call are new accounts \u2014 which is exactly how it should be.",
-    name: "Ryan M.",
-    company: "Desert Supply Co.",
-    industry: "Restaurant & Hospitality Supply Distribution \u2014 Greater Phoenix",
-  },
   stats: [
     {
       stat: "#1",

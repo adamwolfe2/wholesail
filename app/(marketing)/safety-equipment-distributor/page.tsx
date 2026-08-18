@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "PDF invoice and packing slip generation with product compliance reference numbers",
     "Order history and one-click reorder for job-site consumable replenishment",
   ],
-  testimonial: {
-    quote:
-      "Our construction accounts were calling us every week for SDS sheets — we had someone spending half their day just emailing compliance documents. The portal attaches everything at the product level and accounts pull it themselves. That alone justified the build. On top of that, standing orders mean our consumable accounts almost never run out mid-job anymore.",
-    name: "Rachel F.",
-    company: "Ironguard Safety Supply",
-    industry: "Safety Equipment Distribution",
-  },
   sectionTitle: "What changes for safety equipment distributors.",
   featuresTitle: "Everything a safety equipment distributor needs.",
   stats: [

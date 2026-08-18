@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board with city-based route grouping and revenue analytics",
     "Bulk client import to onboard your existing Ohio accounts in minutes",
   ],
-  testimonial: {
-    quote: "We distribute specialty food and packaging supplies to manufacturers and food producers across central Ohio. Our accounts are professional operations \u2014 they expect their suppliers to run the same way. Wholesail gave us a portal that matches that expectation. Orders are organized, pricing is automatic, and we\u2019re no longer fielding calls just to tell people what\u2019s in stock.",
-    name: "Tom W.",
-    company: "Heartland Supply Partners",
-    industry: "Food & Industrial Distribution \u2014 Central Ohio",
-  },
   stats: [
     {
       stat: "Top 10",

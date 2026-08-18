@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "PDF invoice generation with temperature and delivery window details",
     "Order history and one-click reorder for returning accounts",
   ],
-  testimonial: {
-    quote:
-      "We were getting calls at all hours about frozen dessert orders — and then complaints when deliveries didn't match what we thought was ordered. The portal fixed both at once. Cutoffs are automatic, standing orders run themselves, and invoices are never a surprise.",
-    name: "Nina R.",
-    company: "Pacific Chill Distributors",
-    industry: "Frozen Dessert Distribution",
-  },
   sectionTitle: "What changes for frozen dessert distributors.",
   featuresTitle: "Everything a frozen dessert distributor needs.",
   stats: [

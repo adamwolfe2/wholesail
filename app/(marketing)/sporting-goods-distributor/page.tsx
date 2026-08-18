@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "PDF invoice and packing slip generation with PO number and account details",
     "Order history and one-click reorder for in-season replenishment",
   ],
-  testimonial: {
-    quote:
-      "Pre-season used to mean two weeks of phone calls and spreadsheets. We'd still be missing orders from half our school accounts when the window closed. Now pre-season is a portal link we send to every account — orders come in on their own and we see our committed volume in real time. We confirmed 22% more pre-season volume last spring than the year before.",
-    name: "Jason T.",
-    company: "Midland Athletic Supply",
-    industry: "Sporting Goods Distribution",
-  },
   sectionTitle: "What changes for sporting goods distributors.",
   featuresTitle: "Everything a sporting goods distributor needs.",
   stats: [

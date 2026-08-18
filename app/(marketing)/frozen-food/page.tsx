@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "Seasonal featured product spotlights — holiday frozen meals, summer frozen desserts",
     "Order history and one-click reorder for repeat wholesale buyers",
   ],
-  testimonial: {
-    quote:
-      "We had accounts calling at 11pm to place frozen orders for next-day delivery. The portal stopped that overnight. Cutoffs are enforced, standing orders run themselves, and I stopped getting calls on nights and weekends.",
-    name: "Marcus T.",
-    company: "Summit Frozen Foods",
-    industry: "Frozen Food Distribution",
-  },
   sectionTitle: "What changes for frozen food distributors.",
   featuresTitle: "Everything a frozen food distributor needs.",
   stats: [

@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Core return tracking and credit management",
     "Admin order and fulfillment board with will-call queue and delivery routing",
   ],
-  testimonial: {
-    quote:
-      "I was on a rooftop replacing an HVAC unit and realized I needed a specific part. I checked inventory on my phone, saw it was in stock, placed the order, and scheduled a pickup for when I got down. By the time I was back on the ground, the order was being pulled. That would have been a 20-minute phone call before.",
-    name: "Tom B.",
-    company: "Northwest Plumbing & HVAC Supply",
-    industry: "Plumbing & HVAC Distribution",
-  },
   sectionTitle: "What changes for plumbing and HVAC distributors.",
   featuresTitle: "Everything a plumbing and HVAC distributor needs.",
   stats: [

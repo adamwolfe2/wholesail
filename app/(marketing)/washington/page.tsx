@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board, CRM, and revenue analytics in one dashboard",
     "Bulk client import to onboard your existing Washington accounts in minutes",
   ],
-  testimonial: {
-    quote: "We distribute Pacific Northwest seafood and specialty agricultural products to restaurants and corporate food programs across the Seattle metro. The time-sensitivity of seafood makes phone ordering a liability \u2014 by the time someone calls back, the window is gone. Wholesail\u2019s live inventory and instant ordering changed everything. Accounts check what\u2019s fresh, order in two minutes, and we\u2019re done.",
-    name: "Sarah L.",
-    company: "Cascade Provisions",
-    industry: "Seafood & Specialty Food Distribution \u2014 Greater Seattle",
-  },
   stats: [
     {
       stat: "#1",

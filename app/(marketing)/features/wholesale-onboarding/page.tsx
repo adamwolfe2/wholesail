@@ -204,26 +204,6 @@ export default function WholesaleOnboardingPage() {
         </section>
 
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div
-            className="p-8 sm:p-12"
-            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
-          >
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote
-              className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
-              style={{ color: "var(--text-body)" }}
-            >
-              We lost accounts during onboarding. Someone would ask to apply, we&apos;d send the PDF, and by the time we got it back and processed it, they&apos;d already started working with someone else. Wholesail&apos;s application flow changed that completely. Accounts apply online, we review it that day, and they&apos;re in the portal by afternoon. We&apos;ve signed more new accounts in the last 90 days than the entire prior year.
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>Renata M.</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>Harvest Select Wholesale</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>Specialty Produce Distribution</div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-0" style={{ border: "1px solid var(--border-strong)" }}>
             {[
               {

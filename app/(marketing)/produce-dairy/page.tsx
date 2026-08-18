@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Short-shelf-life indicators and handling notes per product",
     "Order history and one-click reorder for returning accounts",
   ],
-  testimonial: {
-    quote:
-      "We had drivers calling accounts at 5am trying to collect orders before leaving the warehouse. Now accounts place orders the night before in the portal, and our drivers have a printed route sheet waiting for them when they arrive.",
-    name: "Miguel A.",
-    company: "Valley Fresh Distributing",
-    industry: "Produce & Dairy Distribution",
-  },
   sectionTitle: "What changes for produce and dairy distributors.",
   featuresTitle: "Everything a produce and dairy distributor needs.",
   stats: [

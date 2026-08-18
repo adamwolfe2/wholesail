@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Net terms invoicing with automated PDF and payment tracking",
     "Admin fulfillment dashboard with compliance status per order",
   ],
-  testimonial: {
-    quote:
-      "My reps were fielding texts at 7am from c-store managers placing their weekly tobacco order. Half the SKUs were wrong and we were fixing orders all morning. Now the stores log into the portal, see their approved products, and place the order themselves. It's been a completely different operation.",
-    name: "Marcus B.",
-    company: "Mid-State Tobacco & Vape",
-    industry: "Tobacco & Vape Distribution",
-  },
   sectionTitle: "What changes for tobacco and vape distributors.",
   featuresTitle: "Everything a tobacco and vape distributor needs.",
   stats: [

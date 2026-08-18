@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Reorder alerts for fast-moving SKUs and seasonal items",
     "Order history and one-click reorder for returning pet store and groomer accounts",
   ],
-  testimonial: {
-    quote:
-      "I own two pet stores and used to call our distributor every week during opening rush. Half the time I'd get voicemail and have to try again later. Now I order from their portal at 10pm after we close. It takes five minutes and I don't have to talk to anyone.",
-    name: "Karen B.",
-    company: "Midwest Pet Wholesale",
-    industry: "Pet Supply Distribution",
-  },
   sectionTitle: "What changes for pet supply distributors.",
   featuresTitle: "Everything a pet supply distributor needs.",
   stats: [

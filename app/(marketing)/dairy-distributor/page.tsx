@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "Minimum order quantity and delivery day restrictions per account and route",
     "Order history and one-click reorder for high-frequency food service accounts",
   ],
-  testimonial: {
-    quote:
-      "Our drivers were basically order takers on the truck — scribbling changes on the manifest and relaying them back to the office. Orders were wrong, accounts were frustrated, and our drivers were spending time they didn't have on the phone instead of running their route. The portal shifted every order online before the truck rolls. Our error rate on dairy deliveries dropped immediately and our drivers actually have time to make their windows.",
-    name: "Anthony B.",
-    company: "Greenfield Dairy Distributors",
-    industry: "Dairy Distribution",
-  },
   sectionTitle: "What changes for dairy distributors.",
   featuresTitle: "Everything a dairy distributor needs.",
   stats: [

@@ -204,26 +204,6 @@ export default function ClientHealthScoringPage() {
         </section>
 
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div
-            className="p-8 sm:p-12"
-            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
-          >
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote
-              className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
-              style={{ color: "var(--text-body)" }}
-            >
-              We lost three accounts last year that we didn&apos;t even realize were slipping. They just quietly stopped ordering and we didn&apos;t notice for 6 weeks in each case. By then they had a relationship with another supplier. With Wholesail&apos;s health scoring, we can see any account that&apos;s gone quiet for more than 2 weeks. We&apos;ve reached out and saved 4 accounts this quarter alone that we would have lost without the alert.
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>Brian T.</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>Peninsula Specialty Foods</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>Specialty Food Distribution</div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-0" style={{ border: "1px solid var(--border-strong)" }}>
             {[
               {

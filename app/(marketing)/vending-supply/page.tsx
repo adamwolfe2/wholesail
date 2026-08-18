@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "PDF delivery confirmation and invoice generation per route stop",
     "Order history and one-click reorder for returning operators",
   ],
-  testimonial: {
-    quote:
-      "We had 70 operators all calling in the same orders every week. We were entering orders for 40% of our week. Standing orders through Wholesail dropped that to almost nothing. Now we spend that time actually growing the route instead of just servicing it.",
-    name: "Tom W.",
-    company: "Metro Vending Supply",
-    industry: "Vending Supply Distribution",
-  },
   sectionTitle: "What changes for vending supply distributors.",
   featuresTitle: "Everything a vending supply distributor needs.",
   stats: [

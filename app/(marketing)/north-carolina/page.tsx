@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board, CRM, and revenue analytics in one dashboard",
     "Bulk client import to onboard your existing North Carolina accounts in minutes",
   ],
-  testimonial: {
-    quote: "We distribute specialty food and beverage to about 100 restaurants in the Raleigh-Durham area. The Triangle is growing so fast that we were adding accounts faster than we could manage orders. Wholesail gave every account a portal in their brand and our ordering volume doubled without us adding a single rep. That\u2019s the kind of leverage we needed.",
-    name: "James F.",
-    company: "Piedmont Food Partners",
-    industry: "Specialty Food & Beverage Distribution \u2014 Research Triangle, NC",
-  },
   stats: [
     {
       stat: "Top 10",

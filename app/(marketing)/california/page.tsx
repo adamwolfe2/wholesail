@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board, CRM, and revenue analytics in one dashboard",
     "Bulk client import to onboard your existing California accounts in minutes",
   ],
-  testimonial: {
-    quote: "We distribute specialty and artisan foods to about 120 restaurants and retailers across the Bay Area. Before Wholesail, half our orders came in as texts or voicemails and someone had to decode them Monday morning. Now every account has their own portal with their pricing built in. Order errors went to basically zero and our rep is doing actual selling instead of order entry.",
-    name: "Elena R.",
-    company: "Bay Provisions Co.",
-    industry: "Specialty Food Distribution \u2014 Northern California",
-  },
   stats: [
     {
       stat: "#1",

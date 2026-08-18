@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Bulk order entry for large seasonal buys",
     "Admin order dashboard with fulfillment tracking and account activity",
   ],
-  testimonial: {
-    quote:
-      "I used to call in my order every month and spend 45 minutes on the phone going through the catalog with a rep. Now I open the portal after we close on Sunday night, search for what I need, and have it submitted in 15 minutes. I order more often because it's so easy.",
-    name: "Grace L.",
-    company: "Creative Supply Wholesale",
-    industry: "Craft & Art Supply Distribution",
-  },
   sectionTitle: "What changes for craft and art supply distributors.",
   featuresTitle: "Everything a craft and art supply distributor needs.",
   stats: [

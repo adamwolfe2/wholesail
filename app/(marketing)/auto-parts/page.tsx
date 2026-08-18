@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Order confirmation with ETA for same-day and next-day orders",
     "Admin fulfillment dashboard with order routing and dispatch tools",
   ],
-  testimonial: {
-    quote:
-      "We used to get 60 inbound calls a day, half of them just asking if we had a part in stock. Now our shops check inventory online, place the order, and we see it in the fulfillment queue. Call volume is down more than half and we haven't lost a single account.",
-    name: "Steve L.",
-    company: "Pro Auto Parts Distribution",
-    industry: "Automotive Parts Distribution",
-  },
   sectionTitle: "What changes for automotive parts distributors.",
   featuresTitle: "Everything an auto parts distributor needs.",
   stats: [

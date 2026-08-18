@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Reorder alerts when favorite items come back in stock",
     "Order history and one-click reorder for returning specialty accounts",
   ],
-  testimonial: {
-    quote:
-      "Our buyers are food professionals — they want to discover, research, and order on their own timeline. Wholesail gave them that. Our average order value went up 40% in the first two months because buyers were actually browsing the catalog instead of just calling for the same five items.",
-    name: "Priya S.",
-    company: "Artisan Source Imports",
-    industry: "Specialty Food Distribution",
-  },
   sectionTitle: "What changes for specialty food importers and distributors.",
   featuresTitle: "Everything a specialty food distributor needs.",
   stats: [
