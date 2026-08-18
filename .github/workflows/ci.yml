@@ -10,10 +10,33 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pass
+          POSTGRES_DB: wholesail
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U user -d wholesail"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     env:
       DATABASE_URL: "postgresql://user:pass@localhost:5432/wholesail"
-      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pk_test_placeholder"
+      # Placeholder Clerk key in valid publishable-key format (base64 of "clerk.example.com$").
+      # Clerk validates the format at build time; "pk_test_placeholder" fails prerendering.
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pk_test_Y2xlcmsuZXhhbXBsZS5jb20k"
       CLERK_SECRET_KEY: "sk_test_placeholder"
+      CLERK_WEBHOOK_SECRET: "whsec_placeholder"
+      CRON_SECRET: "ci-placeholder"
+      ANTHROPIC_API_KEY: "ci-placeholder"
+      WS_VERCEL_TOKEN: "ci-placeholder"
+      BOOTSTRAP_SECRET: "ci-placeholder"
+      NEXT_PUBLIC_APP_URL: "http://localhost:3000"
 
     steps:
       - uses: actions/checkout@v4
