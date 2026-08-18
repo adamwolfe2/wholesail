@@ -21,7 +21,8 @@ jobs:
       ANTHROPIC_API_KEY: "ci-placeholder"
       WS_VERCEL_TOKEN: "ci-placeholder"
       BOOTSTRAP_SECRET: "ci-placeholder"
-      NEXT_PUBLIC_APP_URL: "http://localhost:3000"
+      # NEXT_PUBLIC_APP_URL is intentionally unset: portal-config tests assert
+      # the default appUrl, and the build falls back to it as well.
 
     steps:
       - uses: actions/checkout@v4
