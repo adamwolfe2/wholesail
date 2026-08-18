@@ -7,23 +7,23 @@ import { fadeUp, staggerContainer, scaleUp } from "@/lib/animations";
 const STEPS = [
   {
     step: "01",
-    title: "Fill Out the Intake Form",
-    desc: "Tell us about your company, products, clients, and feature needs. Takes 5 minutes and gives us everything we need to scope your build.",
+    title: "Tell Us About Your Business",
+    desc: "A five-minute intake covers your products, clients, and workflow.",
   },
   {
     step: "02",
-    title: "Consultation Call",
-    desc: "30-minute call to walk through features, discuss branding, review integrations, and get a timeline with investment estimate.",
+    title: "Scope the Build",
+    desc: "A 30-minute call to align on features, branding, and timeline — with a clear investment estimate.",
   },
   {
     step: "03",
-    title: "We Build Your Portal",
-    desc: "Our team configures your portal — branding, products, pricing, integrations, email templates, and all features. Built on battle-tested infrastructure.",
+    title: "We Build",
+    desc: "Your portal is configured, branded, and loaded with your catalog, pricing, and clients.",
   },
   {
     step: "04",
-    title: "Launch & Onboard Clients",
-    desc: "Deploy to production, train your team, invite your first wholesale clients, and activate text message ordering. You're live.",
+    title: "Launch — and We Run It",
+    desc: "We deploy, train your team, and invite your clients. Then we keep it running for you.",
   },
 ];
 
@@ -62,7 +62,7 @@ export function HowItWorksSection() {
           className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal"
           style={{ color: "var(--text-headline)" }}
         >
-          From intake to live portal in under 2 weeks.
+          From first call to live portal in about two weeks.
         </h2>
       </motion.div>
 

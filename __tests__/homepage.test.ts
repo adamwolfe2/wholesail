@@ -27,6 +27,7 @@ const EXPECTED_SECTIONS = [
   "included-section.tsx",
   "industries-section.tsx",
   "intake-section.tsx",
+  "offer-section.tsx",
   "pain-point-section.tsx",
   "pricing-section.tsx",
   "sail-logo.tsx",
@@ -66,6 +67,7 @@ describe("homepage sections export named components", () => {
   // Map file names to expected export names
   const FILE_TO_EXPORT: Record<string, string> = {
     "hero-section.tsx": "HeroSection",
+    "offer-section.tsx": "OfferSection",
     "stats-section.tsx": "StatsSection",
     "before-after-section.tsx": "BeforeAfterSection",
     "erp-alternative-section.tsx": "ErpAlternativeSection",
@@ -102,23 +104,14 @@ describe("marketing page.tsx imports all sections", () => {
   const pageContent = fs.readFileSync(PAGE_PATH, "utf-8");
 
   // All section imports that page.tsx should have (excluding sail-logo which is
-  // a utility component, not a page section)
+  // a utility component, not a page section). Sections not listed here still
+  // exist as components but are intentionally left off the homepage.
   const SECTIONS_USED_IN_PAGE = [
     "HeroSection",
-    "StatsSection",
-    "BeforeAfterSection",
-    "ErpAlternativeSection",
-    "TestimonialsSection",
+    "OfferSection",
     "DemoSection",
-    "AmazonEffectSection",
-    "IndustriesSection",
-    "PainPointSection",
-    "FeaturesSection",
-    "IncludedSection",
-    "PricingSection",
-    "GrowthSection",
     "HowItWorksSection",
-    "AdditionalFeaturesSection",
+    "PricingSection",
     "FaqSection",
     "CtaSection",
     "IntakeSection",

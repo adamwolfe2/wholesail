@@ -37,7 +37,7 @@ export function DemoSection() {
             className="font-mono text-xs uppercase tracking-widest mb-4 block"
             style={{ color: "var(--text-muted)" }}
           >
-            Try Before You Buy
+            Live Demo
           </span>
           <h2
             className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal mb-6"
