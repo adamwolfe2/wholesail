@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Bulk order entry for large input purchases by the ton or pallet",
     "Admin crop-season reporting by product, account, and delivery date",
   ],
-  testimonial: {
-    quote:
-      "I ordered fertilizer from the cab of my tractor at 7pm during planting. It was at the co-op the next morning. I don't know why it took this long for someone to build this, but I'm not going back to calling in orders.",
-    name: "Bill C.",
-    company: "Heartland Agri Supply",
-    industry: "Agricultural Supply Distribution",
-  },
   sectionTitle: "What changes for agricultural supply distributors.",
   featuresTitle: "Everything an agricultural supply distributor needs.",
   stats: [

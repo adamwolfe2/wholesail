@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Automated payment reminders for outstanding invoices",
     "Admin dashboard with order management and fulfillment tracking",
   ],
-  testimonial: {
-    quote:
-      "Our facility managers used to email three different reps and hope someone caught the order. Now they log into the portal, see their contract pricing, put in the PO, and they're done in two minutes. The email chain is gone.",
-    name: "Robert H.",
-    company: "CleanPath Supply Co.",
-    industry: "Janitorial & Sanitation Distribution",
-  },
   sectionTitle: "What changes for janitorial and sanitation distributors.",
   featuresTitle: "Everything a jan-san distributor needs.",
   stats: [

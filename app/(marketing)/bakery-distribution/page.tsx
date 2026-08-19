@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "New item announcements pushed to all active accounts",
     "Order history and one-click reorder for returning restaurant accounts",
   ],
-  testimonial: {
-    quote:
-      "Before Wholesail, I was fielding calls until midnight and waking up to voicemails I had to decode into a production list. Now my cutoff enforces itself and I have a clean order sheet by 6am. I sleep again.",
-    name: "Elena M.",
-    company: "Harvest Hearth Bakers",
-    industry: "Bakery Distribution",
-  },
   sectionTitle: "What changes for bakery and specialty food distributors.",
   featuresTitle: "Everything a bakery distributor needs.",
   stats: [

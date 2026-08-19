@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "PDF wholesale order confirmation and invoice generation",
     "Order history and one-click seasonal reorder for returning retail buyers",
   ],
-  testimonial: {
-    quote:
-      "Christmas pre-orders used to be six weeks of inbox chaos. I never knew what was confirmed versus what was just 'interested.' Now everything is in the portal — orders are binding when they're placed, I can see our Q4 volume in October, and we actually had a plan this year instead of winging it.",
-    name: "Jenna A.",
-    company: "Coastal Gift Distributors",
-    industry: "Gift & Novelty Distribution",
-  },
   sectionTitle: "What changes for gift and novelty distributors.",
   featuresTitle: "Everything a gift and novelty distributor needs.",
   stats: [

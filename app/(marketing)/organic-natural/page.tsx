@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "PDF invoice generation with certification references included",
     "Order history and one-click reorder for returning natural food buyers",
   ],
-  testimonial: {
-    quote:
-      "We were emailing cert docs constantly. It felt like a full-time job. Now everything is in the portal at the product level — buyers check before they order, and we've cut cert-related emails by 80%. That alone was worth it.",
-    name: "Rachel M.",
-    company: "Appalachian Natural Foods",
-    industry: "Organic & Natural Food Distribution",
-  },
   sectionTitle: "What changes for organic and natural food distributors.",
   featuresTitle: "Everything an organic and natural food distributor needs.",
   stats: [

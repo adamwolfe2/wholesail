@@ -184,20 +184,6 @@ export default function WineSpiritsPage() {
         </section>
 
         {/* TESTIMONIAL */}
-        <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div className="p-8 sm:p-12" style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}>
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote className="font-mono text-sm leading-relaxed mb-8 max-w-2xl" style={{ color: "var(--text-body)" }}>
-              The invoice chasing alone was worth the price. We used to have 30–40 day collection cycles because someone had to manually follow up. Now reminders go out automatically and our average collection is down to 18 days.
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>Elena V.</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>Pacific Rim Wine Imports</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>Wine & Spirits Distribution</div>
-            </div>
-          </div>
-        </section>
-
         {/* INTAKE FORM */}
         <section className="py-16" id="intake-form">
           <span className="font-mono text-xs uppercase tracking-widest mb-4 block" style={{ color: "var(--text-muted)" }}>

@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Net terms invoicing with automated PDF generation",
     "Admin dashboard with account activity and fulfillment tracking",
   ],
-  testimonial: {
-    quote:
-      "Our gym accounts used to email us every two or three weeks with a rough list and we'd spend an hour figuring out what they actually wanted. Now they log in, see exactly what they ordered last time, and hit reorder. It takes them two minutes.",
-    name: "Amy R.",
-    company: "Core Nutrition Wholesale",
-    industry: "Supplement Distribution",
-  },
   sectionTitle: "What changes for supplement and nutraceutical distributors.",
   featuresTitle: "Everything a supplement distributor needs.",
   stats: [

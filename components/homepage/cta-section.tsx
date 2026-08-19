@@ -51,9 +51,8 @@ export function CtaSection() {
           className="font-mono text-sm leading-relaxed mb-10 max-w-xl mx-auto"
           style={{ color: "rgba(255,255,255,0.6)" }}
         >
-          Stop losing orders to missed calls and buried emails. Stop chasing
-          invoices manually. Stop wondering which clients are about to churn.
-          Get a portal that handles all of it.
+          Try the demo in your browser, or tell us about your business and
+          we&apos;ll scope your build on a call.
         </motion.p>
         <motion.div
           variants={itemVariant}
@@ -84,15 +83,7 @@ export function CtaSection() {
           className="font-mono text-[10px] uppercase tracking-wider"
           style={{ color: "rgba(255,255,255,0.35)" }}
         >
-          No credit card required · Try the demo instantly · Builds start
-          within 48 hours of your call
-        </motion.div>
-        <motion.div
-          variants={itemVariant}
-          className="font-mono text-[11px] mt-3"
-          style={{ color: "rgba(255,255,255,0.4)" }}
-        >
-          Current build queue: 2-3 weeks | Limited onboarding slots available
+          No signup required · Demo runs instantly in your browser
         </motion.div>
       </motion.div>
     </section>

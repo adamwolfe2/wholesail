@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Reorder alerts for best-selling products when inventory is replenished",
     "Order history and one-click reorder for returning salon and boutique accounts",
   ],
-  testimonial: {
-    quote:
-      "We were shipping wrong shades constantly because salons were texting 'the red one' or 'that new foundation.' Since launching our Wholesail portal, we've had exactly zero SKU errors. Salons pick from photos with the exact variant listed — it's foolproof.",
-    name: "Danielle W.",
-    company: "Pro Beauty Supply Co.",
-    industry: "Beauty & Cosmetics Distribution",
-  },
   sectionTitle: "What changes for beauty and cosmetics distributors.",
   featuresTitle: "Everything a beauty and cosmetics distributor needs.",
   stats: [

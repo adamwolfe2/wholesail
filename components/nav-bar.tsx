@@ -58,7 +58,6 @@ const ALL_INDUSTRIES: NavItem[] = [
 ];
 
 const MORE_ITEMS: NavItem[] = [
-  { label: "What Is AI-ified?",        href: "/ai-ified",                                         desc: "AI automation for distributors" },
   { label: "Press",                    href: "/press",                                             desc: "Coverage and news" },
   { label: "Shopify B2B vs Wholesail", href: "/blog/shopify-b2b-vs-custom-wholesale-portal",      desc: "Feature comparison" },
   { label: "Wholesail vs NetSuite",    href: "/blog/wholesail-vs-netsuite-for-distributors",       desc: "ERP alternative" },

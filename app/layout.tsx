@@ -29,9 +29,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "Wholesail — Wholesale Ordering Portals for Distribution Companies",
+  title: "Wholesail — Custom Ordering Portals & CRM for Wholesale Distributors",
   description:
-    "Wholesail builds custom ordering portals for distribution companies. Your clients order online, you manage everything in one place. Live in under 2 weeks.",
+    "We design, build, and manage branded ordering portals and CRM for wholesale distribution companies. Clients order online or by text; your team runs everything from one dashboard.",
   metadataBase: new URL(portalConfig.appUrl),
   icons: {
     icon: [
@@ -43,9 +43,9 @@ export const metadata: Metadata = {
     shortcut: "/favicon.svg",
   },
   openGraph: {
-    title: "Wholesail — Wholesale Ordering Portals for Distribution Companies",
+    title: "Wholesail — Custom Ordering Portals & CRM for Wholesale Distributors",
     description:
-      "Custom ordering portals for distribution companies. Your clients order online. You stop managing orders by phone and spreadsheet. Live in under 2 weeks.",
+      "Custom ordering portals and CRM for wholesale distribution companies — built, branded, and managed for you. Live in about two weeks.",
     type: "website",
     siteName: "Wholesail",
     images: [
@@ -59,9 +59,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Wholesail — Wholesale Ordering Portals for Distribution Companies",
+    title: "Wholesail — Custom Ordering Portals & CRM for Wholesale Distributors",
     description:
-      "Custom ordering portals for distribution companies. Your clients order online. Live in under 2 weeks.",
+      "Custom ordering portals and CRM for wholesale distributors — built, branded, and managed for you.",
     images: ["/og-image.png"],
   },
 };

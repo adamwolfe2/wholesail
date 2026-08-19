@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Delivery schedule and route management for weekly distribution",
     "Order history and one-click reorder for returning florist accounts",
   ],
-  testimonial: {
-    quote:
-      "My florist clients were texting me at midnight on Sundays. I'd wake up Monday morning with 12 texts to sort through and delivery starting in two hours. With Wholesail, the orders are already there — clean, organized, ready to pull.",
-    name: "James P.",
-    company: "Bloom Wholesale Co.",
-    industry: "Floral & Nursery Distribution",
-  },
   sectionTitle: "What changes for floral and nursery distributors.",
   featuresTitle: "Everything a floral and nursery distributor needs.",
   stats: [

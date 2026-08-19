@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board with route-based grouping and revenue analytics",
     "Bulk client import to onboard your existing Illinois accounts in minutes",
   ],
-  testimonial: {
-    quote: "We supply dry goods and specialty food items to restaurants across Chicagoland. Our accounts were placing orders by texting our sales rep directly \u2014 which meant if she was unavailable, orders just waited. With Wholesail, every account has their own login. They order when it\u2019s convenient for them and we see it instantly. Our Monday morning used to be chaos. Now it\u2019s just fulfillment.",
-    name: "Diane K.",
-    company: "Midwest Provisions Group",
-    industry: "Food Service Distribution \u2014 Chicagoland",
-  },
   stats: [
     {
       stat: "3rd",

@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Delivery schedule management with route-based grouping",
     "Order history and reorder in one click for returning accounts",
   ],
-  testimonial: {
-    quote:
-      "We were running our entire business on group texts and a shared Google Sheet. The first week after launching our Wholesail portal, three accounts placed standing orders without ever calling us. That alone paid for it.",
-    name: "Sarah K.",
-    company: "Pacific Roasters",
-    industry: "Coffee & Tea Distribution",
-  },
   sectionTitle: "What changes for coffee and tea distributors.",
   featuresTitle: "Everything a coffee and tea distributor needs.",
   stats: [

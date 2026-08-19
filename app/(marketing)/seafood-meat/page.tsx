@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Delivery route grouping for efficient daily distribution",
     "Order history and one-click reorder for returning restaurant accounts",
   ],
-  testimonial: {
-    quote:
-      "I was sending 50 texts a morning just to let people know what came in on the boat. Now I update the portal in five minutes and the orders roll in. It's a completely different business.",
-    name: "Tony R.",
-    company: "Gulf Coast Provisions",
-    industry: "Seafood & Meat Distribution",
-  },
   sectionTitle: "What changes for seafood and meat distributors.",
   featuresTitle: "Everything a seafood and meat distributor needs.",
   stats: [

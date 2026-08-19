@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board, CRM, and revenue analytics in one dashboard",
     "Bulk client import to onboard your existing Michigan accounts in minutes",
   ],
-  testimonial: {
-    quote: "We distribute food and beverage to about 90 restaurants and grocery accounts across metro Detroit and Grand Rapids. Our reps were spending most of their day fielding reorder calls and fixing order mistakes. Wholesail changed that completely \u2014 accounts log in, reorder in two minutes, and we actually get to focus on new business again.",
-    name: "Marcus T.",
-    company: "Great Lakes Provisions",
-    industry: "Food & Beverage Distribution \u2014 Southeast Michigan",
-  },
   stats: [
     {
       stat: "Top 10",

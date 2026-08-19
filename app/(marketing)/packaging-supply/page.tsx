@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Net-30 and net-60 invoicing with automated PDF generation",
     "Admin fulfillment and production board with custom spec order tracking",
   ],
-  testimonial: {
-    quote:
-      "We were placing our monthly packaging order over the phone and it was taking an hour — reading box dimensions, confirming quantities, verifying the print spec. Now I go into the portal, enter the quantities, submit the custom spec form, and it's done in ten minutes. And we haven't had a spec error since.",
-    name: "Lisa H.",
-    company: "PackRight Supply",
-    industry: "Packaging Supply Distribution",
-  },
   sectionTitle: "What changes for packaging supply distributors.",
   featuresTitle: "Everything a packaging supply distributor needs.",
   stats: [

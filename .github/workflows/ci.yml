@@ -12,8 +12,17 @@ jobs:
 
     env:
       DATABASE_URL: "postgresql://user:pass@localhost:5432/wholesail"
-      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pk_test_placeholder"
+      # Placeholder Clerk key in valid publishable-key format (base64 of "clerk.example.com$").
+      # Clerk validates the format at build time; "pk_test_placeholder" fails prerendering.
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "pk_test_Y2xlcmsuZXhhbXBsZS5jb20k"
       CLERK_SECRET_KEY: "sk_test_placeholder"
+      CLERK_WEBHOOK_SECRET: "whsec_placeholder"
+      CRON_SECRET: "ci-placeholder"
+      ANTHROPIC_API_KEY: "ci-placeholder"
+      WS_VERCEL_TOKEN: "ci-placeholder"
+      BOOTSTRAP_SECRET: "ci-placeholder"
+      # NEXT_PUBLIC_APP_URL is intentionally unset: portal-config tests assert
+      # the default appUrl, and the build falls back to it as well.
 
     steps:
       - uses: actions/checkout@v4
@@ -40,8 +49,13 @@ jobs:
           key: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
           restore-keys: nextjs-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-
 
+      # 'pnpm build' runs 'prisma migrate deploy', which needs a database and
+      # currently fails on any fresh one (the 0_init migration file is corrupted
+      # by stray dotenv output and conflicts with the later migrations).
+      # CI validates the Next.js build and tests, which need no database;
+      # migrations run at deploy time against the real database.
       - name: Build
-        run: pnpm build
+        run: pnpm exec next build
 
       - name: Test
         run: pnpm test

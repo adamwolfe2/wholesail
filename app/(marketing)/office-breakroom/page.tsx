@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Usage tracking by office location and product category",
     "Admin fulfillment dashboard with recurring order management",
   ],
-  testimonial: {
-    quote:
-      "I used to spend two hours every month putting together the same order in a spreadsheet and emailing it in. Now I have it set up as a recurring order and I haven't thought about it in four months. It just shows up. That's exactly what I needed.",
-    name: "Jessica M.",
-    company: "Cornerstone Office Supply",
-    industry: "Office & Breakroom Distribution",
-  },
   sectionTitle: "What changes for office and breakroom supply distributors.",
   featuresTitle: "Everything an office and breakroom supply distributor needs.",
   stats: [

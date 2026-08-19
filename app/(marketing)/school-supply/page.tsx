@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "PDF invoice and packing list with PO reference numbers included",
     "Order history and one-click reorder for returning institutional buyers",
   ],
-  testimonial: {
-    quote:
-      "Purchasing directors used to fax us purchase orders. We would lose one a week. Now every order is digital, every PO is logged in the portal, and invoices match exactly what was ordered. Our August cycle went from three weeks of firefighting to one week of clean execution.",
-    name: "Carol B.",
-    company: "Northeast Educational Supply",
-    industry: "School & Office Supply Distribution",
-  },
   sectionTitle: "What changes for school and office supply distributors.",
   featuresTitle: "Everything a school supply distributor needs.",
   stats: [

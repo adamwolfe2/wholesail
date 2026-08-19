@@ -210,26 +210,6 @@ export default function B2BOrderingPortalPage() {
         </section>
 
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div
-            className="p-8 sm:p-12"
-            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
-          >
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote
-              className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
-              style={{ color: "var(--text-body)" }}
-            >
-              I was skeptical that our restaurant accounts would actually use a portal. Within 90 days, 80% of our order volume was coming through digitally. The accounts that adopted it fastest were also our highest spenders — they just wanted the convenience.
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>Maria L.</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>Central Valley Specialty Foods</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>Specialty Food Distribution</div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-0" style={{ border: "1px solid var(--border-strong)" }}>
             {[
               {

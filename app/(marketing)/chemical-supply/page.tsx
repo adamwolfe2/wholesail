@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Regulatory reporting by account, product, and date range",
     "Admin order dashboard with compliance status tracking per order",
   ],
-  testimonial: {
-    quote:
-      "We were manually attaching SDS sheets to every order confirmation and it was taking one of my team members two hours a day. Now the portal does it automatically. Compliance is just handled. We haven't had a documentation dispute in months.",
-    name: "Frank D.",
-    company: "Allied Chemical Supply",
-    industry: "Chemical Supply Distribution",
-  },
   sectionTitle: "What changes for chemical supply distributors.",
   featuresTitle: "Everything a chemical supply distributor needs.",
   stats: [

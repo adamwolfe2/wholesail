@@ -209,26 +209,6 @@ export default function FoodBeveragePage() {
         </section>
 
         {/* TESTIMONIAL */}
-        <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div
-            className="p-8 sm:p-12"
-            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
-          >
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote
-              className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
-              style={{ color: "var(--text-body)" }}
-            >
-              We were running everything through text messages and a shared Google Sheet. Our rep would spend Sunday nights entering orders for Monday delivery. Now clients order themselves and we just fulfill. I wish we had done this two years ago.
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>Marcus T.</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>Fresh Coast Specialty Foods</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>Food & Beverage Distribution</div>
-            </div>
-          </div>
-        </section>
-
         {/* STATS */}
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-0" style={{ border: "1px solid var(--border-strong)" }}>

@@ -3,33 +3,29 @@
 import { CheckCircle2, X } from "lucide-react";
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { fadeUp, staggerContainer, scaleUp } from "@/lib/animations";
+import { fadeUp, staggerContainer } from "@/lib/animations";
 
 const BUILD_ITEMS = [
-  "Every feature selected in your build",
-  "Your logo, colors, and custom domain",
-  "Data migration from existing tools",
-  "Team training and onboarding",
-  "All 18 software platforms — replaced",
-  "45+ hours/week of manual work — eliminated",
+  "Branded portal on your own domain",
+  "Catalog, pricing tiers, and client migration",
+  "Payments and invoicing configured",
+  "Team training and client onboarding",
 ];
 
 const RETAINER_ITEMS = [
-  "Unlimited change requests",
-  "Bug fixes and platform updates",
-  "Performance monitoring",
-  "Priority support — direct access to our team",
-  "New feature additions as your business grows",
-  "No more software subscriptions to manage",
+  "Hosting, monitoring, and platform updates",
+  "Change requests handled by our team",
+  "New features as your business grows",
+  "Direct access to the people who built it",
 ];
 
 const REPLACES = [
-  "QuickBooks for invoicing",
-  "Spreadsheets for orders",
-  "Phone ordering workflows",
-  "NetSuite / SAP / ERP",
-  "CRM for client tracking",
+  "Phone & voicemail orders",
+  "Spreadsheet order tracking",
   "Manual invoice follow-up",
+  "Separate CRM subscriptions",
+  "Multi-tool duct tape",
+  "Heavy ERP implementations",
 ];
 
 const cardVariant = {
@@ -62,7 +58,7 @@ export function PricingSection() {
           className="font-mono text-xs uppercase tracking-widest mb-4 block"
           style={{ color: "var(--text-muted)" }}
         >
-          Your Investment
+          Pricing
         </span>
         <h2
           className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif font-normal mb-3"
@@ -70,15 +66,14 @@ export function PricingSection() {
         >
           One build. One retainer.
           <br />
-          <span style={{ color: "var(--blue)" }}>The ERP you couldn&apos;t afford — replaced.</span>
+          <span style={{ color: "var(--blue)" }}>Everything handled.</span>
         </h2>
         <p
           className="font-mono text-sm max-w-xl leading-relaxed"
           style={{ color: "var(--text-body)" }}
         >
-          No more juggling subscriptions. No more duct-taping platforms
-          together. We build your portal, migrate your data, train your
-          team, and keep everything running.
+          We build your platform, migrate your data, train your team, and
+          keep it running. Final pricing is scoped on your consultation call.
         </p>
       </motion.div>
 
@@ -110,8 +105,8 @@ export function PricingSection() {
             className="font-mono text-[11px] leading-relaxed mb-6"
             style={{ color: "rgba(255,255,255,0.6)" }}
           >
-            Custom portal built to your exact business, branded to your
-            company, deployed in under 2 weeks.
+            A custom portal built to your business, branded to your company,
+            deployed in about two weeks.
           </p>
           <div className="space-y-2.5">
             {BUILD_ITEMS.map((item) => (
@@ -156,9 +151,8 @@ export function PricingSection() {
             className="font-mono text-[11px] leading-relaxed mb-6"
             style={{ color: "var(--text-body)" }}
           >
-            Direct access to our team. We maintain your portal, make
-            changes when you need them, and keep everything running
-            smoothly.
+            Ongoing management. We maintain your portal, make changes when
+            you need them, and keep everything running smoothly.
           </p>
           <div className="space-y-2.5">
             {RETAINER_ITEMS.map((item) => (
@@ -179,73 +173,7 @@ export function PricingSection() {
         </motion.div>
       </motion.div>
 
-      {/* ROI callout */}
-      <div
-        className="border border-t-0 p-6"
-        style={{
-          borderColor: "var(--border-strong)",
-          backgroundColor: "var(--blue-light)",
-        }}
-      >
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
-          <div>
-            <div
-              className="font-serif text-2xl mb-0.5"
-              style={{ color: "var(--text-headline)" }}
-            >
-              $180K+
-              <span
-                className="font-mono text-[10px]"
-                style={{ color: "var(--text-muted)" }}
-              >
-                /yr
-              </span>
-            </div>
-            <span
-              className="font-mono text-[10px]"
-              style={{ color: "var(--text-body)" }}
-            >
-              What you&apos;re spending now on software + manual labor
-            </span>
-          </div>
-          <div>
-            <div
-              className="font-serif text-2xl mb-0.5"
-              style={{ color: "var(--blue)" }}
-            >
-              $60K–$85K
-              <span
-                className="font-mono text-[10px]"
-                style={{ color: "var(--text-muted)" }}
-              >
-                /yr
-              </span>
-            </div>
-            <span
-              className="font-mono text-[10px]"
-              style={{ color: "var(--text-body)" }}
-            >
-              Wholesail retainer — everything included
-            </span>
-          </div>
-          <div>
-            <div
-              className="font-serif text-2xl mb-0.5"
-              style={{ color: "var(--blue)" }}
-            >
-              Pays for itself
-            </div>
-            <span
-              className="font-mono text-[10px]"
-              style={{ color: "var(--text-body)" }}
-            >
-              Within 2–3 months of going live
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* What Wholesail replaces */}
+      {/* What it replaces */}
       <div
         className="border border-t-0 p-6"
         style={{
@@ -257,7 +185,7 @@ export function PricingSection() {
           className="font-mono text-[9px] uppercase tracking-widest mb-4"
           style={{ color: "var(--text-muted)" }}
         >
-          What Wholesail replaces
+          What it replaces
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {REPLACES.map((item) => (

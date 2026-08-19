@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Order history by location for multi-unit restaurant groups",
     "Admin fulfillment dashboard with order prioritization and staging",
   ],
-  testimonial: {
-    quote:
-      "Our fryer went down at 10pm on a Friday. I found the replacement part on the portal in two minutes, placed the order, and it was there Saturday morning. Before this portal existed, I would have been on the phone with an emergency line and crossing my fingers. This paid for itself the first week.",
-    name: "Carlos R.",
-    company: "Keystone Foodservice Equipment",
-    industry: "Restaurant Equipment Distribution",
-  },
   sectionTitle: "What changes for restaurant equipment distributors.",
   featuresTitle: "Everything a restaurant equipment distributor needs.",
   stats: [

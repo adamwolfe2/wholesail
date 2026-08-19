@@ -211,26 +211,6 @@ export default function DistributorClientPortalPage() {
         </section>
 
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div
-            className="p-8 sm:p-12"
-            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
-          >
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote
-              className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
-              style={{ color: "var(--text-body)" }}
-            >
-              My clients couldn&apos;t believe the portal had our name on it, not a third-party platform&apos;s. They ask about it when they meet with other distributors. Three of my accounts have told me it influenced their decision to expand ordering with us.
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>Helen T.</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>SunState Beverage Distribution</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>Beverage Distribution</div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-0" style={{ border: "1px solid var(--border-strong)" }}>
             {[
               {

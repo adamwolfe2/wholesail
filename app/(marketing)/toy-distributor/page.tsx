@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "PDF order confirmation and invoice generation for retail buyer records",
     "Order history and one-click reorder for in-season replenishment and fill orders",
   ],
-  testimonial: {
-    quote:
-      "Holiday pre-orders used to be a month-long scramble of emails and callbacks. We'd close the window still not sure if half our accounts were in. The portal opened and accounts just ordered — we hit 90% of our pre-book targets in the first two weeks. And the credit limit check at checkout alone saved us from three accounts that would have overextended in Q4.",
-    name: "Meredith K.",
-    company: "Brightplay Toy Distributors",
-    industry: "Toy & Game Distribution",
-  },
   sectionTitle: "What changes for toy and game distributors.",
   featuresTitle: "Everything a toy and game distributor needs.",
   stats: [

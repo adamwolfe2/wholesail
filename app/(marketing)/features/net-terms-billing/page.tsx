@@ -204,26 +204,6 @@ export default function NetTermsBillingPage() {
         </section>
 
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div
-            className="p-8 sm:p-12"
-            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
-          >
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote
-              className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
-              style={{ color: "var(--text-body)" }}
-            >
-              We were carrying $80,000 in outstanding receivables at any given time, mostly from accounts that just needed a reminder but weren&apos;t getting one consistently. Wholesail&apos;s automated reminders changed everything. Invoices go out the day the order ships, reminders fire on schedule, and accounts can pay with one click. Our AR is down to under $30,000 and I stopped spending my Fridays making collection calls.
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>Sandra L.</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>Lakeview Distribution Co.</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>Food & Specialty Distribution</div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-0" style={{ border: "1px solid var(--border-strong)" }}>
             {[
               {

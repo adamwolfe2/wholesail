@@ -12,7 +12,7 @@ test.describe("Marketing homepage", () => {
   test("hero section is visible", async ({ page }) => {
     const hero = page.locator("h1");
     await expect(hero).toBeVisible();
-    await expect(hero).toContainText("Wholesale Business");
+    await expect(hero).toContainText("ordering portals");
   });
 
   test("navigation links are present", async ({ page }) => {
@@ -31,18 +31,15 @@ test.describe("Marketing homepage", () => {
   });
 
   test("demo portal launcher button exists", async ({ page }) => {
-    // The hero section has a "See Your Portal in 30 Seconds" CTA linking to #demo
-    const demoLink = page.locator('a[href="#demo"]');
+    // The hero section has a "See a Live Demo" CTA linking to #demo
+    const demoLink = page.locator('a[href="#demo"]').first();
     await expect(demoLink).toBeVisible();
-    await expect(demoLink).toContainText("See Your Portal");
+    await expect(demoLink).toContainText("Live Demo");
   });
 
-  test("scrolls to features section", async ({ page }) => {
-    // The FeaturesSection is rendered on the homepage with id-based anchoring
-    const featuresSection = page.locator("#main-content section").filter({
-      has: page.getByText("Features", { exact: false }),
-    });
-    await featuresSection.first().scrollIntoViewIfNeeded();
-    await expect(featuresSection.first()).toBeVisible();
+  test("scrolls to pricing section", async ({ page }) => {
+    const pricingSection = page.locator("#pricing");
+    await pricingSection.scrollIntoViewIfNeeded();
+    await expect(pricingSection).toBeVisible();
   });
 });

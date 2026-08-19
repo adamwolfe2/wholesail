@@ -4,32 +4,19 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { fadeUp, staggerContainer } from "@/lib/animations";
 
-const TESTIMONIALS = [
-  {
-    beforeContext: "Before: 200 orders/week managed via text message and Google Sheets",
-    quote:
-      "We were running everything through text messages and a shared Google Sheet. Our rep would spend Sunday nights entering orders for Monday delivery. Now clients order themselves and we just fulfill. I wish we had done this two years ago.",
-    name: "Marcus T.",
-    company: "Fresh Coast Specialty Foods",
-    industry: "Food & Beverage Distribution",
-  },
-  {
-    beforeContext: "Before: 40+ open invoices being chased manually each month",
-    quote:
-      "The invoice chasing alone was worth the price. We used to have 30–40 day collection cycles because someone had to manually follow up. Now reminders go out automatically and our average collection is down to 18 days.",
-    name: "Elena V.",
-    company: "Pacific Rim Wine Imports",
-    industry: "Wine & Spirits Distribution",
-  },
-  {
-    beforeContext: "Before: Quoted $120K for a NetSuite implementation",
-    quote:
-      "I was skeptical because I've tried software before and it always required months of setup and training. This was live in 11 days. My top 20 accounts were placing orders through the portal within the first week.",
-    name: "Dave K.",
-    company: "Central States Industrial Supply",
-    industry: "Industrial Distribution",
-  },
-];
+/**
+ * Client testimonials. Currently not rendered on the homepage.
+ *
+ * Only add entries here for real, verifiable client quotes (name, company,
+ * and permission to publish). The section renders nothing while empty.
+ */
+const TESTIMONIALS: {
+  beforeContext: string;
+  quote: string;
+  name: string;
+  company: string;
+  industry: string;
+}[] = [];
 
 const cardVariant = {
   hidden: { opacity: 0, y: 20 },
@@ -43,6 +30,8 @@ const cardVariant = {
 export function TestimonialsSection() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  if (TESTIMONIALS.length === 0) return null;
 
   return (
     <section

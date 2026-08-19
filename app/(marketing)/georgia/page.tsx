@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board with metro-Atlanta route grouping and revenue analytics",
     "Bulk client import to onboard your existing Georgia accounts in minutes",
   ],
-  testimonial: {
-    quote: "We distribute fresh and processed poultry products to about 85 food service accounts across metro Atlanta. The market here is growing fast and the competition is real. Wholesail gave us a portal that makes ordering from us frictionless \u2014 accounts log in, see their pricing, and order in minutes. We stopped losing accounts to larger distributors simply because they had better technology.",
-    name: "Reuben J.",
-    company: "Southern Protein Distributors",
-    industry: "Poultry & Food Distribution \u2014 Atlanta Metro",
-  },
   stats: [
     {
       stat: "$85B+",

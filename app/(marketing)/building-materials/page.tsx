@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Quote-to-order workflow for large or custom material jobs",
     "Admin fulfillment board with order staging and delivery tracking",
   ],
-  testimonial: {
-    quote:
-      "My foremen used to call the yard at 6am and half the time nobody answered. Now they check inventory on their phone before they leave the house, place the order, and it's ready when the crew gets there. I don't get calls about missing materials anymore.",
-    name: "Dave M.",
-    company: "Summit Building Supply",
-    industry: "Building Materials Distribution",
-  },
   sectionTitle: "What changes for building materials distributors.",
   featuresTitle: "Everything a building materials distributor needs.",
   stats: [

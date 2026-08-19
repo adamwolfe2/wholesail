@@ -12,7 +12,8 @@ export interface IndustryConfig {
   heroStat?: string;
   painPoints: { before: string; after: string }[];
   features: string[];
-  testimonial: { quote: string; name: string; company: string; industry: string };
+  /** Optional — only rendered when a real, verifiable client quote exists. */
+  testimonial?: { quote: string; name: string; company: string; industry: string };
   sectionTitle: string;
   featuresTitle?: string;
   stats?: { stat: string; label: string; source: string }[];
@@ -183,30 +184,30 @@ export function IndustryPage({ config }: { config: IndustryConfig }) {
           </div>
         </section>
 
-        {/* TESTIMONIAL */}
+        {/* TESTIMONIAL — rendered only when a real client quote is configured */}
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div
-            className="p-4 sm:p-8 lg:p-12"
-            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
-          >
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote
-              className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
-              style={{ color: "var(--text-body)" }}
+          {config.testimonial && (
+            <div
+              className="p-4 sm:p-8 lg:p-12 mb-8"
+              style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
             >
-              {config.testimonial.quote}
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>{config.testimonial.name}</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>{config.testimonial.company}</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>{config.testimonial.industry}</div>
+              <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
+              <blockquote
+                className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
+                style={{ color: "var(--text-body)" }}
+              >
+                {config.testimonial.quote}
+              </blockquote>
+              <div>
+                <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>{config.testimonial.name}</div>
+                <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>{config.testimonial.company}</div>
+                <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>{config.testimonial.industry}</div>
+              </div>
             </div>
-          </div>
+          )}
 
-          {/* Newsletter capture — after testimonial */}
-          <div className="mt-8">
-            <EmailSubscribeForm source="industry" tagline="Distribution insights, monthly." />
-          </div>
+          {/* Newsletter capture */}
+          <EmailSubscribeForm source="industry" tagline="Distribution insights, monthly." />
         </section>
 
         {/* STATS */}

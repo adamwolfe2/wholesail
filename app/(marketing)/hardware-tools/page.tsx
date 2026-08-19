@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "PDF invoice and packing list generation for every fulfilled order",
     "Order history and one-click reorder for repeat trade account buyers",
   ],
-  testimonial: {
-    quote:
-      "Our biggest contractor accounts were calling us before 6am and leaving voicemails with their orders. We were losing jobs to suppliers with websites. After launching with Wholesail, our top 10 accounts now order online — and our average order value went up because they're not rushing through a phone call.",
-    name: "Dave P.",
-    company: "Tri-State Supply Co.",
-    industry: "Hardware & Tool Distribution",
-  },
   sectionTitle: "What changes for hardware and tool distributors.",
   featuresTitle: "Everything a hardware and tool distributor needs.",
   stats: [

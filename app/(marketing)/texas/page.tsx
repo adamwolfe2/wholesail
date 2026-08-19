@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board, route management, and revenue analytics",
     "Bulk client import to onboard your existing Texas accounts in minutes",
   ],
-  testimonial: {
-    quote: "We cover the whole Dallas-Fort Worth metroplex \u2014 over 200 restaurant and food service accounts. Managing orders by phone and email was killing our operations team. With Wholesail, our accounts just log in and order. We see everything in real time, fulfillment is cleaner, and our reps are focused on growing accounts instead of entering orders they already took.",
-    name: "James H.",
-    company: "Lone Star Provisions Group",
-    industry: "Food & Beverage Distribution \u2014 Dallas-Fort Worth",
-  },
   stats: [
     {
       stat: "$400B+",

@@ -204,26 +204,6 @@ export default function StandingOrdersPage() {
         </section>
 
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div
-            className="p-8 sm:p-12"
-            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
-          >
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote
-              className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
-              style={{ color: "var(--text-body)" }}
-            >
-              About 65% of our weekly order volume was the same accounts ordering the same things. Our rep was spending half her week re-entering orders that didn&apos;t change. Wholesail&apos;s standing order feature automated all of that. Those orders just show up in our dashboard now. She uses that time to actually sell. We&apos;ve grown the account base 30% since we launched and didn&apos;t need to hire anyone.
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>Patricia N.</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>NorthShore Specialty Foods</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>Food & Beverage Distribution</div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-0" style={{ border: "1px solid var(--border-strong)" }}>
             {[
               {

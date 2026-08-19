@@ -50,13 +50,6 @@ const config: IndustryConfig = {
     "PDF invoicing with assortment line items and case count breakdown",
     "Order history and one-click seasonal reorder for returning accounts",
   ],
-  testimonial: {
-    quote:
-      "We'd lose track of who actually confirmed their Halloween orders every year. With Wholesail, every order is confirmed in writing the moment it's placed. I can see exactly what's coming in for October in August. It changed how we plan production.",
-    name: "Linda C.",
-    company: "Great Lakes Confections",
-    industry: "Candy & Confectionery Distribution",
-  },
   sectionTitle: "What changes for candy and confectionery distributors.",
   featuresTitle: "Everything a candy and confectionery distributor needs.",
   stats: [

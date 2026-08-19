@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board with freshness-priority flagging and revenue analytics",
     "Bulk client import to onboard your existing Florida accounts in minutes",
   ],
-  testimonial: {
-    quote: "We supply fresh seafood to about 70 restaurants and hotel kitchens across Miami-Dade and Broward. The hospitality market here is non-stop \u2014 procurement people order at midnight, weekend mornings, whenever they realize they\u2019re short. Wholesail handles all of that without waking anyone up on our end. Every order is there in the morning, organized, ready to pick. It\u2019s transformed how we run fulfillment.",
-    name: "Carlos M.",
-    company: "Gulf Coast Seafood Supply",
-    industry: "Seafood Distribution \u2014 South Florida",
-  },
   stats: [
     {
       stat: "47,000+",

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { LazyBuildDemo } from "@/components/lazy-build-demo";
 import { motion } from "framer-motion";
@@ -15,7 +14,7 @@ const wordVariant = {
   },
 };
 
-const headline = "Your Entire Wholesale Business";
+const headline = "Custom ordering portals & CRM,";
 const words = headline.split(" ");
 
 export function HeroSection() {
@@ -36,7 +35,7 @@ export function HeroSection() {
               padding: "4px 14px",
             }}
           >
-            For wholesale distributors doing $1M–$20M
+            For wholesale distribution companies
           </motion.span>
 
           {/* Headline with word stagger */}
@@ -69,39 +68,7 @@ export function HeroSection() {
               transition={{ delay: 0.3 }}
               className="italic inline-block"
             >
-              <Link
-                href="/ai-ified"
-                style={{
-                  color: "inherit",
-                  textDecoration: "none",
-                  position: "relative",
-                  display: "inline-block",
-                }}
-              >
-                AI-ified
-                <svg
-                  aria-hidden="true"
-                  viewBox="0 0 120 8"
-                  preserveAspectRatio="none"
-                  style={{
-                    position: "absolute",
-                    bottom: "-6px",
-                    left: 0,
-                    width: "100%",
-                    height: "8px",
-                    overflow: "visible",
-                  }}
-                >
-                  <path
-                    d="M2 5 Q15 1 30 5 Q45 9 60 5 Q75 1 90 5 Q105 9 118 5"
-                    fill="none"
-                    stroke="var(--blue)"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </Link>{" "}
-              &amp; Fully Automated.
+              built and run for you.
             </motion.span>
           </h1>
 
@@ -113,10 +80,9 @@ export function HeroSection() {
             className="font-mono text-sm sm:text-base leading-relaxed mb-8 max-w-lg"
             style={{ color: "var(--text-body)" }}
           >
-            Wholesail builds your custom wholesale ordering portal in under 2
-            weeks. Your clients order themselves. Your team stops managing
-            orders by hand. Invoices collect automatically. You own the code.
-            Forever.
+            We design, build, and manage your branded wholesale platform.
+            Your clients order online or by text. Your team runs everything
+            from one dashboard. You own the code.
           </motion.p>
 
           <motion.div
@@ -132,7 +98,7 @@ export function HeroSection() {
               className="inline-flex items-center justify-center gap-2 font-mono text-sm font-semibold btn-blue"
               style={{ padding: "14px 28px", borderRadius: "6px" }}
             >
-              See Your Portal in 30 Seconds <ArrowRight className="w-4 h-4" />
+              See a Live Demo <ArrowRight className="w-4 h-4" />
             </motion.a>
             <motion.a
               variants={fadeUp}
@@ -152,11 +118,8 @@ export function HeroSection() {
             className="font-mono text-xs"
             style={{ color: "var(--text-muted)" }}
           >
-            No signup required · Starting at $25K · Live in under 2 weeks
+            Builds from $25K · Ongoing management included · Live in about 2 weeks
           </motion.div>
-          <div className="font-mono text-[11px] text-sand mt-2">
-            Current build queue: 2-3 weeks | Limited onboarding slots
-          </div>
         </div>
 
         {/* Right side -- animated build demo */}

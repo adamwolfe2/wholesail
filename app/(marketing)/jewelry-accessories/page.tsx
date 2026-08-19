@@ -49,13 +49,6 @@ const config: IndustryConfig = {
     "Net-30 invoicing with automated PDF generation",
     "Admin order and fulfillment dashboard with collection performance reporting",
   ],
-  testimonial: {
-    quote:
-      "I used to come back from a trade show with a folder of handwritten order sheets that took two days to enter. Now buyers scan a QR code at the booth, log into the portal, and place their order while we're still talking. By the time I'm home, my order queue is full and ready to fulfill.",
-    name: "Sophie A.",
-    company: "Golden Thread Wholesale",
-    industry: "Jewelry & Accessories Distribution",
-  },
   sectionTitle: "What changes for jewelry and accessories distributors.",
   featuresTitle: "Everything a jewelry and accessories distributor needs.",
   stats: [

@@ -52,12 +52,6 @@ const config: StateConfig = {
     "Admin fulfillment board with route-based grouping and revenue analytics",
     "Bulk client import to onboard your existing New York accounts in minutes",
   ],
-  testimonial: {
-    quote: "We distribute imported specialty foods to about 90 restaurants and specialty retailers across Manhattan and Brooklyn. The competition here is brutal \u2014 every supplier is fighting for the same accounts. Wholesail gave us a portal that makes us look and feel like a much bigger operation. Our accounts order on their own schedule, our rep spends time on growth, and we\u2019re closing more accounts than we lose now.",
-    name: "Sofia B.",
-    company: "Adriatic Import Co.",
-    industry: "Specialty Food Distribution \u2014 New York City",
-  },
   stats: [
     {
       stat: "25,000+",

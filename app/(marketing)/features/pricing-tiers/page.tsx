@@ -204,26 +204,6 @@ export default function PricingTiersPage() {
         </section>
 
         <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div
-            className="p-8 sm:p-12"
-            style={{ border: "1px solid var(--border-strong)", backgroundColor: "var(--bg-white)" }}
-          >
-            <p className="font-serif text-4xl leading-none mb-6 select-none" style={{ color: "var(--border-strong)" }}>&ldquo;</p>
-            <blockquote
-              className="font-mono text-sm leading-relaxed mb-8 max-w-2xl"
-              style={{ color: "var(--text-body)" }}
-            >
-              We had pricing agreements with every account and no good way to enforce them. Our rep would quote the wrong price, the client would push back, and we&apos;d end up eating margin to keep the peace. With Wholesail, every account logs in and sees exactly their price on every product. We haven&apos;t had a pricing dispute in 6 months. It&apos;s saved us thousands and dozens of uncomfortable conversations.
-            </blockquote>
-            <div>
-              <div className="font-mono text-[11px] font-semibold" style={{ color: "var(--text-headline)" }}>Marcus D.</div>
-              <div className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>Cascade Specialty Distribution</div>
-              <div className="font-mono text-[9px] uppercase tracking-wider mt-1" style={{ color: "var(--text-muted)" }}>Specialty Food Distribution</div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-16" style={{ borderBottom: "1px solid var(--border)" }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-0" style={{ border: "1px solid var(--border-strong)" }}>
             {[
               {
